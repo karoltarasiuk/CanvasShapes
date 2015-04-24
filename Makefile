@@ -1,4 +1,4 @@
-.PHONY: default build open
+.PHONY: default tests build open
 
 default: build
 
@@ -9,3 +9,8 @@ build:
 open: build
 	open http://localhost:8000/
 	python -m SimpleHTTPServer 8000
+
+tests: build
+	rm -f tests/jasmine/src/CanvasShapes.js
+	cp build/CanvasShapes.js tests/jasmine/src/
+	open tests/jasmine/SpecRunner.html
