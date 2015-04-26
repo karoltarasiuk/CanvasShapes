@@ -1,7 +1,7 @@
 require.config({
     paths: {
         lodash: 'lib/lodash.min',
-        JSONChecker: 'lib/JSONChecker.v1.1.0',
+        JSONChecker: 'lib/JSONChecker',
         CanvasShapes: 'build/CanvasShapes'
     }
 });
