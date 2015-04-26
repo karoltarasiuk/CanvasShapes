@@ -28,6 +28,10 @@ There is a `Makefile` in the root of the repository. Works on Mac or Linux. By d
 
 You can also run `make open` to open simple examples page. It requires Python to be installed.
 
+##Testing
+
+To run tests type `make tests`. It will open your default browser with test results. CanvasShapes uses jasmine testing framework.
+
 ##Documentation
 
 Under development.
