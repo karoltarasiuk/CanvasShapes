@@ -25,7 +25,9 @@ require.config({
 
 require(['boot'], function () {
 
-    var specs = [];
+    var specs = [
+            'spec/CanvasShapes/Class'
+        ];
 
     require(specs, function () {
         window.onload();
