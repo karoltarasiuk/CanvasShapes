@@ -28,6 +28,7 @@ require(['boot'], function () {
     var specs = [
             'spec/CanvasShapes/Class',
             'spec/CanvasShapes/Config',
+            'spec/CanvasShapes/Error',
         ];
 
     require(specs, function () {
