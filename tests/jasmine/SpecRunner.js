@@ -5,7 +5,8 @@ require.config({
         boot: 'lib/jasmine-2.0.0/boot',
         lodash: 'lib/lodash.min',
         ObjectComparer: 'lib/ObjectComparer',
-        CanvasShapes: 'src/CanvasShapes'
+        JSONChecker: 'lib/JSONChecker',
+        CanvasShapes: 'src/CanvasShapes',
     },
     shim: {
         jasmine: {
@@ -24,9 +25,7 @@ require.config({
 
 require(['boot'], function () {
 
-    var specs = [
-
-        ];
+    var specs = [];
 
     require(specs, function () {
         window.onload();
