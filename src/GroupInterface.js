@@ -44,37 +44,39 @@ CanvasShapes.GroupInterface = (function () {
          * Iterates through all the shapes in the group. Invokes `iteratee`
          * function on each shape with given `args` (arguments). If the shape
          * is another group, you can pass `deep` parameter as true to run the
-         * same function on every child. It will return `true` or `false`,
-         * depending on the return value from each iteration. If every iteration
-         * returns `true`, `each` will return `true` as well. Otherwise `each`
-         * will return `false`.
+         * same function on every child. It will return an array of returned
+         * values from each iteration. It will also return nested array of
+         * returned values for each subgroup.
          *
          * @param {function} iteratee
          * @param {array} args
          * @param {boolean} deep
          *
-         * @return {boolean}
+         * @return {array}
          */
         eachShape: function (iteratee, args, deep) {
             throw new CanvasShapes.Error(9011);
         },
 
         /**
-         * Iterates through all the shapes in the group. Invokes `filter`
+         * Iterates through all the shapes in the group. If no arguments are
+         * passed it will remove all shapes.
+         *
+         * If `filter` function is passed, it invokes this
          * function on each shape with given `args` (arguments). If the shape
          * is another group, you can pass `deep` parameter as true to run the
          * same function on every child. It will return the number of deleted
          * shapes.
          *
          * Notice that if the shape which is a group, is to be deleted,
-         * its children will be deleted too, but number of children will not be
-         * included in the returned result.
+         * its children will be deleted too, and number of children will be
+         * included in the returned value.
          *
          * Group shouldn't be allowing to delete a shape by index.
          *
-         * @param {function} iteratee
-         * @param {array} args
-         * @param {boolean} deep
+         * @param {function} filter [OPTIONAL]
+         * @param {array} args [OPTIONAL]
+         * @param {boolean} deep [OPTIONAL]
          *
          * @return {integer}
          */
