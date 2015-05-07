@@ -103,7 +103,7 @@ CanvasShapes.SceneAbstract = (function () {
                 layer = this.getLayer();
             }
 
-            if (shape && shape.is(CanvasShapes.ShapeInterface)) {
+            if (shape && shape.is && shape.is(CanvasShapes.ShapeInterface)) {
                 // retrieving current layer object for this shape
                 layerObject = this.getLayerObject(shape);
                 if (layerObject) {

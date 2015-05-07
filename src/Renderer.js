@@ -35,13 +35,13 @@ CanvasShapes.Renderer = (function () {
         /**
          * Adds all the shapes passed in arguments to all the scenes.
          */
-        addShapes: function () {
+        addShapes: function (shapes) {
 
             var i, j;
 
             for (i = 0; i < this.scenes.length; i++) {
-                for (j = 0; j < arguments.length; j++) {
-                    this.scenes[i].addShape(arguments[j]);
+                for (j = 0; j < shapes.length; j++) {
+                    this.scenes[i].addShape(shapes[j]);
                 }
             }
         },

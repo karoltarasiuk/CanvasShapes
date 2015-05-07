@@ -48,7 +48,7 @@ require([
 
     // adding all shapes
     group.addShapes([line, square, rectangle]);
-    renderer.addShapes(group, polygon);
+    renderer.addShapes([group, polygon]);
     // for this scene we want polygon to be on a separate layer
     scene3.addShape(polygon, scene3.newLayer());
     scene6.addShape(polygon, scene6.newLayer());
