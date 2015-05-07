@@ -19,7 +19,7 @@ CanvasShapes.CoordinatesAbstract = (function () {
         /**
          * @implements {CanvasShapes.CoordinatesInterface}
          */
-        processCoordinates: function (coordinates, multiple, realWidth, realHeight) {
+        processCoordinates: function (coordinates, multiple, layer) {
 
             var i,
                 ret = [];
@@ -30,11 +30,8 @@ CanvasShapes.CoordinatesAbstract = (function () {
 
             for (i = 0; i < coordinates.length; i++) {
                 if (_.isArray(coordinates[i])) {
-
                     ret.push(coordinates[i].slice(0));
-
-                } else if(
-
+                } else if (
                     _.isObject(coordinates[i]) &&
                     coordinates[i].is(CanvasShapes.CoordinatesInterface)
                 ) {
@@ -43,14 +40,13 @@ CanvasShapes.CoordinatesAbstract = (function () {
             }
 
             if (
-                this.is(CanvasShapes.RenderingInterface) &&
-                this.hasScene() &&
-                this.getScene().getRelativeRendering()
+                layer && layer.is(CanvasShapes.SceneLayerInterface) &&
+                layer.getScene().getRelativeRendering()
             ) {
                 for (i = 0; i < ret.length; i++) {
                     // it must contain at least x and y coordinates
-                    ret[i][0] = ret[i][0] * this.getLayer().getWidth() / 100;
-                    ret[i][1] = ret[i][1] * this.getLayer().getHeight() / 100;
+                    ret[i][0] = ret[i][0] * layer.getWidth() / 100;
+                    ret[i][1] = ret[i][1] * layer.getHeight() / 100;
                 }
             }
 

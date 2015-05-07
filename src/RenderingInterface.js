@@ -11,58 +11,22 @@ CanvasShapes.RenderingInterface = (function () {
         className: 'CanvasShapes.RenderingInterface',
 
         /**
-         * Allows parent to run rendering of a shape on previously defined layer.
+         * Allows parent to run rendering of a shape on passed layer.
+         *
+         * @param {CanvasShapes.SceneLayerInterface} layer
          */
-        render: function () {
+        render: function (layer) {
             throw new CanvasShapes.Error(9001);
         },
 
         /**
-         * Sets a handler which can allow a shape to obtain new layer just for
-         * itself. Useful when a shape is complex, and needs redrawing separately.
-         * Parent should always call this method BEFORE `render()`.
+         * Sets handlers which can allow a shape to obtain some functionality
+         * from a scene.
          *
-         * @param {function} newLayerHandler
+         * @param {object} sceneInterfaceHandlers
          */
-        setNewLayerHandler: function (newLayerHandler) {
+        setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {
             throw new CanvasShapes.Error(9003);
-        },
-
-        /**
-         * Allows a parent to set a layer on which shape will be rendered.
-         * Parent should always call this method BEFORE `render()`.
-         *
-         * @param {CanvasShapes.SceneLayer} layer
-         */
-        setLayer: function (layer) {
-            throw new CanvasShapes.Error(9004);
-        },
-
-        /**
-         * Allows to get a reference to the layer object is on.
-         *
-         * @return {CanvasShapes.SceneLayer}
-         */
-        getLayer: function () {
-            throw new CanvasShapes.Error(9016);
-        },
-
-        /**
-         * Allows you to check whether object has scene
-         *
-         * @return {boolean}
-         */
-        hasScene: function () {
-            throw new CanvasShapes.Error(9031);
-        },
-
-        /**
-         * Allows to get a reference to the scene object is in.
-         *
-         * @return {CanvasShapes.Scene}
-         */
-        getScene: function () {
-            throw new CanvasShapes.Error(9016);
         },
 
         /**
@@ -79,7 +43,7 @@ CanvasShapes.RenderingInterface = (function () {
         /**
          * Returns currently assigned style object.
          *
-         * @return {CanvasShapes.StyleInterface}
+         * @return {[null, CanvasShapes.StyleInterface]}
          */
         getStyle: function () {
             throw new CanvasShapes.Error(9030);

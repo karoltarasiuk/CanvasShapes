@@ -65,30 +65,19 @@ CanvasShapes.Point = (function () {
          * @implements {CanvasShapes.RenderingInterface}
          * @override {CanvasShapes.RenderingAbstract}
          */
-        setNewLayerHandler: function (newLayerHandler) {
-            this.newLayerHandler = newLayerHandler;
+        setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {
+            this.sceneInterfaceHandlers = sceneInterfaceHandlers;
             if (this.face) {
-                this.face.setNewLayerHandler(newLayerHandler);
-            }
-        },
-
-        /**
-         * @implements {CanvasShapes.RenderingInterface}
-         * @override {CanvasShapes.RenderingAbstract}
-         */
-        setLayer: function (layer) {
-            this.layer = layer;
-            if (this.face) {
-                this.face.setLayer(layer);
+                this.face.setSceneInterfaceHandlers(sceneInterfaceHandlers);
             }
         },
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
-        render: function () {
+        render: function (layer) {
             if (this.face) {
-                this.face.render();
+                this.face.render(layer);
             }
         },
 
@@ -122,8 +111,9 @@ CanvasShapes.Point = (function () {
          */
         getStyle: function () {
             if (this.face) {
-                this.face.getStyle();
+                return this.face.getStyle();
             }
+            return null;
         },
 
         /**

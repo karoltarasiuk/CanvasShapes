@@ -111,16 +111,12 @@ CanvasShapes.Arc = (function () {
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
-        render: function () {
+        render: function (layer) {
 
             var style = this.getStyle(),
-                layer = this.getLayer(),
                 context = layer.getContext(),
                 coordinates = this.processCoordinates(
-                    this.coordinates,
-                    true,
-                    layer.getWidth(),
-                    layer.getHeight()
+                    this.coordinates, true, layer
                 );
 
             context.beginPath();

@@ -39,22 +39,18 @@ CanvasShapes.Polygon = (function () {
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
-        render: function () {
+        render: function (layer) {
 
             var i,
                 shapes = this.getShapes(),
                 style = this.getStyle(),
-                layer = this.getLayer(),
                 context = layer.getContext(),
                 coordinates = this.processCoordinates(
-                    shapes,
-                    true,
-                    layer.getWidth(),
-                    layer.getHeight()
+                    shapes, true, layer
                 );
 
             for (i = 0; i < shapes.length; i++) {
-                shapes[i].render();
+                shapes[i].render(layer);
             }
 
             context.beginPath();

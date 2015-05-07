@@ -23,6 +23,11 @@ CanvasShapes.Error = (function () {
         1016: "CanvasShapes.SceneLayerAbstract - context mandatory but missing",
         1017: "CanvasShapes.SceneLayerAbstract - scene mandatory but missing",
         1018: "CanvasShapes.RenderingAbstract - layer mandatory but missing",
+        1019: "CanvasShapes.SceneAbstract - in `newLayer()`: shape is not an instance of CanvasShapes.ShapeInterface",
+        1020: "CanvasShapes.SceneAbstract - in `addShape()`: shape is not an instance of CanvasShapes.ShapeInterface",
+        1021: "CanvasShapes.SceneAbstract - in `getLayerObject()`: shape is not an instance of either CanvasShapes.ShapeInterface or CanvasShapes.SceneLayerInterface",
+        1022: "CanvasShapes.SceneAbstract - in `addShape()`: layer is not an instance of CanvasShapes.SceneLayerInterface",
+        1023: 'CanvasShapes.Renderer - in `addScene()`: scene is not an instance of CanvasShapes.SceneInterface',
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
@@ -44,7 +49,7 @@ CanvasShapes.Error = (function () {
         // Not implemented methods errors
         9001: 'CanvasShapes.RenderingInterface - `render()` is not implemented',
         9002: 'CanvasShapes.RenderingAbstract - `renderOnSingleLayer()` is not implemented',
-        9003: 'CanvasShapes.RenderingInterface - `setNewLayerHandler()` is not implemented',
+        9003: 'CanvasShapes.RenderingInterface - `setSceneInterfaceHandlers()` is not implemented',
         9004: 'CanvasShapes.RenderingInterface - `setLayer()` is not implemented',
         9005: 'CanvasShapes.RenderingInterface - `numberOfSeparateLayersNeeded()` is not implemented',
         9006: 'CanvasShapes.StyleInterface - `set()` is not implemented',
@@ -73,6 +78,9 @@ CanvasShapes.Error = (function () {
         9029: 'CanvasShapes.RenderingInterface - `setStyle()` is not implemented',
         9030: 'CanvasShapes.RenderingInterface - `getStyle()` is not implemented',
         9031: 'CanvasShapes.RenderingInterface - `hasScene()` is not implemented',
+        9032: 'CanvasShapes.SceneInterface - `getLayer()` is not implemented',
+        9033: 'CanvasShapes.SceneInterface - `setLayer()` is not implemented',
+        9034: 'CanvasShapes.SceneInterface - `getSceneInterfaceHandlers()` is not implemented',
     };
 
     /**
