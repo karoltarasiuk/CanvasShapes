@@ -30,6 +30,7 @@ require(['boot'], function () {
             'spec/CanvasShapes/Config',
             'spec/CanvasShapes/Error',
             'spec/CanvasShapes/Group',
+            'spec/CanvasShapes/Renderer',
         ];
 
     require(specs, function () {
