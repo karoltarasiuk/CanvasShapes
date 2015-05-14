@@ -35,6 +35,7 @@ require(['boot'], function () {
             'spec/CanvasShapes/Scene',
             'spec/CanvasShapes/SceneLayer',
             'spec/CanvasShapes/Shape',
+            'spec/CanvasShapes/Style',
         ];
 
     require(specs, function () {
