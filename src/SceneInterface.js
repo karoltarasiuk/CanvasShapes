@@ -48,7 +48,8 @@ CanvasShapes.SceneInterface = (function () {
          * Allows you to retrieve a layer specific for a shape or layer.
          * If `shapeOrLayer` is null it will return default layer for a scene.
          * getLayer called without any arguments should ALWAYS return a
-         * layer.
+         * layer. By passing a layer you can establish whether the layer is
+         * already a part of a scene - it will return `null` if it's not.
          *
          * @param {[
          *     CanvasShapes.ShapeInterface,

@@ -170,7 +170,7 @@ CanvasShapes.SceneAbstract = (function () {
             this.initializeLayers();
 
             // finding the default layer
-            if (!shapeOrLayer) {
+            if (shapeOrLayer === undefined) {
                 // returning first empty layer
                 temp = _.find(this.layers, function (layerObj) {
                     return layerObj.shapes.length === 0;
@@ -183,6 +183,7 @@ CanvasShapes.SceneAbstract = (function () {
 
             // finding by shape
             } else if (
+                _.isObject(shapeOrLayer) && shapeOrLayer.is &&
                 shapeOrLayer.is(CanvasShapes.ShapeInterface) &&
                 _.isArray(this.layers)
             ) {
@@ -207,6 +208,7 @@ CanvasShapes.SceneAbstract = (function () {
 
             // finding by layer
             } else if (
+                _.isObject(shapeOrLayer) && shapeOrLayer.is &&
                 (shapeOrLayer && shapeOrLayer.is(CanvasShapes.SceneLayerInterface)) &&
                 _.isArray(this.layers)
             ) {
