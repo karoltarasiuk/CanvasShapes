@@ -13,11 +13,14 @@ CanvasShapes.StyleAbstract = (function () {
 
         className: 'CanvasShapes.StyleAbstract',
 
-        definition: null,
+        definitions: null,
 
         DEFAULT: 'default',
 
         initialize: function (definition) {
+
+            this.definitions = [];
+
             this.setDefinition(definition, 'default');
         },
 
@@ -47,8 +50,9 @@ CanvasShapes.StyleAbstract = (function () {
          */
         setDefinition: function (definition, which) {
 
-            if (!this.definitions) {
-                this.definitions = {};
+            // array is technically an object
+            if (!_.isObject(definition) || _.isArray(definition)) {
+                definition = {};
             }
 
             this.definitions[which] = definition;
@@ -61,7 +65,7 @@ CanvasShapes.StyleAbstract = (function () {
 
             var context = layer.getContext();
 
-            if (!which) {
+            if (!_.isString(which)) {
                 which = this.DEFAULT;
             }
 
