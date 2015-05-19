@@ -20,7 +20,7 @@ CanvasShapes.Line = (function () {
             var i;
 
             CanvasShapes.Group.prototype.initialize.call(this);
-            this.validateCoordinatesArray(coordinates, true, 2);
+            this.validateCoordinatesArray(coordinates, true, 2, 2);
 
             for (i = 0; i < coordinates.length; i++) {
                 if (_.isArray(coordinates[i])) {

@@ -112,20 +112,20 @@ CanvasShapes.CoordinatesAbstract = (function () {
                         valid = false;
                     }
                 }
-            }
 
-            if (
-                _.isNumber(minimumCoordinatesNumber) &&
-                coordinates.length < minimumCoordinatesNumber
-            ) {
-                valid = false;
-            }
+                if (
+                    _.isNumber(minimumCoordinatesNumber) &&
+                    coordinates.length < minimumCoordinatesNumber
+                ) {
+                    valid = false;
+                }
 
-            if (
-                _.isNumber(maximumCoordinatesNumber) &&
-                coordinates.length > maximumCoordinatesNumber
-            ) {
-                valid = false;
+                if (
+                    _.isNumber(maximumCoordinatesNumber) &&
+                    coordinates.length > maximumCoordinatesNumber
+                ) {
+                    valid = false;
+                }
             }
 
             if (valid === false && throwException) {
