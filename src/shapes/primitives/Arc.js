@@ -3,7 +3,7 @@
 CanvasShapes.Arc = (function () {
 
     /**
-     * Represents an arc shape, Equivalent of canvas `arc` and `arcTo` methods.
+     * Represents an arc shape, equivalent of canvas `arc` and `arcTo` methods.
      *
      * Depending on configuration of arguments you pass, it will go into
      * one of two modes:
@@ -14,24 +14,26 @@ CanvasShapes.Arc = (function () {
      * passed to canvas element method. The only exception is, that `arcTo` by
      * default doesn't draw a line to the third point, while this object does.
      *
+     * Start and end angles must be passed in radians. You can use
+     * CanvasShapes.Tools to convert degrees to radians.
+     *
      * @param {array} coordinates
      * @param {float} radius
-     * @param {float} startAngle
-     * @param {float} endAngle
-     * @param {boolean} anticlockwise
+     * @param {float} startAngle [OPTIONAL]
+     * @param {float} endAngle [OPTIONAL]
+     * @param {boolean} anticlockwise [OPTIONAL]
      */
     var Arc = function (coordinates, radius, startAngle, endAngle, anticlockwise) {
 
         if (
             !_.isArray(coordinates) ||
-            coordinates.length !== 1 ||
-            coordinates.length !== 3
+            (coordinates.length !== 1 && coordinates.length !== 3)
         ) {
-            throw new CanvasShapes.Error();
+            throw new CanvasShapes.Error(1024);
         }
 
         if (_.isUndefined(radius)) {
-            throw new CanvasShapes.Error();
+            throw new CanvasShapes.Error(1025);
         }
 
         if (_.isUndefined(startAngle)) {
@@ -49,8 +51,11 @@ CanvasShapes.Arc = (function () {
         if (coordinates.length === 1) {
             this.mode = Arc.MODES.CIRCLE;
         } else {
-            this.mode = Arc.MODES.POINTTOPOINT;
+            this.mode = Arc.MODES.POINTTOPPOINT;
         }
+
+        // checking if passed coordinates are in a correct format
+        this.validateCoordinatesArray(coordinates, true, 1, 3);
 
         this.coordinates = coordinates;
         this.radius = radius;
@@ -65,7 +70,7 @@ CanvasShapes.Arc = (function () {
      */
     Arc.MODES = {
         CIRCLE: 'circle',
-        POINTTOPOINT: 'point-top-point'
+        POINTTOPPOINT: 'point-top-point'
     };
 
     CanvasShapes.Class.extend(Arc.prototype, CanvasShapes.Shape.prototype, {
@@ -157,10 +162,35 @@ CanvasShapes.Arc = (function () {
         },
 
         /**
+         * It will return the center point of an arc.
+         *
          * @implements {CanvasShapes.CoordinatesInterface}
          */
         getCoordinates: function () {
-            return this.coordinates[0];
+
+            var i,
+                x = 0,
+                y = 0,
+                z = 0;
+
+            // returns center point of a circle
+            if (this.mode === Arc.MODES.CIRCLE) {
+                return this.coordinates[0];
+            }
+
+            for (i = 0; i < this.coordinates.length; i++) {
+                x += this.coordinates[i][0];
+                y += this.coordinates[i][1];
+                if (this.coordinates[i].length > 2) {
+                    z += this.coordinates[i][2];
+                }
+            }
+
+            x /= 3;
+            y /= 3;
+            z /= 3;
+
+            return [x, y, z];
         }
     });
 
