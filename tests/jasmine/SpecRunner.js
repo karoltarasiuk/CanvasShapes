@@ -37,6 +37,7 @@ require(['boot'], function () {
             'spec/CanvasShapes/Shape',
             'spec/CanvasShapes/Style',
             'spec/CanvasShapes/Tools',
+            'spec/CanvasShapes/shapes/primitives/Arc',
         ];
 
     require(specs, function () {
