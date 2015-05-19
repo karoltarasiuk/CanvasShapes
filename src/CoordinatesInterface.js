@@ -32,7 +32,7 @@ CanvasShapes.CoordinatesInterface = (function () {
          *
          * @param {[array,CanvasShapes.CoordinatesInterface]} coordinates
          * @param {boolean} multiple
-         * @param {CanvasShapes.SceneLayerInterface} layer
+         * @param {CanvasShapes.SceneLayerInterface} layer [OPTIONAL]
          *
          * @return {array}
          */

@@ -80,7 +80,7 @@ CanvasShapes.CoordinatesAbstract = (function () {
                 }
             }
             else if (
-                _.isObject(coordinates) &&
+                _.isObject(coordinates) && _.isFunction(coordinates.is) &&
                 coordinates.is(CanvasShapes.CoordinatesInterface)
             ) {
                 valid = true;
