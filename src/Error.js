@@ -30,6 +30,7 @@ CanvasShapes.Error = (function () {
         1023: 'CanvasShapes.Renderer - in `addScene()`: scene is not an instance of CanvasShapes.SceneInterface',
         1024: "CanvasShapes.Arc - in `constructor`: coordinates array is required",
         1025: "CanvasShapes.Arc - in `constructor`: radius is required",
+        1026: "CanvasShapes.Point - in `setFace`: provided face is not valid",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",

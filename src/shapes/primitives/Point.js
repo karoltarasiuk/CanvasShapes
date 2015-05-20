@@ -43,10 +43,6 @@ CanvasShapes.Point = (function () {
 
         initialize: function (coordinates, face, size) {
 
-            if (!_.isArray(coordinates) || coordinates.length < 2) {
-                throw new CanvasShapes.Error(1003);
-            }
-
             this.validateCoordinates(coordinates, true);
             this.coordinates = coordinates;
 
@@ -81,6 +77,16 @@ CanvasShapes.Point = (function () {
             }
         },
 
+        /**
+         * Overwrites current face of the point. If you just want to clear
+         * current face, pass `Point.FACES.NONE` as a `face` parameter.
+         * Otherwise pass other valid face string, all ready to use object. For
+         * now `size` parameter is only accepted when `circle` is passed as
+         * face.
+         *
+         * @param {[CanvasShapes.RenderingInterface,string]} face
+         * @param {float} size [OPTIONAL]
+         */
         setFace: function (face, size) {
 
             if (_.isUndefined(size)) {
@@ -100,8 +106,13 @@ CanvasShapes.Point = (function () {
                 } else {
                     throw new CanvasShapes.Error(1008);
                 }
-            } else {
+            } else if (
+                _.isObject(face) && _.isFunction(face.is) &&
+                face.is(CanvasShapes.RenderingInterface)
+            ) {
                 this.face = face;
+            } else {
+                throw new CanvasShapes.Error(1026);
             }
         },
 
