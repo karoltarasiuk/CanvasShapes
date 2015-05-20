@@ -41,6 +41,7 @@ require(['boot'], function () {
             'spec/CanvasShapes/shapes/primitives/Circle',
             'spec/CanvasShapes/shapes/primitives/Line',
             'spec/CanvasShapes/shapes/primitives/Point',
+            'spec/CanvasShapes/shapes/primitives/Polygon',
         ];
 
     require(specs, function () {
