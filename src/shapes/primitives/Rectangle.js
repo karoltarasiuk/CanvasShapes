@@ -26,9 +26,9 @@ CanvasShapes.Rectangle = (function () {
             processedCoordinates = this.processCoordinates(coordinates, true);
 
             angle = CanvasShapes.Tools.angleMeasure(
+                processedCoordinates[0],
                 processedCoordinates[1],
-                processedCoordinates[2],
-                processedCoordinates[0]
+                processedCoordinates[2]
             );
 
             if (Math.abs(angle - 90) > CanvasShapes.Config.get('EQUALITY_ALLOWED_ERROR')) {
