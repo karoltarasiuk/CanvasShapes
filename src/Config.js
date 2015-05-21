@@ -7,6 +7,8 @@ CanvasShapes.Config = (function () {
         /**
          * Represents the smallest interval between distinguishable numbers.
          * Implementation from: http://stackoverflow.com/a/19052105/571230
+         *
+         * @type {float}
          */
         EPSILON: (function () {
 
@@ -27,6 +29,15 @@ CanvasShapes.Config = (function () {
 
             return epsilon;
         })(),
+
+        /**
+         * The maximum difference allowed to assess equality of two numbers,
+         * e.g. both `a` and `b` should be considered equal for `a = 4` and
+         * `b = 4.000000001`
+         *
+         * @type {float}
+         */
+        EQUALITY_ALLOWED_ERROR: 0.0000000001,
 
         /**
          * It allows you to specify whether coordinates passed to CanvasShapes

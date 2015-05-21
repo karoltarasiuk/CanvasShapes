@@ -10,8 +10,8 @@ CanvasShapes.Tools = (function () {
      *
      * From law of cosines: http://en.wikipedia.org/wiki/Law_of_cosines
      *
-     * @param {array}   p1      coordinates of apex
-     * @param {array}   p2      coordinates
+     * @param {array}   p1      coordinates
+     * @param {array}   p2      coordinates of apex
      * @param {array}   p3      coordinates
      * @param {boolean} radians [OPTIONAL]
      *
@@ -19,9 +19,9 @@ CanvasShapes.Tools = (function () {
      */
     function angleMeasure (p1, p2, p3, radians) {
 
-        var a = segmentLength(p1, p2),
-            b = segmentLength(p1, p3),
-            c = segmentLength(p2, p3),
+        var a = segmentLength(p2, p1),
+            b = segmentLength(p2, p3),
+            c = segmentLength(p1, p3),
             r = Math.acos(
                 (a * a + b * b - c * c) / (2 * a * b)
             );
