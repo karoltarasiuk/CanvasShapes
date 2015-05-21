@@ -15,16 +15,23 @@ define([
 
             var i,
                 points = [
-                    { p1: [0, 0], p2: [0, 3], p3: [4, 0], d: 90 },
-                    // ADD MORE
+                    { p1: [0, 3], p2: [0, 0], p3: [4, 0], d: 90 },
+                    { p1: [0, 0], p2: [1, 1], p3: [2, 0], d: 90 },
+                    { p1: [0, 0], p2: [1, -1], p3: [2, 0], d: 90 },
+                    { p1: [0, 0], p2: [0, 1], p3: [1, 0], d: 45 },
+                    { p1: [0, 0], p2: [0, -1], p3: [1, 0], d: 45 },
                 ];
 
             for (i = 0; i < points.length; i++) {
-                expect(CanvasShapes.Tools.angleMeasure(
-                    points[i].p1,
-                    points[i].p2,
-                    points[i].p3
-                )).toBe(points[i].d);
+                expect(
+                    Math.abs(
+                        CanvasShapes.Tools.angleMeasure(
+                            points[i].p1,
+                            points[i].p2,
+                            points[i].p3
+                        ) - points[i].d
+                    ) < CanvasShapes.Config.get('EQUALITY_ALLOWED_ERROR')
+                ).toBe(true);
             }
         });
 
