@@ -22,7 +22,7 @@ CanvasShapes.Square = (function () {
 
             var temp1, temp2, processedCoordinates;
 
-            this.validateCoordinatesArray(coordinates, true, 3);
+            this.validateCoordinatesArray(coordinates, true, 3, 3);
             processedCoordinates = this.processCoordinates(coordinates, true);
 
             temp1 = CanvasShapes.Tools.segmentLength(
@@ -36,7 +36,7 @@ CanvasShapes.Square = (function () {
             );
 
             if (temp1 !== temp2) {
-                throw new CanvasShapes.Error(1014);
+                throw new CanvasShapes.Error(1015);
             }
 
             CanvasShapes.Rectangle.prototype.initialize.call(this, coordinates);
