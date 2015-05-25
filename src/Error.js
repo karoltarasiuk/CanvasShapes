@@ -17,7 +17,7 @@ CanvasShapes.Error = (function () {
         1010: "CanvasShapes.GroupAbstract - in `add`: all shapes must implement CanvasShapes.ShapeInterface",
         1011: "CanvasShapes.CoordinatesAbstract - in `validateCoordinates` or `validateCoordinatesArray`: passed coordinates are not valid",
         1012: "CanvasShapes.Scene - this object doesn't implement CanvasShapes.RenderingInterface and can't be rendered",
-        1013: "CanvasShapes.Rectangle - passed coordinates are not creating 90 degrees angle",
+        1013: "CanvasShapes.Rectangle or CanvasShapes.Square - passed coordinates are not creating 90 degrees angle",
         1014: "CanvasShapes.Square - passed coordinates are not creating 90 degrees angle",
         1015: "CanvasShapes.Square - passed coordinates are not creating a square",
         1016: "CanvasShapes.SceneLayerAbstract - context mandatory but missing",
