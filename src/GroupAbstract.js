@@ -83,19 +83,19 @@ CanvasShapes.GroupAbstract = (function () {
         eachShape: function (iteratee, args, deep) {
 
             var i,
-                ret = true;
+                ret = [];
 
             // going through each shape
             for (i = 0; i < this.shapes.length; i++) {
 
-                ret = ret && iteratee.apply(this.shapes[i], args);
+                ret.push(iteratee.apply(this.shapes[i], args));
 
                 // checking for deep iteration, and whether shape is a group
                 if (
                     deep === true &&
                     this.shapes[i].is(CanvasShapes.GroupInterface)
                 ) {
-                    ret = ret && this.shapes[i].eachShape(iteratee, args, deep);
+                    ret.push(this.shapes[i].eachShape(iteratee, args, deep));
                 }
             }
 
@@ -110,23 +110,28 @@ CanvasShapes.GroupAbstract = (function () {
             var i,
                 ret = 0;
 
-            // going through each shape
-            for (i = 0; i < this.shapes.length; i++) {
+            if (filter) {
+                // going through each shape
+                for (i = 0; i < this.shapes.length; i++) {
 
-                if (filter.apply(this.shapes[i], args)) {
-                    // removing element modifing array in place, so loop
-                    // iterator should be decremented as well
-                    this.shapes.splice(i--, 1);
-                    ret++;
-                }
+                    if (filter.apply(this.shapes[i], args)) {
+                        // removing element modifing array in place, so loop
+                        // iterator should be decremented as well
+                        this.shapes.splice(i--, 1);
+                        ret++;
+                    }
 
-                // checking for deep iteration, and whether shape is a group
-                if (
-                    deep === true &&
-                    this.shapes[i].is(CanvasShapes.GroupInterface)
-                ) {
-                    ret += this.shapes[i].removeShapes(filter, args, deep);
+                    // checking for deep iteration, and whether shape is a group
+                    if (
+                        deep === true &&
+                        this.shapes[i].is(CanvasShapes.GroupInterface)
+                    ) {
+                        ret += this.shapes[i].removeShapes(filter, args, deep);
+                    }
                 }
+            } else {
+                ret = this.shapes.length;
+                this.shapes = [];
             }
 
             return ret;

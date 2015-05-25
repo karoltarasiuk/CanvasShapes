@@ -35,18 +35,30 @@ require([
         }),
         fillStyle = new CanvasShapes.Style({
             fill: true
-        });
+        }),
+        scene3 = new CanvasShapes.Scene({ id: 'scene3', width: 300, height: 300, relativeRendering: true }),
+        scene1, scene2, scene4, scene5, scene6;
 
-    renderer.addScene({ id: 'scene1', width: 100, height: 100 });
-    renderer.addScene({ id: 'scene2', width: 200, height: 200, relativeRendering: true });
-    renderer.addScene({ id: 'scene3', width: 300, height: 300, relativeRendering: true });
-    renderer.addScene({ id: 'scene4', width: 100, height: 200, relativeRendering: true });
-    renderer.addScene({ id: 'scene5', width: 150, height: 200, relativeRendering: true });
-    renderer.addScene({ id: 'scene6', width: 300, height: 200, relativeRendering: true });
+    scene1 = renderer.addScene({ id: 'scene1', width: 100, height: 100 });
+    scene2 = renderer.addScene({ id: 'scene2', width: 200, height: 200, relativeRendering: true });
+    renderer.addScene(scene3);
+    scene4 = renderer.addScene({ id: 'scene4', width: 100, height: 200, relativeRendering: true });
+    scene5 = renderer.addScene({ id: 'scene5', width: 150, height: 200, relativeRendering: true });
+    scene6 = renderer.addScene({ id: 'scene6', width: 300, height: 200, relativeRendering: true });
 
-    group.addShapes([line, polygon, square, rectangle]);
+    // adding all shapes
+    group.addShapes([line, square, rectangle]);
+    renderer.addShapes([group, polygon]);
+    // for this scene we want polygon to be on a separate layer
+    scene3.addShape(polygon, scene3.newLayer());
+    scene6.addShape(polygon, scene6.newLayer());
+
+    // styling shapes
     group.setStyle(strokeStyle, true);
+    polygon.setStyle(strokeStyle, true);
     square.setStyle(fillStyle);
     point1.setFace('circle', 10);
-    renderer.render(group);
+
+    // rendering all the shapes
+    renderer.render();
 });

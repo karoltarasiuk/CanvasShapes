@@ -24,20 +24,19 @@ CanvasShapes.CoordinatesInterface = (function () {
          * what you need, as keeping reference to the parent object can be
          * better when coordinates can change.
          *
-         * If both `realWidth` and `realHeight` are passed, method will accept
-         * coordinates values as percentage of real dimensions of the
-         * layer/scene, and will convert them to pixel values.
+         * If `layer` is passed, and its scene has relative rendering turned on,
+         * method will accept coordinates values as percentage of real
+         * dimensions of the layer/scene, and will convert them to pixel values.
          *
          * Array format is: [x, y, z], `z` is OPTIONAL.
          *
          * @param {[array,CanvasShapes.CoordinatesInterface]} coordinates
          * @param {boolean} multiple
-         * @param {float} realWidth [OPTIONAL]
-         * @param {float} realHeight [OPTIONAL]
+         * @param {CanvasShapes.SceneLayerInterface} layer [OPTIONAL]
          *
          * @return {array}
          */
-        processCoordinates: function (coordinates, multiple, realWidth, realHeight) {
+        processCoordinates: function (coordinates, multiple, layer) {
             throw new CanvasShapes.Error(9008);
         },
 

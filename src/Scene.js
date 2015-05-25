@@ -33,7 +33,7 @@ CanvasShapes.Scene = (function () {
     Scene = function (config) {
 
         if (!this.validateConfig(config)) {
-            throw new CanvasShapes.Error(1002);
+            throw new CanvasShapes.Error(1001);
         }
 
         this.initialize(config);
@@ -45,7 +45,13 @@ CanvasShapes.Scene = (function () {
 
         newLayerHandler: null,
 
+        setLayerHandler: null,
+
+        getLayerHandler: null,
+
         initialize: function (config) {
+
+            var defaultLayer;
 
             this.config = config;
             this.width = this.config.width;
@@ -69,9 +75,6 @@ CanvasShapes.Scene = (function () {
                 this.dom.style.position = 'relative';
             }
 
-            this.layer = this.newLayer();
-            this.newLayerHandler = _.bind(this.newLayer, this);
-
             if (_.isBoolean(this.config.relativeRendering)) {
                 this.setRelativeRendering(this.config.relativeRendering);
             }
@@ -87,29 +90,33 @@ CanvasShapes.Scene = (function () {
          */
         render: function () {
 
-            var i, renderingObject,
-                renderingObjects = Array.prototype.slice.call(arguments);
+            var i;
 
-            if (renderingObjects.length > 0) {
+            this.initializeLayers();
 
-                for (i = 0; i < renderingObjects.length; i++) {
+            _.each(this.layers, function (layerObject) {
 
-                    renderingObject = renderingObjects[i];
+                if (!_.isEmpty(layerObject.shapes)) {
+                    _.each(layerObject.shapes, function (shape) {
 
-                    if (renderingObject.is(CanvasShapes.RenderingInterface)) {
-                        renderingObject.setLayer(this.layer);
-                        renderingObject.setNewLayerHandler(
-                            this.newLayerHandler
-                        );
-                        renderingObject.render();
-                    } else {
-                        throw new CanvasShapes.Error();
-                    }
+                        if (
+                            !layerObject.layer ||
+                            !layerObject.layer.is(CanvasShapes.SceneLayerInterface)
+                        ) {
+                            throw new CanvasShapes.Error();
+                        }
+
+                        if (
+                            !layerObject.layer ||
+                            !layerObject.layer.is(CanvasShapes.SceneLayerInterface)
+                        ) {
+                            throw new CanvasShapes.Error();
+                        }
+
+                        shape.render(layerObject.layer);
+                    });
                 }
-
-            } else {
-                throw new CanvasShapes.Error(1006);
-            }
+            });
         }
     });
 

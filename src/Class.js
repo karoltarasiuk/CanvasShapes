@@ -2,10 +2,24 @@
 
 CanvasShapes.Class = (function () {
 
+    var defaultClasses = [
+        'CanvasShapes.Class',
+        'CanvasShapes.ClassAbstract',
+        'CanvasShapes.ClassInterface'
+    ];
+
     /**
      * Base object for every other class in CanvasShapes library.
      */
-    var Class = function () {};
+    var Class = function (className) {
+
+        if (_.isString(className)) {
+            this.classes = [className];
+            Array.prototype.push.apply(this.classes, defaultClasses);
+        } else {
+            this.classes = defaultClasses;
+        }
+    };
 
     /**
      * Class.extend(destination, *sources)
@@ -26,7 +40,7 @@ CanvasShapes.Class = (function () {
 
         var i, obj,
             args = [],
-            classes = [];
+            classes = defaultClasses.slice();
 
         // copying arguments object into an array
         for (i = 0; i < arguments.length; i++) {

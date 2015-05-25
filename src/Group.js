@@ -21,42 +21,23 @@ CanvasShapes.Group = (function () {
          * @implements {CanvasShapes.RenderingInterface}
          * @override {CanvasShapes.RenderingAbstract}
          */
-        setNewLayerHandler: function (newLayerHandler) {
+        setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {
 
-            var i;
+            this.sceneInterfaceHandlers = sceneInterfaceHandlers;
 
-            this.newLayerHandler = newLayerHandler;
-
-            for (i = 0; i < this.shapes.length; i++) {
-                this.shapes[i].setNewLayerHandler(newLayerHandler);
-            }
-        },
-
-        /**
-         * @implements {CanvasShapes.RenderingInterface}
-         * @override {CanvasShapes.RenderingAbstract}
-         */
-        setLayer: function (layer) {
-
-            var i;
-
-            this.layer = layer;
-
-            for (i = 0; i < this.shapes.length; i++) {
-                this.shapes[i].setLayer(layer);
-            }
+            this.eachShape(function (sceneInterfaceHandlers) {
+                this.setSceneInterfaceHandlers(sceneInterfaceHandlers);
+            }, [sceneInterfaceHandlers], true);
         },
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
-        render: function () {
+        render: function (layer) {
 
-            var i;
-
-            for (i = 0; i < this.shapes.length; i++) {
-                this.shapes[i].render();
-            }
+            this.eachShape(function () {
+                this.render(layer);
+            }, [], true);
         },
 
         /**
@@ -66,21 +47,23 @@ CanvasShapes.Group = (function () {
          */
         getCoordinates: function () {
 
-            var i, coordinates,
+            var coordinates,
+                i = 0,
                 x = 0,
                 y = 0,
                 z = 0;
 
-            if (this.shapes.length > 0) {
-                for (i = 0; i < this.shapes.length; i++) {
-                    coordinates = this.shapes.getCoordinates();
-                    x += coordinates[0];
-                    y += coordinates[1];
-                    if (coordinates.length > 2) {
-                        z += coordinates[2];
-                    }
+            this.eachShape(function () {
+                coordinates = this.getCoordinates();
+                x += coordinates[0];
+                y += coordinates[1];
+                if (coordinates.length > 2) {
+                    z += coordinates[2];
                 }
+                i++;
+            });
 
+            if (i !== 0) {
                 x /= i;
                 y /= i;
                 z /= i;
@@ -100,9 +83,9 @@ CanvasShapes.Group = (function () {
             this.style = style;
 
             if (deep) {
-                for (i = 0; i < this.shapes.length; i++) {
-                    this.shapes[i].setStyle(style, deep);
-                }
+                this.eachShape(function (style, deep) {
+                    this.setStyle(style, deep);
+                }, [style, deep]);
             }
         }
     });

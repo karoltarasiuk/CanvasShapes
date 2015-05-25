@@ -6,7 +6,7 @@ CanvasShapes.ClassAbstract = (function () {
      * Abstract for any class within CanvasShapes library.
      */
     var ClassAbstract = function () {
-        throw new CanvasShapes.Error();
+        throw new CanvasShapes.Error(8005);
     };
 
     _.extend(ClassAbstract.prototype, CanvasShapes.ClassInterface.prototype, {

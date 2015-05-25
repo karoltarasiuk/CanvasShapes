@@ -5,7 +5,8 @@ require.config({
         boot: 'lib/jasmine-2.0.0/boot',
         lodash: 'lib/lodash.min',
         ObjectComparer: 'lib/ObjectComparer',
-        CanvasShapes: 'src/CanvasShapes'
+        JSONChecker: 'lib/JSONChecker',
+        CanvasShapes: 'src/CanvasShapes',
     },
     shim: {
         jasmine: {
@@ -25,7 +26,25 @@ require.config({
 require(['boot'], function () {
 
     var specs = [
-
+            'spec/CanvasShapes/Class',
+            'spec/CanvasShapes/Config',
+            'spec/CanvasShapes/Error',
+            'spec/CanvasShapes/Group',
+            'spec/CanvasShapes/Renderer',
+            'spec/CanvasShapes/Rendering',
+            'spec/CanvasShapes/Scene',
+            'spec/CanvasShapes/SceneLayer',
+            'spec/CanvasShapes/Shape',
+            'spec/CanvasShapes/Style',
+            'spec/CanvasShapes/Tools',
+            'spec/CanvasShapes/shapes/primitives/Arc',
+            'spec/CanvasShapes/shapes/primitives/Circle',
+            'spec/CanvasShapes/shapes/primitives/Line',
+            'spec/CanvasShapes/shapes/primitives/Point',
+            'spec/CanvasShapes/shapes/primitives/Polygon',
+            'spec/CanvasShapes/shapes/primitives/Quadrilateral',
+            'spec/CanvasShapes/shapes/primitives/Rectangle',
+            'spec/CanvasShapes/shapes/primitives/Square',
         ];
 
     require(specs, function () {

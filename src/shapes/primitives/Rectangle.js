@@ -4,8 +4,8 @@ CanvasShapes.Rectangle = (function () {
 
     /**
      * Represents a rectangle. You need to pass an array of 3 coordinates, which
-     * must create a 90 degress angle. Second coordinate should be a vertex of
-     * an angle.
+     * must create a 90 degress angle. Second coordinate should be an apex of
+     * a 90 degrees angle.
      *
      * @param {array} coordinates
      */
@@ -22,16 +22,16 @@ CanvasShapes.Rectangle = (function () {
             var angle, processedCoordinates,
                 point = [];
 
-            this.validateCoordinatesArray(coordinates, true, 3);
+            this.validateCoordinatesArray(coordinates, true, 3, 3);
             processedCoordinates = this.processCoordinates(coordinates, true);
 
             angle = CanvasShapes.Tools.angleMeasure(
+                processedCoordinates[0],
                 processedCoordinates[1],
-                processedCoordinates[2],
-                processedCoordinates[0]
+                processedCoordinates[2]
             );
 
-            if (angle !== 90) {
+            if (Math.abs(angle - 90) > CanvasShapes.Config.get('EQUALITY_ALLOWED_ERROR')) {
                 throw new CanvasShapes.Error(1013);
             }
 

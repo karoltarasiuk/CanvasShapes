@@ -11,10 +11,10 @@ CanvasShapes.RenderingAbstract = (function () {
         className: 'CanvasShapes.RenderingAbstract',
 
         /**
-         * Handler allowing a shape to obtain new layer when needed.
-         * @type {function}
+         * Handlers allowing a shape to any info it needs from a scene.
+         * @type {object}
          */
-        newLayerHandler: null,
+        sceneInterfaceHandlers: null,
 
         /**
          * Layer to render the shape on.
@@ -31,47 +31,8 @@ CanvasShapes.RenderingAbstract = (function () {
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
-        setNewLayerHandler: function (newLayerHandler) {
-            this.newLayerHandler = newLayerHandler;
-        },
-
-        /**
-         * @implements {CanvasShapes.RenderingInterface}
-         */
-        setLayer: function (layer) {
-            this.layer = layer;
-        },
-
-        /**
-         * @implements {CanvasShapes.RenderingInterface}
-         */
-        getLayer: function () {
-
-            if (!this.layer) {
-                throw new CanvasShapes.Error(1018);
-            }
-
-            return this.layer;
-        },
-
-        /**
-         * @implements {CanvasShapes.RenderingInterface}
-         */
-        hasScene: function () {
-
-            try {
-                this.getScene();
-                return true;
-            } catch (e) {
-                return false;
-            }
-        },
-
-        /**
-         * @implements {CanvasShapes.RenderingInterface}
-         */
-        getScene: function () {
-            return this.getLayer().getScene();
+        setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {
+            this.sceneInterfaceHandlers = sceneInterfaceHandlers;
         },
 
         /**
