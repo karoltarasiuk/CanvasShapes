@@ -26,8 +26,13 @@ require([
         point9 = new CanvasShapes.Point([10, 10]),
         point10 = new CanvasShapes.Point([80, 80]),
         point11 = new CanvasShapes.Point([90, 70]),
+        point12 = new CanvasShapes.Point([10, 80]),
+        point13 = new CanvasShapes.Point([10, 90]),
+        point14 = new CanvasShapes.Point([90, 70]),
+        point15 = new CanvasShapes.Point([110, 100]),
         line = new CanvasShapes.Line([point1, point2]),
-        polygon = new CanvasShapes.Polygon([point3, point4, point2, point5]),
+        polygon1 = new CanvasShapes.Polygon([point3, point4, point2, point5]),
+        polygon2 = new CanvasShapes.Polygon([point12, point14, point15, point13]),
         square = new CanvasShapes.Square([point6, point7, point8]),
         rectangle = new CanvasShapes.Rectangle([point9, point10, point11]),
         strokeStyle = new CanvasShapes.Style({
@@ -48,14 +53,18 @@ require([
 
     // adding all shapes
     group.addShapes([line, square, rectangle]);
-    renderer.addShapes([group, polygon]);
-    // for this scene we want polygon to be on a separate layer
-    scene3.addShape(polygon, scene3.newLayer());
-    scene6.addShape(polygon, scene6.newLayer());
+    renderer.addShapes([group, polygon1, polygon2]);
+
+    // those polygons must be on separate layers
+    scene3.addShape(polygon1, scene3.newLayer());
+    scene6.addShape(polygon1, scene6.newLayer());
+    scene3.addShape(polygon2, scene3.newLayer());
+    scene6.addShape(polygon2, scene6.newLayer());
 
     // styling shapes
     group.setStyle(strokeStyle, true);
-    polygon.setStyle(strokeStyle, true);
+    polygon1.setStyle(strokeStyle, true);
+    polygon2.setStyle(strokeStyle, true);
     square.setStyle(fillStyle);
     point1.setFace('circle', 10);
 
