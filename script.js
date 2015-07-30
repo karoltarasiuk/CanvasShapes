@@ -41,15 +41,15 @@ require([
         fillStyle = new CanvasShapes.Style({
             fill: true
         }),
-        scene3 = new CanvasShapes.Scene({ id: 'scene3', width: 300, height: 300, relativeRendering: true }),
+        scene3 = new CanvasShapes.Scene({ id: 'scene3', width: 300, height: 300 }),
         scene1, scene2, scene4, scene5, scene6;
 
     scene1 = renderer.addScene({ id: 'scene1', width: 100, height: 100 });
-    scene2 = renderer.addScene({ id: 'scene2', width: 200, height: 200, relativeRendering: true });
+    scene2 = renderer.addScene({ id: 'scene2', width: 200, height: 200 });
     renderer.addScene(scene3);
-    scene4 = renderer.addScene({ id: 'scene4', width: 100, height: 200, relativeRendering: true });
-    scene5 = renderer.addScene({ id: 'scene5', width: 150, height: 200, relativeRendering: true });
-    scene6 = renderer.addScene({ id: 'scene6', width: 300, height: 200, relativeRendering: true });
+    scene4 = renderer.addScene({ id: 'scene4', width: 100, height: 200 });
+    scene5 = renderer.addScene({ id: 'scene5', width: 150, height: 200 });
+    scene6 = renderer.addScene({ id: 'scene6', width: 300, height: 200 });
 
     // adding all shapes
     group.addShapes([line, square, rectangle]);
@@ -60,6 +60,10 @@ require([
     scene6.addShape(polygon1, scene6.newLayer());
     scene3.addShape(polygon2, scene3.newLayer());
     scene6.addShape(polygon2, scene6.newLayer());
+
+    // setting relative rendering
+    square.setRelativeRendering(true);
+    polygon1.setRelativeRendering(true);
 
     // styling shapes
     group.setStyle(strokeStyle, true);

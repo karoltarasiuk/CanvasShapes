@@ -37,19 +37,7 @@ CanvasShapes.Config = (function () {
          *
          * @type {float}
          */
-        EQUALITY_ALLOWED_ERROR: 0.0000000001,
-
-        /**
-         * It allows you to specify whether coordinates passed to CanvasShapes
-         * are pixel-based or relative, i.e. percent-based. You can also set it
-         * separetely for each scene.
-         *
-         * Remember that shapes rendered relatively can be distorted, e.g.
-         * rectangle and square can become more like parallelogram and rhombus.
-         *
-         * @type {boolean}
-         */
-        relativeRendering: false
+        EQUALITY_ALLOWED_ERROR: 0.0000000001
     };
 
     function set(option, value) {

@@ -74,10 +74,6 @@ CanvasShapes.Scene = (function () {
             ) {
                 this.dom.style.position = 'relative';
             }
-
-            if (_.isBoolean(this.config.relativeRendering)) {
-                this.setRelativeRendering(this.config.relativeRendering);
-            }
         },
 
         validateConfig: function (config) {

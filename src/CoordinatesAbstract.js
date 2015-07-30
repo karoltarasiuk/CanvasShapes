@@ -40,8 +40,8 @@ CanvasShapes.CoordinatesAbstract = (function () {
             }
 
             if (
-                layer && layer.is(CanvasShapes.SceneLayerInterface) &&
-                layer.getScene().getRelativeRendering()
+                this.is(CanvasShapes.RenderingInterface) &&
+                this.getRelativeRendering()
             ) {
                 for (i = 0; i < ret.length; i++) {
                     // it must contain at least x and y coordinates
