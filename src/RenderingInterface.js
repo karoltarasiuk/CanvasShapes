@@ -47,6 +47,28 @@ CanvasShapes.RenderingInterface = (function () {
          */
         getStyle: function () {
             throw new CanvasShapes.Error(9030);
+        },
+
+        /**
+         * Allows you to specify whether this rendering object is rendered
+         * relatively, i.e. whether it treats coordinates as pixels, or percents.
+         * It will return `true` if the value was successfully set, or `false`
+         * otherwise.
+         *
+         * @param {boolean} relativeRendering
+         * @return {boolean}
+         */
+        setRelativeRendering: function (relativeRendering) {
+            throw new CanvasShapes.Error(9035);
+        },
+
+        /**
+         * Returns current value for relative rendering of this rendering object.
+         *
+         * @return {boolean}
+         */
+        getRelativeRendering: function () {
+            throw new CanvasShapes.Error(9036);
         }
     });
 

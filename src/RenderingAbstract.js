@@ -29,6 +29,14 @@ CanvasShapes.RenderingAbstract = (function () {
         style: null,
 
         /**
+         * Allows you to specify whether this rendering object coordinates
+         * must be rendered relatively or not.
+         *
+         * @type {boolean}
+         */
+        relativeRendering: false,
+
+        /**
          * @implements {CanvasShapes.RenderingInterface}
          */
         setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {
@@ -50,6 +58,26 @@ CanvasShapes.RenderingAbstract = (function () {
                 this.style = new CanvasShapes.Style({});
             }
             return this.style;
+        },
+
+        /**
+         * @implements {CanvasShapes.RenderingInterface}
+         */
+        setRelativeRendering: function (relativeRendering) {
+
+            if (_.isBoolean(relativeRendering)) {
+                this.relativeRendering = relativeRendering;
+                return true;
+            }
+
+            return false;
+        },
+
+        /**
+         * @implements {CanvasShapes.RenderingInterface}
+         */
+        getRelativeRendering: function () {
+            return this.relativeRendering;
         }
     });
 

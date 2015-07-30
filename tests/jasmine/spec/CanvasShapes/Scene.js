@@ -282,17 +282,6 @@ define([
                 expect(scene1.getDom()).toBe(dom1);
                 expect(scene2.getDom()).toBe(dom2);
             });
-
-            it('manipulating relative rendering', function () {
-
-                var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 300, height: 800 });
-
-                expect(scene.getRelativeRendering()).toBe(false);
-                scene.setRelativeRendering(true);
-                expect(scene.getRelativeRendering()).toBe(true);
-                scene.setRelativeRendering(false);
-                expect(scene.getRelativeRendering()).toBe(false);
-            });
         });
 
         describe('class methods', function () {

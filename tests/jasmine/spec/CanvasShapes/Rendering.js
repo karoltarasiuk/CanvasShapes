@@ -71,6 +71,17 @@ define([
                 expect(rendering.style).toBe(style);
                 expect(rendering.getStyle()).toBe(style);
             });
+
+            it('manipulating relative rendering', function () {
+
+                var rendering = new CanvasShapes.Rendering();
+
+                expect(rendering.getRelativeRendering()).toBe(false);
+                rendering.setRelativeRendering(true);
+                expect(rendering.getRelativeRendering()).toBe(true);
+                rendering.setRelativeRendering(false);
+                expect(rendering.getRelativeRendering()).toBe(false);
+            });
         });
     });
 });

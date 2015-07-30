@@ -121,27 +121,6 @@ CanvasShapes.SceneInterface = (function () {
          */
         getDom: function () {
             throw new CanvasShapes.Error(9022);
-        },
-
-        /**
-         * Allows you to specify whether this scene is rendered relatively, i.e.
-         * whether it treats coordinates as pixels, or percents. It will return
-         * `true` if the value was successfully set, or `false` otherwise.
-         *
-         * @param {boolean} relativeRendering
-         * @return {boolean}
-         */
-        setRelativeRendering: function (relativeRendering) {
-            throw new CanvasShapes.Error(9023);
-        },
-
-        /**
-         * Returns current value for relative rendering feature.
-         *
-         * @return {boolean}
-         */
-        getRelativeRendering: function () {
-            throw new CanvasShapes.Error(9024);
         }
     });
 

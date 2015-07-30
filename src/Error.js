@@ -71,8 +71,6 @@ CanvasShapes.Error = (function () {
         9020: 'CanvasShapes.SceneInterface - `getWidth()` is not implemented',
         9021: 'CanvasShapes.SceneInterface - `getHeight()` is not implemented',
         9022: 'CanvasShapes.SceneInterface - `getDom()` is not implemented',
-        9023: 'CanvasShapes.SceneInterface - `setRelativeRendering()` is not implemented',
-        9024: 'CanvasShapes.SceneInterface - `getRelativeRendering()` is not implemented',
         9025: 'CanvasShapes.SceneLayerInterface - `getScene()` is not implemented',
         9026: 'CanvasShapes.SceneLayerInterface - `getContext()` is not implemented',
         9027: 'CanvasShapes.SceneLayerInterface - `getWidth()` is not implemented',
@@ -83,6 +81,8 @@ CanvasShapes.Error = (function () {
         9032: 'CanvasShapes.SceneInterface - `getLayer()` is not implemented',
         9033: 'CanvasShapes.SceneInterface - `setLayer()` is not implemented',
         9034: 'CanvasShapes.SceneInterface - `getSceneInterfaceHandlers()` is not implemented',
+        9035: 'CanvasShapes.SceneInterface - `setRelativeRendering()` is not implemented',
+        9036: 'CanvasShapes.SceneInterface - `getRelativeRendering()` is not implemented',
     };
 
     /**

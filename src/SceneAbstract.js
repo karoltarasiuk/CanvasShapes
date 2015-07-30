@@ -18,14 +18,6 @@ CanvasShapes.SceneAbstract = (function () {
         dom: null,
 
         /**
-         * Allows you to specify whether passed for rendering shapes coordinates
-         * must be rendered relatively or not. Must be set on initialisation.
-         *
-         * @type {boolean}
-         */
-        relativeRendering: null,
-
-        /**
          * Width of the scene. Must be set on initialisation.
          *
          * @type {integer}
@@ -262,29 +254,6 @@ CanvasShapes.SceneAbstract = (function () {
          */
         getDom: function () {
             return this.dom;
-        },
-
-        /**
-         * @implements {CanvasShapes.SceneInterface}
-         */
-        setRelativeRendering: function (relativeRendering) {
-
-            if (_.isBoolean(relativeRendering)) {
-                this.relativeRendering = relativeRendering;
-                return true;
-            }
-
-            return false;
-        },
-
-        /**
-         * @implements {CanvasShapes.SceneInterface}
-         */
-        getRelativeRendering: function () {
-            if (this.relativeRendering === null) {
-                return CanvasShapes.Config.get('relativeRendering');
-            }
-            return this.relativeRendering;
         }
     });
 
