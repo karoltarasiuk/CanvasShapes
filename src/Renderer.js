@@ -1,5 +1,9 @@
 /*global _, CanvasShapes*/
 
+/**
+ * The main class of a library. Everything starts from here, and it should be
+ * the first instance you create.
+ */
 CanvasShapes.Renderer = (function () {
 
     var Renderer = function () {};
