@@ -15,7 +15,7 @@ CanvasShapes.Arc = (function () {
      * default doesn't draw a line to the third point, while this object does.
      *
      * Start and end angles must be passed in radians. You can use
-     * CanvasShapes.Tools to convert degrees to radians.
+     * CanvasShapes.GeometryTools to convert degrees to radians.
      *
      * @param {array} coordinates
      * @param {float} radius

@@ -9,7 +9,7 @@ define([
     ObjectComparer
 ) {
 
-    describe('CanvasShapes.Tools', function () {
+    describe('CanvasShapes.GeometryTools', function () {
 
         it('angle measure method', function () {
 
@@ -25,7 +25,7 @@ define([
             for (i = 0; i < points.length; i++) {
                 expect(
                     Math.abs(
-                        CanvasShapes.Tools.angleMeasure(
+                        CanvasShapes.GeometryTools.angleMeasure(
                             points[i].p1,
                             points[i].p2,
                             points[i].p3
@@ -49,8 +49,8 @@ define([
                 ];
 
             for (i = 0; i < values.length; i++) {
-                expect(CanvasShapes.Tools.degreesToRadians(values[i].d)).toBe(values[i].r);
-                expect(CanvasShapes.Tools.radiansToDegrees(values[i].r)).toBe(values[i].d);
+                expect(CanvasShapes.GeometryTools.degreesToRadians(values[i].d)).toBe(values[i].r);
+                expect(CanvasShapes.GeometryTools.radiansToDegrees(values[i].r)).toBe(values[i].d);
             }
         });
 
@@ -63,7 +63,7 @@ define([
                 ];
 
             for (i = 0; i < points.length; i++) {
-                expect(CanvasShapes.Tools.segmentLength(
+                expect(CanvasShapes.GeometryTools.segmentLength(
                     points[i].p1,
                     points[i].p2
                 )).toBe(points[i].l);

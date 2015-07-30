@@ -25,12 +25,12 @@ CanvasShapes.Square = (function () {
             this.validateCoordinatesArray(coordinates, true, 3, 3);
             processedCoordinates = this.processCoordinates(coordinates, true);
 
-            temp1 = CanvasShapes.Tools.segmentLength(
+            temp1 = CanvasShapes.GeometryTools.segmentLength(
                 processedCoordinates[0],
                 processedCoordinates[1]
             );
 
-            temp2 = CanvasShapes.Tools.segmentLength(
+            temp2 = CanvasShapes.GeometryTools.segmentLength(
                 processedCoordinates[1],
                 processedCoordinates[2]
             );

@@ -25,7 +25,7 @@ CanvasShapes.Rectangle = (function () {
             this.validateCoordinatesArray(coordinates, true, 3, 3);
             processedCoordinates = this.processCoordinates(coordinates, true);
 
-            angle = CanvasShapes.Tools.angleMeasure(
+            angle = CanvasShapes.GeometryTools.angleMeasure(
                 processedCoordinates[0],
                 processedCoordinates[1],
                 processedCoordinates[2]

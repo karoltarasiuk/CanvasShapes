@@ -36,7 +36,7 @@ require(['boot'], function () {
             'spec/CanvasShapes/SceneLayer',
             'spec/CanvasShapes/Shape',
             'spec/CanvasShapes/Style',
-            'spec/CanvasShapes/Tools',
+            'spec/CanvasShapes/GeometryTools',
             'spec/CanvasShapes/shapes/primitives/Arc',
             'spec/CanvasShapes/shapes/primitives/Circle',
             'spec/CanvasShapes/shapes/primitives/Line',
