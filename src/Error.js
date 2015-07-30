@@ -54,7 +54,6 @@ CanvasShapes.Error = (function () {
         9002: 'CanvasShapes.RenderingAbstract - `renderOnSingleLayer()` is not implemented',
         9003: 'CanvasShapes.RenderingInterface - `setSceneInterfaceHandlers()` is not implemented',
         9004: 'CanvasShapes.RenderingInterface - `setLayer()` is not implemented',
-        9005: 'CanvasShapes.RenderingInterface - `numberOfSeparateLayersNeeded()` is not implemented',
         9006: 'CanvasShapes.StyleInterface - `set()` is not implemented',
         9007: 'CanvasShapes.CoordinatesInterface - `getCoordinates()` is not implemented',
         9008: 'CanvasShapes.CoordinatesInterface - `processCoordinates()` is not implemented',

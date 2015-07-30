@@ -62,7 +62,15 @@ CanvasShapes.SceneInterface = (function () {
         },
 
         /**
+         * This method should only be used after the shape is already added
+         * through CanvasShapes.Renderer instance. Adding shapes only to the
+         * scene is not advised because it's not being registered in Renderer
+         * and therefore cannot be controlled and rendered from there.
+         *
          * Allows you to add a shape with its corresponding layer to the scene.
+         * It's very useful when within one scene you want to have a different
+         * configuration of layers than in a second scene of the same renderer.
+         *
          * You need to be careful, as the shape can be a child of a group, and
          * adding it as a standalone shape to the scene will cause it to render
          * twice, and in some cases can cause infinite loop which will raise an

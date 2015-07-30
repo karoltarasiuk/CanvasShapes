@@ -71,12 +71,6 @@ define([
                 expect(rendering.style).toBe(style);
                 expect(rendering.getStyle()).toBe(style);
             });
-
-            it('getting number of separate layers', function () {
-
-                var rendering = new CanvasShapes.Rendering();
-                expect(rendering.numberOfSeparateLayersNeeded()).toBe(0);
-            });
         });
     });
 });
