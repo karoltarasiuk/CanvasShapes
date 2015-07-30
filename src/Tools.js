@@ -1,6 +1,6 @@
 /*global _, CanvasShapes*/
 
-CanvasShapes.Tools = (function () {
+CanvasShapes.GeometryTools = (function () {
 
     /**
      * Calculates the measure of an angle based on 3 points creating it. By
