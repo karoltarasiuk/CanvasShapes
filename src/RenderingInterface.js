@@ -47,17 +47,6 @@ CanvasShapes.RenderingInterface = (function () {
          */
         getStyle: function () {
             throw new CanvasShapes.Error(9030);
-        },
-
-        /**
-         * Allows parent to obtain an information whether shape needs its own
-         * separate layer. The method will return total number of needed layers.
-         * In the case of a group it will iterate through all the members.
-         *
-         * @return {integer}
-         */
-        numberOfSeparateLayersNeeded: function () {
-            throw new CanvasShapes.Error(9005);
         }
     });
 

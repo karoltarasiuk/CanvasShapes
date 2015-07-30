@@ -50,13 +50,6 @@ CanvasShapes.RenderingAbstract = (function () {
                 this.style = new CanvasShapes.Style({});
             }
             return this.style;
-        },
-
-        /**
-         * @implements {CanvasShapes.RenderingInterface}
-         */
-        numberOfSeparateLayersNeeded: function () {
-            return 0;
         }
     });
 
