@@ -44,6 +44,43 @@ CanvasShapes.SceneAbstract = (function () {
         layers: null,
 
         /**
+         * All the attached event handlers divided by event type in a following
+         * format:
+         *
+         * {
+         *     click: [
+         *         {
+         *             handler: function,
+         *             context: object
+         *         },
+         *         ...
+         *     ],
+         *     ...
+         * }
+         *
+         * @type {object}
+         */
+        handlers: {},
+
+        /**
+         * Initializes event listeners. Call ONLY when `this.dom` is ready!
+         */
+        initializeListeners: function () {
+            if (!this.dom || !this.dom.addEventListener) {
+                throw new CanvasShapes.Error(1027);
+            }
+
+            this.dom.addEventListener('click', _.bind(this.dispatch, this));
+
+            // I'm setting tabIndex to 1 on a body element to give it focus, so
+            // it's able to capture keyboard events. I can't give it to `this.dom`
+            // as there can be multiple scenes, and events must work for all of
+            // them within one `Renderer`.
+            document.body.tabIndex = 1;
+            document.body.addEventListener('keydown', _.bind(this.dispatch, this));
+        },
+
+        /**
          * @implements {CanvasShapes.SceneInterface}
          */
         newLayer: function (shape, width, height, left, top) {
@@ -254,6 +291,79 @@ CanvasShapes.SceneAbstract = (function () {
          */
         getDom: function () {
             return this.dom;
+        },
+
+        /**
+         * @implements {CanvasShapes.SceneInterface}
+         */
+        on: function (eventType, handler, context) {
+
+            if (!CanvasShapes.Event.eventTypeExists(eventType)) return false;
+
+            // remove existing handler
+            this.off(handler, eventType);
+
+            this.handlers[eventType].push({
+                handler: handler,
+                context: _.isUndefined(context) ? this : context
+            });
+
+            return true;
+        },
+
+        /**
+         * @implements {CanvasShapes.SceneInterface}
+         */
+        off: function (handlerOrType, eventType) {
+
+            var i, j;
+
+            for (i in this.handlers) {
+
+                if (_.isString(handlerOrType) && i === handlerOrType) {
+                    // removing all handlers of this type
+                    this.handlers[i] = [];
+                } else if (_.isObject(handlerOrType)) {
+                    for (j = 0; j < this.handlers[i].length; j++) {
+                        if (this.handlers[i][j].handler === handlerOrType) {
+                            if (
+                                (_.isString(eventType) && i === eventType) ||
+                                !_.isString(eventType)
+                            ) {
+                                CanvasShapes.Tools.removeByIndex(j, 1);
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+        /**
+         * @implements {CanvasShapes.SceneInterface}
+         */
+        dispatch: function (event) {
+
+            var i, handlers, e, type,
+                category = CanvasShapes.Event.getCategory(event);
+
+            if (_.isObject(event) && _.isString(event.type)) {
+                type = event.type;
+            } else if (_.isString(event)) {
+                type = event;
+            }
+
+            if (_.isArray(this.handlers[type])) {
+                handlers = this.handlers[type];
+
+                // we create the event object only when it's really needed
+                if (handlers.length > 0 && !e) {
+                    e = CanvasShapes.Event.getInstance(event, this.dom);
+                }
+
+                for (i = 0; i < handlers.length; i++) {
+                    handlers[i].handler.apply(handlers[i].context, [e]);
+                }
+            }
         }
     });
 
