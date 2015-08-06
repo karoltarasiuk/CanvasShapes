@@ -11,6 +11,13 @@ CanvasShapes.SceneInterface = (function () {
         className: 'CanvasShapes.SceneInterface',
 
         /**
+         * Initializes event listeners. Call ONLY when `this.dom` is ready!
+         */
+        initializeListeners: function () {
+            throw new CanvasShapes.Error(9041);
+        },
+
+        /**
          * Renders all the assinged layers and their shapes.
          */
         render: function () {
@@ -121,6 +128,57 @@ CanvasShapes.SceneInterface = (function () {
          */
         getDom: function () {
             throw new CanvasShapes.Error(9022);
+        },
+
+        /**
+         * Attaches an event handler to the scene. It prevents you from adding
+         * the same handler for the second time.
+         *
+         * The handler should be ready to accept 1 argument which is
+         * `CanvasShapes.Event` object.
+         *
+         * Returns boolean with the result of attaching.
+         *
+         * @param  {string}   eventType
+         * @param  {function} handler
+         * @param  {object}   context
+         *
+         * @return {boolean}
+         */
+        on: function (eventType, handler, context) {
+            throw new CanvasShapes.Error(9038);
+        },
+
+        /**
+         * Allows you to detach the event handler from the scene.
+         *
+         * When `handlerOrType` is a string it will detach all the handlers,
+         * matching passed type.
+         *
+         * If it's a function, it will detach only the same handler (comparison
+         * operator here is `===`). If the second argument is passed, it will
+         * remove only the handler of the specified type.
+         *
+         * It will return number of detached handlers.
+         *
+         * @param {[string,function]} handlerOrType
+         * @param {string}            eventType [OPTIONAL]
+         *
+         * @return {integer}
+         */
+        off: function (handlerOrType, eventType) {
+            throw new CanvasShapes.Error(9039);
+        },
+
+        /**
+         * Its job is to trigger all the handlers attached using `on()` method
+         * of the passed `type`. `type` attribute must exist within passed
+         * `event` argument, or `event` must be a `string`.
+         *
+         * @param {[Event,object,string]}  event
+         */
+        dispatch: function (event) {
+            throw new CanvasShapes.Error(9040);
         }
     });
 

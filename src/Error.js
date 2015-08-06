@@ -31,6 +31,12 @@ CanvasShapes.Error = (function () {
         1024: "CanvasShapes.Arc - in `constructor`: coordinates array is required",
         1025: "CanvasShapes.Arc - in `constructor`: radius is required",
         1026: "CanvasShapes.Point - in `setFace`: provided face is not valid",
+        1027: "CanvasShapes.SceneAbstract - in `initializeListeners`: `this.dom` doesn't exist",
+        1028: "CanvasShapes.Event.deregisterCategory - passed category is not a string",
+        1029: "CanvasShapes.Event.deregisterCategory - passed category doesn't exist",
+        1030: "CanvasShapes.Event.registerCategory - passed category is not a string",
+        1031: "CanvasShapes.Event.registerCategory - passed category does exist - use CanvasShapes.Event.deregisterCategory to deregister first",
+        1032: "CanvasShapes.Event.registerCategory - passed baseClass is not a function",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
@@ -49,6 +55,8 @@ CanvasShapes.Error = (function () {
         8015: "CanvasShapes.ShapeInterface - can't instantiate interface",
         8016: "CanvasShapes.SceneLayerInterface - can't instantiate interface",
         8017: "CanvasShapes.SceneLayerAbstract - can't instantiate abstract",
+        8018: "CanvasShapes.InteractionAbstract - can't instantiate abstract",
+        8019: "CanvasShapes.Event - can't instantiate abstract",
         // Not implemented methods errors
         9001: 'CanvasShapes.RenderingInterface - `render()` is not implemented',
         9002: 'CanvasShapes.RenderingAbstract - `renderOnSingleLayer()` is not implemented',
@@ -83,6 +91,11 @@ CanvasShapes.Error = (function () {
         9034: 'CanvasShapes.SceneInterface - `getSceneInterfaceHandlers()` is not implemented',
         9035: 'CanvasShapes.SceneInterface - `setRelativeRendering()` is not implemented',
         9036: 'CanvasShapes.SceneInterface - `getRelativeRendering()` is not implemented',
+        9037: "CanvasShapes.CoordinatesInterface - `belongsToMe()` is not implemented",
+        9038: "CanvasShapes.SceneInterface - `on()` is not implemented",
+        9039: "CanvasShapes.SceneInterface - `off()` is not implemented",
+        9040: "CanvasShapes.SceneInterface - `dispatch()` is not implemented",
+        9041: "CanvasShapes.SceneInterface - `initializeListeners()` is not implemented",
     };
 
     /**

@@ -74,6 +74,8 @@ CanvasShapes.Scene = (function () {
             ) {
                 this.dom.style.position = 'relative';
             }
+
+            this.initializeListeners();
         },
 
         validateConfig: function (config) {

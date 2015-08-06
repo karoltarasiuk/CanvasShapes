@@ -9,7 +9,7 @@ CanvasShapes.Shape = (function () {
         CanvasShapes.Rendering.prototype,
         CanvasShapes.ShapeAbstract.prototype,
         CanvasShapes.CoordinatesAbstract.prototype,
-        CanvasShapes.InteractionInterface.prototype,
+        CanvasShapes.InteractionAbstract.prototype,
     {
         className: 'CanvasShapes.Shape'
     });
