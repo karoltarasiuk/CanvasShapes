@@ -75,7 +75,7 @@ CanvasShapes.Event = (function () {
             };
         }
 
-        if (_.isObject(event) && _.isString(event.type)) {console.log('HERE');
+        if (_.isObject(event) && _.isString(event.type)) {
             for (i in CATEGORIES) {
                 if (_.isObject(CATEGORIES[i].eventsObject)) {
                     for (j in CATEGORIES[i].eventsObject) {
