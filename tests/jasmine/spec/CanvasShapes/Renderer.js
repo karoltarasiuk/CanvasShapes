@@ -76,6 +76,83 @@ define([
                     renderer.addShapes([shape1, shape2]);
                 }).not.toThrow();
             });
+
+            it('events manipulation', function () {
+
+                var i = 0,
+                    renderer = new CanvasShapes.Renderer(),
+                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                    handler1 = function () { i++; },
+                    handler2 = function () { i--; },
+                    context1 = new function () { this.prop = 0; },
+                    handler3 = function () { this.prop++; };
+
+                renderer.addScene(scene);
+
+                renderer.on('event', handler1);
+                renderer.on('event', handler2);
+                renderer.dispatch('event');
+                expect(i).toBe(0);
+
+                renderer.off(handler1);
+                renderer.dispatch('event');
+                expect(i).toBe(-1);
+
+                // this handler will be added but previous get deleted
+                renderer.on('event', handler2);
+                renderer.dispatch('event');
+                expect(i).toBe(-2);
+
+                // there won't be any events
+                renderer.off('event');
+                renderer.dispatch('event');
+                expect(i).toBe(-2);
+
+                renderer.on('event', handler1);
+                renderer.on('event', handler2);
+                renderer.off(handler2, 'custom');
+                renderer.dispatch('event');
+                expect(i).toBe(-2);
+
+                renderer.on('yo', handler3, context1);
+                renderer.dispatch('yo');
+                expect(context1.prop).toBe(1);
+
+                renderer.addScene(new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }));
+                renderer.addScene(new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }));
+
+                i = 0;
+                context1.prop = 0;
+
+                renderer.on('event', handler1);
+                renderer.on('event', handler2);
+                renderer.dispatch('event');
+                expect(i).toBe(0);
+
+                renderer.off(handler1);
+                renderer.dispatch('event');
+                expect(i).toBe(-3);
+
+                // this handler will be added but previous get deleted
+                renderer.on('event', handler2);
+                renderer.dispatch('event');
+                expect(i).toBe(-6);
+
+                // there won't be any events
+                renderer.off('event');
+                renderer.dispatch('event');
+                expect(i).toBe(-6);
+
+                renderer.on('event', handler1);
+                renderer.on('event', handler2);
+                renderer.off(handler2, 'custom');
+                renderer.dispatch('event');
+                expect(i).toBe(-6);
+
+                renderer.on('some_event', handler3, context1);
+                renderer.dispatch('some_event');
+                expect(context1.prop).toBe(3);
+            });
         });
     });
 });

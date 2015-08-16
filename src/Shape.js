@@ -6,7 +6,7 @@ CanvasShapes.Shape = (function () {
 
     CanvasShapes.Class.extend(
         Shape.prototype,
-        CanvasShapes.Rendering.prototype,
+        CanvasShapes.RenderingAbstract.prototype,
         CanvasShapes.ShapeAbstract.prototype,
         CanvasShapes.CoordinatesAbstract.prototype,
         CanvasShapes.InteractionAbstract.prototype,
