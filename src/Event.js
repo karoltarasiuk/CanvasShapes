@@ -3,53 +3,22 @@
 CanvasShapes.Event = (function () {
 
     /**
-     * Abstract Event class. You can't use it directly as it will throw an
-     * exception. Use `Event.getInstance` static method instead.
+     * Constructor of the new Event object. It accepts native DOM `event`,
+     * or a `string` containing a custom event type.
      *
-     * This class doesn't have an `Abstract` suffix in its name as its static
-     * methods and fields can be used pretty often, so it saves you on typing.
+     * `target` argument is optional, and is used to overwrite the target from
+     * the native DOM event object, or set the target for custom event.
+     *
+     * @param {[object,string]} event
+     * @param {object}          target [OPTIONAL]
      */
-    var Event = function () {
-        throw new CanvasShapes.Error(8019);
+    var Event = function (event, target) {
+        this.initialize(event, target);
     };
 
-    CanvasShapes.Class.extend(Event.prototype, {
+    CanvasShapes.Class.extend(Event.prototype, CanvasShapes.EventAbstract.prototype, {
 
-        className: 'CanvasShapes.Event',
-
-        /**
-         * Initialization method of the new Event object. It accepts native DOM
-         * `event`, or a `string` containing a custom event type.
-         *
-         * `target` argument is optional, and is used to overwrite the target from
-         * the native DOM event object, or set the target for custom event.
-         *
-         * @param {[object,string]} event
-         * @param {object}          target [OPTIONAL]
-         */
-        initialize: function (event, target) {
-
-            if (_.isString(event)) {
-                event = {
-                    type: event
-                };
-            }
-
-            this.event = event;
-            this.category = Event.getCategory(this.event);
-            this.target = target ? target : event.target;
-
-            switch (this.category.category) {
-                case CATEGORIES.MOUSE.category:
-                    this.x = this.event.pageX - this.target.offsetLeft;
-                    this.y = this.event.pageY - this.target.offsetTop;
-                    break;
-                case CATEGORIES.INPUT.category:
-                    break;
-                case CATEGORIES.CUSTOM.category:
-                    break;
-            }
-        }
+        className: 'CanvasShapes.Event'
     });
 
     /**
@@ -62,12 +31,19 @@ CanvasShapes.Event = (function () {
     /**
      * Returns category on the event based on passed event object.
      *
-     * @param  {Event}  event
+     * @param  {[Event,string]}  event
      * @return {object}
      */
     Event.getCategory = function (event) {
 
         var i, j;
+
+        if (
+            !_.isString(event) &&
+            (!_.isObject(event) || !_.isString(event.type))
+        ) {
+            throw new CanvasShapes.Error(1040);
+        }
 
         if (_.isString(event)) {
             event = {
@@ -75,26 +51,23 @@ CanvasShapes.Event = (function () {
             };
         }
 
-        if (_.isObject(event) && _.isString(event.type)) {
-            for (i in CATEGORIES) {
-                if (_.isObject(CATEGORIES[i].eventsObject)) {
-                    for (j in CATEGORIES[i].eventsObject) {
-                        if (CATEGORIES[i].eventsObject[j] === event.type) {
-                            return CATEGORIES[i];
-                        }
+        // search for registered event within some category
+        for (i in CATEGORIES) {
+            if (_.isObject(CATEGORIES[i].eventsObject)) {
+                for (j in CATEGORIES[i].eventsObject) {
+                    if (CATEGORIES[i].eventsObject[j] === event.type) {
+                        return CATEGORIES[i];
                     }
-                }
-            }
-        } else {
-            // look for custom event category
-            for (i in CATEGORIES) {
-                if (_.isUndefined(CATEGORIES[i].eventsObject)) {
-                    return CATEGORIES[i];
                 }
             }
         }
 
-        return null;
+        // category not found, look for custom event category
+        for (i in CATEGORIES) {
+            if (_.isUndefined(CATEGORIES[i].eventsObject)) {
+                return CATEGORIES[i];
+            }
+        }
     };
 
     /**
@@ -128,17 +101,20 @@ CanvasShapes.Event = (function () {
      * Remember that only one custom category is allowed. If you want to get rid
      * of the default one, use `Event.deregisterCategory`.
      *
+     * When `initializeListeners` is passed, it will be called whenever scene
+     * object requests listeners initialization. Scene object will also become
+     * a context for this call.
+     *
      * @param  {string}   category
      * @param  {function} baseClass
      * @param  {object}   eventsObject [OPTIONAL]
+     * @param  {function} initializeListeners [OPTIONAL]
      *
      * @return {boolean}
      */
-    Event.registerCategory = function (category, baseClass, eventsObject) {
+    Event.registerCategory = function (category, baseClass, eventsObject, initializeListeners) {
 
-        var i;
-
-        if (!_.isString(category)) {
+        if (!_.isString(category) || category.length === 0) {
             throw new CanvasShapes.Error(1030);
         }
 
@@ -150,10 +126,19 @@ CanvasShapes.Event = (function () {
             throw new CanvasShapes.Error(1031);
         }
 
+        if (eventsObject && !_.isObject(eventsObject)) {
+            throw new CanvasShapes.Error(1033);
+        }
+
+        if (initializeListeners && !_.isFunction(initializeListeners)) {
+            throw new CanvasShapes.Error(1034);
+        }
+
         CATEGORIES[category.toUpperCase()] = {
             category: category,
             baseClass: baseClass,
-            eventsObject: eventsObject
+            eventsObject: eventsObject,
+            initializeListeners: initializeListeners
         };
     };
 
@@ -176,6 +161,30 @@ CanvasShapes.Event = (function () {
     };
 
     /**
+     * Initialize listeners for each registered category. `scene` is a context
+     * of this call.
+     *
+     * @param  {CanvasShapes.SceneInterface} scene
+     */
+    Event.initializeListeners = function (scene) {
+
+        var i;
+
+        if (
+            !_.isObject(scene) || !_.isFunction(scene.is) ||
+            !scene.is(CanvasShapes.SceneInterface)
+        ) {
+            throw new CanvasShapes.Error(1038);
+        }
+
+        for (i in CATEGORIES) {
+            if (CATEGORIES[i].initializeListeners) {
+                CATEGORIES[i].initializeListeners.call(scene);
+            }
+        }
+    };
+
+    /**
      * Creator method of the new Event object. It accepts native DOM `event`, or
      * a `string` containing a custom event type. It will check which object
      * type you need and create it appropriately.
@@ -187,6 +196,7 @@ CanvasShapes.Event = (function () {
      * @param {object}          target [OPTIONAL]
      */
     Event.getInstance = function (event, target) {
+
         var category = Event.getCategory(event);
 
         if (category) {
@@ -195,6 +205,9 @@ CanvasShapes.Event = (function () {
 
         return null;
     };
+
+    // register this category
+    Event.registerCategory('custom', Event);
 
     return Event;
 }());

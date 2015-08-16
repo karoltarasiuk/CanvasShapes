@@ -8,13 +8,20 @@
  */
 CanvasShapes.Renderer = (function () {
 
-    var Renderer = function () {};
+    var Renderer = function () {
+        this.scenes = [];
+    };
 
     CanvasShapes.Class.extend(Renderer.prototype, {
 
         className: 'CanvasShapes.Renderer',
 
-        scenes: [],
+        /**
+         * Array of added scenes
+         *
+         * @type {array}
+         */
+        scenes: null,
 
         /**
          * Add scene to the renderer. It can be passed as a ready to use scene
@@ -69,7 +76,7 @@ CanvasShapes.Renderer = (function () {
          * Attaches an event handler to all the scenes.
          *
          * The handler should be ready to accept 1 argument which is
-         * `CanvasShapes.Event` object.
+         * `CanvasShapes.EventAbstract` object.
          *
          * Returns boolean with the result of attaching. If returns false if it
          * fails for any scene.
@@ -84,8 +91,6 @@ CanvasShapes.Renderer = (function () {
 
             var i,
                 ret = true;
-
-            if (!CanvasShapes.Event.eventTypeExists(eventType)) return false;
 
             for (i = 0; i < this.scenes.length; i++) {
                 ret = ret && this.scenes[i].on.apply(this.scenes[i], arguments);
@@ -118,6 +123,30 @@ CanvasShapes.Renderer = (function () {
 
             for (i = 0; i < this.scenes.length; i++) {
                 temp += this.scenes[i].off.apply(this.scenes[i], arguments);
+            }
+
+            return temp;
+        },
+
+        /**
+         * Its job is to trigger all the handlers attached using `on()` method
+         * of the passed `type`. `type` attribute must exist within passed
+         * `event` argument, or `event` must be a `string` containing a type.
+         * It will go through all the added scenes and trigger dispatch method
+         * for them.
+         *
+         * It also possible (and very handy for custom events) to pass ready to
+         * use CanvasShapes.EventAbstract object. This way any event can be triggered.
+         *
+         * @param {[Event,object,string,CanvasShapes.EventAbstract]}  event
+         */
+        dispatch: function (event) {
+
+            var i,
+                temp = 0;
+
+            for (i = 0; i < this.scenes.length; i++) {
+                temp += this.scenes[i].dispatch.apply(this.scenes[i], arguments);
             }
 
             return temp;

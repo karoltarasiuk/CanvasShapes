@@ -37,6 +37,15 @@ CanvasShapes.Error = (function () {
         1030: "CanvasShapes.Event.registerCategory - passed category is not a string",
         1031: "CanvasShapes.Event.registerCategory - passed category does exist - use CanvasShapes.Event.deregisterCategory to deregister first",
         1032: "CanvasShapes.Event.registerCategory - passed baseClass is not a function",
+        1033: "CanvasShapes.Event.registerCategory - passed eventsObject is not an object",
+        1034: "CanvasShapes.Event.registerCategory - passed initializeListeners is not a function",
+        1035: "CanvasShapes.EventAbstract - in `initialize()`: invalid format of `event` argument passed",
+        1036: "CanvasShapes.InteractionAbstract - in `isColliding`: `this` is not an instance of CoordinatesInterface",
+        1037: "CanvasShapes.InteractionAbstract - in `isColliding`: passed `mouseCoordinates` is not in valid format",
+        1038: "CanvasShapes.Event.initializeListeners - passed arugment is not an instance of CanvasShapes.SceneInterface",
+        1039: "CanvasShapes.EventAbstract - in `initialize()`: `target` is not a DOM element",
+        1040: "CanvasShapes.Event.getCategory - passed `event` is in invalid format",
+        1041: "CanvasShapes.Event.Mouse - in `initialize()`: invalid format of `event` argument passed",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
@@ -56,7 +65,8 @@ CanvasShapes.Error = (function () {
         8016: "CanvasShapes.SceneLayerInterface - can't instantiate interface",
         8017: "CanvasShapes.SceneLayerAbstract - can't instantiate abstract",
         8018: "CanvasShapes.InteractionAbstract - can't instantiate abstract",
-        8019: "CanvasShapes.Event - can't instantiate abstract",
+        8019: "CanvasShapes.EventAbstract - can't instantiate abstract",
+        8020: "CanvasShapes.EventInterface - can't instantiate interface",
         // Not implemented methods errors
         9001: 'CanvasShapes.RenderingInterface - `render()` is not implemented',
         9002: 'CanvasShapes.RenderingAbstract - `renderOnSingleLayer()` is not implemented',
@@ -91,11 +101,14 @@ CanvasShapes.Error = (function () {
         9034: 'CanvasShapes.SceneInterface - `getSceneInterfaceHandlers()` is not implemented',
         9035: 'CanvasShapes.SceneInterface - `setRelativeRendering()` is not implemented',
         9036: 'CanvasShapes.SceneInterface - `getRelativeRendering()` is not implemented',
-        9037: "CanvasShapes.CoordinatesInterface - `belongsToMe()` is not implemented",
         9038: "CanvasShapes.SceneInterface - `on()` is not implemented",
         9039: "CanvasShapes.SceneInterface - `off()` is not implemented",
         9040: "CanvasShapes.SceneInterface - `dispatch()` is not implemented",
         9041: "CanvasShapes.SceneInterface - `initializeListeners()` is not implemented",
+        9042: "CanvasShapes.InteractionInterface - `isColliding()` is not implemented",
+        9043: "CanvasShapes.InteractionInterface - `attachEvents()` is not implemented",
+        9044: "CanvasShapes.EventInterface - `initialize()` is not implemented",
+        9045: "CanvasShapes.EventInterface - `getType()` is not implemented",
     };
 
     /**

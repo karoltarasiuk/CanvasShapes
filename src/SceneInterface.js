@@ -135,7 +135,7 @@ CanvasShapes.SceneInterface = (function () {
          * the same handler for the second time.
          *
          * The handler should be ready to accept 1 argument which is
-         * `CanvasShapes.Event` object.
+         * `CanvasShapes.EventAbstract` object.
          *
          * Returns boolean with the result of attaching.
          *
@@ -173,9 +173,12 @@ CanvasShapes.SceneInterface = (function () {
         /**
          * Its job is to trigger all the handlers attached using `on()` method
          * of the passed `type`. `type` attribute must exist within passed
-         * `event` argument, or `event` must be a `string`.
+         * `event` argument, or `event` must be a `string` containing a type.
          *
-         * @param {[Event,object,string]}  event
+         * It also possible (and very handy for custom events) to pass ready to
+         * use CanvasShapes.EventAbstract object. This way any event can be triggered.
+         *
+         * @param {[Event,object,string,CanvasShapes.EventAbstract]}  event
          */
         dispatch: function (event) {
             throw new CanvasShapes.Error(9040);

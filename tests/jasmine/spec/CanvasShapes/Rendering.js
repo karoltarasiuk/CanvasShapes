@@ -34,22 +34,13 @@ define([
                     }
                 ).toThrow(temp);
             });
-
-            it('can instantiate normal class', function () {
-
-                expect(
-                    function () {
-                        new CanvasShapes.Rendering();
-                    }
-                ).not.toThrow();
-            });
         });
 
         describe('abstract methods', function () {
 
             it('setting scene interface handlers', function () {
 
-                var rendering = new CanvasShapes.Rendering(),
+                var rendering = new CanvasShapes.Shape(),
                     sceneInterfaceHandlers = {
                         newLayerHandler: function () {},
                         getLayerHandler: function () {},
@@ -62,7 +53,7 @@ define([
 
             it('setting and getting style', function () {
 
-                var rendering = new CanvasShapes.Rendering(),
+                var rendering = new CanvasShapes.Shape(),
                     style = new CanvasShapes.Style({
                         fill: true
                     });
@@ -74,7 +65,7 @@ define([
 
             it('manipulating relative rendering', function () {
 
-                var rendering = new CanvasShapes.Rendering();
+                var rendering = new CanvasShapes.Shape();
 
                 expect(rendering.getRelativeRendering()).toBe(false);
                 rendering.setRelativeRendering(true);

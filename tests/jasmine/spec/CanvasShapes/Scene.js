@@ -261,6 +261,9 @@ define([
                 expect(_.isFunction(SceneInterfaceHandlers.newLayerHandler)).toBe(true);
                 expect(_.isFunction(SceneInterfaceHandlers.getLayerHandler)).toBe(true);
                 expect(_.isFunction(SceneInterfaceHandlers.addShapeHandler)).toBe(true);
+                expect(_.isFunction(SceneInterfaceHandlers.on)).toBe(true);
+                expect(_.isFunction(SceneInterfaceHandlers.off)).toBe(true);
+                expect(_.isFunction(SceneInterfaceHandlers.dispatch)).toBe(true);
             });
 
             it('getting width, height and dom element', function () {
@@ -281,6 +284,57 @@ define([
                 // dom
                 expect(scene1.getDom()).toBe(dom1);
                 expect(scene2.getDom()).toBe(dom2);
+            });
+
+            it('initializing listeners', function () {
+
+                var scene1, dom1 = document.createElement('div');
+
+                // initializeListeners() is being called on initialisation
+                expect(function () {
+                    scene1 = new CanvasShapes.Scene({ element: dom1, width: 100, height: 100 });
+                }).not.toThrow();
+                expect(scene1.handlers).toEqual({});
+            });
+
+            it('events manipulation', function () {
+
+                var i = 0,
+                    dom1 = document.createElement('div'),
+                    scene1 = new CanvasShapes.Scene({ element: dom1, width: 100, height: 100 }),
+                    handler1 = function () { i++; },
+                    handler2 = function () { i--; },
+                    context1 = new function () { this.prop = 0; },
+                    handler3 = function () { this.prop++; };
+
+                scene1.on('event', handler1);
+                scene1.on('event', handler2);
+                scene1.dispatch('event');
+                expect(i).toBe(0);
+
+                scene1.off(handler1);
+                scene1.dispatch('event');
+                expect(i).toBe(-1);
+
+                // this handler will be added but previous get deleted
+                scene1.on('event', handler2);
+                scene1.dispatch('event');
+                expect(i).toBe(-2);
+
+                // there won't be any events
+                scene1.off('event');
+                scene1.dispatch('event');
+                expect(i).toBe(-2);
+
+                scene1.on('event', handler1);
+                scene1.on('event', handler2);
+                scene1.off(handler2, 'custom');
+                scene1.dispatch('event');
+                expect(i).toBe(-2);
+
+                scene1.on('some_event', handler3, context1);
+                scene1.dispatch('some_event');
+                expect(context1.prop).toBe(1);
             });
         });
 

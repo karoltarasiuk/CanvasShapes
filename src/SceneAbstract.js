@@ -60,7 +60,7 @@ CanvasShapes.SceneAbstract = (function () {
          *
          * @type {object}
          */
-        handlers: {},
+        handlers: null,
 
         /**
          * Initializes event listeners. Call ONLY when `this.dom` is ready!
@@ -70,14 +70,8 @@ CanvasShapes.SceneAbstract = (function () {
                 throw new CanvasShapes.Error(1027);
             }
 
-            this.dom.addEventListener('click', _.bind(this.dispatch, this));
-
-            // I'm setting tabIndex to 1 on a body element to give it focus, so
-            // it's able to capture keyboard events. I can't give it to `this.dom`
-            // as there can be multiple scenes, and events must work for all of
-            // them within one `Renderer`.
-            document.body.tabIndex = 1;
-            document.body.addEventListener('keydown', _.bind(this.dispatch, this));
+            this.handlers = {};
+            CanvasShapes.Event.initializeListeners(this);
         },
 
         /**
@@ -265,7 +259,10 @@ CanvasShapes.SceneAbstract = (function () {
                 this.sceneInterfaceHandlers = {
                     newLayerHandler: _.bind(this.newLayer, this),
                     getLayerHandler: _.bind(this.getLayer, this),
-                    addShapeHandler: _.bind(this.addShape, this)
+                    addShapeHandler: _.bind(this.addShape, this),
+                    on: _.bind(this.on, this),
+                    off: _.bind(this.off, this),
+                    dispatch: _.bind(this.dispatch, this)
                 };
             }
 
@@ -298,10 +295,12 @@ CanvasShapes.SceneAbstract = (function () {
          */
         on: function (eventType, handler, context) {
 
-            if (!CanvasShapes.Event.eventTypeExists(eventType)) return false;
-
             // remove existing handler
             this.off(handler, eventType);
+
+            if (!_.isArray(this.handlers[eventType])) {
+                this.handlers[eventType] = [];
+            }
 
             this.handlers[eventType].push({
                 handler: handler,
@@ -323,14 +322,14 @@ CanvasShapes.SceneAbstract = (function () {
                 if (_.isString(handlerOrType) && i === handlerOrType) {
                     // removing all handlers of this type
                     this.handlers[i] = [];
-                } else if (_.isObject(handlerOrType)) {
+                } else if (_.isFunction(handlerOrType)) {
                     for (j = 0; j < this.handlers[i].length; j++) {
                         if (this.handlers[i][j].handler === handlerOrType) {
                             if (
                                 (_.isString(eventType) && i === eventType) ||
                                 !_.isString(eventType)
                             ) {
-                                CanvasShapes.Tools.removeByIndex(j, 1);
+                                this.handlers[i] = CanvasShapes.Tools.removeByIndex(this.handlers[i], j);
                             }
                         }
                     }
@@ -343,26 +342,42 @@ CanvasShapes.SceneAbstract = (function () {
          */
         dispatch: function (event) {
 
-            var i, handlers, e, type,
-                category = CanvasShapes.Event.getCategory(event);
+            var i, handlers, e, type;
 
-            if (_.isObject(event) && _.isString(event.type)) {
-                type = event.type;
-            } else if (_.isString(event)) {
-                type = event;
+            if (
+                _.isObject(event) && _.isFunction(event.is) &&
+                event.is(CanvasShapes.Event)
+            ) {
+                // already prepared event instance
+                if (_.isArray(this.handlers[event.getType()])) {
+                    handlers = this.handlers[event.getType()];
+                }
+
+            } else {
+                // traditional event or eventType string
+                if (_.isObject(event) && _.isString(event.type)) {
+                    type = event.type;
+                } else if (_.isString(event)) {
+                    type = event;
+                }
+
+                if (_.isArray(this.handlers[type])) {
+                    handlers = this.handlers[type];
+                }
             }
 
-            if (_.isArray(this.handlers[type])) {
-                handlers = this.handlers[type];
+            if (!handlers) {
+                // nothing to dispatch
+                return;
+            }
 
-                // we create the event object only when it's really needed
-                if (handlers.length > 0 && !e) {
-                    e = CanvasShapes.Event.getInstance(event, this.dom);
-                }
+            // we create the event object only when it's really needed
+            if (handlers.length > 0 && !e) {
+                e = CanvasShapes.Event.getInstance(event, this.dom);
+            }
 
-                for (i = 0; i < handlers.length; i++) {
-                    handlers[i].handler.apply(handlers[i].context, [e]);
-                }
+            for (i = 0; i < handlers.length; i++) {
+                handlers[i].handler.apply(handlers[i].context, [e]);
             }
         }
     });

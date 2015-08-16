@@ -83,16 +83,6 @@ CanvasShapes.CoordinatesInterface = (function () {
          */
         validateCoordinatesArray: function (coordinates, throwException, minimumCoordinatesNumber, maximumCoordinatesNumber) {
             throw new CanvasShapes.Error(9014);
-        },
-
-        /**
-         * Checks whether defined in `coordinates` point belongs to this object.
-         *
-         * @param  {[array,CanvasShapes.CoordinatesInterface]} coordinates
-         * @return {boolean}
-         */
-        belongsToMe: function (coordinates) {
-            throw new CanvasShapes.Error(9037);
         }
     });
 
