@@ -73,83 +73,45 @@ CanvasShapes.Renderer = (function () {
         },
 
         /**
-         * Attaches an event handler to all the scenes.
+         * @see {CanvasShapes.InteractionInterface}
          *
-         * The handler should be ready to accept 1 argument which is
-         * `CanvasShapes.EventAbstract` object.
-         *
-         * Returns boolean with the result of attaching. If returns false if it
-         * fails for any scene.
-         *
-         * @param  {string}   eventType
-         * @param  {function} handler
-         * @param  {object}   context
-         *
-         * @return {boolean}
+         * It will invoke `on()` method on every scene.
          */
-        on: function (eventName, handler, context) {
+        on: function (eventType, handler, context) {
 
-            var i,
-                ret = true;
+            var i;
 
             for (i = 0; i < this.scenes.length; i++) {
-                ret = ret && this.scenes[i].on.apply(this.scenes[i], arguments);
+                this.scenes[i].on.apply(this.scenes[i], arguments);
             }
-
-            return ret;
         },
 
         /**
-         * Allows you to detach the event handler from all the scenes.
+         * @see {CanvasShapes.InteractionInterface}
          *
-         * When `handlerOrType` is a string it will detach all the handlers,
-         * matching passed type.
-         *
-         * If it's a function, it will detach only the same handler (comparison
-         * operator here is `===`). If the second argument is passed, it will
-         * remove only the handler of the specified type.
-         *
-         * It will return number of detached handlers.
-         *
-         * @param {[string,function]} handlerOrType
-         * @param {string}            eventType [OPTIONAL]
-         *
-         * @return {integer}
+         * It will invoke `off()` method on every scene.
          */
-        off: function (handlerOrType, eventType) {
+        off: function (handlerOrType, eventTypeOrContext, context) {
 
-            var i,
-                temp = 0;
+            var i;
 
             for (i = 0; i < this.scenes.length; i++) {
-                temp += this.scenes[i].off.apply(this.scenes[i], arguments);
+                this.scenes[i].off.apply(this.scenes[i], arguments);
             }
-
-            return temp;
         },
 
         /**
-         * Its job is to trigger all the handlers attached using `on()` method
-         * of the passed `type`. `type` attribute must exist within passed
-         * `event` argument, or `event` must be a `string` containing a type.
-         * It will go through all the added scenes and trigger dispatch method
-         * for them.
+         * @see {CanvasShapes.InteractionInterface}
          *
-         * It also possible (and very handy for custom events) to pass ready to
-         * use CanvasShapes.EventAbstract object. This way any event can be triggered.
-         *
-         * @param {[Event,object,string,CanvasShapes.EventAbstract]}  event
+         * It will invoke `dispatch()` method on every scene.
          */
-        dispatch: function (event) {
+        dispatch: function (event, context) {
 
-            var i,
-                temp = 0;
+            var i;
 
             for (i = 0; i < this.scenes.length; i++) {
-                temp += this.scenes[i].dispatch.apply(this.scenes[i], arguments);
+                this.scenes[i].dispatch.apply(this.scenes[i], arguments);
             }
-
-            return temp;
         }
     });
 

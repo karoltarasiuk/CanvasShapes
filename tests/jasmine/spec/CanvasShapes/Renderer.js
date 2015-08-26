@@ -149,9 +149,16 @@ define([
                 renderer.dispatch('event');
                 expect(i).toBe(-6);
 
+                // there are 3 scenes added to renderer so it will be executed
+                // 3 times as well
                 renderer.on('some_event', handler3, context1);
                 renderer.dispatch('some_event');
                 expect(context1.prop).toBe(3);
+
+                // there are 3 scenes added to renderer so it will be executed
+                // 3 times as well
+                renderer.dispatch('some_event', context1);
+                expect(context1.prop).toBe(6);
             });
         });
     });

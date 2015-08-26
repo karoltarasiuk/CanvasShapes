@@ -38,68 +38,43 @@ define([
 
         describe('abstract methods', function () {
 
-            it('isColliding method', function () {
+            // it('can ignore events properly', function () {
 
-                var layer, shape1Class, shape1,
-                    error1 = new CanvasShapes.Error(1036),
-                    error2 = new CanvasShapes.Error(1037),
-                    shape2 = new CanvasShapes.Point([10, 10]);
+            //     var temp = 0,
+            //         shape = new CanvasShapes.Shape(),
+            //         scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 });
 
-                shape1Class = function () {};
-                _.extend(shape1Class.prototype, CanvasShapes.InteractionAbstract.prototype);
-                shape1 = new shape1Class();
+            //     scene.addShape(shape);
 
-                expect(function () {
-                    shape1.isColliding();
-                }).toThrow(error1);
+            //     shape.sceneInterfaceHandlers.on('interaction1', function () { temp++; });
+            //     shape.sceneInterfaceHandlers.on('interaction2', function () { --temp; });
 
-                expect(function () {
-                    shape2.isColliding();
-                }).toThrow(error2);
+            //     expect(function () { shape.ignoreEvents('custom', 'interaction1'); }).not.toThrow();
+            //     scene.dispatch('interaction1');
+            //     expect(temp).toBe(0);
+            //     scene.dispatch('interaction2');
+            //     expect(temp).toBe(-1);
+            //     expect(function () { shape.stopIgnoringEvents('custom', 'interaction1'); }).not.toThrow();
 
-                expect(function () {
-                    shape2.isColliding('string');
-                }).toThrow(error2);
+            //     scene.dispatch('interaction1');
+            //     scene.dispatch('interaction1');
+            //     expect(temp).toBe(1);
+            //     scene.dispatch('interaction2');
+            //     expect(temp).toBe(0);
 
-                expect(function () {
-                    shape2.isColliding(1);
-                }).toThrow(error2);
+            //     expect(function () { shape.ignoreEvents(); }).not.toThrow();
+            //     scene.dispatch('interaction1');
+            //     expect(temp).toBe(0);
+            //     scene.dispatch('interaction2');
+            //     expect(temp).toBe(0);
+            //     expect(function () { shape.stopIgnoringEvents(); }).not.toThrow();
 
-                expect(function () {
-                    shape2.isColliding({});
-                }).toThrow(error2);
-
-                expect(function () {
-                    shape2.isColliding([]);
-                }).toThrow(error2);
-
-                expect(function () {
-                    shape2.isColliding({ x: 1 });
-                }).toThrow(error2);
-
-                expect(function () {
-                    shape2.isColliding({ x: 1, y: 'string' });
-                }).toThrow(error2);
-
-                expect(function () {
-                    shape2.isColliding({ x: 1, y: '1' });
-                }).toThrow(error2);
-
-                expect(function () {
-                    shape2.isColliding({ x: 1, y: {} });
-                }).toThrow(error2);
-
-                expect(function () {
-                    shape2.isColliding({ x: 1, y: [] });
-                }).toThrow(error2);
-
-                expect(function () {
-                    shape2.isColliding({ x: 1, y: 2 });
-                }).not.toThrow();
-
-                expect(shape2.isColliding({ x: 1, y: 2 })).toBe(false);
-                expect(shape2.isColliding({ x: 10, y: 10 })).toBe(true);
-            });
+            //     scene.dispatch('interaction1');
+            //     scene.dispatch('interaction1');
+            //     expect(temp).toBe(2);
+            //     scene.dispatch('interaction2');
+            //     expect(temp).toBe(1);
+            // });
         });
     });
 });

@@ -46,6 +46,7 @@ CanvasShapes.Error = (function () {
         1039: "CanvasShapes.EventAbstract - in `initialize()`: `target` is not a DOM element",
         1040: "CanvasShapes.Event.getCategory - passed `event` is in invalid format",
         1041: "CanvasShapes.Event.Mouse - in `initialize()`: invalid format of `event` argument passed",
+        1042: "CanvasShapes.Shape - in `on()`, `off()` or `dispatch()`: shape is not added to a scene yet",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
@@ -67,6 +68,8 @@ CanvasShapes.Error = (function () {
         8018: "CanvasShapes.InteractionAbstract - can't instantiate abstract",
         8019: "CanvasShapes.EventAbstract - can't instantiate abstract",
         8020: "CanvasShapes.EventInterface - can't instantiate interface",
+        8021: "CanvasShapes.AnimationInterface - can't instantiate interface",
+        8022: "CanvasShapes.AnimationAbstract - can't instantiate abstract",
         // Not implemented methods errors
         9001: 'CanvasShapes.RenderingInterface - `render()` is not implemented',
         9002: 'CanvasShapes.RenderingAbstract - `renderOnSingleLayer()` is not implemented',
