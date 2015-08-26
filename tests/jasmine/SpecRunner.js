@@ -40,6 +40,7 @@ require(['boot'], function () {
             'spec/CanvasShapes/Tools',
             'spec/CanvasShapes/Interaction',
             'spec/CanvasShapes/Event',
+            'spec/CanvasShapes/Animation',
             'spec/CanvasShapes/shapes/primitives/Arc',
             'spec/CanvasShapes/shapes/primitives/Circle',
             'spec/CanvasShapes/shapes/primitives/Line',

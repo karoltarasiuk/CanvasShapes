@@ -335,6 +335,12 @@ define([
                 scene1.on('some_event', handler3, context1);
                 scene1.dispatch('some_event');
                 expect(context1.prop).toBe(1);
+
+                scene1.dispatch('some_event', context1);
+                expect(context1.prop).toBe(2);
+
+                scene1.dispatch('some_event', scene1);
+                expect(context1.prop).toBe(2);
             });
         });
 

@@ -44,8 +44,8 @@ CanvasShapes.SceneAbstract = (function () {
         layers: null,
 
         /**
-         * All the attached event handlers divided by event type in a following
-         * format:
+         * All the attached event handlers divided by event type in the
+         * following format:
          *
          * {
          *     click: [
@@ -63,6 +63,23 @@ CanvasShapes.SceneAbstract = (function () {
         handlers: null,
 
         /**
+         * List of events currently ignored by the given objects in the
+         * following format:
+         *
+         * {
+         *     click: [
+         *         object1,
+         *         object2,
+         *         ...
+         *     ],
+         *     ...
+         * }
+         *
+         * @type {object}
+         */
+        ignoredEvents: null,
+
+        /**
          * Initializes event listeners. Call ONLY when `this.dom` is ready!
          */
         initializeListeners: function () {
@@ -71,6 +88,7 @@ CanvasShapes.SceneAbstract = (function () {
             }
 
             this.handlers = {};
+            this.ignoredEvents = {};
             CanvasShapes.Event.initializeListeners(this);
         },
 
@@ -288,97 +306,6 @@ CanvasShapes.SceneAbstract = (function () {
          */
         getDom: function () {
             return this.dom;
-        },
-
-        /**
-         * @implements {CanvasShapes.SceneInterface}
-         */
-        on: function (eventType, handler, context) {
-
-            // remove existing handler
-            this.off(handler, eventType);
-
-            if (!_.isArray(this.handlers[eventType])) {
-                this.handlers[eventType] = [];
-            }
-
-            this.handlers[eventType].push({
-                handler: handler,
-                context: _.isUndefined(context) ? this : context
-            });
-
-            return true;
-        },
-
-        /**
-         * @implements {CanvasShapes.SceneInterface}
-         */
-        off: function (handlerOrType, eventType) {
-
-            var i, j;
-
-            for (i in this.handlers) {
-
-                if (_.isString(handlerOrType) && i === handlerOrType) {
-                    // removing all handlers of this type
-                    this.handlers[i] = [];
-                } else if (_.isFunction(handlerOrType)) {
-                    for (j = 0; j < this.handlers[i].length; j++) {
-                        if (this.handlers[i][j].handler === handlerOrType) {
-                            if (
-                                (_.isString(eventType) && i === eventType) ||
-                                !_.isString(eventType)
-                            ) {
-                                this.handlers[i] = CanvasShapes.Tools.removeByIndex(this.handlers[i], j);
-                            }
-                        }
-                    }
-                }
-            }
-        },
-
-        /**
-         * @implements {CanvasShapes.SceneInterface}
-         */
-        dispatch: function (event) {
-
-            var i, handlers, e, type;
-
-            if (
-                _.isObject(event) && _.isFunction(event.is) &&
-                event.is(CanvasShapes.Event)
-            ) {
-                // already prepared event instance
-                if (_.isArray(this.handlers[event.getType()])) {
-                    handlers = this.handlers[event.getType()];
-                }
-
-            } else {
-                // traditional event or eventType string
-                if (_.isObject(event) && _.isString(event.type)) {
-                    type = event.type;
-                } else if (_.isString(event)) {
-                    type = event;
-                }
-
-                if (_.isArray(this.handlers[type])) {
-                    handlers = this.handlers[type];
-                }
-            }
-
-            if (!handlers) {
-                // nothing to dispatch
-                return;
-            }
-
-            // we create the event object only when it's really needed
-            if (handlers.length > 0 && !e) {
-                e = CanvasShapes.Event.getInstance(event, this.dom);
-            }
-
-            for (i = 0; i < handlers.length; i++) {
-                handlers[i].handler.apply(handlers[i].context, [e]);
-            }
         }
     });
 

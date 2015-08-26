@@ -39,7 +39,11 @@ CanvasShapes.Scene = (function () {
         this.initialize(config);
     };
 
-    CanvasShapes.Class.extend(Scene.prototype, CanvasShapes.SceneAbstract.prototype, {
+    CanvasShapes.Class.extend(
+        Scene.prototype,
+        CanvasShapes.SceneAbstract.prototype,
+        CanvasShapes.InteractionAbstract.prototype,
+    {
 
         className: 'CanvasShapes.Scene',
 
@@ -115,6 +119,148 @@ CanvasShapes.Scene = (function () {
                     });
                 }
             });
+        },
+
+        /**
+         * @implements {CanvasShapes.InteractionInterface}
+         */
+        on: function (eventType, handler, context) {
+
+            if (!context) {
+                context = this;
+            }
+
+            // remove existing handler
+            this.off(handler, eventType, context);
+
+            if (!_.isArray(this.handlers[eventType])) {
+                this.handlers[eventType] = [];
+            }
+
+            this.handlers[eventType].push({
+                handler: handler,
+                context: _.isUndefined(context) ? this : context
+            });
+        },
+
+        /**
+         * @implements {CanvasShapes.InteractionInterface}
+         */
+        off: function (handlerOrType, eventTypeOrContext, context) {
+
+            var i, j, tempArray;
+
+            for (i in this.handlers) {
+                for (j = 0; j < this.handlers[i].length; j++) {
+
+                    if (
+                        _.isString(handlerOrType) &&
+                        _.isUndefined(eventTypeOrContext) &&
+                        _.isUndefined(context)
+                    ) {
+                        // this.off('some-event-type')
+                        if (i === handlerOrType) {
+                            // removing all handlers of this type
+                            this.handlers[i] = [];
+                        }
+
+                    } else if (
+                        _.isFunction(handlerOrType) &&
+                        _.isUndefined(eventTypeOrContext) &&
+                        _.isUndefined(context)
+                    ) {
+                        // this.off(someHandlerFunction)
+                        if (this.handlers[i][j].handler === handlerOrType) {
+                            // removing all handlers by matching handler
+                            this.handlers[i][j] = null;
+                        }
+
+                    } else if (_.isUndefined(context) && _.isObject(eventTypeOrContext)) {
+                        // this.off('some-event-type', contextObject)
+                        if (i === handlerOrType && this.handlers[i][j].context === eventTypeOrContext) {
+                            // removing all handlers by matching type and context
+                            this.handlers[i][j] = null;
+                        }
+
+                    } else if (_.isUndefined(context) && _.isString(eventTypeOrContext)) {
+                        // this.off(someHandlerFunction, 'some-event-type')
+                        if (i === eventTypeOrContext && this.handlers[i][j].handler === handlerOrType) {
+                            // removing all handlers by matching handler and type
+                            this.handlers[i][j] = null;
+                        }
+
+                    } else {
+                        // this.off(someHandlerFunction, 'some-event-type', contextObject)
+                        if (
+                            i === eventTypeOrContext &&
+                            this.handlers[i][j].handler === handlerOrType &&
+                            this.handlers[i][j].context === context
+                        ) {
+                            // removing all handlers by matching handler, type and context
+                            this.handlers[i][j] = null;
+                        }
+                    }
+                }
+            }
+
+            // cleaning up arrays to remove null elements
+            for (i in this.handlers) {
+                tempArray = [];
+                for (j = 0; j < this.handlers[i].length; j++) {
+                    if (this.handlers[i][j] !== null) {
+                        tempArray.push(this.handlers[i][j]);
+                    }
+                }
+                this.handlers[i] = tempArray;
+            }
+        },
+
+        /**
+         * @implements {CanvasShapes.InteractionInterface}
+         */
+        dispatch: function (event, context) {
+
+            var i, handlers, e, type;
+
+            // getting handlers array by event type
+            if (
+                _.isObject(event) && _.isFunction(event.is) &&
+                event.is(CanvasShapes.Event)
+            ) {
+                // already prepared event instance
+                if (_.isArray(this.handlers[event.getType()])) {
+                    handlers = this.handlers[event.getType()];
+                }
+
+            } else {
+                // traditional event or eventType string
+                if (_.isObject(event) && _.isString(event.type)) {
+                    type = event.type;
+                } else if (_.isString(event)) {
+                    type = event;
+                }
+
+                if (_.isArray(this.handlers[type])) {
+                    handlers = this.handlers[type];
+                }
+            }
+
+            if (!handlers) {
+                // nothing to dispatch
+                return;
+            }
+
+            // we create the event object only when it's really needed
+            if (handlers.length > 0 && !e) {
+                e = CanvasShapes.Event.getInstance(event, this.dom);
+            }
+
+            for (i = 0; i < handlers.length; i++) {
+                if (!_.isUndefined(context) && handlers[i].context !== context) {
+                    continue;
+                }
+                handlers[i].handler.call(handlers[i].context, e);
+            }
         }
     });
 
