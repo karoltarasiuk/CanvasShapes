@@ -65,6 +65,14 @@ define([
             }).not.toThrow();
         });
 
+        it('correctly sets min and max coordinates variables', function () {
+
+            var quadrilateral = new CanvasShapes.Quadrilateral([[0, 0], [1, 1], [1, 0], [0, -1]]);
+
+            expect(quadrilateral.MIN_COORDINATES).toBe(4);
+            expect(quadrilateral.MAX_COORDINATES).toBe(4);
+        });
+
         it('rendering', function () {
 
             var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 }),

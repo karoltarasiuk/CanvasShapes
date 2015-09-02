@@ -51,11 +51,24 @@ CanvasShapes.CoordinatesInterface = (function () {
         },
 
         /**
+         * Allows to set and overwrite existing coordinates. In case of the
+         * group it will set the same coordinates for each member.
+         *
+         * [WARNING] It doesn't do any type or format checking due to
+         * performance reasons.
+         *
+         * @param {array} coordinates
+         */
+        setCoordinates: function (coordinates) {
+            throw new CanvasShapes.Error(9049);
+        },
+
+        /**
          * Validates whether coordinates object/array is valid. If
          * `throwException` is `true`, it will throw exception when passed
          * coordinates are not valid, instead of returning `false`.
          *
-         * Example `coordinates` parameter value: [0, 0]
+         * Example `coordinates` parameter value: [0, 0].
          *
          * @param {[array,CanvasShapes.CoordinatesInterface]} coordinates
          * @param {boolean} throwException

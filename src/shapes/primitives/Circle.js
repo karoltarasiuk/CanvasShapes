@@ -2,6 +2,9 @@
 
 CanvasShapes.Circle = (function () {
 
+    var MIN_COORDINATES = 1,
+        MAX_COORDINATES = 1;
+
     /**
      * Reprezents a circle. It takes single coordinates object of a
      * circle centre and radius.
@@ -10,6 +13,8 @@ CanvasShapes.Circle = (function () {
      * @param {float} radius
      */
     var Circle = function (coordinates, radius) {
+        this.MIN_COORDINATES = MIN_COORDINATES;
+        this.MAX_COORDINATES = MAX_COORDINATES;
 
         this.mode = CanvasShapes.Arc.MODES.CIRCLE;
 

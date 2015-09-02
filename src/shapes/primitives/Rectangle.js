@@ -2,6 +2,9 @@
 
 CanvasShapes.Rectangle = (function () {
 
+    var MIN_COORDINATES = 3,
+        MAX_COORDINATES = 3;
+
     /**
      * Represents a rectangle. You need to pass an array of 3 coordinates, which
      * must create a 90 degress angle. Second coordinate should be an apex of
@@ -10,6 +13,8 @@ CanvasShapes.Rectangle = (function () {
      * @param {array} coordinates
      */
     var Rectangle = function (coordinates) {
+        this.MIN_COORDINATES = MIN_COORDINATES;
+        this.MAX_COORDINATES = MAX_COORDINATES;
         this.initialize(coordinates);
     };
 
@@ -22,7 +27,12 @@ CanvasShapes.Rectangle = (function () {
             var angle, processedCoordinates,
                 point = [];
 
-            this.validateCoordinatesArray(coordinates, true, 3, 3);
+            this.validateCoordinatesArray(
+                coordinates,
+                true,
+                this.MIN_COORDINATES,
+                this.MAX_COORDINATES
+            );
             processedCoordinates = this.processCoordinates(coordinates, true);
 
             angle = CanvasShapes.GeometryTools.angleMeasure(
@@ -42,6 +52,11 @@ CanvasShapes.Rectangle = (function () {
 
             coordinates.push(point);
 
+            // I have added new coordinate to the array, and now 4 is valid
+            // I need to addjust the numbers, as polygon initialisation will
+            // validate them again.
+            this.MAX_COORDINATES++;
+            this.MIN_COORDINATES++;
             CanvasShapes.Polygon.prototype.initialize.call(this, coordinates);
         }
     });

@@ -2,6 +2,9 @@
 
 CanvasShapes.Arc = (function () {
 
+    var MIN_COORDINATES = 1,
+        MAX_COORDINATES = 3;
+
     /**
      * Represents an arc shape, equivalent of canvas `arc` and `arcTo` methods.
      *
@@ -24,6 +27,8 @@ CanvasShapes.Arc = (function () {
      * @param {boolean} anticlockwise [OPTIONAL]
      */
     var Arc = function (coordinates, radius, startAngle, endAngle, anticlockwise) {
+        this.MIN_COORDINATES = MIN_COORDINATES;
+        this.MAX_COORDINATES = MAX_COORDINATES;
 
         if (
             !_.isArray(coordinates) ||
@@ -55,7 +60,12 @@ CanvasShapes.Arc = (function () {
         }
 
         // checking if passed coordinates are in a correct format
-        this.validateCoordinatesArray(coordinates, true, 1, 3);
+        this.validateCoordinatesArray(
+            coordinates,
+            true,
+            this.MIN_COORDINATES,
+            this.MAX_COORDINATES
+        );
 
         this.coordinates = coordinates;
         this.radius = radius;

@@ -71,6 +71,16 @@ define([
             }).not.toThrow();
         });
 
+        it('correctly sets min and max coordinates variables', function () {
+
+            var rectangle = new CanvasShapes.Rectangle([[0, 0], [1, 1], [2, 0]]);
+
+            // after initialisation those numbers are adjusted, 3 is good when
+            // creating
+            expect(rectangle.MIN_COORDINATES).toBe(4);
+            expect(rectangle.MAX_COORDINATES).toBe(4);
+        });
+
         it('rendering', function () {
 
             var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 }),

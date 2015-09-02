@@ -2,7 +2,12 @@
 
 CanvasShapes.Shape = (function () {
 
+    var MIN_COORDINATES = undefined,
+        MAX_COORDINATES = undefined;
+
     var Shape = function (coordinates) {
+        this.MIN_COORDINATES = MIN_COORDINATES;
+        this.MAX_COORDINATES = MAX_COORDINATES;
         this.coordinates = coordinates;
     };
 
@@ -17,10 +22,10 @@ CanvasShapes.Shape = (function () {
         className: 'CanvasShapes.Shape',
 
         /**
-         * @implements {CanvasShapes.CoordinatesInterface}
+         * @implements {CanvasShapes.RenderingInterface}
          */
-        getCoordinates: function () {
-            return this.coordinates;
+        render: function () {
+            // there's nothing to render
         },
 
         /**
@@ -125,6 +130,61 @@ CanvasShapes.Shape = (function () {
             }
 
             this.sceneInterfaceHandlers.dispatch(event, context);
+        },
+
+        /**
+         * @implements {CanvasShapes.AnimationInterface}
+         */
+        move: function (totalAnimationTime, coordinates, callback, context) {
+
+            var startingCoordinates = _.cloneDeep(this.coordinates);
+
+            if (
+                (_.isUndefined(this.MIN_COORDINATES) && _.isUndefined(this.MAX_COORDINATES)) ||
+                (this.MIN_COORDINATES === 1 && this.MAX_COORDINATES === 1)
+            ) {
+                this.validateCoordinates(coordinates, true);
+            } else {
+                this.validateCoordinatesArray(coordinates, true, this.MIN_COORDINATES, this.MAX_COORDINATES);
+            }
+
+            if (!context) {
+                context = this;
+            }
+
+            this.animate(totalAnimationTime, function (currentTime) {
+
+                var i, j,
+                    newCoordinates = [],
+                    ratio = currentTime / totalAnimationTime;
+
+                if (_.isNaN(ratio) || ratio > 1) {
+                    ratio = 1;
+                }
+
+                for (i = 0; i < coordinates.length; i++) {
+                    if (_.isArray(coordinates[i])) {
+                        if (!_.isArray(newCoordinates[i])) {
+                            newCoordinates[i] = [];
+                        }
+                        for (j = 0; j < coordinates[i].length; i++) {
+                            newCoordinates[i][j] =
+                                startingCoordinates[i][j] +
+                                (coordinates[i][j] - startingCoordinates[i][j]) *
+                                ratio;
+                        }
+                    } else {
+                        newCoordinates[i] =
+                            startingCoordinates[i] +
+                            (coordinates[i] - startingCoordinates[i]) *
+                            ratio;
+                    }
+                }
+
+                this.setCoordinates(newCoordinates);
+                this.sceneInterfaceHandlers.requestRendering(this);
+
+            }, callback, context);
         }
     });
 

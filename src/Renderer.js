@@ -9,6 +9,7 @@
 CanvasShapes.Renderer = (function () {
 
     var Renderer = function () {
+        Renderer.RENDERERS.push(this);
         this.scenes = [];
     };
 
@@ -114,6 +115,8 @@ CanvasShapes.Renderer = (function () {
             }
         }
     });
+
+    Renderer.RENDERERS = [];
 
     return Renderer;
 }());

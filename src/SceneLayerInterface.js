@@ -45,7 +45,12 @@ CanvasShapes.SceneLayerInterface = (function () {
          */
         getHeight: function () {
             throw new CanvasShapes.Error(9028);
-        }
+        },
+
+        /**
+         * Clears this layer to it's original state.
+         */
+        clear: function () {}
     });
 
     return SceneLayerInterface;

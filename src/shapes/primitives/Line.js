@@ -2,12 +2,17 @@
 
 CanvasShapes.Line = (function () {
 
+    var MIN_COORDINATES = 2,
+        MAX_COORDINATES = 2;
+
     /**
      * Represents a line. Accepts an array of two coordinates.
      *
      * @param {array} coordinates
      */
     var Line = function (coordinates) {
+        this.MIN_COORDINATES = MIN_COORDINATES;
+        this.MAX_COORDINATES = MAX_COORDINATES;
         this.initialize(coordinates);
     };
 
@@ -20,7 +25,12 @@ CanvasShapes.Line = (function () {
             var i;
 
             CanvasShapes.Group.prototype.initialize.call(this);
-            this.validateCoordinatesArray(coordinates, true, 2, 2);
+            this.validateCoordinatesArray(
+                coordinates,
+                true,
+                this.MIN_COORDINATES,
+                this.MAX_COORDINATES
+            );
 
             for (i = 0; i < coordinates.length; i++) {
                 if (_.isArray(coordinates[i])) {

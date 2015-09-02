@@ -2,6 +2,9 @@
 
 CanvasShapes.Polygon = (function () {
 
+    var MIN_COORDINATES = 3,
+        MAX_COORDINATES = undefined;
+
     /**
      * Represents a polygon. Accepts an array of any number of coordinates, but
      * three is minimum.
@@ -9,6 +12,8 @@ CanvasShapes.Polygon = (function () {
      * @param {array} coordinates
      */
     var Polygon = function (coordinates) {
+        this.MIN_COORDINATES = MIN_COORDINATES;
+        this.MAX_COORDINATES = MAX_COORDINATES;
         this.initialize(coordinates);
     };
 
@@ -16,16 +21,17 @@ CanvasShapes.Polygon = (function () {
 
         className: 'CanvasShapes.Polygon',
 
-        _minimumPoints: 3,
-
-        _maximumPoints: undefined,
-
         initialize: function (coordinates) {
 
             var i;
 
             CanvasShapes.Group.prototype.initialize.call(this);
-            this.validateCoordinatesArray(coordinates, true, this._minimumPoints, this._maximumPoints);
+            this.validateCoordinatesArray(
+                coordinates,
+                true,
+                this.MIN_COORDINATES,
+                this.MAX_COORDINATES
+            );
 
             for (i = 0; i < coordinates.length; i++) {
                 if (_.isArray(coordinates[i])) {

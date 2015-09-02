@@ -2,6 +2,9 @@
 
 CanvasShapes.Point = (function () {
 
+    var MIN_COORDINATES = 1,
+        MAX_COORDINATES = 1;
+
     /**
      * Instantiates new Point object placed in specified position with given
      * face. If face is not provided (`undefined`), default will be rendered.
@@ -12,6 +15,8 @@ CanvasShapes.Point = (function () {
      * @param {float} size
      */
     var Point = function (coordinates, face, size) {
+        this.MIN_COORDINATES = MIN_COORDINATES;
+        this.MAX_COORDINATES = MAX_COORDINATES;
         this.initialize(coordinates, face, size);
     };
 
@@ -62,7 +67,8 @@ CanvasShapes.Point = (function () {
          * @override {CanvasShapes.RenderingAbstract}
          */
         setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {
-            this.sceneInterfaceHandlers = sceneInterfaceHandlers;
+            CanvasShapes.Shape.prototype.setSceneInterfaceHandlers.apply(this, arguments);
+
             if (this.face) {
                 this.face.setSceneInterfaceHandlers(sceneInterfaceHandlers);
             }
@@ -140,8 +146,11 @@ CanvasShapes.Point = (function () {
         /**
          * @implements {CanvasShapes.CoordinatesInterface}
          */
-        getCoordinates: function () {
-            return this.coordinates;
+        setCoordinates: function (coordinates) {
+            this.coordinates = coordinates;
+            if (this.face) {
+                this.face.setCoordinates([coordinates]);
+            }
         }
     });
 

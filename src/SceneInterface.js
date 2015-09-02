@@ -19,8 +19,18 @@ CanvasShapes.SceneInterface = (function () {
 
         /**
          * Renders all the assinged layers and their shapes.
+         *
+         * If the `shape` is passed it will re-render only the layer associated
+         * with this shape. Due to canvas element implementation it's not
+         * possible to re-render one shape only.
+         *
+         * [WARNING] Due to performance reasons, this method doesn't perform any
+         * type checking when trying to render. It assuems all the passed
+         * arguments are of the correct type.
+         *
+         * @param {CanvasShapes.RenderingInterface} shape
          */
-        render: function () {
+        render: function (shape) {
             throw new CanvasShapes.Error(9018);
         },
 
@@ -90,6 +100,25 @@ CanvasShapes.SceneInterface = (function () {
          */
         addShape: function (layer, shape) {
             throw new CanvasShapes.Error(9019);
+        },
+
+        /**
+         * Method allowing the shape to request the layer shape is on, to be
+         * re-rendered.
+         *
+         *  If `context` is passed it will will use it when executing callback.
+         *  If not the `shape` will be used as a context.
+         *
+         * [WARNING] Due to performance reasons, this method doesn't perform any
+         * type checking. It assuems all the passed arguments are of the correct
+         * type.
+         *
+         * @param {CanvasShapes.Shape} shape
+         * @param {function}           callback
+         * @param {object}             context
+         */
+        requestRendering: function (shape, callback, context) {
+            throw new CanvasShapes.Error(9048);
         },
 
         /**

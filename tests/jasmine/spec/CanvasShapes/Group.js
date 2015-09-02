@@ -175,15 +175,15 @@ define([
                 group.addShapes([shape1, shape2]);
                 group.setSceneInterfaceHandlers(sceneInterfaceHandlers);
 
-                expect(group.sceneInterfaceHandlers).toBe(sceneInterfaceHandlers);
-                expect(group.sceneInterfaceHandlers.newLayerHandler).toBeDefined();
-                expect(group.sceneInterfaceHandlers.getLayerHandler).toBeDefined();
-                expect(group.sceneInterfaceHandlers.addShapeHandler).toBeDefined();
+                expect(group.sceneInterfaceHandlers[0]).toBe(sceneInterfaceHandlers);
+                expect(group.sceneInterfaceHandlers[0].newLayerHandler).toBeDefined();
+                expect(group.sceneInterfaceHandlers[0].getLayerHandler).toBeDefined();
+                expect(group.sceneInterfaceHandlers[0].addShapeHandler).toBeDefined();
                 group.eachShape(function () {
-                    expect(this.sceneInterfaceHandlers).toBe(sceneInterfaceHandlers);
-                    expect(this.sceneInterfaceHandlers.newLayerHandler).toBeDefined();
-                    expect(this.sceneInterfaceHandlers.getLayerHandler).toBeDefined();
-                    expect(this.sceneInterfaceHandlers.addShapeHandler).toBeDefined();
+                    expect(this.sceneInterfaceHandlers[0]).toBe(sceneInterfaceHandlers);
+                    expect(this.sceneInterfaceHandlers[0].newLayerHandler).toBeDefined();
+                    expect(this.sceneInterfaceHandlers[0].getLayerHandler).toBeDefined();
+                    expect(this.sceneInterfaceHandlers[0].addShapeHandler).toBeDefined();
                 });
             });
 
@@ -248,6 +248,22 @@ define([
                 group2.eachShape(function () {
                     expect(this.getStyle()).toBe(style);
                 });
+            });
+
+            it('sets coordinates for each shape', function () {
+
+                var group1 = new CanvasShapes.Group(),
+                    shape1 = new CanvasShapes.Point([30, 30]),
+                    shape2 = new CanvasShapes.Point([60, 60]);
+
+                expect(shape1.getCoordinates()).toEqual([30, 30]);
+                expect(shape2.getCoordinates()).toEqual([60, 60]);
+
+                group1.addShapes([shape1, shape2]);
+                group1.setCoordinates([20, 20]);
+
+                expect(shape1.getCoordinates()).toEqual([20, 20]);
+                expect(shape2.getCoordinates()).toEqual([20, 20]);
             });
         });
     });
