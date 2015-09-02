@@ -61,6 +61,14 @@ define([
             }).not.toThrow();
         });
 
+        it('correctly sets min and max coordinates variables', function () {
+
+            var polygon = new CanvasShapes.Polygon([[0, 0], [1, 1], [1, 0]]);
+
+            expect(polygon.MIN_COORDINATES).toBe(3);
+            expect(polygon.MAX_COORDINATES).toBeUndefined();
+        });
+
         it('rendering', function () {
 
             var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 }),

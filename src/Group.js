@@ -22,8 +22,7 @@ CanvasShapes.Group = (function () {
          * @override {CanvasShapes.RenderingAbstract}
          */
         setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {
-
-            this.sceneInterfaceHandlers = sceneInterfaceHandlers;
+            CanvasShapes.Shape.prototype.setSceneInterfaceHandlers.apply(this, arguments);
 
             this.eachShape(function (sceneInterfaceHandlers) {
                 this.setSceneInterfaceHandlers(sceneInterfaceHandlers);
@@ -70,6 +69,22 @@ CanvasShapes.Group = (function () {
             }
 
             return [x, y, z];
+        },
+
+        /**
+         * @implements {CanvasShapes.CoordinatesInterface}
+         * @override {CanvasShapes.CoordinatesAbstract}
+         *
+         * Sets the same coordinates for each member.
+         *
+         * [WARNING] If the format of the coordinates can vary for each member,
+         * you should instead use `eachShape` method.
+         */
+        setCoordinates: function (coordinates) {
+
+            this.eachShape(function () {
+                this.setCoordinates(coordinates);
+            });
         },
 
         /**

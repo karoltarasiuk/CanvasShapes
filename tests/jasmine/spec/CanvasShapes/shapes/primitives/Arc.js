@@ -73,6 +73,14 @@ define([
             }).not.toThrow();
         });
 
+        it('correctly sets min and max coordinates variables', function () {
+
+            var arc = new CanvasShapes.Arc([[0, 0]], 1);
+
+            expect(arc.MIN_COORDINATES).toBe(1);
+            expect(arc.MAX_COORDINATES).toBe(3);
+        });
+
         it('rendering', function () {
 
             var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 }),

@@ -8,11 +8,7 @@ CanvasShapes.InteractionAbstract = (function () {
 
     CanvasShapes.Class.extend(InteractionAbstract.prototype, CanvasShapes.InteractionInterface.prototype, {
 
-        className: 'CanvasShapes.InteractionAbstract',
-
-        ignoreEvents: function (category, type) {},
-
-        stopIgnoringEvents: function (category, type) {}
+        className: 'CanvasShapes.InteractionAbstract'
     });
 
     return InteractionAbstract;

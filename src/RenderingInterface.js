@@ -23,6 +23,10 @@ CanvasShapes.RenderingInterface = (function () {
          * Sets handlers which can allow a shape to obtain some functionality
          * from a scene.
          *
+         * Note that since a shape can be put on multiple scenes, this method
+         * must take care of multiple scenes calling this method. All handlers
+         * should be saved and used when needed.
+         *
          * @param {object} sceneInterfaceHandlers
          */
         setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {

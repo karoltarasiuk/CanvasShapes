@@ -41,6 +41,14 @@ define([
                     new CanvasShapes.Shape();
                 }).not.toThrow();
             });
+
+            it('correctly sets min and max coordinates variables', function () {
+
+                var shape1 = new CanvasShapes.Shape([0, 0]);
+
+                expect(shape1.MAX_COORDINATES).toBeUndefined();
+                expect(shape1.MIN_COORDINATES).toBeUndefined();
+            });
         });
 
         describe('methods', function () {
@@ -113,7 +121,7 @@ define([
                 var i = 0,
                     error1 = new CanvasShapes.Error(1042),
                     shape1 = new CanvasShapes.Shape(),
-                    shape2 = new CanvasShapes.Shape(),
+                    shape2 = new CanvasShapes.Shape([0, 0]),
                     scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
                     handler1 = function () { i++; },
                     handler2 = function () { i--; },
@@ -164,6 +172,41 @@ define([
 
                 shape2.dispatch('interaction', context1);
                 expect(context1.prop).toBe(3);
+            });
+
+            it('doesn\'t throw an error when render is called', function () {
+
+                var shape1 = new CanvasShapes.Shape();
+                expect(function () { shape1.render(); }).not.toThrow();
+            });
+        });
+
+        describe('move animation - async', function () {
+
+            var shape1, callbackSpy, i;
+
+            beforeEach(function (done) {
+
+                var scene1 = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                    callback = function () {
+                        callbackSpy();
+                        done();
+                    };
+
+                i = 0;
+                callbackSpy = jasmine.createSpy('callback');
+                shape1 = new CanvasShapes.Shape([0, 0]);
+                scene1.addShape(shape1);
+
+                shape1.move(0, [100, 100], callback, shape1);
+            });
+
+            it('moves the shape properly', function () {
+
+                expect(callbackSpy).toHaveBeenCalled();
+                expect(callbackSpy.calls.count()).toBe(1);
+
+                expect(shape1.getCoordinates()).toEqual([100, 100]);
             });
         });
     });

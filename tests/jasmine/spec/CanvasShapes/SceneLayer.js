@@ -120,6 +120,10 @@ define([
                 expect(layer2.getContext() instanceof CanvasRenderingContext2D).toBe(true);
                 expect(layer3.getContext() instanceof CanvasRenderingContext2D).toBe(true);
             });
+
+            it('can clear', function () {
+                // very tricky to test, skipping now
+            });
         });
     });
 });

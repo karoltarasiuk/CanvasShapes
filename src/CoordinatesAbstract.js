@@ -133,6 +133,20 @@ CanvasShapes.CoordinatesAbstract = (function () {
             }
 
             return valid;
+        },
+
+        /**
+         * @implements {CanvasShapes.CoordinatesInterface}
+         */
+        getCoordinates: function () {
+            return this.coordinates;
+        },
+
+        /**
+         * @implements {CanvasShapes.CoordinatesInterface}
+         */
+        setCoordinates: function (coordinates) {
+            this.coordinates = coordinates;
         }
     });
 

@@ -52,6 +52,14 @@ define([
             }).not.toThrow();
         });
 
+        it('correctly sets min and max coordinates variables', function () {
+
+            var point1 = new CanvasShapes.Point([0, 0]);
+
+            expect(point1.MIN_COORDINATES).toBe(1);
+            expect(point1.MAX_COORDINATES).toBe(1);
+        });
+
         it('rendering', function () {
 
             var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 }),
@@ -81,10 +89,11 @@ define([
 
             // there is no face, therefore it shouldn't set anything
             point1.setSceneInterfaceHandlers(sceneInterfaceHandlers);
+            expect(point1.sceneInterfaceHandlers[0]).toBe(sceneInterfaceHandlers);
             expect(point1.face).toBe(null);
 
             point2.setSceneInterfaceHandlers(sceneInterfaceHandlers);
-            expect(point2.face.sceneInterfaceHandlers).toBe(sceneInterfaceHandlers);
+            expect(point2.face.sceneInterfaceHandlers[0]).toBe(sceneInterfaceHandlers);
         });
 
         it('setting and getting style', function () {

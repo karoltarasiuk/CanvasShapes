@@ -34,10 +34,12 @@ CanvasShapes.SceneAbstract = (function () {
         /**
          * Layers available within a scene. It's an array of objects in
          * following format:
-         * {
-         *     layer: CanvasShapes.SceneLayerInterface
-         *     shapes: [CanvasShapes.ShapeInterface]
-         * }
+         * [
+         *     {
+         *         layer: CanvasShapes.SceneLayerInterface
+         *         shapes: [CanvasShapes.ShapeInterface]
+         *     }
+         * ]
          *
          * @type {array}
          */
@@ -180,6 +182,21 @@ CanvasShapes.SceneAbstract = (function () {
         /**
          * @implements {CanvasShapes.SceneInterface}
          */
+        requestRendering: function (shape, callback, context) {
+
+            this.render(shape);
+
+            if (callback) {
+                if (!context) {
+                    context = shape;
+                }
+                callback.apply(context);
+            }
+        },
+
+        /**
+         * @implements {CanvasShapes.SceneInterface}
+         */
         getLayer: function (shapeOrLayer) {
 
             var layerObject = this.getLayerObject(shapeOrLayer);
@@ -278,6 +295,7 @@ CanvasShapes.SceneAbstract = (function () {
                     newLayerHandler: _.bind(this.newLayer, this),
                     getLayerHandler: _.bind(this.getLayer, this),
                     addShapeHandler: _.bind(this.addShape, this),
+                    requestRendering: _.bind(this.requestRendering, this),
                     on: _.bind(this.on, this),
                     off: _.bind(this.off, this),
                     dispatch: _.bind(this.dispatch, this)

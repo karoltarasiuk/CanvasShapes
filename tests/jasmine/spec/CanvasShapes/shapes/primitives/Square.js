@@ -77,14 +77,24 @@ define([
             }).not.toThrow();
         });
 
+        it('correctly sets min and max coordinates variables', function () {
+
+            var square = new CanvasShapes.Square([[0, 0], [1, 1], [2, 0]]);
+
+            // after initialisation those numbers are adjusted, 3 is good when
+            // creating
+            expect(square.MIN_COORDINATES).toBe(4);
+            expect(square.MAX_COORDINATES).toBe(4);
+        });
+
         it('rendering', function () {
 
             var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 }),
                 layer = new CanvasShapes.SceneLayer(scene),
-                Square = new CanvasShapes.Square([[0, 0], [1, 1], [2, 0]]);
+                square = new CanvasShapes.Square([[0, 0], [1, 1], [2, 0]]);
 
             expect(function () {
-                Square.render(layer);
+                square.render(layer);
             }).not.toThrow();
         });
     });

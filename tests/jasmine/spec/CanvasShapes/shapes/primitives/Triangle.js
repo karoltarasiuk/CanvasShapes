@@ -9,7 +9,7 @@ define([
     ObjectComparer
 ) {
 
-    describe('CanvasShapes.Line', function () {
+    describe('CanvasShapes.Triangle', function () {
 
         it('instantiating', function () {
 
@@ -17,62 +17,65 @@ define([
 
             // no coordinates passed
             expect(function () {
-                new CanvasShapes.Line();
+                new CanvasShapes.Triangle();
             }).toThrow(error1);
 
             // wrong format of coordinates passed
             expect(function () {
-                new CanvasShapes.Line([]);
+                new CanvasShapes.Triangle([]);
             }).toThrow(error1);
             expect(function () {
-                new CanvasShapes.Line({});
+                new CanvasShapes.Triangle({});
             }).toThrow(error1);
             expect(function () {
-                new CanvasShapes.Line(1);
+                new CanvasShapes.Triangle(1);
             }).toThrow(error1);
             expect(function () {
-                new CanvasShapes.Line('string');
+                new CanvasShapes.Triangle('string');
             }).toThrow(error1);
             expect(function () {
-                new CanvasShapes.Line(true);
+                new CanvasShapes.Triangle(true);
             }).toThrow(error1);
             expect(function () {
-                new CanvasShapes.Line(['a', 'b']);
+                new CanvasShapes.Triangle(['a', 'b']);
             }).toThrow(error1);
             expect(function () {
-                new CanvasShapes.Line([['a', 'b'], ['a', 'b']]);
+                new CanvasShapes.Triangle([['a', 'b'], ['a', 'b'], ['a', 'b']]);
+            }).toThrow(error1);
+            expect(function () {
+                new CanvasShapes.Triangle([0]);
             }).toThrow(error1);
 
-            // wrong number of coordinates passed
+            // not enough of coordinates passed
             expect(function () {
-                new CanvasShapes.Line([[0, 0]]);
+                new CanvasShapes.Triangle([[0, 0]]);
             }).toThrow(error1);
             expect(function () {
-                new CanvasShapes.Line([[0, 0], [1, 1], [2, 2]]);
+                new CanvasShapes.Triangle([[0, 0], [1, 1]]);
             }).toThrow(error1);
 
             // all good with initialisation
             expect(function () {
-                new CanvasShapes.Line([[0, 0], [1, 1]]);
+                new CanvasShapes.Triangle([[0, 0], [1, 1], [1, 0]]);
             }).not.toThrow();
         });
 
         it('correctly sets min and max coordinates variables', function () {
 
-            var line = new CanvasShapes.Line([[0, 0], [1, 1]]);
+            var triangle = new CanvasShapes.Triangle([[0, 0], [1, 1], [1, 0]]);
 
-            expect(line.MIN_COORDINATES).toBe(2);
-            expect(line.MAX_COORDINATES).toBe(2);
+            expect(triangle.MIN_COORDINATES).toBe(3);
+            expect(triangle.MAX_COORDINATES).toBe(3);
         });
 
         it('rendering', function () {
 
             var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 }),
                 layer = new CanvasShapes.SceneLayer(scene),
-                line = new CanvasShapes.Line([[0, 0], [1, 1]]);
+                triangle = new CanvasShapes.Triangle([[0, 0], [1, 1], [1, 0]]);
 
             expect(function () {
-                line.render(layer);
+                triangle.render(layer);
             }).not.toThrow();
         });
     });

@@ -74,6 +74,13 @@ CanvasShapes.SceneLayerAbstract = (function () {
          */
         getHeight: function () {
             return this.height;
+        },
+
+        /**
+         * @implements {CanvasShapes.SceneLayerInterface}
+         */
+        clear: function () {
+            this.getContext().clearRect(0, 0, this.getWidth(), this.getHeight());
         }
     });
 

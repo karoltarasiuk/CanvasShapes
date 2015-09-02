@@ -90,35 +90,36 @@ CanvasShapes.Scene = (function () {
         /**
          * @implements {CanvasShapes.SceneInterface}
          */
-        render: function () {
+        render: function (shape) {
 
-            var i;
+            var i, j, layerObject,
+                renderAllShapesOnLayer = function (layerObject) {
+                    layerObject.layer.clear();
+                    if (!_.isEmpty(layerObject.shapes)) {
+                        for (j = 0; j < layerObject.shapes.length; j++) {
+                            layerObject.shapes[j].render(layerObject.layer);
+                        }
+                    }
+                };
 
             this.initializeLayers();
 
-            _.each(this.layers, function (layerObject) {
-
-                if (!_.isEmpty(layerObject.shapes)) {
-                    _.each(layerObject.shapes, function (shape) {
-
-                        if (
-                            !layerObject.layer ||
-                            !layerObject.layer.is(CanvasShapes.SceneLayerInterface)
-                        ) {
-                            throw new CanvasShapes.Error();
+            if (shape) {
+                for (i = 0; i < this.layers.length; i++) {
+                    layerObject = this.layers[i];
+                    for (j = 0; j < layerObject.shapes.length; j++) {
+                        if (shape === layerObject.shapes[j]) {
+                            renderAllShapesOnLayer(layerObject);
+                            return;
                         }
-
-                        if (
-                            !layerObject.layer ||
-                            !layerObject.layer.is(CanvasShapes.SceneLayerInterface)
-                        ) {
-                            throw new CanvasShapes.Error();
-                        }
-
-                        shape.render(layerObject.layer);
-                    });
+                    }
                 }
-            });
+            } else {
+                for (i = 0; i < this.layers.length; i++) {
+                    layerObject = this.layers[i];
+                    renderAllShapesOnLayer(layerObject);
+                }
+            }
         },
 
         /**

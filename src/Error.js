@@ -47,6 +47,7 @@ CanvasShapes.Error = (function () {
         1040: "CanvasShapes.Event.getCategory - passed `event` is in invalid format",
         1041: "CanvasShapes.Event.Mouse - in `initialize()`: invalid format of `event` argument passed",
         1042: "CanvasShapes.Shape - in `on()`, `off()` or `dispatch()`: shape is not added to a scene yet",
+        1043: "CanvasShapes.AnimationAbstract - in `animate()`: invalid format of arguments passed",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
@@ -112,6 +113,10 @@ CanvasShapes.Error = (function () {
         9043: "CanvasShapes.InteractionInterface - `attachEvents()` is not implemented",
         9044: "CanvasShapes.EventInterface - `initialize()` is not implemented",
         9045: "CanvasShapes.EventInterface - `getType()` is not implemented",
+        9046: "CanvasShapes.AnimationInterface - `getAnimationFrame()` is not implemented",
+        9047: "CanvasShapes.AnimationInterface - `animate()` is not implemented",
+        9048: "CanvasShapes.SceneInterface - `requestRendering()` is not implemented",
+        9049: "CanvasShapes.CoordinatesInterface - `setCoordinates()` is not implemented",
     };
 
     /**

@@ -2,6 +2,9 @@
 
 CanvasShapes.Square = (function () {
 
+    var MIN_COORDINATES = 3,
+        MAX_COORDINATES = 3;
+
     /**
      * Represents a rectangle. You need to pass an array of 3 coordinates, which
      * must create a 90 degress angle. Two segments created by those coordinates
@@ -11,6 +14,8 @@ CanvasShapes.Square = (function () {
      * @param {array} coordinates
      */
     var Square = function (coordinates) {
+        this.MIN_COORDINATES = MIN_COORDINATES;
+        this.MAX_COORDINATES = MAX_COORDINATES;
         this.initialize(coordinates);
     };
 
@@ -22,7 +27,12 @@ CanvasShapes.Square = (function () {
 
             var temp1, temp2, processedCoordinates;
 
-            this.validateCoordinatesArray(coordinates, true, 3, 3);
+            this.validateCoordinatesArray(
+                coordinates,
+                true,
+                this.MIN_COORDINATES,
+                this.MAX_COORDINATES
+            );
             processedCoordinates = this.processCoordinates(coordinates, true);
 
             temp1 = CanvasShapes.GeometryTools.segmentLength(

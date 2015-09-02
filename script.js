@@ -30,6 +30,7 @@ require([
         point13 = new CanvasShapes.Point([10, 90]),
         point14 = new CanvasShapes.Point([90, 70]),
         point15 = new CanvasShapes.Point([110, 100]),
+        point16 = new CanvasShapes.Point([10, 10]),
         line = new CanvasShapes.Line([point1, point2]),
         polygon1 = new CanvasShapes.Polygon([point3, point4, point2, point5]),
         polygon2 = new CanvasShapes.Polygon([point12, point14, point15, point13]),
@@ -53,7 +54,7 @@ require([
 
     // adding all shapes
     group.addShapes([line, square, rectangle]);
-    renderer.addShapes([group, polygon1, polygon2]);
+    renderer.addShapes([point16, group, polygon1, polygon2]);
 
     // those polygons must be on separate layers
     scene3.addShape(polygon1, scene3.newLayer());
@@ -71,7 +72,19 @@ require([
     polygon2.setStyle(strokeStyle, true);
     square.setStyle(fillStyle);
     point1.setFace('circle', 10);
+    point16.setFace('circle', 10);
 
     // rendering all the shapes
     renderer.render();
+
+    console.log('START ANIMATION');
+    point16.move(1000, [90, 90], function () {
+        point16.move(1000, [90, 10], function () {
+            point16.move(1000, [10, 90], function () {
+                point16.move(1000, [10, 10], function () {
+                    console.log('STOP ANIMATION');
+                });
+            });
+        });
+    });
 });

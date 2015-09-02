@@ -11,7 +11,8 @@ CanvasShapes.RenderingAbstract = (function () {
         className: 'CanvasShapes.RenderingAbstract',
 
         /**
-         * Handlers allowing a shape to any info it needs from a scene.
+         * Handlers allowing a shape to any info it needs from a scene. It's an
+         * array to store handlers for each scene shape is on.
          * @type {object}
          */
         sceneInterfaceHandlers: null,
@@ -40,7 +41,26 @@ CanvasShapes.RenderingAbstract = (function () {
          * @implements {CanvasShapes.RenderingInterface}
          */
         setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {
-            this.sceneInterfaceHandlers = sceneInterfaceHandlers;
+
+            var sceneInterfaceHandler;
+
+            if (!_.isArray(this.sceneInterfaceHandlers)) {
+                this.sceneInterfaceHandlers = [];
+            }
+
+            _.each(sceneInterfaceHandlers, function (sceneInterfaceHandler, handlerName) {
+                if (!_.isFunction(this.sceneInterfaceHandlers[handlerName])) {
+                    this.sceneInterfaceHandlers[handlerName] = _.bind(function () {
+                        var i;
+
+                        for (i = 0; i < this.sceneInterfaceHandlers.length; i++) {
+                            this.sceneInterfaceHandlers[i][handlerName].apply(this, arguments);
+                        }
+                    }, this);
+                }
+            }, this);
+
+            this.sceneInterfaceHandlers.push(sceneInterfaceHandlers);
         },
 
         /**
