@@ -163,7 +163,8 @@ define([
 
             it('sets scene interface handlers', function () {
 
-                var group = new CanvasShapes.Group(),
+                var i,
+                    group = new CanvasShapes.Group(),
                     shape1 = new CanvasShapes.Shape(),
                     shape2 = new CanvasShapes.Shape(),
                     sceneInterfaceHandlers = {
@@ -176,14 +177,23 @@ define([
                 group.setSceneInterfaceHandlers(sceneInterfaceHandlers);
 
                 expect(group.sceneInterfaceHandlers[0]).toBe(sceneInterfaceHandlers);
-                expect(group.sceneInterfaceHandlers[0].newLayerHandler).toBeDefined();
-                expect(group.sceneInterfaceHandlers[0].getLayerHandler).toBeDefined();
-                expect(group.sceneInterfaceHandlers[0].addShapeHandler).toBeDefined();
+
+                for (i in sceneInterfaceHandlers) {
+                    expect(group.sceneInterfaceHandlers[0][i]).toBeDefined();
+                    expect(_.isFunction(group.sceneInterfaceHandlers[0][i])).toBe(true);
+                    expect(group.sceneInterfaceHandlers[i]).toBeDefined();
+                    expect(_.isFunction(group.sceneInterfaceHandlers[i])).toBe(true);
+                }
+
                 group.eachShape(function () {
                     expect(this.sceneInterfaceHandlers[0]).toBe(sceneInterfaceHandlers);
-                    expect(this.sceneInterfaceHandlers[0].newLayerHandler).toBeDefined();
-                    expect(this.sceneInterfaceHandlers[0].getLayerHandler).toBeDefined();
-                    expect(this.sceneInterfaceHandlers[0].addShapeHandler).toBeDefined();
+
+                    for (i in sceneInterfaceHandlers) {
+                        expect(this.sceneInterfaceHandlers[0][i]).toBeDefined();
+                        expect(_.isFunction(this.sceneInterfaceHandlers[0][i])).toBe(true);
+                        expect(this.sceneInterfaceHandlers[i]).toBeDefined();
+                        expect(_.isFunction(this.sceneInterfaceHandlers[i])).toBe(true);
+                    }
                 });
             });
 

@@ -79,7 +79,8 @@ define([
 
         it('setting scene interface handlers', function () {
 
-            var point1 = new CanvasShapes.Point([0, 0]),
+            var i,
+                point1 = new CanvasShapes.Point([0, 0]),
                 point2 = new CanvasShapes.Point([0, 0], CanvasShapes.Point.FACES.CIRCLE),
                 sceneInterfaceHandlers = {
                     newLayerHandler: function () {},
@@ -94,6 +95,23 @@ define([
 
             point2.setSceneInterfaceHandlers(sceneInterfaceHandlers);
             expect(point2.face.sceneInterfaceHandlers[0]).toBe(sceneInterfaceHandlers);
+
+            for (i in sceneInterfaceHandlers) {
+
+                expect(point1.sceneInterfaceHandlers[i]).toBeDefined();
+                expect(point2.sceneInterfaceHandlers[i]).toBeDefined();
+                expect(point2.face.sceneInterfaceHandlers[i]).toBeDefined();
+                expect(point1.sceneInterfaceHandlers[0][i]).toBeDefined();
+                expect(point2.sceneInterfaceHandlers[0][i]).toBeDefined();
+                expect(point2.face.sceneInterfaceHandlers[0][i]).toBeDefined();
+
+                expect(_.isFunction(point1.sceneInterfaceHandlers[i])).toBe(true);
+                expect(_.isFunction(point2.sceneInterfaceHandlers[i])).toBe(true);
+                expect(_.isFunction(point2.face.sceneInterfaceHandlers[i])).toBe(true);
+                expect(_.isFunction(point1.sceneInterfaceHandlers[0][i])).toBe(true);
+                expect(_.isFunction(point2.sceneInterfaceHandlers[0][i])).toBe(true);
+                expect(_.isFunction(point2.face.sceneInterfaceHandlers[0][i])).toBe(true);
+            }
         });
 
         it('setting and getting style', function () {

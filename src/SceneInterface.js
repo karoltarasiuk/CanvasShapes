@@ -123,8 +123,15 @@ CanvasShapes.SceneInterface = (function () {
 
         /**
          * Gets handlers which can allow a shape to obtain some functionality
-         * from a scene. Minimum set of handlers is: newLayerHandler,
-         * getLayerHandler, addShapeHandler
+         * from a scene. Current implementation includes following handlers:
+         *
+         * - newLayerHandler
+         * - getLayerHandler
+         * - addShapeHandler
+         * - requestRendering
+         * - on
+         * - off
+         * - dispatch
          *
          * @return {object}
          */
