@@ -254,16 +254,16 @@ define([
             it('getting scene interface handlers', function () {
 
                 var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
-                    SceneInterfaceHandlers = scene.getSceneInterfaceHandlers();
+                    sceneInterfaceHandlers = scene.getSceneInterfaceHandlers();
 
-                expect(SceneInterfaceHandlers).toBeDefined();
-                expect(_.isObject(SceneInterfaceHandlers)).toBe(true);
-                expect(_.isFunction(SceneInterfaceHandlers.newLayerHandler)).toBe(true);
-                expect(_.isFunction(SceneInterfaceHandlers.getLayerHandler)).toBe(true);
-                expect(_.isFunction(SceneInterfaceHandlers.addShapeHandler)).toBe(true);
-                expect(_.isFunction(SceneInterfaceHandlers.on)).toBe(true);
-                expect(_.isFunction(SceneInterfaceHandlers.off)).toBe(true);
-                expect(_.isFunction(SceneInterfaceHandlers.dispatch)).toBe(true);
+                expect(sceneInterfaceHandlers).toBeDefined();
+                expect(_.isObject(sceneInterfaceHandlers)).toBe(true);
+                expect(_.isFunction(sceneInterfaceHandlers.newLayerHandler)).toBe(true);
+                expect(_.isFunction(sceneInterfaceHandlers.getLayerHandler)).toBe(true);
+                expect(_.isFunction(sceneInterfaceHandlers.addShapeHandler)).toBe(true);
+                expect(_.isFunction(sceneInterfaceHandlers.on)).toBe(true);
+                expect(_.isFunction(sceneInterfaceHandlers.off)).toBe(true);
+                expect(_.isFunction(sceneInterfaceHandlers.dispatch)).toBe(true);
             });
 
             it('getting width, height and dom element', function () {
