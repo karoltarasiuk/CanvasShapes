@@ -27,6 +27,7 @@ CanvasShapes.Arc = (function () {
      * @param {boolean} anticlockwise [OPTIONAL]
      */
     var Arc = function (coordinates, radius, startAngle, endAngle, anticlockwise) {
+        this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
 

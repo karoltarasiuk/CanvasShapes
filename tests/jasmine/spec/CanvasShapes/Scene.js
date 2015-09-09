@@ -102,23 +102,33 @@ define([
 
             it('initializing layers', function () {
 
-                var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 });
+                var i, UUID,
+                    count = 0,
+                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 });
 
                 expect(function () {
                     layer = scene.initializeLayers();
                 }).not.toThrow();
 
                 expect(scene.layers).not.toBe(undefined);
-                expect(scene.layers).not.toEqual([]);
-                expect(scene.layers.length).toBe(1);
-                expect(scene.layers[0].layer).not.toBe(undefined);
-                expect(scene.layers[0].layer.is('CanvasShapes.SceneLayer')).toBe(true);
-                expect(scene.layers[0].shapes).toEqual([]);
+                expect(scene.layers).not.toEqual({});
+
+                for (i in scene.layers) {
+                    count++;
+                    UUID = i;
+                }
+
+                expect(count).toBe(1);
+                expect(scene.layers[UUID].layer).not.toBe(undefined);
+                expect(scene.layers[UUID].layer.is('CanvasShapes.SceneLayer')).toBe(true);
+                expect(scene.layers[UUID].shapes).toEqual({});
             });
 
             it('adding shapes', function () {
 
-                var layer1,
+                var i, UUID, UUID2, layer1,
+                    count = 0,
+                    count2 = 0,
                     scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
                     layer2 = new CanvasShapes.SceneLayer(scene),
                     shape1 = new CanvasShapes.Shape(),
@@ -129,28 +139,64 @@ define([
                     layer1 = scene.addShape(shape1);
                 }).not.toThrow();
 
-                expect(scene.layers[0].shapes).not.toEqual([]);
-                expect(scene.layers[0].shapes.length).toBe(1);
-                expect(scene.layers[0].shapes[0]).toBe(shape1);
+                for (i in scene.layers) {
+                    UUID = i;
+                    count++;
+                }
+
+                expect(scene.layers[UUID].shapes).not.toEqual({});
+
+                for (i in scene.layers[UUID].shapes) {
+                    UUID2 = i;
+                    count2++;
+                }
+
+                expect(count2).toBe(1);
+                expect(scene.layers[UUID].shapes[UUID2]).toBe(shape1);
 
                 expect(function () {
                     scene.addShape(shape2, layer2);
                 }).not.toThrow();
 
-                expect(scene.layers.length).toBe(2);
-                expect(scene.layers[1].layer).not.toBe(undefined);
-                expect(scene.layers[1].layer.is('CanvasShapes.SceneLayer')).toBe(true);
-                expect(scene.layers[1].shapes).not.toEqual([]);
-                expect(scene.layers[1].shapes.length).toBe(1);
-                expect(scene.layers[1].shapes[0]).toBe(shape2);
+                count = 0;
+                for (i in scene.layers) {
+                    UUID = i;
+                    count++;
+                }
+                count2 = 0;
+                for (i in scene.layers[UUID].shapes) {
+                    UUID2 = i;
+                    count2++;
+                }
+
+                expect(count).toBe(2);
+                expect(scene.layers[UUID].layer).not.toBe(undefined);
+                expect(scene.layers[UUID].layer.is('CanvasShapes.SceneLayer')).toBe(true);
+                expect(scene.layers[UUID].shapes).not.toEqual({});
+                expect(count2).toBe(1);
+                expect(scene.layers[UUID].shapes[UUID2]).toBe(shape2);
 
                 expect(function () {
                     scene.addShape(shape3, layer1);
                 }).not.toThrow();
 
-                expect(scene.layers.length).toBe(2);
-                expect(scene.layers[0].shapes.length).toBe(2);
-                expect(scene.layers[0].shapes[1]).toBe(shape3);
+                count = 0;
+                for (i in scene.layers) {
+                    count++;
+                }
+                for (i in scene.layers) {
+                    UUID = i;
+                    break;
+                }
+                count2 = 0;
+                for (i in scene.layers[UUID].shapes) {
+                    UUID2 = i;
+                    count2++;
+                }
+
+                expect(count).toBe(2);
+                expect(count2).toBe(2);
+                expect(scene.layers[UUID].shapes[UUID2]).toBe(shape3);
             });
 
             it('getting layer', function () {
@@ -169,9 +215,7 @@ define([
                     scene.addShape(shape3, layer1);
                 }).not.toThrow();
 
-                expect(scene.getLayer()).toBe(layer1);
-                expect(scene.getLayer(layer1)).toBe(layer1);
-                expect(scene.getLayer(layer2)).toBe(layer2);
+                expect(scene.getLayer()).toBe(layer2);
                 expect(scene.getLayer(shape1)).toBe(layer1);
                 expect(scene.getLayer(shape2)).toBe(layer2);
                 expect(scene.getLayer(shape3)).toBe(layer1);
@@ -215,17 +259,18 @@ define([
 
                 layerObject1 = {
                     layer: layer1,
-                    shapes: [shape1, shape3]
+                    shapes: {}
                 };
+                layerObject1.shapes[shape1.getUUID()] = shape1;
+                layerObject1.shapes[shape3.getUUID()] = shape3;
 
                 layerObject2 = {
                     layer: layer2,
-                    shapes: [shape2]
+                    shapes: {}
                 };
+                layerObject2.shapes[shape2.getUUID()] = shape2;
 
-                expect(scene.getLayerObject()).toEqual(layerObject1);
-                expect(scene.getLayerObject(layer1)).toEqual(layerObject1);
-                expect(scene.getLayerObject(layer2)).toEqual(layerObject2);
+                expect(scene.getLayerObject()).toEqual(layerObject2);
                 expect(scene.getLayerObject(shape1)).toEqual(layerObject1);
                 expect(scene.getLayerObject(shape2)).toEqual(layerObject2);
                 expect(scene.getLayerObject(shape3)).toEqual(layerObject1);

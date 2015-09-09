@@ -6,6 +6,7 @@ CanvasShapes.Shape = (function () {
         MAX_COORDINATES = undefined;
 
     var Shape = function (coordinates) {
+        this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
         this.coordinates = coordinates;
@@ -182,7 +183,6 @@ CanvasShapes.Shape = (function () {
                 }
 
                 this.setCoordinates(newCoordinates);
-                this.sceneInterfaceHandlers.requestRendering(this);
 
             }, callback, context);
         }

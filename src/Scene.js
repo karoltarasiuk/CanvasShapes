@@ -31,6 +31,7 @@ CanvasShapes.Scene = (function () {
     sceneConfigChecker = new JSONChecker(sceneConfigSpecification);
 
     Scene = function (config) {
+        this.setUUID();
 
         if (!this.validateConfig(config)) {
             throw new CanvasShapes.Error(1001);
@@ -92,32 +93,47 @@ CanvasShapes.Scene = (function () {
          */
         render: function (shape) {
 
-            var i, j, layerObject,
+            var i, j, layerObject, layer, shapeObject,
                 renderAllShapesOnLayer = function (layerObject) {
                     layerObject.layer.clear();
-                    if (!_.isEmpty(layerObject.shapes)) {
-                        for (j = 0; j < layerObject.shapes.length; j++) {
-                            layerObject.shapes[j].render(layerObject.layer);
-                        }
+                    for (j in layerObject.shapes) {
+                        layerObject.shapes[j].render(layerObject.layer);
                     }
                 };
 
             this.initializeLayers();
 
             if (shape) {
-                for (i = 0; i < this.layers.length; i++) {
+                for (i in this.layers) {
                     layerObject = this.layers[i];
-                    for (j = 0; j < layerObject.shapes.length; j++) {
+                    for (j in layerObject.shapes) {
                         if (shape === layerObject.shapes[j]) {
                             renderAllShapesOnLayer(layerObject);
                             return;
                         }
                     }
                 }
-            } else {
-                for (i = 0; i < this.layers.length; i++) {
-                    layerObject = this.layers[i];
-                    renderAllShapesOnLayer(layerObject);
+            } else if (_.isObject(this.requestedRendering)) {
+
+                for (i in this.requestedRendering) {
+
+                    layerObject = this.requestedRendering[i];
+                    layer = layerObject.layer;
+                    layer.clear();
+
+                    for (j in layerObject.shapes) {
+
+                        shapeObject = this.requestedRendering[i].shapes[j];
+                        shape = shapeObject.shape;
+                        shape.render(layer);
+
+                        if (shapeObject.callback) {
+                            if (!shapeObject.context) {
+                                shapeObject.context = shape;
+                            }
+                            shapeObject.callback.apply(shapeObject.context);
+                        }
+                    }
                 }
             }
         },

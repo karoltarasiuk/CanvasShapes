@@ -14,21 +14,6 @@ CanvasShapes.AnimationInterface = (function () {
         className: 'CanvasShapes.AnimationInterface',
 
         /**
-         * Method re-uses window.requestAnimationFrame method and guarantees,
-         * that the callback when triggered, will receive current timestamp in
-         * the same format, not relying on browser implementation.
-         *
-         * [WARNING] The method doesn't check for validity of the `callback`,
-         * for the performance reasons. It always assume instead that the
-         * argument is a function.
-         *
-         * @param {function} callback
-         */
-        getAnimationFrame: function (callback) {
-            throw new CanvasShapes.Error(9046);
-        },
-
-        /**
          * Performs the animation on a shape.
          *
          * `totalAnimationTime` allows to define the time after which animation

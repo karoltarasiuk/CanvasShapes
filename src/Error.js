@@ -25,7 +25,7 @@ CanvasShapes.Error = (function () {
         1018: "CanvasShapes.RenderingAbstract - layer mandatory but missing",
         1019: "CanvasShapes.SceneAbstract - in `newLayer()`: shape is not an instance of CanvasShapes.ShapeInterface",
         1020: "CanvasShapes.SceneAbstract - in `addShape()`: shape is not an instance of CanvasShapes.ShapeInterface",
-        1021: "CanvasShapes.SceneAbstract - in `getLayerObject()`: shape is not an instance of either CanvasShapes.ShapeInterface or CanvasShapes.SceneLayerInterface",
+        1021: "CanvasShapes.SceneAbstract - in `getLayerObject()`: shape is not an instance of CanvasShapes.ShapeInterface",
         1022: "CanvasShapes.SceneAbstract - in `addShape()`: layer is not an instance of CanvasShapes.SceneLayerInterface",
         1023: 'CanvasShapes.Renderer - in `addScene()`: scene is not an instance of CanvasShapes.SceneInterface',
         1024: "CanvasShapes.Arc - in `constructor`: coordinates array is required",
@@ -48,6 +48,7 @@ CanvasShapes.Error = (function () {
         1041: "CanvasShapes.Event.Mouse - in `initialize()`: invalid format of `event` argument passed",
         1042: "CanvasShapes.Shape - in `on()`, `off()` or `dispatch()`: shape is not added to a scene yet",
         1043: "CanvasShapes.AnimationAbstract - in `animate()`: invalid format of arguments passed",
+        1044: "CanvasShapes.SceneAbstract - in `requestRendering()`: shape is not on the layer",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
@@ -117,6 +118,8 @@ CanvasShapes.Error = (function () {
         9047: "CanvasShapes.AnimationInterface - `animate()` is not implemented",
         9048: "CanvasShapes.SceneInterface - `requestRendering()` is not implemented",
         9049: "CanvasShapes.CoordinatesInterface - `setCoordinates()` is not implemented",
+        9050: "CanvasShapes.ClassInterface - `setUUID()` is not implemented",
+        9051: "CanvasShapes.ClassInterface - `getUUID()` is not implemented",
     };
 
     /**

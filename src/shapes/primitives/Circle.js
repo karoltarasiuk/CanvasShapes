@@ -13,6 +13,7 @@ CanvasShapes.Circle = (function () {
      * @param {float} radius
      */
     var Circle = function (coordinates, radius) {
+        this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
 

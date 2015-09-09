@@ -25,6 +25,25 @@ CanvasShapes.ClassInterface = (function () {
          */
         is: function (passedClass) {
             throw new CanvasShapes.Error(9009);
+        },
+
+        /**
+         * Generate and sets UUID V4 to this instance of the object. It will
+         * also return this UUID.
+         *
+         * @return {string}
+         */
+        setUUID: function () {
+            throw new CanvasShapes.Error(9050);
+        },
+
+        /**
+         * Gets current UUID of the object.
+         *
+         * @return {string}
+         */
+        getUUID: function () {
+            throw new CanvasShapes.Error(9050);
         }
     });
 
