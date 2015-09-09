@@ -18,7 +18,8 @@ CanvasShapes.Tools = (function () {
     }
 
     /**
-     * Checks if passed value is a DOM node, e.g. element, attribute, text
+     * Checks if passed value is a DOM node, e.g. element, attribute, text. For
+     * `null` and `undefined` it returns passed value.
      *
      * @source http://stackoverflow.com/a/384380/571230
      *
@@ -34,7 +35,8 @@ CanvasShapes.Tools = (function () {
     }
 
     /**
-     * Checks if passed value is a DOM elmeent, e.g. DIV, P, A and so on
+     * Checks if passed value is a DOM elmeent, e.g. DIV, P, A and so on. For
+     * `null` and `undefined` it returns passed value.
      *
      * @source http://stackoverflow.com/a/384380/571230
      *

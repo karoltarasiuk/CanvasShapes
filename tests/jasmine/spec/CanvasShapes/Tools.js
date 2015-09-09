@@ -54,5 +54,53 @@ define([
                 expect(regex.test(temp)).toBe(true);
             }
         });
+
+        it('isNode method', function () {
+
+            var div = document.createElement('div'),
+                p = document.createElement('p'),
+                a = document.createElement('a'),
+                span = document.createElement('span'),
+                text = document.createTextNode('text'),
+                attr = document.createAttribute('attr');
+
+            expect(CanvasShapes.Tools.isNode(div)).toBe(true);
+            expect(CanvasShapes.Tools.isNode(p)).toBe(true);
+            expect(CanvasShapes.Tools.isNode(a)).toBe(true);
+            expect(CanvasShapes.Tools.isNode(span)).toBe(true);
+            expect(CanvasShapes.Tools.isNode(text)).toBe(true);
+            expect(CanvasShapes.Tools.isNode(attr)).toBe(true);
+            expect(CanvasShapes.Tools.isNode(null)).toBe(null);
+            expect(CanvasShapes.Tools.isNode(undefined)).toBe(undefined);
+            expect(CanvasShapes.Tools.isNode(true)).toBe(false);
+            expect(CanvasShapes.Tools.isNode(1)).toBe(false);
+            expect(CanvasShapes.Tools.isNode('string')).toBe(false);
+            expect(CanvasShapes.Tools.isNode({})).toBe(false);
+            expect(CanvasShapes.Tools.isNode([])).toBe(false);
+        });
+
+        it('isElement method', function () {
+
+            var div = document.createElement('div'),
+                p = document.createElement('p'),
+                a = document.createElement('a'),
+                span = document.createElement('span'),
+                text = document.createTextNode('text'),
+                attr = document.createAttribute('attr');
+
+            expect(CanvasShapes.Tools.isElement(div)).toBe(true);
+            expect(CanvasShapes.Tools.isElement(p)).toBe(true);
+            expect(CanvasShapes.Tools.isElement(a)).toBe(true);
+            expect(CanvasShapes.Tools.isElement(span)).toBe(true);
+            expect(CanvasShapes.Tools.isElement(text)).toBe(false);
+            expect(CanvasShapes.Tools.isElement(attr)).toBe(false);
+            expect(CanvasShapes.Tools.isElement(null)).toBe(null);
+            expect(CanvasShapes.Tools.isElement(undefined)).toBe(undefined);
+            expect(CanvasShapes.Tools.isElement(true)).toBe(false);
+            expect(CanvasShapes.Tools.isElement(1)).toBe(false);
+            expect(CanvasShapes.Tools.isElement('string')).toBe(false);
+            expect(CanvasShapes.Tools.isElement({})).toBe(false);
+            expect(CanvasShapes.Tools.isElement([])).toBe(false);
+        });
     });
 });
