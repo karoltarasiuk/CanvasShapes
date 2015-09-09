@@ -43,6 +43,13 @@ define([
             }).not.toThrow();
         });
 
+        it('correctly sets UUID', function () {
+
+            var shape1 = new CanvasShapes.Circle([0, 0], 1),
+                regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+            expect(regex.test(shape1.getUUID())).toBe(true);
+        });
+
         it('correctly sets min and max coordinates variables', function () {
 
             var circle = new CanvasShapes.Circle([0, 0], 1);

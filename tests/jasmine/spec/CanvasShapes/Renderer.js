@@ -161,5 +161,32 @@ define([
                 expect(context1.prop).toBe(6);
             });
         });
+
+        describe('static methods - async', function () {
+
+            var renderer1, renderer2;
+
+            beforeEach(function (done) {
+
+                renderer1 = new CanvasShapes.Renderer();
+                renderer2 = new CanvasShapes.Renderer();
+
+                spyOn(renderer1, 'render');
+                spyOn(renderer2, 'render');
+
+                CanvasShapes.Renderer.start();
+                setTimeout(function () {
+                    CanvasShapes.Renderer.stop();
+                    done();
+                }, 10);
+            });
+
+            it('start & stop methods', function () {
+
+                expect(renderer1.render).toHaveBeenCalled();
+                expect(renderer2.render).toHaveBeenCalled();
+                expect(CanvasShapes.Renderer.RUNNING).toBe(false);
+            });
+        });
     });
 });

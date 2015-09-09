@@ -12,6 +12,7 @@ CanvasShapes.Class = (function () {
      * Base object for every other class in CanvasShapes library.
      */
     var Class = function (className) {
+        this.setUUID();
 
         if (_.isString(className)) {
             this.classes = [className];

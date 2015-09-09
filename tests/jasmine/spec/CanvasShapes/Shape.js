@@ -49,6 +49,13 @@ define([
                 expect(shape1.MAX_COORDINATES).toBeUndefined();
                 expect(shape1.MIN_COORDINATES).toBeUndefined();
             });
+
+            it('correctly sets UUID', function () {
+
+                var shape1 = new CanvasShapes.Shape([0, 0]),
+                    regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+                expect(regex.test(shape1.getUUID())).toBe(true);
+            });
         });
 
         describe('methods', function () {
@@ -187,16 +194,27 @@ define([
 
             beforeEach(function (done) {
 
-                var scene1 = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                var animate = false,
+                    scene1 = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
                     callback = function () {
                         callbackSpy();
+                        animate = false;
                         done();
+                    },
+                    requestAnimationFrameCallback = function () {
+                        if (animate) {
+                            scene1.render();
+                            window.requestAnimationFrame(requestAnimationFrameCallback);
+                        }
                     };
 
                 i = 0;
                 callbackSpy = jasmine.createSpy('callback');
                 shape1 = new CanvasShapes.Shape([0, 0]);
                 scene1.addShape(shape1);
+
+                animate = true;
+                window.requestAnimationFrame(requestAnimationFrameCallback);
 
                 shape1.move(0, [100, 100], callback, shape1);
             });

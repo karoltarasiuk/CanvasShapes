@@ -6,6 +6,7 @@ require.config({
         lodash: 'lib/lodash.min',
         ObjectComparer: 'lib/ObjectComparer',
         JSONChecker: 'lib/JSONChecker',
+        uuid: 'lib/uuid',
         CanvasShapes: 'src/CanvasShapes',
     },
     shim: {

@@ -18,11 +18,15 @@ CanvasShapes.SceneInterface = (function () {
         },
 
         /**
-         * Renders all the assinged layers and their shapes.
+         * Renders all the layers, on which there are shapes which requested
+         * rendering.
          *
          * If the `shape` is passed it will re-render only the layer associated
          * with this shape. Due to canvas element implementation it's not
-         * possible to re-render one shape only.
+         * possible to re-render one shape only. Also it will re-render this
+         * `shape` immediately no matter whether it has requested rendering or
+         * not. It will also keep it on the list of shapes which requested
+         * rendering.
          *
          * [WARNING] Due to performance reasons, this method doesn't perform any
          * type checking when trying to render. It assuems all the passed
@@ -91,7 +95,7 @@ CanvasShapes.SceneInterface = (function () {
          * You need to be careful, as the shape can be a child of a group, and
          * adding it as a standalone shape to the scene will cause it to render
          * twice, and in some cases can cause infinite loop which will raise an
-         * error.
+         * error eventually (after stack exceeds).
          *
          * @param {CanvasShapes.SceneLayerInterface} layer
          * @param {CanvasShapes.ShapeInterface} shape [OPTIONAL]
@@ -104,18 +108,20 @@ CanvasShapes.SceneInterface = (function () {
 
         /**
          * Method allowing the shape to request the layer shape is on, to be
-         * re-rendered.
+         * re-rendered. It will be rendered when the next animation frame is
+         * requested. If the same shape is added twice, it will override the
+         * previous entry.
          *
-         *  If `context` is passed it will will use it when executing callback.
-         *  If not the `shape` will be used as a context.
+         * If `context` is passed it will will use it when executing callback.
+         * If not the `shape` will be used as a context.
          *
          * [WARNING] Due to performance reasons, this method doesn't perform any
          * type checking. It assuems all the passed arguments are of the correct
-         * type.
+         * type. It does though check whether shape is associated with a layer.
          *
-         * @param {CanvasShapes.Shape} shape
-         * @param {function}           callback
-         * @param {object}             context
+         * @param {CanvasShapes.Shape}               shape
+         * @param {function}                         callback [OPTIONAL]
+         * @param {object}                           context  [OPTIONAL]
          */
         requestRendering: function (shape, callback, context) {
             throw new CanvasShapes.Error(9048);

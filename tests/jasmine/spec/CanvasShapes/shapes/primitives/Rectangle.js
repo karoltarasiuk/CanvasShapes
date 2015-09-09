@@ -71,6 +71,13 @@ define([
             }).not.toThrow();
         });
 
+        it('correctly sets UUID', function () {
+
+            var shape1 = new CanvasShapes.Rectangle([[0, 0], [1, 1], [2, 0]]),
+                regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+            expect(regex.test(shape1.getUUID())).toBe(true);
+        });
+
         it('correctly sets min and max coordinates variables', function () {
 
             var rectangle = new CanvasShapes.Rectangle([[0, 0], [1, 1], [2, 0]]);

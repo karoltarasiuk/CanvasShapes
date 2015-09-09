@@ -40,6 +40,7 @@ define([
             expect(stepSpy).not.toHaveBeenCalled();
             expect(callbackSpy).not.toHaveBeenCalled();
 
+            scene1.addShape(point1);
             point1.animate(0, obj1.step, obj1.callback, point1);
         });
 
@@ -48,6 +49,8 @@ define([
             var scene1 = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
                 point1 = new CanvasShapes.Point([0, 0]),
                 error1 = new CanvasShapes.Error(1043);
+
+            scene1.addShape(point1);
 
             expect(function () { point1.animate(); }).toThrow(error1);
             expect(function () { point1.animate('a'); }).toThrow(error1);
@@ -61,54 +64,39 @@ define([
             expect(function () { point1.animate(0, function () {}, function () {}, {}); }).not.toThrow();
         });
 
-        describe('getting animation frame - async', function () {
-
-            var callbackSpy, i;
-
-            beforeEach(function (done) {
-
-                var scene1 = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
-                    point1 = new CanvasShapes.Point([0, 0]),
-                    callback = function (time) {
-                        i = time;
-                        callbackSpy();
-                        done();
-                    };
-
-                i = undefined;
-                callbackSpy = jasmine.createSpy('callback');
-
-                point1.getAnimationFrame(callback);
-            });
-
-            it('callback has been called', function () {
-
-                expect(callbackSpy).toHaveBeenCalled();
-                expect(i).toBeDefined();
-                expect(_.isNumber(i)).toBe(true);
-            });
-        });
-
         describe('after animation check - async', function () {
 
             var stepSpy, callbackSpy, i;
 
             beforeEach(function (done) {
 
-                var scene1 = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                var animate = false,
+                    scene1 = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
                     point1 = new CanvasShapes.Point([0, 0]),
                     callback = function () {
                         callbackSpy();
+                        animate = false;
                         done();
                     },
                     step = function () {
                         stepSpy();
                         i++;
+                    },
+                    requestAnimationFrameCallback = function () {
+                        if (animate) {
+                            scene1.render();
+                            window.requestAnimationFrame(requestAnimationFrameCallback);
+                        }
                     };
 
                 i = 0;
                 stepSpy = jasmine.createSpy('step');
                 callbackSpy = jasmine.createSpy('callback');
+
+                scene1.addShape(point1);
+
+                animate = true;
+                window.requestAnimationFrame(requestAnimationFrameCallback);
 
                 // step and callback will only be called once
                 point1.animate(0, step, callback, point1);

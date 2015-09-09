@@ -15,6 +15,7 @@ CanvasShapes.Point = (function () {
      * @param {float} size
      */
     var Point = function (coordinates, face, size) {
+        this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
         this.initialize(coordinates, face, size);

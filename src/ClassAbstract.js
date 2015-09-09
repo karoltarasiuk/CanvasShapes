@@ -34,6 +34,21 @@ CanvasShapes.ClassAbstract = (function () {
             } else {
                 throw new CanvasShapes.Error(1009);
             }
+        },
+
+        /**
+         * @implements {CanvasShapes.ClassInterface}
+         */
+        setUUID: function () {
+            this.UUID = CanvasShapes.Tools.uuid();
+            return this.getUUID();
+        },
+
+        /**
+         * @implements {CanvasShapes.ClassInterface}
+         */
+        getUUID: function () {
+            return this.UUID;
         }
     });
 

@@ -52,6 +52,7 @@ CanvasShapes.Tools = (function () {
     return {
         removeByIndex: removeByIndex,
         isNode: isNode,
-        isElement: isElement
+        isElement: isElement,
+        uuid: uuid
     };
 })();

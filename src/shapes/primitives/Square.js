@@ -14,6 +14,7 @@ CanvasShapes.Square = (function () {
      * @param {array} coordinates
      */
     var Square = function (coordinates) {
+        this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
         this.initialize(coordinates);

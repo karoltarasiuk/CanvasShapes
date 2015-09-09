@@ -117,6 +117,34 @@ CanvasShapes.Renderer = (function () {
     });
 
     Renderer.RENDERERS = [];
+    Renderer.RUNNING = false;
+
+    function getAnimationFrame() {
+
+        window.requestAnimationFrame(function () {
+
+            var i;
+
+            if (!Renderer.RUNNING) {
+                return;
+            }
+
+            for (i = 0; i < Renderer.RENDERERS.length; i++) {
+                Renderer.RENDERERS[i].render();
+            }
+
+            getAnimationFrame();
+        });
+    }
+
+    Renderer.start = function () {
+        Renderer.RUNNING = true;
+        getAnimationFrame();
+    };
+
+    Renderer.stop = function () {
+        Renderer.RUNNING = false;
+    };
 
     return Renderer;
 }());

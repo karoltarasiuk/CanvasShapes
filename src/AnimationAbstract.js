@@ -16,35 +16,23 @@ CanvasShapes.AnimationAbstract = (function () {
         /**
          * @implements {CanvasShapes.AnimationInterface}
          */
-        getAnimationFrame: function (callback) {
-            window.requestAnimationFrame(function () {
-                callback((new Date()).getTime());
-            });
-        },
-
-        /**
-         * @implements {CanvasShapes.AnimationInterface}
-         */
         animate: function (totalAnimationTime, stepCallback, callback, context) {
 
             var that = this,
                 startTime = (new Date()).getTime(),
                 currentTime = startTime,
-                processAnimationFrame = function (time) {
-                    currentTime = time;
+                processAnimationFrame = function () {
+                    currentTime = (new Date()).getTime();
                     if (currentTime < startTime + totalAnimationTime) {
                         // animation in progress
                         stepCallback(currentTime - startTime);
                         // request next frame from the browser
-                        that.getAnimationFrame(processAnimationFrame);
+                        that.sceneInterfaceHandlers.requestRendering(that, processAnimationFrame);
                     } else {
                         // calling stepCallback for the last time
                         stepCallback(currentTime - startTime);
                         // animation finished
                         if (callback) {
-                            if (context) {
-                                callback = _.bind(callback, context);
-                            }
                             callback();
                         }
                     }
@@ -60,10 +48,11 @@ CanvasShapes.AnimationAbstract = (function () {
             }
 
             if (context) {
+                callback = _.bind(callback, context);
                 stepCallback = _.bind(stepCallback, context);
             }
 
-            that.getAnimationFrame(processAnimationFrame);
+            this.sceneInterfaceHandlers.requestRendering(this, processAnimationFrame);
         }
     });
 

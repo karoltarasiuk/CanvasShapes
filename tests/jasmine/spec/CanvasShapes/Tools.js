@@ -43,5 +43,16 @@ define([
                 ).toEqual(tests[i].result);
             }
         });
+
+        it('uuid method', function () {
+
+            var temp, i,
+                regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+            for(i = 0; i < 100; i++) {
+                temp = CanvasShapes.Tools.uuid();
+                expect(regex.test(temp)).toBe(true);
+            }
+        });
     });
 });

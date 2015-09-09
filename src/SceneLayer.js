@@ -3,6 +3,7 @@
 CanvasShapes.SceneLayer = (function () {
 
     var SceneLayer = function (scene, width, height, left, top) {
+        this.setUUID();
         this.initialize(scene, width, height, left, top);
     };
 

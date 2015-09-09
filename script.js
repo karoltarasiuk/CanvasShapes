@@ -2,6 +2,7 @@ require.config({
     paths: {
         lodash: 'lib/lodash.min',
         JSONChecker: 'lib/JSONChecker',
+        uuid: 'lib/uuid',
         CanvasShapes: 'build/CanvasShapes'
     }
 });
@@ -12,7 +13,7 @@ require([
 ], function (
     _,
     CanvasShapes
-) {
+) {window.CanvasShapes = CanvasShapes;
     var renderer = CanvasShapes.init(),
         group = new CanvasShapes.Group(),
         point1 = new CanvasShapes.Point([10, 10]),
@@ -75,14 +76,16 @@ require([
     point16.setFace('circle', 10);
 
     // rendering all the shapes
-    renderer.render();
+    // renderer.render();
 
+    CanvasShapes.Renderer.start();
     console.log('START ANIMATION');
     point16.move(1000, [90, 90], function () {
         point16.move(1000, [90, 10], function () {
             point16.move(1000, [10, 90], function () {
                 point16.move(1000, [10, 10], function () {
                     console.log('STOP ANIMATION');
+                    CanvasShapes.Renderer.stop();
                 });
             });
         });
