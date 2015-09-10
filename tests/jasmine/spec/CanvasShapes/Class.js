@@ -151,6 +151,12 @@ define([
 
                 expect(regex.test(classInstance.getUUID())).toBe(true);
             });
+
+            it('populates objects registry properly', function () {
+
+                var classInstance = new CanvasShapes.Class();
+                expect(CanvasShapes.Class.getObject(classInstance.getUUID())).toBe(classInstance);
+            });
         });
     });
 });

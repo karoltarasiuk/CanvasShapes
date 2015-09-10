@@ -41,6 +41,7 @@ CanvasShapes.ClassAbstract = (function () {
          */
         setUUID: function () {
             this.UUID = CanvasShapes.Tools.uuid();
+            CanvasShapes.Class.setObject(this.UUID, this);
             return this.getUUID();
         },
 

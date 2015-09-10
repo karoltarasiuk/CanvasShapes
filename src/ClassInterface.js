@@ -29,7 +29,8 @@ CanvasShapes.ClassInterface = (function () {
 
         /**
          * Generate and sets UUID V4 to this instance of the object. It will
-         * also return this UUID.
+         * also return this UUID. This method should always add the shape to
+         * the global registry of all objects.
          *
          * @return {string}
          */
