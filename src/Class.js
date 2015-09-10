@@ -75,5 +75,37 @@ CanvasShapes.Class = (function () {
         className: 'CanvasShapes.Class'
     });
 
+    /**
+     * Map of all objects which has an UUID generate using `getUUID()` method.
+     *
+     * {
+     *     UUID: object,
+     *     ...
+     * }
+     *
+     * @type {object}
+     */
+    var OBJECTS = {};
+
+    /**
+     * Gets the object from registry by its UUID.
+     *
+     * @param  {string} UUID
+     * @return {object}
+     */
+    Class.getObject = function (UUID) {
+        return OBJECTS[UUID];
+    };
+
+    /**
+     * Sets the object in a registry
+     *
+     * @param {string} UUID
+     * @param {object} object
+     */
+    Class.setObject = function (UUID, object) {
+        OBJECTS[UUID] = object;
+    };
+
     return Class;
 }());
