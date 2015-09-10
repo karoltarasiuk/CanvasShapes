@@ -140,13 +140,15 @@ CanvasShapes.Shape = (function () {
 
             var startingCoordinates = _.cloneDeep(this.coordinates);
 
-            if (
-                (_.isUndefined(this.MIN_COORDINATES) && _.isUndefined(this.MAX_COORDINATES)) ||
-                (this.MIN_COORDINATES === 1 && this.MAX_COORDINATES === 1)
-            ) {
-                this.validateCoordinates(coordinates, true);
-            } else {
-                this.validateCoordinatesArray(coordinates, true, this.MIN_COORDINATES, this.MAX_COORDINATES);
+            if (_.isArray(coordinates)) {
+                if (
+                    (_.isUndefined(this.MIN_COORDINATES) && _.isUndefined(this.MAX_COORDINATES)) ||
+                    (this.MIN_COORDINATES === 1 && this.MAX_COORDINATES === 1)
+                ) {
+                    this.validateCoordinates(coordinates, true);
+                } else {
+                    this.validateCoordinatesArray(coordinates, true, this.MIN_COORDINATES, this.MAX_COORDINATES);
+                }
             }
 
             if (!context) {
@@ -163,22 +165,26 @@ CanvasShapes.Shape = (function () {
                     ratio = 1;
                 }
 
-                for (i = 0; i < coordinates.length; i++) {
-                    if (_.isArray(coordinates[i])) {
-                        if (!_.isArray(newCoordinates[i])) {
-                            newCoordinates[i] = [];
-                        }
-                        for (j = 0; j < coordinates[i].length; i++) {
-                            newCoordinates[i][j] =
-                                startingCoordinates[i][j] +
-                                (coordinates[i][j] - startingCoordinates[i][j]) *
+                if (_.isFunction(coordinates)) {
+                    newCoordinates = coordinates(_.cloneDeep(startingCoordinates), totalAnimationTime, currentTime);
+                } else {
+                    for (i = 0; i < coordinates.length; i++) {
+                        if (_.isArray(coordinates[i])) {
+                            if (!_.isArray(newCoordinates[i])) {
+                                newCoordinates[i] = [];
+                            }
+                            for (j = 0; j < coordinates[i].length; i++) {
+                                newCoordinates[i][j] =
+                                    startingCoordinates[i][j] +
+                                    (coordinates[i][j] - startingCoordinates[i][j]) *
+                                    ratio;
+                            }
+                        } else {
+                            newCoordinates[i] =
+                                startingCoordinates[i] +
+                                (coordinates[i] - startingCoordinates[i]) *
                                 ratio;
                         }
-                    } else {
-                        newCoordinates[i] =
-                            startingCoordinates[i] +
-                            (coordinates[i] - startingCoordinates[i]) *
-                            ratio;
                     }
                 }
 
