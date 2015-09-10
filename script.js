@@ -31,7 +31,7 @@ require([
         point13 = new CanvasShapes.Point([10, 90]),
         point14 = new CanvasShapes.Point([90, 70]),
         point15 = new CanvasShapes.Point([110, 100]),
-        point16 = new CanvasShapes.Point([10, 10]),
+        point16 = new CanvasShapes.Point([0, 0]),
         line = new CanvasShapes.Line([point1, point2]),
         polygon1 = new CanvasShapes.Polygon([point3, point4, point2, point5]),
         polygon2 = new CanvasShapes.Polygon([point12, point14, point15, point13]),
@@ -80,12 +80,27 @@ require([
 
     CanvasShapes.Renderer.start();
     console.log('START ANIMATION');
-    point16.move(1000, [90, 90], function () {
-        point16.move(1000, [90, 10], function () {
-            point16.move(1000, [10, 90], function () {
-                point16.move(1000, [10, 10], function () {
-                    console.log('STOP ANIMATION');
-                    CanvasShapes.Renderer.stop();
+    point16.move(500, [100, 100], function () {
+        point16.move(500, [100, 0], function () {
+            point16.move(500, [0, 100], function () {
+                point16.move(500, [0, 50], function () {
+
+                    point16.move(2000, function (coords, totalTime, curTime) {
+                        var ratio;
+                        if (curTime >= totalTime) {
+                            coords[0] = 100;
+                            coords[1] = 50;
+                        } else {
+                            ratio = (curTime / totalTime) * 100;
+                            coords[0] = ratio;
+                            ratio = ratio/100 * (2 * Math.PI);
+                            coords[1] = Math.sin(ratio) * 50 + 50;
+                        }
+                        return coords;
+                    }, function () {
+                        console.log('STOP ANIMATION');
+                        CanvasShapes.Renderer.stop();
+                    });
                 });
             });
         });
