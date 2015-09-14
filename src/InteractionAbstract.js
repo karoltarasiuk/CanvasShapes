@@ -6,8 +6,10 @@ CanvasShapes.InteractionAbstract = (function () {
         throw new CanvasShapes.Error(8018);
     };
 
-    CanvasShapes.Class.extend(InteractionAbstract.prototype, CanvasShapes.InteractionInterface.prototype, {
-
+    CanvasShapes.Class.extend(
+        InteractionAbstract.prototype,
+        CanvasShapes.InteractionInterface.prototype,
+    {
         className: 'CanvasShapes.InteractionAbstract'
     });
 

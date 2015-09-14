@@ -28,12 +28,20 @@ define([
             it('adding scene', function () {
 
                 var renderer = new CanvasShapes.Renderer(),
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
                     wrongScene = new CanvasShapes.Group();
 
                 expect(function () {
                     renderer.addScene(scene);
-                    renderer.addScene({ element: document.createElement('div'), width: 100, height: 100 });
+                    renderer.addScene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    });
                 }).not.toThrow();
 
                 expect(function () {
@@ -48,14 +56,22 @@ define([
             it('rendering', function () {
 
                 var renderer = new CanvasShapes.Renderer(),
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 });
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    });
 
                 expect(function () {
                     renderer.render();
                 }).not.toThrow();
 
                 renderer.addScene(scene);
-                renderer.addScene({ element: document.createElement('div'), width: 100, height: 100 });
+                renderer.addScene({
+                    element: document.createElement('div'),
+                    width: 100,
+                    height: 100
+                });
 
                 expect(function () {
                     renderer.render();
@@ -65,12 +81,20 @@ define([
             it('adding shapes', function () {
 
                 var renderer = new CanvasShapes.Renderer(),
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
                     shape1 = new CanvasShapes.Shape(),
                     shape2 = new CanvasShapes.Shape();
 
                 renderer.addScene(scene);
-                renderer.addScene({ element: document.createElement('div'), width: 100, height: 100 });
+                renderer.addScene({
+                    element: document.createElement('div'),
+                    width: 100,
+                    height: 100
+                });
 
                 expect(function () {
                     renderer.addShapes([shape1, shape2]);
@@ -81,7 +105,11 @@ define([
 
                 var i = 0,
                     renderer = new CanvasShapes.Renderer(),
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
                     handler1 = function () { i++; },
                     handler2 = function () { i--; },
                     context1 = new function () { this.prop = 0; },
@@ -118,8 +146,16 @@ define([
                 renderer.dispatch('yo');
                 expect(context1.prop).toBe(1);
 
-                renderer.addScene(new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }));
-                renderer.addScene(new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }));
+                renderer.addScene(new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    width: 100,
+                    height: 100
+                }));
+                renderer.addScene(new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    width: 100,
+                    height: 100
+                }));
 
                 i = 0;
                 context1.prop = 0;

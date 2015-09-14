@@ -81,7 +81,11 @@ define([
 
             it('setting style', function () {
 
-                var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 }),
+                var scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 200,
+                        height: 200
+                    }),
                     layer = new CanvasShapes.SceneLayer(scene, 80, 80, 10, 10),
                     style = new CanvasShapes.Style(),
                     contextStub = {

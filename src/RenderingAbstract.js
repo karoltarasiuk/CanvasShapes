@@ -6,8 +6,10 @@ CanvasShapes.RenderingAbstract = (function () {
         throw new CanvasShapes.Error(8001);
     };
 
-    CanvasShapes.Class.extend(RenderingAbstract.prototype, CanvasShapes.RenderingInterface.prototype, {
-
+    CanvasShapes.Class.extend(
+        RenderingAbstract.prototype,
+        CanvasShapes.RenderingInterface.prototype,
+    {
         className: 'CanvasShapes.RenderingAbstract',
 
         /**
@@ -48,15 +50,23 @@ CanvasShapes.RenderingAbstract = (function () {
                 this.sceneInterfaceHandlers = [];
             }
 
-            _.each(sceneInterfaceHandlers, function (sceneInterfaceHandler, handlerName) {
+            _.each(sceneInterfaceHandlers, function (
+                sceneInterfaceHandler,
+                handlerName
+            ) {
                 if (!_.isFunction(this.sceneInterfaceHandlers[handlerName])) {
-                    this.sceneInterfaceHandlers[handlerName] = _.bind(function () {
-                        var i;
+                    this.sceneInterfaceHandlers[handlerName] = _.bind(
+                        function () {
+                            var i,
+                                length = this.sceneInterfaceHandlers.length;
 
-                        for (i = 0; i < this.sceneInterfaceHandlers.length; i++) {
-                            this.sceneInterfaceHandlers[i][handlerName].apply(this, arguments);
-                        }
-                    }, this);
+                            for (i = 0; i < length; i++) {
+                                this.sceneInterfaceHandlers[i][handlerName]
+                                    .apply(this, arguments);
+                            }
+                        },
+                        this
+                    );
                 }
             }, this);
 

@@ -9,8 +9,10 @@ CanvasShapes.StyleAbstract = (function () {
         throw new CanvasShapes.Error(8002);
     };
 
-    CanvasShapes.Class.extend(StyleAbstract.prototype, CanvasShapes.StyleInterface.prototype, {
-
+    CanvasShapes.Class.extend(
+        StyleAbstract.prototype,
+        CanvasShapes.StyleInterface.prototype,
+    {
         className: 'CanvasShapes.StyleAbstract',
 
         definitions: null,

@@ -9,8 +9,10 @@ CanvasShapes.Style = (function () {
         this.initialize(definition);
     };
 
-    CanvasShapes.Class.extend(Style.prototype, CanvasShapes.StyleAbstract.prototype, {
-
+    CanvasShapes.Class.extend(
+        Style.prototype,
+        CanvasShapes.StyleAbstract.prototype,
+    {
         className: 'CanvasShapes.Style'
     });
 

@@ -80,7 +80,8 @@ CanvasShapes.InteractionInterface = (function () {
          * `event` argument, or `event` must be a `string` containing a type.
          *
          * It also possible (and very handy for custom events) to pass ready to
-         * use CanvasShapes.EventAbstract object. This way any event can be triggered.
+         * use CanvasShapes.EventAbstract object. This way any event can be
+         * triggered.
          *
          * If the `context` is passed the event will be dispatched only for the
          * matching context object.

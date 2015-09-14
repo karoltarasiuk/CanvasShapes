@@ -94,7 +94,12 @@ CanvasShapes.CoordinatesInterface = (function () {
          *
          * @return {boolean}
          */
-        validateCoordinatesArray: function (coordinates, throwException, minimumCoordinatesNumber, maximumCoordinatesNumber) {
+        validateCoordinatesArray: function (
+            coordinates,
+            throwException,
+            minimumCoordinatesNumber,
+            maximumCoordinatesNumber
+        ) {
             throw new CanvasShapes.Error(9014);
         }
     });

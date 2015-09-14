@@ -19,8 +19,10 @@ CanvasShapes.Rectangle = (function () {
         this.initialize(coordinates);
     };
 
-    CanvasShapes.Class.extend(Rectangle.prototype, CanvasShapes.Quadrilateral.prototype, {
-
+    CanvasShapes.Class.extend(
+        Rectangle.prototype,
+        CanvasShapes.Quadrilateral.prototype,
+    {
         className: 'CanvasShapes.Rectangle',
 
         initialize: function (coordinates) {
@@ -42,7 +44,10 @@ CanvasShapes.Rectangle = (function () {
                 processedCoordinates[2]
             );
 
-            if (Math.abs(angle - 90) > CanvasShapes.Config.get('EQUALITY_ALLOWED_ERROR')) {
+            if (
+                Math.abs(angle - 90) >
+                CanvasShapes.Config.get('EQUALITY_ALLOWED_ERROR')
+            ) {
                 throw new CanvasShapes.Error(1013);
             }
 

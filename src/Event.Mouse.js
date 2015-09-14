@@ -16,8 +16,10 @@ CanvasShapes.Event.Mouse = (function () {
         this.initialize(event, target);
     };
 
-    CanvasShapes.Class.extend(MouseEvent.prototype, CanvasShapes.EventAbstract.prototype, {
-
+    CanvasShapes.Class.extend(
+        MouseEvent.prototype,
+        CanvasShapes.EventAbstract.prototype,
+    {
         className: 'CanvasShapes.Event',
 
         /**
@@ -25,12 +27,17 @@ CanvasShapes.Event.Mouse = (function () {
          */
         initialize: function (event, target) {
 
-            CanvasShapes.EventAbstract.prototype.initialize.apply(this, arguments);
+            CanvasShapes.EventAbstract.prototype.initialize.apply(
+                this,
+                arguments
+            );
 
             if (
                 !this.target || !CanvasShapes.Tools.isElement(this.target) ||
-                !_.isObject(this.event) || !_.isNumber(this.event.pageX) || !_.isNumber(this.event.pageY) ||
-                !_.isNumber(this.target.offsetLeft) || !_.isNumber(this.target.offsetTop)
+                !_.isObject(this.event) || !_.isNumber(this.event.pageX) ||
+                !_.isNumber(this.event.pageY) ||
+                !_.isNumber(this.target.offsetLeft) ||
+                !_.isNumber(this.target.offsetTop)
             ) {
                 throw new CanvasShapes.Error(1041);
             }

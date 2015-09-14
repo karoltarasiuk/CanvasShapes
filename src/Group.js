@@ -22,7 +22,10 @@ CanvasShapes.Group = (function () {
          * @override {CanvasShapes.RenderingAbstract}
          */
         setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {
-            CanvasShapes.Shape.prototype.setSceneInterfaceHandlers.apply(this, arguments);
+            CanvasShapes.Shape.prototype.setSceneInterfaceHandlers.apply(
+                this,
+                arguments
+            );
 
             this.eachShape(function (sceneInterfaceHandlers) {
                 this.setSceneInterfaceHandlers(sceneInterfaceHandlers);

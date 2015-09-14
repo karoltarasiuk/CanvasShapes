@@ -218,7 +218,8 @@ CanvasShapes.SceneInterface = (function () {
          * `event` argument, or `event` must be a `string` containing a type.
          *
          * It also possible (and very handy for custom events) to pass ready to
-         * use CanvasShapes.EventAbstract object. This way any event can be triggered.
+         * use CanvasShapes.EventAbstract object. This way any event can be
+         * triggered.
          *
          * @param {[Event,object,string,CanvasShapes.EventAbstract]}  event
          */

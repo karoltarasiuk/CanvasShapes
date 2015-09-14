@@ -103,17 +103,35 @@ CanvasShapes.Shape = (function () {
                 // this.off('some-event-type')
                 this.sceneInterfaceHandlers.off(handlerOrType, this);
 
-            } else if (_.isUndefined(context) && _.isObject(eventTypeOrContext)) {
+            } else if (
+                _.isUndefined(context) &&
+                _.isObject(eventTypeOrContext)
+            ) {
                 // this.off('some-event-type', contextObject)
-                this.sceneInterfaceHandlers.off(handlerOrType, eventTypeOrContext);
+                this.sceneInterfaceHandlers.off(
+                    handlerOrType,
+                    eventTypeOrContext
+                );
 
-            } else if (_.isUndefined(context) && _.isString(eventTypeOrContext)) {
+            } else if (
+                _.isUndefined(context) &&
+                _.isString(eventTypeOrContext)
+            ) {
                 // this.off(someHandlerFunction, 'some-event-type')
-                this.sceneInterfaceHandlers.off(handlerOrType, eventTypeOrContext, this);
+                this.sceneInterfaceHandlers.off(
+                    handlerOrType,
+                    eventTypeOrContext,
+                    this
+                );
 
             } else {
-                // this.off(someHandlerFunction, 'some-event-type', contextObject)
-                this.sceneInterfaceHandlers.off(handlerOrType, eventTypeOrContext, context);
+                // this.off(someHandlerFunction, 'some-event-type',
+                // contextObject)
+                this.sceneInterfaceHandlers.off(
+                    handlerOrType,
+                    eventTypeOrContext,
+                    context
+                );
             }
         },
 
@@ -166,7 +184,11 @@ CanvasShapes.Shape = (function () {
                 }
 
                 if (_.isFunction(coordinates)) {
-                    newCoordinates = coordinates(_.cloneDeep(startingCoordinates), totalAnimationTime, currentTime);
+                    newCoordinates = coordinates(
+                        _.cloneDeep(startingCoordinates),
+                        totalAnimationTime,
+                        currentTime
+                    );
                 } else {
                     for (i = 0; i < coordinates.length; i++) {
                         if (_.isArray(coordinates[i])) {
@@ -176,7 +198,8 @@ CanvasShapes.Shape = (function () {
                             for (j = 0; j < coordinates[i].length; i++) {
                                 newCoordinates[i][j] =
                                     startingCoordinates[i][j] +
-                                    (coordinates[i][j] - startingCoordinates[i][j]) *
+                                    (coordinates[i][j] -
+                                    startingCoordinates[i][j]) *
                                     ratio;
                             }
                         } else {

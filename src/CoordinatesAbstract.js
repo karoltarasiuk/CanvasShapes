@@ -96,8 +96,12 @@ CanvasShapes.CoordinatesAbstract = (function () {
         /**
          * @implements {CanvasShapes.CoordinatesInterface}
          */
-        validateCoordinatesArray: function (coordinates, throwException, minimumCoordinatesNumber, maximumCoordinatesNumber) {
-
+        validateCoordinatesArray: function (
+            coordinates,
+            throwException,
+            minimumCoordinatesNumber,
+            maximumCoordinatesNumber
+        ) {
             var i,
                 valid = true;
 

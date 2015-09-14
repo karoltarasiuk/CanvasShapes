@@ -20,8 +20,10 @@ CanvasShapes.Square = (function () {
         this.initialize(coordinates);
     };
 
-    CanvasShapes.Class.extend(Square.prototype, CanvasShapes.Rectangle.prototype, {
-
+    CanvasShapes.Class.extend(
+        Square.prototype,
+        CanvasShapes.Rectangle.prototype,
+    {
         className: 'CanvasShapes.Square',
 
         initialize: function (coordinates) {

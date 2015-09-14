@@ -16,8 +16,10 @@ CanvasShapes.Event = (function () {
         this.initialize(event, target);
     };
 
-    CanvasShapes.Class.extend(Event.prototype, CanvasShapes.EventAbstract.prototype, {
-
+    CanvasShapes.Class.extend(
+        Event.prototype,
+        CanvasShapes.EventAbstract.prototype,
+    {
         className: 'CanvasShapes.Event'
     });
 
@@ -112,8 +114,12 @@ CanvasShapes.Event = (function () {
      *
      * @return {boolean}
      */
-    Event.registerCategory = function (category, baseClass, eventsObject, initializeListeners) {
-
+    Event.registerCategory = function (
+        category,
+        baseClass,
+        eventsObject,
+        initializeListeners
+    ) {
         if (!_.isString(category) || category.length === 0) {
             throw new CanvasShapes.Error(1030);
         }

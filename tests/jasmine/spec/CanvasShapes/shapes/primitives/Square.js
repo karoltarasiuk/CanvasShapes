@@ -58,7 +58,13 @@ define([
                 new CanvasShapes.Square([[0, 0], [1, 1]]);
             }).toThrow(error1);
             expect(function () {
-                new CanvasShapes.Square([[0, 0], [1, 1], [1, 0], [0, -1], [-1, 0]]);
+                new CanvasShapes.Square([
+                    [0, 0],
+                    [1, 1],
+                    [1, 0],
+                    [0, -1],
+                    [-1, 0]
+                ]);
             }).toThrow(error1);
 
             // points don't create equal segments
@@ -96,7 +102,11 @@ define([
 
         it('rendering', function () {
 
-            var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 }),
+            var scene = new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    width: 200,
+                    height: 200
+                }),
                 layer = new CanvasShapes.SceneLayer(scene),
                 square = new CanvasShapes.Square([[0, 0], [1, 1], [2, 0]]);
 

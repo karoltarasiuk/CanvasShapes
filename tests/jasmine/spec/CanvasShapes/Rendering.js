@@ -49,13 +49,17 @@ define([
                     };
 
                 rendering.setSceneInterfaceHandlers(sceneInterfaceHandlers);
-                expect(rendering.sceneInterfaceHandlers[0]).toBe(sceneInterfaceHandlers);
+                expect(rendering.sceneInterfaceHandlers[0])
+                    .toBe(sceneInterfaceHandlers);
 
                 for (i in sceneInterfaceHandlers) {
                     expect(rendering.sceneInterfaceHandlers[i]).toBeDefined();
-                    expect(_.isFunction(rendering.sceneInterfaceHandlers[i])).toBe(true);
-                    expect(rendering.sceneInterfaceHandlers[0][i]).toBeDefined();
-                    expect(_.isFunction(rendering.sceneInterfaceHandlers[0][i])).toBe(true);
+                    expect(_.isFunction(rendering.sceneInterfaceHandlers[i]))
+                        .toBe(true);
+                    expect(rendering.sceneInterfaceHandlers[0][i])
+                        .toBeDefined();
+                    expect(_.isFunction(rendering.sceneInterfaceHandlers[0][i]))
+                        .toBe(true);
                 }
             });
 

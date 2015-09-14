@@ -7,8 +7,10 @@ CanvasShapes.SceneLayer = (function () {
         this.initialize(scene, width, height, left, top);
     };
 
-    CanvasShapes.Class.extend(SceneLayer.prototype, CanvasShapes.SceneLayerAbstract.prototype, {
-
+    CanvasShapes.Class.extend(
+        SceneLayer.prototype,
+        CanvasShapes.SceneLayerAbstract.prototype,
+    {
         className: 'CanvasShapes.SceneLayer',
 
         canvas: null,
@@ -84,7 +86,8 @@ CanvasShapes.SceneLayer = (function () {
             this.canvas = document.createElement('canvas');
             this.canvas.width = this.width;
             this.canvas.height = this.height;
-            this.canvas.innerHTML = '<span>Canvas 2D context is not supported in your browser</span>';
+            this.canvas.innerHTML = '<span>Canvas 2D context is not supported' +
+                ' in your browser</span>';
             this.canvas.style.position = 'absolute';
             this.canvas.style.top = this.top + 'px';
             this.canvas.style.left = this.left + 'px';

@@ -68,7 +68,10 @@ define([
                     shape2 = new CanvasShapes.Shape([10, 10]);
 
                 shape1Class = function () {};
-                _.extend(shape1Class.prototype, CanvasShapes.InteractionAbstract.prototype);
+                _.extend(
+                    shape1Class.prototype,
+                    CanvasShapes.InteractionAbstract.prototype
+                );
                 shape1 = new shape1Class();
 
                 expect(function () {
@@ -129,20 +132,32 @@ define([
                     error1 = new CanvasShapes.Error(1042),
                     shape1 = new CanvasShapes.Shape(),
                     shape2 = new CanvasShapes.Shape([0, 0]),
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
                     handler1 = function () { i++; },
                     handler2 = function () { i--; },
                     context1 = new function () { this.prop = 0; },
                     handler3 = function () { this.prop++; };
 
-                expect(function () { shape1.on('interaction', handler1); }).toThrow(error1);
-                expect(function () { shape2.on('interaction', handler2); }).toThrow(error1);
+                expect(function () { shape1.on('interaction', handler1); })
+                    .toThrow(error1);
+                expect(function () { shape2.on('interaction', handler2); })
+                    .toThrow(error1);
 
-                expect(function () { shape1.off('interaction', handler1); }).toThrow(error1);
-                expect(function () { shape2.off('interaction', handler2); }).toThrow(error1);
+                expect(function () { shape1.off('interaction', handler1); })
+                    .toThrow(error1);
+                expect(function () { shape2.off('interaction', handler2); })
+                    .toThrow(error1);
 
-                expect(function () { shape1.dispatch('interaction', handler1); }).toThrow(error1);
-                expect(function () { shape2.dispatch('interaction', handler2); }).toThrow(error1);
+                expect(function () {
+                    shape1.dispatch('interaction', handler1);
+                }).toThrow(error1);
+                expect(function () {
+                    shape2.dispatch('interaction', handler2);
+                }).toThrow(error1);
 
                 scene.addShape(shape1);
                 scene.addShape(shape2);
@@ -195,7 +210,11 @@ define([
             beforeEach(function (done) {
 
                 var animate = false,
-                    scene1 = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                    scene1 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
                     callback = function () {
                         callbackSpy();
                         animate = false;
@@ -204,7 +223,9 @@ define([
                     requestAnimationFrameCallback = function () {
                         if (animate) {
                             scene1.render();
-                            window.requestAnimationFrame(requestAnimationFrameCallback);
+                            window.requestAnimationFrame(
+                                requestAnimationFrameCallback
+                            );
                         }
                     };
 
@@ -235,7 +256,11 @@ define([
             beforeEach(function (done) {
 
                 var animate = false,
-                    scene1 = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                    scene1 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
                     callback = function () {
                         callbackSpy();
                         animate = false;
@@ -244,7 +269,9 @@ define([
                     requestAnimationFrameCallback = function () {
                         if (animate) {
                             scene1.render();
-                            window.requestAnimationFrame(requestAnimationFrameCallback);
+                            window.requestAnimationFrame(
+                                requestAnimationFrameCallback
+                            );
                         }
                     };
 

@@ -27,7 +27,12 @@ CanvasShapes.AnimationInterface = (function () {
          * @param {function} callback [OPTIONAL]
          * @param {object}   context [OPTIONAL]
          */
-        animate: function (totalAnimationTime, stepCallback, callback, context) {
+        animate: function (
+            totalAnimationTime,
+            stepCallback,
+            callback,
+            context
+        ) {
             throw new CanvasShapes.Error(9047);
         },
 

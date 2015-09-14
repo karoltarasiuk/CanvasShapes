@@ -21,13 +21,19 @@ define([
             var error1 = new CanvasShapes.Error(8021),
                 error2 = new CanvasShapes.Error(8022);
 
-            expect(function () { new CanvasShapes.AnimationInterface(); }).toThrow(error1);
-            expect(function () { new CanvasShapes.AnimationAbstract(); }).toThrow(error2);
+            expect(function () { new CanvasShapes.AnimationInterface(); })
+                .toThrow(error1);
+            expect(function () { new CanvasShapes.AnimationAbstract(); })
+                .toThrow(error2);
         });
 
         it('callbacks have not been called before animation', function () {
 
-            var scene1 = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+            var scene1 = new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    width: 100,
+                    height: 100
+                }),
                 point1 = new CanvasShapes.Point([0, 0]),
                 i = 0,
                 stepSpy = jasmine.createSpy('step'),
@@ -46,7 +52,11 @@ define([
 
         it('throws error when arguments are invalid', function () {
 
-            var scene1 = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+            var scene1 = new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    width: 100,
+                    height: 100
+                }),
                 point1 = new CanvasShapes.Point([0, 0]),
                 error1 = new CanvasShapes.Error(1043);
 
@@ -55,13 +65,22 @@ define([
             expect(function () { point1.animate(); }).toThrow(error1);
             expect(function () { point1.animate('a'); }).toThrow(error1);
             expect(function () { point1.animate(0, 'a'); }).toThrow(error1);
-            expect(function () { point1.animate(0, function () {}); }).not.toThrow();
+            expect(function () { point1.animate(0, function () {}); })
+                .not.toThrow();
 
-            expect(function () { point1.animate(0, function () {}, 'a'); }).toThrow(error1);
-            expect(function () { point1.animate(0, function () {}, function () {}); }).not.toThrow();
+            expect(function () {
+                point1.animate(0, function () {}, 'a');
+            }).toThrow(error1);
+            expect(function () {
+                point1.animate(0, function () {}, function () {});
+            }).not.toThrow();
 
-            expect(function () { point1.animate(0, function () {}, function () {}, 'a'); }).toThrow(error1);
-            expect(function () { point1.animate(0, function () {}, function () {}, {}); }).not.toThrow();
+            expect(function () {
+                point1.animate(0, function () {}, function () {}, 'a');
+            }).toThrow(error1);
+            expect(function () {
+                point1.animate(0, function () {}, function () {}, {});
+            }).not.toThrow();
         });
 
         describe('after animation check - async', function () {
@@ -71,7 +90,11 @@ define([
             beforeEach(function (done) {
 
                 var animate = false,
-                    scene1 = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                    scene1 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
                     point1 = new CanvasShapes.Point([0, 0]),
                     callback = function () {
                         callbackSpy();
@@ -85,7 +108,9 @@ define([
                     requestAnimationFrameCallback = function () {
                         if (animate) {
                             scene1.render();
-                            window.requestAnimationFrame(requestAnimationFrameCallback);
+                            window.requestAnimationFrame(
+                                requestAnimationFrameCallback
+                            );
                         }
                     };
 

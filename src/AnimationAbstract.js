@@ -9,15 +9,21 @@ CanvasShapes.AnimationAbstract = (function () {
         throw new CanvasShapes.Error(8022);
     };
 
-    CanvasShapes.Class.extend(AnimationAbstract.prototype, CanvasShapes.AnimationInterface.prototype, {
-
+    CanvasShapes.Class.extend(
+        AnimationAbstract.prototype,
+        CanvasShapes.AnimationInterface.prototype,
+    {
         className: 'CanvasShapes.AnimationAbstract',
 
         /**
          * @implements {CanvasShapes.AnimationInterface}
          */
-        animate: function (totalAnimationTime, stepCallback, callback, context) {
-
+        animate: function (
+            totalAnimationTime,
+            stepCallback,
+            callback,
+            context
+        ) {
             var that = this,
                 startTime = (new Date()).getTime(),
                 currentTime = startTime,
@@ -27,7 +33,10 @@ CanvasShapes.AnimationAbstract = (function () {
                         // animation in progress
                         stepCallback(currentTime - startTime);
                         // request next frame from the browser
-                        that.sceneInterfaceHandlers.requestRendering(that, processAnimationFrame);
+                        that.sceneInterfaceHandlers.requestRendering(
+                            that,
+                            processAnimationFrame
+                        );
                     } else {
                         // calling stepCallback for the last time
                         stepCallback(currentTime - startTime);
@@ -52,7 +61,10 @@ CanvasShapes.AnimationAbstract = (function () {
                 stepCallback = _.bind(stepCallback, context);
             }
 
-            this.sceneInterfaceHandlers.requestRendering(this, processAnimationFrame);
+            this.sceneInterfaceHandlers.requestRendering(
+                this,
+                processAnimationFrame
+            );
         }
     });
 

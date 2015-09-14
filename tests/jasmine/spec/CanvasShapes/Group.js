@@ -78,7 +78,9 @@ define([
                 shape8.name = 'shape8';
                 shape9.name = 'shape9';
 
-                subgroup.addShapes([shape4, shape5, shape6, shape7, shape8, shape9]);
+                subgroup.addShapes(
+                    [shape4, shape5, shape6, shape7, shape8, shape9]
+                );
                 group.addShapes([shape1, subgroup, shape2, shape3]);
             });
 
@@ -114,8 +116,20 @@ define([
                     return this.name;
                 }, undefined, true);
 
-                expect(temp).toEqual(['shape1', undefined, ['shape4', 'shape5',
-                    'shape6', 'shape7', 'shape8', 'shape9'], 'shape2', 'shape3']);
+                expect(temp).toEqual([
+                    'shape1',
+                    undefined,
+                    [
+                        'shape4',
+                        'shape5',
+                        'shape6',
+                        'shape7',
+                        'shape8',
+                        'shape9'
+                    ],
+                    'shape2',
+                    'shape3'
+                ]);
             });
 
             it('removing shape, which was never in the group', function () {
@@ -147,7 +161,7 @@ define([
                 expect(group.getShapes().length).toBe(3);
             });
 
-            it('removing shapes with passed parameters using deep mode', function () {
+            it('removing shapes with passed params in deep mode', function () {
 
                 temp = group.removeShapes(function (names) {
                     if (names.indexOf(this.name) !== -1) {
@@ -176,30 +190,40 @@ define([
                 group.addShapes([shape1, shape2]);
                 group.setSceneInterfaceHandlers(sceneInterfaceHandlers);
 
-                expect(group.sceneInterfaceHandlers[0]).toBe(sceneInterfaceHandlers);
+                expect(group.sceneInterfaceHandlers[0])
+                    .toBe(sceneInterfaceHandlers);
 
                 for (i in sceneInterfaceHandlers) {
                     expect(group.sceneInterfaceHandlers[0][i]).toBeDefined();
-                    expect(_.isFunction(group.sceneInterfaceHandlers[0][i])).toBe(true);
+                    expect(_.isFunction(group.sceneInterfaceHandlers[0][i]))
+                        .toBe(true);
                     expect(group.sceneInterfaceHandlers[i]).toBeDefined();
-                    expect(_.isFunction(group.sceneInterfaceHandlers[i])).toBe(true);
+                    expect(_.isFunction(group.sceneInterfaceHandlers[i]))
+                        .toBe(true);
                 }
 
                 group.eachShape(function () {
-                    expect(this.sceneInterfaceHandlers[0]).toBe(sceneInterfaceHandlers);
+                    expect(this.sceneInterfaceHandlers[0])
+                        .toBe(sceneInterfaceHandlers);
 
                     for (i in sceneInterfaceHandlers) {
                         expect(this.sceneInterfaceHandlers[0][i]).toBeDefined();
-                        expect(_.isFunction(this.sceneInterfaceHandlers[0][i])).toBe(true);
+                        expect(_.isFunction(this.sceneInterfaceHandlers[0][i]))
+                            .toBe(true);
                         expect(this.sceneInterfaceHandlers[i]).toBeDefined();
-                        expect(_.isFunction(this.sceneInterfaceHandlers[i])).toBe(true);
+                        expect(_.isFunction(this.sceneInterfaceHandlers[i]))
+                            .toBe(true);
                     }
                 });
             });
 
             it('renders without throwing anything', function () {
 
-                var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                var scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
                     group = new CanvasShapes.Group(),
                     shape1 = new CanvasShapes.Point([30, 30]),
                     shape2 = new CanvasShapes.Point([60, 60]);

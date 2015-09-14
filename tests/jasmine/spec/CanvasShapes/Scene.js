@@ -40,41 +40,35 @@ define([
                 var error1 = new CanvasShapes.Error(1001),
                     error2 = new CanvasShapes.Error(1005);
 
-                expect(
-                    function () {
-                        new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 });
-                    }
-                ).not.toThrow();
+                expect( function () { new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    width: 100,
+                    height: 100
+                }); } ).not.toThrow();
 
-                expect(
-                    function () {
-                        new CanvasShapes.Scene({ element: document.createElement('div'), height: 100 });
-                    }
-                ).toThrow(error1);
+                expect( function () { new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    height: 100
+                }); } ).toThrow(error1);
 
-                expect(
-                    function () {
-                        new CanvasShapes.Scene({ element: document.createElement('div'), width: 100 });
-                    }
-                ).toThrow(error1);
+                expect( function () { new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    width: 100
+                }); } ).toThrow(error1);
 
-                expect(
-                    function () {
-                        new CanvasShapes.Scene({ element: document.createElement('div') });
-                    }
-                ).toThrow(error1);
+                expect( function () { new CanvasShapes.Scene({
+                    element: document.createElement('div') }
+                ); } ).toThrow(error1);
 
-                expect(
-                    function () {
-                        new CanvasShapes.Scene({});
-                    }
-                ).toThrow(error1);
+                expect( function () {
+                    new CanvasShapes.Scene({});
+                } ).toThrow(error1);
 
-                expect(
-                    function () {
-                        new CanvasShapes.Scene({ id: 'non-existing-element-id', width: 100, height: 100 });
-                    }
-                ).toThrow(error2);
+                expect( function () { new CanvasShapes.Scene({
+                    id: 'non-existing-element-id',
+                    width: 100,
+                    height: 100
+                }); } ).toThrow(error2);
             });
         });
 
@@ -84,7 +78,11 @@ define([
 
                 var layer,
                     error1 = new CanvasShapes.Error(1019);
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 });
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    });
 
                 expect(function () {
                     layer = scene.newLayer();
@@ -104,7 +102,11 @@ define([
 
                 var i, UUID,
                     count = 0,
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 });
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    });
 
                 expect(function () {
                     layer = scene.initializeLayers();
@@ -120,7 +122,8 @@ define([
 
                 expect(count).toBe(1);
                 expect(scene.layers[UUID].layer).not.toBe(undefined);
-                expect(scene.layers[UUID].layer.is('CanvasShapes.SceneLayer')).toBe(true);
+                expect(scene.layers[UUID].layer.is('CanvasShapes.SceneLayer'))
+                    .toBe(true);
                 expect(scene.layers[UUID].shapes).toEqual({});
             });
 
@@ -129,7 +132,11 @@ define([
                 var i, UUID, UUID2, layer1,
                     count = 0,
                     count2 = 0,
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
                     layer2 = new CanvasShapes.SceneLayer(scene),
                     shape1 = new CanvasShapes.Shape(),
                     shape2 = new CanvasShapes.Shape(),
@@ -171,7 +178,8 @@ define([
 
                 expect(count).toBe(2);
                 expect(scene.layers[UUID].layer).not.toBe(undefined);
-                expect(scene.layers[UUID].layer.is('CanvasShapes.SceneLayer')).toBe(true);
+                expect(scene.layers[UUID].layer.is('CanvasShapes.SceneLayer'))
+                    .toBe(true);
                 expect(scene.layers[UUID].shapes).not.toEqual({});
                 expect(count2).toBe(1);
                 expect(scene.layers[UUID].shapes[UUID2]).toBe(shape2);
@@ -203,7 +211,11 @@ define([
 
                 var layer1,
                     error = new CanvasShapes.Error(1021),
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
                     layer2 = new CanvasShapes.SceneLayer(scene),
                     shape1 = new CanvasShapes.Shape(),
                     shape2 = new CanvasShapes.Shape(),
@@ -245,7 +257,11 @@ define([
 
                 var layer1, layerObject1, layerObject2,
                     error = new CanvasShapes.Error(1021),
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
                     layer2 = new CanvasShapes.SceneLayer(scene),
                     shape1 = new CanvasShapes.Shape(),
                     shape2 = new CanvasShapes.Shape(),
@@ -298,25 +314,41 @@ define([
 
             it('getting scene interface handlers', function () {
 
-                var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                var scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
                     sceneInterfaceHandlers = scene.getSceneInterfaceHandlers();
 
                 expect(sceneInterfaceHandlers).toBeDefined();
                 expect(_.isObject(sceneInterfaceHandlers)).toBe(true);
-                expect(_.isFunction(sceneInterfaceHandlers.newLayerHandler)).toBe(true);
-                expect(_.isFunction(sceneInterfaceHandlers.getLayerHandler)).toBe(true);
-                expect(_.isFunction(sceneInterfaceHandlers.addShapeHandler)).toBe(true);
+                expect(_.isFunction(sceneInterfaceHandlers.newLayerHandler))
+                    .toBe(true);
+                expect(_.isFunction(sceneInterfaceHandlers.getLayerHandler))
+                    .toBe(true);
+                expect(_.isFunction(sceneInterfaceHandlers.addShapeHandler))
+                    .toBe(true);
                 expect(_.isFunction(sceneInterfaceHandlers.on)).toBe(true);
                 expect(_.isFunction(sceneInterfaceHandlers.off)).toBe(true);
-                expect(_.isFunction(sceneInterfaceHandlers.dispatch)).toBe(true);
+                expect(_.isFunction(sceneInterfaceHandlers.dispatch))
+                    .toBe(true);
             });
 
             it('getting width, height and dom element', function () {
 
                 var dom1 = document.createElement('div'),
                     dom2 = document.createElement('div'),
-                    scene1 = new CanvasShapes.Scene({ element: dom1, width: 100, height: 100 }),
-                    scene2 = new CanvasShapes.Scene({ element: dom2, width: 300, height: 800 });
+                    scene1 = new CanvasShapes.Scene({
+                        element: dom1,
+                        width: 100,
+                        height: 100
+                    }),
+                    scene2 = new CanvasShapes.Scene({
+                        element: dom2,
+                        width: 300,
+                        height: 800
+                    });
 
                 // width
                 expect(scene1.getWidth()).toBe(100);
@@ -337,7 +369,11 @@ define([
 
                 // initializeListeners() is being called on initialisation
                 expect(function () {
-                    scene1 = new CanvasShapes.Scene({ element: dom1, width: 100, height: 100 });
+                    scene1 = new CanvasShapes.Scene({
+                        element: dom1,
+                        width: 100,
+                        height: 100
+                    });
                 }).not.toThrow();
                 expect(scene1.handlers).toEqual({});
             });
@@ -346,7 +382,11 @@ define([
 
                 var i = 0,
                     dom1 = document.createElement('div'),
-                    scene1 = new CanvasShapes.Scene({ element: dom1, width: 100, height: 100 }),
+                    scene1 = new CanvasShapes.Scene({
+                        element: dom1,
+                        width: 100,
+                        height: 100
+                    }),
                     handler1 = function () { i++; },
                     handler2 = function () { i--; },
                     context1 = new function () { this.prop = 0; },
@@ -393,15 +433,33 @@ define([
 
             it('validating config', function () {
 
-                var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 }),
+                var scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
                     config1 = {},
                     config2 = { width: 100, height: 100 },
                     config3 = { id: {}, width: 100, height: 100 },
-                    config4 = { element: document.createElement('div'), width: 100, height: 100 },
-                    config5 = { id: 'existing-element-id', width: 100, height: 100 },
-                    config6 = { element: document.createElement('div'), height: 100 },
+                    config4 = {
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    },
+                    config5 = {
+                        id: 'existing-element-id',
+                        width: 100,
+                        height: 100
+                    },
+                    config6 = {
+                        element: document.createElement('div'),
+                        height: 100
+                    },
                     config7 = { id: 'existing-element-id', height: 100 },
-                    config8 = { element: document.createElement('div'), width: 100 },
+                    config8 = {
+                        element: document.createElement('div'),
+                        width: 100
+                    },
                     config9 = { id: 'existing-element-id', width: 100 };
 
                 expect(scene.validateConfig(config1)).toBe(false);
@@ -417,7 +475,11 @@ define([
 
             it('rendering', function () {
 
-                var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 100, height: 100 });
+                var scene = new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    width: 100,
+                    height: 100
+                });
 
                 expect(function () {
                     scene.render();

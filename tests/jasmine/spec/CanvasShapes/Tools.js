@@ -39,7 +39,10 @@ define([
 
             for (i = 0; i < tests.length; i++) {
                 expect(
-                    CanvasShapes.Tools.removeByIndex(tests[i].array, tests[i].index)
+                    CanvasShapes.Tools.removeByIndex(
+                        tests[i].array,
+                        tests[i].index
+                    )
                 ).toEqual(tests[i].result);
             }
         });

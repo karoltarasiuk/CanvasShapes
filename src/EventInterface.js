@@ -18,8 +18,8 @@ CanvasShapes.EventInterface = (function () {
          * `event`, custom `event` object with `type` property defined, or a
          * `string` containing a custom event type.
          *
-         * `target` argument is optional, and is used to overwrite the target from
-         * the native DOM event object, or set the target for custom event.
+         * `target` argument is optional, and is used to overwrite the target
+         * from the native DOM event object, or set the target for custom event.
          *
          * @param {[object,string]} event
          * @param {object}          target [OPTIONAL]

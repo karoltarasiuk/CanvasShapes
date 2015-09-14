@@ -68,7 +68,10 @@ CanvasShapes.Point = (function () {
          * @override {CanvasShapes.RenderingAbstract}
          */
         setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {
-            CanvasShapes.Shape.prototype.setSceneInterfaceHandlers.apply(this, arguments);
+            CanvasShapes.Shape.prototype.setSceneInterfaceHandlers.apply(
+                this,
+                arguments
+            );
 
             if (this.face) {
                 this.face.setSceneInterfaceHandlers(sceneInterfaceHandlers);

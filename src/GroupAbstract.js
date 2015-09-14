@@ -14,7 +14,6 @@ CanvasShapes.GroupAbstract = (function () {
         GroupAbstract.prototype,
         CanvasShapes.GroupInterface.prototype,
     {
-
         className: 'CanvasShapes.GroupAbstract',
 
         /**

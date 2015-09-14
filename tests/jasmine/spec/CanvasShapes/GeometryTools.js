@@ -49,8 +49,10 @@ define([
                 ];
 
             for (i = 0; i < values.length; i++) {
-                expect(CanvasShapes.GeometryTools.degreesToRadians(values[i].d)).toBe(values[i].r);
-                expect(CanvasShapes.GeometryTools.radiansToDegrees(values[i].r)).toBe(values[i].d);
+                expect(CanvasShapes.GeometryTools.degreesToRadians(values[i].d))
+                    .toBe(values[i].r);
+                expect(CanvasShapes.GeometryTools.radiansToDegrees(values[i].r))
+                    .toBe(values[i].d);
             }
         });
 

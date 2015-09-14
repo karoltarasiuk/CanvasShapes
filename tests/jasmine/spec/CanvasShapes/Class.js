@@ -126,8 +126,10 @@ define([
                 expect(c.is('C')).toBe(true);
                 expect(c.is('Temp')).toBe(true);
                 expect(classInstance.is('CanvasShapes.Class')).toBe(true);
-                expect(classInstance.is('CanvasShapes.ClassAbstract')).toBe(true);
-                expect(classInstance.is('CanvasShapes.ClassInterface')).toBe(true);
+                expect(classInstance.is('CanvasShapes.ClassAbstract'))
+                    .toBe(true);
+                expect(classInstance.is('CanvasShapes.ClassInterface'))
+                    .toBe(true);
                 expect(classInstance2.is('SomeOtherClass')).toBe(true);
 
                 // false
@@ -155,7 +157,8 @@ define([
             it('populates objects registry properly', function () {
 
                 var classInstance = new CanvasShapes.Class();
-                expect(CanvasShapes.Class.getObject(classInstance.getUUID())).toBe(classInstance);
+                expect(CanvasShapes.Class.getObject(classInstance.getUUID()))
+                    .toBe(classInstance);
             });
         });
     });

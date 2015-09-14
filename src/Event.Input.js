@@ -16,8 +16,10 @@ CanvasShapes.Event.Input = (function () {
         this.initialize(event, target);
     };
 
-    CanvasShapes.Class.extend(InputEvent.prototype, CanvasShapes.EventAbstract.prototype, {
-
+    CanvasShapes.Class.extend(
+        InputEvent.prototype,
+        CanvasShapes.EventAbstract.prototype,
+    {
         className: 'CanvasShapes.Event'
     });
 

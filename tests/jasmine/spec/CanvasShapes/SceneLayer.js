@@ -38,7 +38,11 @@ define([
             it('can instantiate normal class', function () {
 
                 var layer1, layer2, layer3,
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 });
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 200,
+                        height: 200
+                    });
 
                 expect(function () {
                     layer1 = new CanvasShapes.SceneLayer(scene);
@@ -53,7 +57,11 @@ define([
             it('can fetch the scene', function () {
 
                 var layer1, layer2, layer3,
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 });
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 200,
+                        height: 200
+                    });
 
                 expect(function () {
                     layer1 = new CanvasShapes.SceneLayer(scene);
@@ -69,7 +77,11 @@ define([
             it('can get the width', function () {
 
                 var layer1, layer2, layer3,
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 });
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 200,
+                        height: 200
+                    });
 
                 expect(function () {
                     layer1 = new CanvasShapes.SceneLayer(scene);
@@ -85,7 +97,11 @@ define([
             it('can get the height', function () {
 
                 var layer1, layer2, layer3,
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 });
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 200,
+                        height: 200
+                    });
 
                 expect(function () {
                     layer1 = new CanvasShapes.SceneLayer(scene);
@@ -101,7 +117,11 @@ define([
             it('can get the context', function () {
 
                 var layer1, layer2, layer3,
-                    scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 });
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 200,
+                        height: 200
+                    });
 
                 expect(function () {
                     layer1 = new CanvasShapes.SceneLayer(scene);
@@ -116,9 +136,12 @@ define([
                 expect(layer2.getContext()).toBeDefined();
                 expect(layer3.getContext()).toBeDefined();
 
-                expect(layer1.getContext() instanceof CanvasRenderingContext2D).toBe(true);
-                expect(layer2.getContext() instanceof CanvasRenderingContext2D).toBe(true);
-                expect(layer3.getContext() instanceof CanvasRenderingContext2D).toBe(true);
+                expect(layer1.getContext() instanceof CanvasRenderingContext2D)
+                    .toBe(true);
+                expect(layer2.getContext() instanceof CanvasRenderingContext2D)
+                    .toBe(true);
+                expect(layer3.getContext() instanceof CanvasRenderingContext2D)
+                    .toBe(true);
             });
 
             it('can clear', function () {

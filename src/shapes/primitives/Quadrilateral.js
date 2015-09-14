@@ -17,8 +17,10 @@ CanvasShapes.Quadrilateral = (function () {
         this.initialize(coordinates);
     };
 
-    CanvasShapes.Class.extend(Quadrilateral.prototype, CanvasShapes.Polygon.prototype, {
-
+    CanvasShapes.Class.extend(
+        Quadrilateral.prototype,
+        CanvasShapes.Polygon.prototype,
+    {
         className: 'CanvasShapes.Quadrilateral'
     });
 

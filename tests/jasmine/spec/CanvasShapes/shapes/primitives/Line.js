@@ -74,7 +74,11 @@ define([
 
         it('rendering', function () {
 
-            var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 }),
+            var scene = new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    width: 200,
+                    height: 200
+                }),
                 layer = new CanvasShapes.SceneLayer(scene),
                 line = new CanvasShapes.Line([[0, 0], [1, 1]]);
 

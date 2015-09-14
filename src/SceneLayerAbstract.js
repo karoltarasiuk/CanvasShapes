@@ -6,8 +6,10 @@ CanvasShapes.SceneLayerAbstract = (function () {
         throw new CanvasShapes.Error(8017);
     };
 
-    CanvasShapes.Class.extend(SceneLayerAbstract.prototype, CanvasShapes.SceneLayerInterface.prototype, {
-
+    CanvasShapes.Class.extend(
+        SceneLayerAbstract.prototype,
+        CanvasShapes.SceneLayerInterface.prototype,
+    {
         className: 'CanvasShapes.SceneLayerAbstract',
 
         /**
@@ -80,7 +82,12 @@ CanvasShapes.SceneLayerAbstract = (function () {
          * @implements {CanvasShapes.SceneLayerInterface}
          */
         clear: function () {
-            this.getContext().clearRect(0, 0, this.getWidth(), this.getHeight());
+            this.getContext().clearRect(
+                0,
+                0,
+                this.getWidth(),
+                this.getHeight()
+            );
         }
     });
 

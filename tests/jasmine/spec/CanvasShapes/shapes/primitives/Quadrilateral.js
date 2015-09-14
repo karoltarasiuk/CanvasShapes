@@ -56,25 +56,47 @@ define([
                 new CanvasShapes.Quadrilateral([[0, 0], [1, 1]]);
             }).toThrow(error1);
             expect(function () {
-                new CanvasShapes.Quadrilateral([[0, 0], [1, 1], [1, 0], [0, -1], [-1, 0]]);
+                new CanvasShapes.Quadrilateral([
+                    [0, 0],
+                    [1, 1],
+                    [1, 0],
+                    [0, -1],
+                    [-1, 0]
+                ]);
             }).toThrow(error1);
 
             // all good with initialisation
             expect(function () {
-                new CanvasShapes.Quadrilateral([[0, 0], [1, 1], [1, 0], [0, -1]]);
+                new CanvasShapes.Quadrilateral([
+                    [0, 0],
+                    [1, 1],
+                    [1, 0],
+                    [0, -1]
+                ]);
             }).not.toThrow();
         });
 
         it('correctly sets UUID', function () {
 
-            var shape1 = new CanvasShapes.Quadrilateral([[0, 0], [1, 1], [1, 0], [0, -1]]),
+            var shape1 = new CanvasShapes.Quadrilateral([
+                    [0, 0],
+                    [1, 1],
+                    [1, 0],
+                    [0, -1]
+                ]),
                 regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
             expect(regex.test(shape1.getUUID())).toBe(true);
         });
 
         it('correctly sets min and max coordinates variables', function () {
 
-            var quadrilateral = new CanvasShapes.Quadrilateral([[0, 0], [1, 1], [1, 0], [0, -1]]);
+            var quadrilateral = new CanvasShapes.Quadrilateral([
+                    [0, 0],
+                    [1, 1],
+                    [1, 0],
+                    [0, -1]
+                ]);
 
             expect(quadrilateral.MIN_COORDINATES).toBe(4);
             expect(quadrilateral.MAX_COORDINATES).toBe(4);
@@ -82,9 +104,18 @@ define([
 
         it('rendering', function () {
 
-            var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 }),
+            var scene = new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    width: 200,
+                    height: 200
+                }),
                 layer = new CanvasShapes.SceneLayer(scene),
-                quadrilateral = new CanvasShapes.Quadrilateral([[0, 0], [1, 1], [1, 0], [0, -1]]);
+                quadrilateral = new CanvasShapes.Quadrilateral([
+                    [0, 0],
+                    [1, 1],
+                    [1, 0],
+                    [0, -1]
+                ]);
 
             expect(function () {
                 quadrilateral.render(layer);

@@ -17,8 +17,10 @@ CanvasShapes.Triangle = (function () {
         this.initialize(coordinates);
     };
 
-    CanvasShapes.Class.extend(Triangle.prototype, CanvasShapes.Polygon.prototype, {
-
+    CanvasShapes.Class.extend(
+        Triangle.prototype,
+        CanvasShapes.Polygon.prototype,
+    {
         className: 'CanvasShapes.Triangle'
     });
 

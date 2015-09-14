@@ -192,28 +192,44 @@ CanvasShapes.Scene = (function () {
                             this.handlers[i][j] = null;
                         }
 
-                    } else if (_.isUndefined(context) && _.isObject(eventTypeOrContext)) {
+                    } else if (
+                        _.isUndefined(context) &&
+                        _.isObject(eventTypeOrContext)
+                    ) {
                         // this.off('some-event-type', contextObject)
-                        if (i === handlerOrType && this.handlers[i][j].context === eventTypeOrContext) {
-                            // removing all handlers by matching type and context
+                        if (
+                            i === handlerOrType &&
+                            this.handlers[i][j].context === eventTypeOrContext
+                        ) {
+                            // removing all handlers by matching type and
+                            // context
                             this.handlers[i][j] = null;
                         }
 
-                    } else if (_.isUndefined(context) && _.isString(eventTypeOrContext)) {
+                    } else if (
+                        _.isUndefined(context) &&
+                        _.isString(eventTypeOrContext)
+                    ) {
                         // this.off(someHandlerFunction, 'some-event-type')
-                        if (i === eventTypeOrContext && this.handlers[i][j].handler === handlerOrType) {
-                            // removing all handlers by matching handler and type
+                        if (
+                            i === eventTypeOrContext &&
+                            this.handlers[i][j].handler === handlerOrType
+                        ) {
+                            // removing all handlers by matching handler and
+                            // type
                             this.handlers[i][j] = null;
                         }
 
                     } else {
-                        // this.off(someHandlerFunction, 'some-event-type', contextObject)
+                        // this.off(someHandlerFunction, 'some-event-type',
+                        // contextObject)
                         if (
                             i === eventTypeOrContext &&
                             this.handlers[i][j].handler === handlerOrType &&
                             this.handlers[i][j].context === context
                         ) {
-                            // removing all handlers by matching handler, type and context
+                            // removing all handlers by matching handler, type
+                            // and context
                             this.handlers[i][j] = null;
                         }
                     }
@@ -273,7 +289,10 @@ CanvasShapes.Scene = (function () {
             }
 
             for (i = 0; i < handlers.length; i++) {
-                if (!_.isUndefined(context) && handlers[i].context !== context) {
+                if (
+                    !_.isUndefined(context) &&
+                    handlers[i].context !== context
+                ) {
                     continue;
                 }
                 handlers[i].handler.call(handlers[i].context, e);

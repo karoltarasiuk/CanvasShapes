@@ -6,8 +6,10 @@ CanvasShapes.SceneAbstract = (function () {
         throw new CanvasShapes.Error(8007);
     };
 
-    CanvasShapes.Class.extend(SceneAbstract.prototype, CanvasShapes.SceneInterface.prototype, {
-
+    CanvasShapes.Class.extend(
+        SceneAbstract.prototype,
+        CanvasShapes.SceneInterface.prototype,
+    {
         className: 'CanvasShapes.SceneAbstract',
 
         /**
@@ -126,7 +128,13 @@ CanvasShapes.SceneAbstract = (function () {
         newLayer: function (shape, width, height, left, top) {
 
             var layerObject,
-                layer = new CanvasShapes.SceneLayer(this, width, height, left, top);
+                layer = new CanvasShapes.SceneLayer(
+                    this,
+                    width,
+                    height,
+                    left,
+                    top
+                );
 
             if (shape && !shape.is(CanvasShapes.ShapeInterface)) {
                 throw new CanvasShapes.Error(1019);
@@ -187,7 +195,8 @@ CanvasShapes.SceneAbstract = (function () {
                                 };
                             }
 
-                            this.layers[layer.getUUID()].shapes[shape.getUUID()] = shape;
+                            this.layers[layer.getUUID()]
+                                .shapes[shape.getUUID()] = shape;
                         }
                     } else {
                         // we leave the shape as it is
@@ -206,7 +215,8 @@ CanvasShapes.SceneAbstract = (function () {
                         };
                     }
 
-                    this.layers[layer.getUUID()].shapes[shape.getUUID()] = shape;
+                    this.layers[layer.getUUID()]
+                        .shapes[shape.getUUID()] = shape;
                 }
             } else {
                 throw new CanvasShapes.Error(1020);
@@ -241,7 +251,7 @@ CanvasShapes.SceneAbstract = (function () {
 
             if (layer) {
                 if (this.requestedRendering[layer.getUUID()]) {
-                    // the layer shape is on is already in `this.requestedRendering`
+                    // the layer shape is already in `this.requestedRendering`
                     requestedLayer = this.requestedRendering[layer.getUUID()];
                 } else {
                     // layer is passed but is not in the structure

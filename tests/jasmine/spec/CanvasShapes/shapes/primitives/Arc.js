@@ -68,8 +68,19 @@ define([
                 new CanvasShapes.Arc([[0, 0]], 1);
                 new CanvasShapes.Arc([[0, 0], [1, 0], [1, 1]], 1);
                 new CanvasShapes.Arc([[0, 0], [1, 0], [1, 1]], 1, Math.PI);
-                new CanvasShapes.Arc([[0, 0], [1, 0], [1, 1]], 1, Math.PI, 1.5 * Math.PI);
-                new CanvasShapes.Arc([[0, 0], [1, 0], [1, 1]], 1, Math.PI, 1.5 * Math.PI, true);
+                new CanvasShapes.Arc(
+                    [[0, 0], [1, 0], [1, 1]],
+                    1,
+                    Math.PI,
+                    1.5 * Math.PI
+                );
+                new CanvasShapes.Arc(
+                    [[0, 0], [1, 0], [1, 1]],
+                    1,
+                    Math.PI,
+                    1.5 * Math.PI,
+                    true
+                );
             }).not.toThrow();
         });
 
@@ -90,13 +101,32 @@ define([
 
         it('rendering', function () {
 
-            var scene = new CanvasShapes.Scene({ element: document.createElement('div'), width: 200, height: 200 }),
+            var scene = new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    width: 200,
+                    height: 200
+                }),
                 layer = new CanvasShapes.SceneLayer(scene),
                 arc1 = new CanvasShapes.Arc([[0, 0]], 1),
                 arc2 = new CanvasShapes.Arc([[0, 0], [1, 0], [1, 1]], 1),
-                arc3 = new CanvasShapes.Arc([[0, 0], [1, 0], [1, 1]], 1, Math.PI),
-                arc4 = new CanvasShapes.Arc([[0, 0], [1, 0], [1, 1]], 1, Math.PI, 1.5 * Math.PI),
-                arc5 = new CanvasShapes.Arc([[0, 0], [1, 0], [1, 1]], 1, Math.PI, 1.5 * Math.PI, true);
+                arc3 = new CanvasShapes.Arc(
+                    [[0, 0], [1, 0], [1, 1]],
+                    1,
+                    Math.PI
+                ),
+                arc4 = new CanvasShapes.Arc(
+                    [[0, 0], [1, 0], [1, 1]],
+                    1,
+                    Math.PI,
+                    1.5 * Math.PI
+                ),
+                arc5 = new CanvasShapes.Arc(
+                    [[0, 0], [1, 0], [1, 1]],
+                    1,
+                    Math.PI,
+                    1.5 * Math.PI,
+                    true
+                );
 
             expect(function () {
                 arc1.render(layer);
