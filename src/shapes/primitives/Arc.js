@@ -138,7 +138,7 @@ CanvasShapes.Arc = (function () {
             var style = this.getStyle(),
                 context = layer.getContext(),
                 coordinates = this.processCoordinates(
-                    this.coordinates, true, layer
+                    this.coordinates, layer
                 );
 
             context.beginPath();
@@ -183,31 +183,14 @@ CanvasShapes.Arc = (function () {
          *
          * @implements {CanvasShapes.CoordinatesInterface}
          */
-        getCoordinates: function () {
-
-            var i,
-                x = 0,
-                y = 0,
-                z = 0;
+        getCentreCoordinates: function () {
 
             // returns center point of a circle
             if (this.mode === Arc.MODES.CIRCLE) {
                 return this.coordinates[0];
             }
 
-            for (i = 0; i < this.coordinates.length; i++) {
-                x += this.coordinates[i][0];
-                y += this.coordinates[i][1];
-                if (this.coordinates[i].length > 2) {
-                    z += this.coordinates[i][2];
-                }
-            }
-
-            x /= 3;
-            y /= 3;
-            z /= 3;
-
-            return [x, y, z];
+            return CanvasShapes.Shape.prototype.getCentreCoordinates.call(this);
         }
     });
 

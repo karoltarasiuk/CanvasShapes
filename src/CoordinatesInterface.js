@@ -16,11 +16,11 @@ CanvasShapes.CoordinatesInterface = (function () {
 
         /**
          * Normalizes coordinates and returns shallow copy of any coordinates
-         * array. If object is passed, the method will try to
-         * fetch its coordinates and create a shallow copy too.
-         * If `multiple` parameter is
-         * `true`, then it means that `coordinates` variable is an array of
-         * coordinate arrays/objects. Notice that sometimes normalizing is not
+         * array. If object is passed, the method will try to fetch its
+         * coordinates and create a shallow copy too. Method will detect whether
+         * passed coordinates are multiple or single.
+         *
+         * Notice that sometimes normalizing is not
          * what you need, as keeping reference to the parent object can be
          * better when coordinates can change.
          *
@@ -31,18 +31,25 @@ CanvasShapes.CoordinatesInterface = (function () {
          * Array format is: [x, y, z], `z` is OPTIONAL.
          *
          * @param {[array,CanvasShapes.CoordinatesInterface]} coordinates
-         * @param {boolean} multiple
          * @param {CanvasShapes.SceneLayerInterface} layer [OPTIONAL]
          *
          * @return {array}
          */
-        processCoordinates: function (coordinates, multiple, layer) {
+        processCoordinates: function (coordinates, layer) {
             throw new CanvasShapes.Error(9008);
         },
 
         /**
-         * Returns coordinates of the shape, e.g. after dragging. It's usually
-         * the center of the object.
+         * Returns coordinates of the centre of theshape.
+         *
+         * @return {[array,CanvasShapes.CoordinatesInterface]}
+         */
+        getCentreCoordinates: function () {
+            throw new CanvasShapes.Error(9007);
+        },
+
+        /**
+         * Returns coordinates of the shape.
          *
          * @return {[array,CanvasShapes.CoordinatesInterface]}
          */

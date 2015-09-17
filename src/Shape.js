@@ -44,7 +44,7 @@ CanvasShapes.Shape = (function () {
                 throw new CanvasShapes.Error(1037);
             }
 
-            coordinates = this.getCoordinates();
+            coordinates = this.getCentreCoordinates();
 
             if (
                 coordinates[0] === mouseCoordinates.x &&
@@ -154,9 +154,7 @@ CanvasShapes.Shape = (function () {
         /**
          * @implements {CanvasShapes.AnimationInterface}
          */
-        move: function (totalAnimationTime, coordinates, callback, context) {
-
-            var startingCoordinates = _.cloneDeep(this.coordinates);
+        move: function (totalAnimationTime, coordinates, callback) {
 
             if (_.isArray(coordinates)) {
                 if (
@@ -169,51 +167,55 @@ CanvasShapes.Shape = (function () {
                 }
             }
 
-            if (!context) {
-                context = this;
-            }
+            this.animate(new CanvasShapes.AnimationFrame(
+                this,
+                totalAnimationTime,
+                function (currentTime) {
 
-            this.animate(totalAnimationTime, function (currentTime) {
+                    var i, j,
+                        newCoordinates = [],
+                        ratio = currentTime / this.totalAnimationTime;
 
-                var i, j,
-                    newCoordinates = [],
-                    ratio = currentTime / totalAnimationTime;
+                    if (_.isNaN(ratio) || ratio > 1) {
+                        ratio = 1;
+                    }
 
-                if (_.isNaN(ratio) || ratio > 1) {
-                    ratio = 1;
-                }
-
-                if (_.isFunction(coordinates)) {
-                    newCoordinates = coordinates(
-                        _.cloneDeep(startingCoordinates),
-                        totalAnimationTime,
-                        currentTime
-                    );
-                } else {
-                    for (i = 0; i < coordinates.length; i++) {
-                        if (_.isArray(coordinates[i])) {
-                            if (!_.isArray(newCoordinates[i])) {
-                                newCoordinates[i] = [];
-                            }
-                            for (j = 0; j < coordinates[i].length; i++) {
-                                newCoordinates[i][j] =
-                                    startingCoordinates[i][j] +
-                                    (coordinates[i][j] -
-                                    startingCoordinates[i][j]) *
+                    if (_.isFunction(this.coordinates)) {
+                        newCoordinates = this.coordinates(
+                            this.startingCoordinates,
+                            this.totalAnimationTime,
+                            currentTime
+                        );
+                    } else {
+                        for (i = 0; i < this.coordinates.length; i++) {
+                            if (_.isArray(this.coordinates[i])) {
+                                if (!_.isArray(newCoordinates[i])) {
+                                    newCoordinates[i] = [];
+                                }
+                                for (j = 0; j < this.coordinates[i].length; j++) {
+                                    newCoordinates[i][j] =
+                                        this.startingCoordinates[i][j] +
+                                        (this.coordinates[i][j] -
+                                        this.startingCoordinates[i][j]) *
+                                        ratio;
+                                }
+                            } else {
+                                newCoordinates[i] =
+                                    this.startingCoordinates[i] +
+                                    (this.coordinates[i] - this.startingCoordinates[i]) *
                                     ratio;
                             }
-                        } else {
-                            newCoordinates[i] =
-                                startingCoordinates[i] +
-                                (coordinates[i] - startingCoordinates[i]) *
-                                ratio;
                         }
                     }
+
+                    this.shape.setCoordinates(newCoordinates);
+                },
+                callback,
+                {
+                    startingCoordinates: this.processCoordinates(this.getCoordinates()),
+                    coordinates: coordinates
                 }
-
-                this.setCoordinates(newCoordinates);
-
-            }, callback, context);
+            ));
         }
     });
 

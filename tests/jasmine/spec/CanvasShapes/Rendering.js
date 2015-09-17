@@ -43,9 +43,9 @@ define([
                 var i,
                     rendering = new CanvasShapes.Shape(),
                     sceneInterfaceHandlers = {
-                        newLayerHandler: function () {},
-                        getLayerHandler: function () {},
-                        addShapeHandler: function () {}
+                        newLayer: function () {},
+                        getLayer: function () {},
+                        addShape: function () {}
                     };
 
                 rendering.setSceneInterfaceHandlers(sceneInterfaceHandlers);

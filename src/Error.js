@@ -47,8 +47,9 @@ CanvasShapes.Error = (function () {
         1040: "CanvasShapes.Event.getCategory - passed `event` is in invalid format",
         1041: "CanvasShapes.Event.Mouse - in `initialize()`: invalid format of `event` argument passed",
         1042: "CanvasShapes.Shape - in `on()`, `off()` or `dispatch()`: shape is not added to a scene yet",
-        1043: "CanvasShapes.AnimationAbstract - in `animate()`: invalid format of arguments passed",
+        1043: "CanvasShapes.AnimationFrame - in `constructor`: invalid format of arguments passed",
         1044: "CanvasShapes.SceneAbstract - in `requestRendering()`: shape is not on the layer",
+        1045: "CanvasShapes.AnimationAbstract - in `animate()`: invalid format of arguments passed",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
@@ -72,6 +73,8 @@ CanvasShapes.Error = (function () {
         8020: "CanvasShapes.EventInterface - can't instantiate interface",
         8021: "CanvasShapes.AnimationInterface - can't instantiate interface",
         8022: "CanvasShapes.AnimationAbstract - can't instantiate abstract",
+        8023: "CanvasShapes.AnimationFrameInterface - can't instantiate interface",
+        8024: "CanvasShapes.AnimationFrameAbstract - can't instantiate abstract",
         // Not implemented methods errors
         9001: 'CanvasShapes.RenderingInterface - `render()` is not implemented',
         9002: 'CanvasShapes.RenderingAbstract - `renderOnSingleLayer()` is not implemented',
@@ -114,12 +117,14 @@ CanvasShapes.Error = (function () {
         9043: "CanvasShapes.InteractionInterface - `attachEvents()` is not implemented",
         9044: "CanvasShapes.EventInterface - `initialize()` is not implemented",
         9045: "CanvasShapes.EventInterface - `getType()` is not implemented",
-        9046: "CanvasShapes.AnimationInterface - `getAnimationFrame()` is not implemented",
+        9046: "CanvasShapes.AnimationInterface - `move()` is not implemented",
         9047: "CanvasShapes.AnimationInterface - `animate()` is not implemented",
         9048: "CanvasShapes.SceneInterface - `requestRendering()` is not implemented",
         9049: "CanvasShapes.CoordinatesInterface - `setCoordinates()` is not implemented",
         9050: "CanvasShapes.ClassInterface - `setUUID()` is not implemented",
         9051: "CanvasShapes.ClassInterface - `getUUID()` is not implemented",
+        9052: "CanvasShapes.AnimationFrameInterface - `next()` is not implemented",
+        9053: "CanvasShapes.AnimationFrameInterface - `reset()` is not implemented",
     };
 
     /**

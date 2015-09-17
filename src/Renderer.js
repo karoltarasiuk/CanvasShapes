@@ -69,7 +69,7 @@ CanvasShapes.Renderer = (function () {
             var i;
 
             for (i = 0; i < this.scenes.length; i++) {
-                this.scenes[i].render.apply(this.scenes[i]);
+                this.scenes[i].render();
             }
         },
 

@@ -32,6 +32,11 @@ require([
         point14 = new CanvasShapes.Point([90, 70]),
         point15 = new CanvasShapes.Point([110, 100]),
         point16 = new CanvasShapes.Point([0, 0]),
+        arc1 = new CanvasShapes.Arc(
+            [[0, 0], [100, 0], [100, 100]],
+            70
+        ),
+        circle1 = new CanvasShapes.Circle([95, 95], 5),
         line = new CanvasShapes.Line([point1, point2]),
         polygon1 = new CanvasShapes.Polygon([point3, point4, point2, point5]),
         polygon2 = new CanvasShapes.Polygon([point12, point14, point15, point13]),
@@ -54,37 +59,44 @@ require([
     scene6 = renderer.addScene({ id: 'scene6', width: 300, height: 200 });
 
     // adding all shapes
-    group.addShapes([line, square, rectangle]);
-    renderer.addShapes([point16, group, polygon1, polygon2]);
+    // group.addShapes([]);
+    renderer.addShapes([line, square, rectangle, circle1, arc1, point16, group, polygon1, polygon2]);
 
     // those polygons must be on separate layers
-    scene3.addShape(polygon1, scene3.newLayer());
-    scene6.addShape(polygon1, scene6.newLayer());
+    scene3.newLayer(polygon1);
+    scene6.newLayer(polygon1);
+    // another way of doing exactly the same
     scene3.addShape(polygon2, scene3.newLayer());
     scene6.addShape(polygon2, scene6.newLayer());
 
     // setting relative rendering
     square.setRelativeRendering(true);
     polygon1.setRelativeRendering(true);
+    point16.setRelativeRendering(true);
+    arc1.setRelativeRendering(true);
+    circle1.setRelativeRendering(true);
 
     // styling shapes
-    group.setStyle(strokeStyle, true);
-    polygon1.setStyle(strokeStyle, true);
-    polygon2.setStyle(strokeStyle, true);
+    // group.setStyle(strokeStyle, true);
+    polygon1.setStyle(strokeStyle);
+    polygon2.setStyle(strokeStyle);
     square.setStyle(fillStyle);
     point1.setFace('circle', 10);
     point16.setFace('circle', 10);
+    arc1.setStyle(strokeStyle);
+    circle1.setStyle(strokeStyle);
+    line.setStyle(strokeStyle);
+    rectangle.setStyle(strokeStyle);
 
-    // rendering all the shapes
+    // rendering all the shapes once
     // renderer.render();
 
+    // starting animation loop
     CanvasShapes.Renderer.start();
-    console.log('START ANIMATION');
-    point16.move(500, [100, 100], function () {
-        point16.move(500, [100, 0], function () {
-            point16.move(500, [0, 100], function () {
-                point16.move(500, [0, 50], function () {
-
+    point16.move(500, [100, 100], function () {console.log('POINT 1 MOVED');
+        point16.move(500, [100, 0], function () {console.log('POINT 2 MOVED');
+            point16.move(500, [0, 100], function () {console.log('POINT 3 MOVED');
+                point16.move(500, [0, 50], function () {console.log('POINT 4 MOVED');
                     point16.move(2000, function (coords, totalTime, curTime) {
                         var ratio;
                         if (curTime >= totalTime) {
@@ -97,12 +109,35 @@ require([
                             coords[1] = Math.sin(ratio) * 50 + 50;
                         }
                         return coords;
-                    }, function () {
-                        console.log('STOP ANIMATION');
+                    }, function () {console.log('POINT 5 MOVED');
                         CanvasShapes.Renderer.stop();
                     });
                 });
             });
         });
+    });
+    arc1.move(1200, [[-50, 80], [80, 80], [80, 150]], function () {console.log('ARC 1 MOVED');
+        arc1.move(1200, [[-50, 60], [60, 60], [60, 150]], function () {console.log('ARC 2 MOVED');
+            arc1.move(1200, [[-50, 50], [50, 50], [50, 150]], function () {
+                console.log('ARC 3 MOVED');
+            });
+        });
+    });
+    circle1.move(1700, [5, 50], function () {console.log('CIRCLE 1 MOVED');
+        circle1.move(1700, [5, 95], function () {
+            console.log('CIRCLE 2 MOVED');
+        });
+    });
+    square.move(3500, [[80, 90], [90, 80], [100, 90], [90, 100]], function () {
+        console.log('SQUARE MOVED');
+    });
+    line.move(3500, [[90, 10], [10, 90]], function () {
+        console.log('LINE MOVED');
+    });
+    rectangle.move(3500, [[20, 20], [90, 90], [100, 80], [30, 10]], function () {
+        console.log('RECTANGLE MOVED');
+    });
+    polygon1.move(3500, [[50, 50], [70, 30], [50, 70], [30, 30]], function () {
+        console.log('POLYGON 1 MOVED');
     });
 });

@@ -237,7 +237,7 @@ define([
                 animate = true;
                 window.requestAnimationFrame(requestAnimationFrameCallback);
 
-                shape1.move(0, [100, 100], callback, shape1);
+                shape1.move(0, [100, 100], callback);
             });
 
             it('moves the shape properly', function () {

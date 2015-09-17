@@ -55,24 +55,29 @@ define([
                         new CanvasShapes.Shape([10, 10]),
                         new CanvasShapes.Point([20, 20])
                     ],
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 50,
+                        height: 50
+                    }),
                     layer = new CanvasShapes.SceneLayer(scene, 50, 50),
                     shape = new CanvasShapes.Shape();
 
                 expect(shape.processCoordinates(coordinates1))
                     .toEqual(coordinates1);
-                expect(shape.processCoordinates(coordinates2, true))
+                expect(shape.processCoordinates(coordinates2))
                     .toEqual(coordinates2);
-                expect(shape.processCoordinates(coordinates3, true))
-                    .toEqual(coordinates2);
+                expect(shape.processCoordinates(coordinates3))
+                    .toEqual([[10, 10, 0], [20, 20, 0]]);
 
                 shape.setRelativeRendering(true);
 
-                expect(shape.processCoordinates(coordinates1, false, layer))
+                expect(shape.processCoordinates(coordinates1, layer))
                     .toEqual([5, 5]);
-                expect(shape.processCoordinates(coordinates2, true, layer))
+                expect(shape.processCoordinates(coordinates2, layer))
                     .toEqual([[5, 5], [10, 10]]);
-                expect(shape.processCoordinates(coordinates3, true, layer))
-                    .toEqual([[5, 5], [10, 10]]);
+                expect(shape.processCoordinates(coordinates3, layer))
+                    .toEqual([[5, 5, 0], [10, 10, 0]]);
             });
 
             it('validateCoordinates', function () {

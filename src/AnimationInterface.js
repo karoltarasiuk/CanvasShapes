@@ -14,25 +14,12 @@ CanvasShapes.AnimationInterface = (function () {
         className: 'CanvasShapes.AnimationInterface',
 
         /**
-         * Performs the animation on a shape.
+         * Performs the animation on a shape using an animation frame object,
+         * which encapsulates all the needed properties and arguments.
          *
-         * `totalAnimationTime` allows to define the time after which animation
-         * should be finished no matter what (to prevent performance issues).
-         * It's an integer containing number of miliseconds. After the time
-         * passes, `animate` will call `stepCallback` one last time, and shape
-         * needs to finish the animation. After that `callback` will be called.
-         *
-         * @param {integer}  totalAnimationTime
-         * @param {function} stepCallback
-         * @param {function} callback [OPTIONAL]
-         * @param {object}   context [OPTIONAL]
+         * @param {CanvasShapes.AnimationFrame}  animationFrame
          */
-        animate: function (
-            totalAnimationTime,
-            stepCallback,
-            callback,
-            context
-        ) {
+        animate: function (animationFrame) {
             throw new CanvasShapes.Error(9047);
         },
 
@@ -56,10 +43,13 @@ CanvasShapes.AnimationInterface = (function () {
          * }
          * ```
          * `startingCoordinates` is basically a deepCopy of the original
-         * coordinates. The function must return coordinates or coordinates
-         * won't change. It is also up to this function to guarantee final
+         * coordinates. The function must return valid coordinates to apply. It
+         * is also up to this function to guarantee final
          * position of a shape. In a last exectuion `currentTime` can be bigger
          * than `totalTime` and this function should still behave correctly.
+         *
+         * After everything finishes, `callback` will be called. If you want to
+         * run `callback` against some object, you need to bind it by yourself.
          *
          * [WARNING] This function won't perform any type or value checking for
          * performance reasons.
@@ -67,10 +57,9 @@ CanvasShapes.AnimationInterface = (function () {
          * @param {integer}        totalAnimationTime
          * @param {array,function} coordinates
          * @param {function}       callback [OPTIONAL]
-         * @param {object}         context [OPTIONAL]
          */
-        move: function (totalAnimationTime, coordinates, callback, context) {
-            throw new CanvasShapes.Error(9047);
+        move: function (totalAnimationTime, coordinates, callback) {
+            throw new CanvasShapes.Error(9046);
         }
     });
 

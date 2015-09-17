@@ -107,5 +107,14 @@ CanvasShapes.Class = (function () {
         OBJECTS[UUID] = object;
     };
 
+    /**
+     * Gets whole collection of objects created using this class.
+     *
+     * @return {object}
+     */
+    Class.getObjects = function () {
+        return OBJECTS;
+    };
+
     return Class;
 }());

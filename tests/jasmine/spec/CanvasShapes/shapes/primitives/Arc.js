@@ -142,8 +142,8 @@ define([
             var arc1 = new CanvasShapes.Arc([[0, 0]], 1),
                 arc2 = new CanvasShapes.Arc([[0, 0], [1, 0], [1, 1]], 1);
 
-            expect(arc1.getCoordinates()).toEqual([0, 0]);
-            expect(arc2.getCoordinates()).toEqual([2/3, 1/3, 0]);
+            expect(arc1.getCoordinates()).toEqual([[0, 0]]);
+            expect(arc2.getCoordinates()).toEqual([[0, 0], [1, 0], [1, 1]]);
         });
     });
 });

@@ -182,9 +182,9 @@ define([
                     shape1 = new CanvasShapes.Shape(),
                     shape2 = new CanvasShapes.Shape(),
                     sceneInterfaceHandlers = {
-                        newLayerHandler: function () {},
-                        getLayerHandler: function () {},
-                        addShapeHandler: function () {}
+                        newLayer: function () {},
+                        getLayer: function () {},
+                        addShape: function () {}
                     };
 
                 group.addShapes([shape1, shape2]);
@@ -234,15 +234,29 @@ define([
                 }).not.toThrow();
             });
 
-            it('evaluates group coordinates properly', function () {
+            it('evaluates group centre coordinates properly', function () {
 
                 var group = new CanvasShapes.Group(),
                     shape1 = new CanvasShapes.Point([30, 30]),
                     shape2 = new CanvasShapes.Point([60, 60]);
 
-                expect(group.getCoordinates()).toEqual([0, 0, 0]);
+                expect(group.getCentreCoordinates()).toEqual([0, 0, 0]);
                 group.addShapes([shape1, shape2]);
-                expect(group.getCoordinates()).toEqual([45, 45, 0]);
+                expect(group.getCentreCoordinates()).toEqual([45, 45, 0]);
+            });
+
+            it('gets coordinates from each shape properly', function () {
+
+                var group = new CanvasShapes.Group(),
+                    shape1 = new CanvasShapes.Point([30, 30]),
+                    shape2 = new CanvasShapes.Point([60, 60]);
+
+                expect(shape1.getCoordinates()).toEqual([30, 30]);
+                expect(shape2.getCoordinates()).toEqual([60, 60]);
+
+                expect(group.getCoordinates()).toEqual([]);
+                group.addShapes([shape1, shape2]);
+                expect(group.getCoordinates()).toEqual([[30, 30], [60, 60]]);
             });
 
             it('sets the style properly', function () {
