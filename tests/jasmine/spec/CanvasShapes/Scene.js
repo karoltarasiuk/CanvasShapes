@@ -77,7 +77,7 @@ define([
             it('adding new layer', function () {
 
                 var layer,
-                    error1 = new CanvasShapes.Error(1019);
+                    error1 = new CanvasShapes.Error(1019),
                     scene = new CanvasShapes.Scene({
                         element: document.createElement('div'),
                         width: 100,
@@ -323,11 +323,11 @@ define([
 
                 expect(sceneInterfaceHandlers).toBeDefined();
                 expect(_.isObject(sceneInterfaceHandlers)).toBe(true);
-                expect(_.isFunction(sceneInterfaceHandlers.newLayerHandler))
+                expect(_.isFunction(sceneInterfaceHandlers.newLayer))
                     .toBe(true);
-                expect(_.isFunction(sceneInterfaceHandlers.getLayerHandler))
+                expect(_.isFunction(sceneInterfaceHandlers.getLayer))
                     .toBe(true);
-                expect(_.isFunction(sceneInterfaceHandlers.addShapeHandler))
+                expect(_.isFunction(sceneInterfaceHandlers.addShape))
                     .toBe(true);
                 expect(_.isFunction(sceneInterfaceHandlers.on)).toBe(true);
                 expect(_.isFunction(sceneInterfaceHandlers.off)).toBe(true);

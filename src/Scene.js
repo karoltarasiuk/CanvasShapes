@@ -48,12 +48,6 @@ CanvasShapes.Scene = (function () {
 
         className: 'CanvasShapes.Scene',
 
-        newLayerHandler: null,
-
-        setLayerHandler: null,
-
-        getLayerHandler: null,
-
         initialize: function (config) {
 
             var defaultLayer;
@@ -94,12 +88,7 @@ CanvasShapes.Scene = (function () {
         render: function (shape) {
 
             var i, j, layerObject, layer, shapeObject,
-                renderAllShapesOnLayer = function (layerObject) {
-                    layerObject.layer.clear();
-                    for (j in layerObject.shapes) {
-                        layerObject.shapes[j].render(layerObject.layer);
-                    }
-                };
+                callbacks = {};
 
             this.initializeLayers();
 
@@ -108,7 +97,10 @@ CanvasShapes.Scene = (function () {
                     layerObject = this.layers[i];
                     for (j in layerObject.shapes) {
                         if (shape === layerObject.shapes[j]) {
-                            renderAllShapesOnLayer(layerObject);
+                            layerObject.layer.clear();
+                            for (j in layerObject.shapes) {
+                                layerObject.shapes[j].render(layerObject.layer);
+                            }
                             return;
                         }
                     }
@@ -127,12 +119,24 @@ CanvasShapes.Scene = (function () {
                         shape = shapeObject.shape;
                         shape.render(layer);
 
-                        if (shapeObject.callback) {
-                            if (!shapeObject.context) {
-                                shapeObject.context = shape;
-                            }
-                            shapeObject.callback.apply(shapeObject.context);
+                        if (shapeObject.animationFrame) {
+                            // it gets executed after clearing all
+                            // the shapes from `this.requestedRendering`
+                            callbacks[shape.getUUID()] =
+                                shapeObject.animationFrame;
                         }
+                    }
+                }
+
+                // all shapes were rendered so we can clear this list
+                this.requestedRendering = {};
+
+                // executing all the callbacks
+                for (i in callbacks) {
+                    if (_.isObject(callbacks[i])) {
+                        callbacks[i].next();
+                    } else {
+                        callbacks[i]();
                     }
                 }
             }

@@ -27,6 +27,46 @@ define([
                 .toThrow(error2);
         });
 
+        it('throws error when arguments are invalid', function () {
+
+            var scene1 = new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    width: 100,
+                    height: 100
+                }),
+                point1 = new CanvasShapes.Point([0, 0]),
+                error1 = new CanvasShapes.Error(1045);
+
+            scene1.addShape(point1);
+
+            expect(function () { point1.animate(); }).toThrow(error1);
+            expect(function () { point1.animate('a'); }).toThrow(error1);
+            expect(function () { point1.animate(0, 'a'); }).toThrow(error1);
+            expect(function () { point1.animate(0, function () {}); })
+                .toThrow(error1);
+
+            expect(function () {
+                point1.animate(0, function () {}, 'a');
+            }).toThrow(error1);
+            expect(function () {
+                point1.animate(0, function () {}, function () {});
+            }).toThrow(error1);
+
+            expect(function () {
+                point1.animate(0, function () {}, function () {}, 'a');
+            }).toThrow(error1);
+            expect(function () {
+                point1.animate(0, function () {}, function () {}, {});
+            }).toThrow(error1);
+
+            expect(function () {
+                point1.animate(new CanvasShapes.AnimationFrame(
+                    new CanvasShapes.Shape(),
+                    0, function () {}, function () {}, {}
+                ));
+            }).not.toThrow();
+        });
+
         it('callbacks have not been called before animation', function () {
 
             var scene1 = new CanvasShapes.Scene({
@@ -47,40 +87,9 @@ define([
             expect(callbackSpy).not.toHaveBeenCalled();
 
             scene1.addShape(point1);
-            point1.animate(0, obj1.step, obj1.callback, point1);
-        });
-
-        it('throws error when arguments are invalid', function () {
-
-            var scene1 = new CanvasShapes.Scene({
-                    element: document.createElement('div'),
-                    width: 100,
-                    height: 100
-                }),
-                point1 = new CanvasShapes.Point([0, 0]),
-                error1 = new CanvasShapes.Error(1043);
-
-            scene1.addShape(point1);
-
-            expect(function () { point1.animate(); }).toThrow(error1);
-            expect(function () { point1.animate('a'); }).toThrow(error1);
-            expect(function () { point1.animate(0, 'a'); }).toThrow(error1);
-            expect(function () { point1.animate(0, function () {}); })
-                .not.toThrow();
-
-            expect(function () {
-                point1.animate(0, function () {}, 'a');
-            }).toThrow(error1);
-            expect(function () {
-                point1.animate(0, function () {}, function () {});
-            }).not.toThrow();
-
-            expect(function () {
-                point1.animate(0, function () {}, function () {}, 'a');
-            }).toThrow(error1);
-            expect(function () {
-                point1.animate(0, function () {}, function () {}, {});
-            }).not.toThrow();
+            point1.animate(new CanvasShapes.AnimationFrame(
+                point1, 0, obj1.callback, obj1.step, {}
+            ));
         });
 
         describe('after animation check - async', function () {
@@ -124,7 +133,9 @@ define([
                 window.requestAnimationFrame(requestAnimationFrameCallback);
 
                 // step and callback will only be called once
-                point1.animate(0, step, callback, point1);
+                point1.animate(new CanvasShapes.AnimationFrame(
+                    point1, 0, step, callback, {}
+                ));
             });
 
             it('callbacks have been called', function () {

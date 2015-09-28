@@ -36,7 +36,7 @@ CanvasShapes.Square = (function () {
                 this.MIN_COORDINATES,
                 this.MAX_COORDINATES
             );
-            processedCoordinates = this.processCoordinates(coordinates, true);
+            processedCoordinates = this.processCoordinates(coordinates);
 
             temp1 = CanvasShapes.GeometryTools.segmentLength(
                 processedCoordinates[0],

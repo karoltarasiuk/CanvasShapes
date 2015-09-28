@@ -7,6 +7,7 @@ CanvasShapes.Group = (function () {
      * its children.
      */
     var Group = function () {
+        this.setUUID();
         this.initialize();
     };
 
@@ -47,7 +48,7 @@ CanvasShapes.Group = (function () {
          *
          * Calculates average coordinate from its children.
          */
-        getCoordinates: function () {
+        getCentreCoordinates: function () {
 
             var coordinates,
                 i = 0,
@@ -56,7 +57,7 @@ CanvasShapes.Group = (function () {
                 z = 0;
 
             this.eachShape(function () {
-                coordinates = this.getCoordinates();
+                coordinates = this.getCentreCoordinates();
                 x += coordinates[0];
                 y += coordinates[1];
                 if (coordinates.length > 2) {
@@ -72,6 +73,22 @@ CanvasShapes.Group = (function () {
             }
 
             return [x, y, z];
+        },
+
+        /**
+         * @implements {CanvasShapes.CoordinatesInterface}
+         *
+         * Returns array of coordinates of the children.
+         */
+        getCoordinates: function () {
+
+            var coordinates = [];
+
+            this.eachShape(function () {
+                coordinates.push(this.getCoordinates());
+            });
+
+            return coordinates;
         },
 
         /**

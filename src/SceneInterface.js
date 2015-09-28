@@ -110,20 +110,17 @@ CanvasShapes.SceneInterface = (function () {
          * Method allowing the shape to request the layer shape is on, to be
          * re-rendered. It will be rendered when the next animation frame is
          * requested. If the same shape is added twice, it will override the
-         * previous entry.
-         *
-         * If `context` is passed it will will use it when executing callback.
-         * If not the `shape` will be used as a context.
+         * previous entry. Instead of `animationFrame` you can simply pass a
+         * callback function.
          *
          * [WARNING] Due to performance reasons, this method doesn't perform any
          * type checking. It assuems all the passed arguments are of the correct
          * type. It does though check whether shape is associated with a layer.
          *
          * @param {CanvasShapes.Shape}               shape
-         * @param {function}                         callback [OPTIONAL]
-         * @param {object}                           context  [OPTIONAL]
+         * @param {CanvasShapes.AnimationFrame}      animationFrame [OPTIONAL]
          */
-        requestRendering: function (shape, callback, context) {
+        requestRendering: function (shape, animationFrame) {
             throw new CanvasShapes.Error(9048);
         },
 
@@ -131,9 +128,9 @@ CanvasShapes.SceneInterface = (function () {
          * Gets handlers which can allow a shape to obtain some functionality
          * from a scene. Current implementation includes following handlers:
          *
-         * - newLayerHandler
-         * - getLayerHandler
-         * - addShapeHandler
+         * - newLayer
+         * - getLayer
+         * - addShape
          * - requestRendering
          * - on
          * - off

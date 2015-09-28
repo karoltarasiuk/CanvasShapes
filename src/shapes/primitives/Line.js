@@ -17,7 +17,7 @@ CanvasShapes.Line = (function () {
         this.initialize(coordinates);
     };
 
-    CanvasShapes.Class.extend(Line.prototype, CanvasShapes.Group.prototype, {
+    CanvasShapes.Class.extend(Line.prototype, CanvasShapes.Shape.prototype, {
 
         className: 'CanvasShapes.Line',
 
@@ -25,7 +25,6 @@ CanvasShapes.Line = (function () {
 
             var i;
 
-            CanvasShapes.Group.prototype.initialize.call(this);
             this.validateCoordinatesArray(
                 coordinates,
                 true,
@@ -33,13 +32,7 @@ CanvasShapes.Line = (function () {
                 this.MAX_COORDINATES
             );
 
-            for (i = 0; i < coordinates.length; i++) {
-                if (_.isArray(coordinates[i])) {
-                    this.addShapes(new CanvasShapes.Point(coordinates[i]));
-                } else {
-                    this.addShapes(coordinates[i]);
-                }
-            }
+            this.setCoordinates(coordinates);
         },
 
         /**
@@ -48,16 +41,11 @@ CanvasShapes.Line = (function () {
         render: function (layer) {
 
             var i,
-                shapes = this.getShapes(),
                 style = this.getStyle(),
                 context = layer.getContext(),
                 coordinates = this.processCoordinates(
-                    shapes, true, layer
+                    this.getCoordinates(), layer
                 );
-
-            for (i = 0; i < shapes.length; i++) {
-                shapes[i].render(layer);
-            }
 
             context.beginPath();
 

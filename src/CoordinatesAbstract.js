@@ -19,12 +19,17 @@ CanvasShapes.CoordinatesAbstract = (function () {
         /**
          * @implements {CanvasShapes.CoordinatesInterface}
          */
-        processCoordinates: function (coordinates, multiple, layer) {
+        processCoordinates: function (coordinates, layer) {
 
-            var i,
+            var i, multiple,
                 ret = [];
 
-            if (multiple !== true) {
+            if (
+                (_.isArray(coordinates) && coordinates.length > 0) &&
+                (_.isArray(coordinates[0]) || _.isObject(coordinates[0]))
+            ) {
+                multiple = true;
+            } else {
                 coordinates = [coordinates];
             }
 
@@ -35,11 +40,13 @@ CanvasShapes.CoordinatesAbstract = (function () {
                     _.isObject(coordinates[i]) &&
                     coordinates[i].is(CanvasShapes.CoordinatesInterface)
                 ) {
-                    ret.push(coordinates[i].getCoordinates().slice(0));
+                    ret.push(coordinates[i].getCentreCoordinates().slice(0));
                 }
             }
 
             if (
+                _.isObject(layer) && _.isFunction(layer.is) &&
+                layer.is(CanvasShapes.SceneLayerInterface) &&
                 this.is(CanvasShapes.RenderingInterface) &&
                 this.getRelativeRendering()
             ) {
@@ -137,6 +144,43 @@ CanvasShapes.CoordinatesAbstract = (function () {
             }
 
             return valid;
+        },
+
+        /**
+         * @implements {CanvasShapes.CoordinatesInterface}
+         */
+        getCentreCoordinates: function () {
+
+            var i,
+                coordinates = this.coordinates,
+                j = 0,
+                x = 0,
+                y = 0,
+                z = 0;
+
+            if (
+                _.isArray(coordinates) && coordinates.length > 0 &&
+                !_.isArray(coordinates[0]) && !_.isObject(coordinates[0])
+            ) {
+                coordinates = [coordinates];
+            }
+
+            for (i = 0; i < coordinates.length; i++) {
+                x += coordinates[i][0];
+                y += coordinates[i][1];
+                if (coordinates[i].length > 2) {
+                    z += coordinates[i][2];
+                }
+                j++;
+            }
+
+            if (j > 0) {
+                x /= j;
+                y /= j;
+                z /= j;
+            }
+
+            return [x, y, z];
         },
 
         /**

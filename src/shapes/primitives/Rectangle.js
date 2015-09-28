@@ -36,7 +36,7 @@ CanvasShapes.Rectangle = (function () {
                 this.MIN_COORDINATES,
                 this.MAX_COORDINATES
             );
-            processedCoordinates = this.processCoordinates(coordinates, true);
+            processedCoordinates = this.processCoordinates(coordinates);
 
             angle = CanvasShapes.GeometryTools.angleMeasure(
                 processedCoordinates[0],

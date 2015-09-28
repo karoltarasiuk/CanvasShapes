@@ -214,7 +214,7 @@ define([
                 setTimeout(function () {
                     CanvasShapes.Renderer.stop();
                     done();
-                }, 10);
+                }, 100);
             });
 
             it('start & stop methods', function () {

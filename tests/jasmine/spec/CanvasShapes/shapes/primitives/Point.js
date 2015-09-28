@@ -97,9 +97,9 @@ define([
                     CanvasShapes.Point.FACES.CIRCLE
                 ),
                 sceneInterfaceHandlers = {
-                    newLayerHandler: function () {},
-                    getLayerHandler: function () {},
-                    addShapeHandler: function () {}
+                    newLayer: function () {},
+                    getLayer: function () {},
+                    addShape: function () {}
                 };
 
             // there is no face, therefore it shouldn't set anything

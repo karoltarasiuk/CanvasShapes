@@ -55,7 +55,7 @@ define([
             var circle = new CanvasShapes.Circle([0, 0], 1);
 
             expect(circle.MIN_COORDINATES).toBe(1);
-            expect(circle.MAX_COORDINATES).toBe(1);
+            expect(circle.MAX_COORDINATES).toBe(3);
         });
 
         it('rendering', function () {
@@ -78,8 +78,8 @@ define([
             var circle1 = new CanvasShapes.Circle([0, 0], 1),
                 circle2 = new CanvasShapes.Circle([40, 120], 1);
 
-            expect(circle1.getCoordinates()).toEqual([0, 0]);
-            expect(circle2.getCoordinates()).toEqual([40, 120]);
+            expect(circle1.getCoordinates()).toEqual([[0, 0]]);
+            expect(circle2.getCoordinates()).toEqual([[40, 120]]);
         });
     });
 });
