@@ -50,6 +50,7 @@ CanvasShapes.Error = (function () {
         1043: "CanvasShapes.AnimationFrame - in `constructor`: invalid format of arguments passed",
         1044: "CanvasShapes.SceneAbstract - in `requestRendering()`: shape is not on the layer",
         1045: "CanvasShapes.AnimationAbstract - in `animate()`: invalid format of arguments passed",
+        1046: "CanvasShapes.ShapeAbstract - in `setParent()`: invalid format of arguments passed",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
@@ -125,6 +126,9 @@ CanvasShapes.Error = (function () {
         9051: "CanvasShapes.ClassInterface - `getUUID()` is not implemented",
         9052: "CanvasShapes.AnimationFrameInterface - `next()` is not implemented",
         9053: "CanvasShapes.AnimationFrameInterface - `reset()` is not implemented",
+        9054: "CanvasShapes.ShapeInterface - `setParent()` is not implemented",
+        9055: "CanvasShapes.ShapeInterface - `getParent()` is not implemented",
+        9056: "CanvasShapes.ShapeInterface - `getRenderingShape()` is not implemented",
     };
 
     /**
