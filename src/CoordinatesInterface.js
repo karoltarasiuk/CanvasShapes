@@ -87,6 +87,24 @@ CanvasShapes.CoordinatesInterface = (function () {
         },
 
         /**
+         * Converts offset object to coordinates array. Offset object is
+         * defined as follows:
+         * ```
+         * {
+         *     x: {number},
+         *     y: {number},
+         *     z: {number} [OPTIONAL]
+         * }
+         * ```
+         *
+         * @param  {object} offset
+         * @return {array}
+         */
+        translateOffsetToCoordinates: function (offset) {
+            throw new CanvasShapes.Error(9057);
+        },
+
+        /**
          * Validates whether array of coordinates is valid. If
          * `throwException` is `true`, it will throw exception when passed
          * coordinates are not valid, instead of returning `false`.
