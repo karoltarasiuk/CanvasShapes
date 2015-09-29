@@ -140,4 +140,7 @@ require([
     polygon1.move(3500, [[50, 50], [70, 30], [50, 70], [30, 30]], function () {
         console.log('POLYGON 1 MOVED');
     });
+    polygon2.move(3500, { x: 20, y: 10 }, function () {
+        console.log('POLYGON 2 MOVED');
+    });
 });

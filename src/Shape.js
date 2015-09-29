@@ -156,6 +156,11 @@ CanvasShapes.Shape = (function () {
          */
         move: function (totalAnimationTime, coordinates, callback) {
 
+            var i, j, tempCoordinates,
+                startingCoordinates = this.processCoordinates(
+                    this.getCoordinates()
+                );
+
             if (_.isArray(coordinates)) {
                 if (
                     (_.isUndefined(this.MIN_COORDINATES) && _.isUndefined(this.MAX_COORDINATES)) ||
@@ -164,6 +169,31 @@ CanvasShapes.Shape = (function () {
                     this.validateCoordinates(coordinates, true);
                 } else {
                     this.validateCoordinatesArray(coordinates, true, this.MIN_COORDINATES, this.MAX_COORDINATES);
+                }
+            } else if (_.isFunction(coordinates)) {
+                // do absolutely nothing
+            } else if (_.isObject(coordinates)) {
+                // translating offset object to array
+                tempCoordinates =
+                    this.translateOffsetToCoordinates(coordinates);
+
+                coordinates = [];
+
+                // setting `this.coordinates` as
+                // `this.startingCoordinates` plus offset
+                for (i = 0; i < startingCoordinates.length; i++) {
+                    if (_.isArray(startingCoordinates[i])) {
+                        for (j = 0; j < startingCoordinates[i].length; j++) {
+                            if (!_.isArray(coordinates[i])) {
+                                coordinates[i] = [];
+                            }
+                            coordinates[i][j] =
+                                startingCoordinates[i][j] + tempCoordinates[j];
+                        }
+                    } else {
+                        coordinates[i] =
+                            startingCoordinates[i] + tempCoordinates[i];
+                    }
                 }
             }
 
@@ -187,6 +217,7 @@ CanvasShapes.Shape = (function () {
                             currentTime
                         );
                     } else {
+
                         for (i = 0; i < this.coordinates.length; i++) {
                             if (_.isArray(this.coordinates[i])) {
                                 if (!_.isArray(newCoordinates[i])) {
@@ -212,7 +243,7 @@ CanvasShapes.Shape = (function () {
                 },
                 callback,
                 {
-                    startingCoordinates: this.processCoordinates(this.getCoordinates()),
+                    startingCoordinates: startingCoordinates,
                     coordinates: coordinates
                 }
             ));

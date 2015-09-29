@@ -112,6 +112,27 @@ define([
                 }
             });
 
+            it('translateOffsetToCoordinates', function () {
+
+                var shape = new CanvasShapes.Shape(),
+                    arr = [
+                        [{ x: 3, y: 2, z: 1 }, [3, 2, 1]],
+                        [{ x: 3, z: 1 }, [3, 0, 1]],
+                        [{ x: 3, y: 2 }, [3, 2, 0]],
+                        [{ y: 2, z: 1 }, [0, 2, 1]],
+                        [{ x: 1 }, [1, 0, 0]],
+                        [{ y: 1 }, [0, 1, 0]],
+                        [{ z: 1 }, [0, 0, 1]],
+                        [{}, [0, 0, 0]],
+                    ];
+
+                for (i = 0; i < arr.length; i++) {
+                    expect(
+                        shape.translateOffsetToCoordinates(arr[i][0])
+                    ).toEqual(arr[i][1]);
+                }
+            });
+
             it('validateCoordinatesArray', function () {
 
                 var i,

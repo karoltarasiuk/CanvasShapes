@@ -103,6 +103,30 @@ CanvasShapes.CoordinatesAbstract = (function () {
         /**
          * @implements {CanvasShapes.CoordinatesInterface}
          */
+        translateOffsetToCoordinates: function (offset) {
+
+            var i,
+                ret = [],
+                dictionary = ['x', 'y', 'z'];
+
+            if (!_.isObject(offset)) {
+                throw new CanvasShapes.Error(1047);
+            }
+
+            for (i = 0; i < dictionary.length; i++) {
+                if (offset[dictionary[i]]) {
+                    ret.push(offset[dictionary[i]]);
+                } else {
+                    ret.push(0);
+                }
+            }
+
+            return ret;
+        },
+
+        /**
+         * @implements {CanvasShapes.CoordinatesInterface}
+         */
         validateCoordinatesArray: function (
             coordinates,
             throwException,

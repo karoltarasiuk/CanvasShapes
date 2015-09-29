@@ -48,15 +48,26 @@ CanvasShapes.AnimationInterface = (function () {
          * position of a shape. In a last exectuion `currentTime` can be bigger
          * than `totalTime` and this function should still behave correctly.
          *
+         * Another option is to pass `coordinates` as an object, which will be
+         * treated as an offset added to each coordinate. It's format is:
+         * ```
+         * {
+         *     x: {number},
+         *     y: {number},
+         *     z: {number} [OPTIONAL]
+         * }
+         * ```
+         * If you decide to omit some coordinates it will be treated as `0`.
+         *
          * After everything finishes, `callback` will be called. If you want to
          * run `callback` against some object, you need to bind it by yourself.
          *
          * [WARNING] This function won't perform any type or value checking for
          * performance reasons.
          *
-         * @param {integer}        totalAnimationTime
-         * @param {array,function} coordinates
-         * @param {function}       callback [OPTIONAL]
+         * @param {integer}                        totalAnimationTime
+         * @param {[array,function,object]} coordinates
+         * @param {function}                       callback [OPTIONAL]
          */
         move: function (totalAnimationTime, coordinates, callback) {
             throw new CanvasShapes.Error(9046);

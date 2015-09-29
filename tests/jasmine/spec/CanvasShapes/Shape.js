@@ -334,7 +334,7 @@ define([
                         coords[1] = Math.sin(ratio) * 50 + 50;
                     }
                     return coords;
-                }, callback, shape1);
+                }, callback);
             });
 
             it('moves the shape properly', function () {
@@ -343,6 +343,144 @@ define([
                 expect(callbackSpy.calls.count()).toBe(1);
 
                 expect(shape1.getCoordinates()).toEqual([100, 50]);
+            });
+        });
+
+        describe('move animation with offset object - async', function () {
+
+            var shape1, callbackSpy, i;
+
+            beforeEach(function (done) {
+
+                var animate = false,
+                    scene1 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
+                    callback = function () {
+                        callbackSpy();
+                        animate = false;
+                        done();
+                    },
+                    requestAnimationFrameCallback = function () {
+                        if (animate) {
+                            scene1.render();
+                            window.requestAnimationFrame(
+                                requestAnimationFrameCallback
+                            );
+                        }
+                    };
+
+                i = 0;
+                callbackSpy = jasmine.createSpy('callback');
+                shape1 = new CanvasShapes.Shape([0, 0, 0]);
+                scene1.addShape(shape1);
+
+                animate = true;
+                window.requestAnimationFrame(requestAnimationFrameCallback);
+
+                shape1.move(0, { x: 10, y: 5, z: -5 }, callback, shape1);
+            });
+
+            it('moves the shape properly', function () {
+
+                expect(callbackSpy).toHaveBeenCalled();
+                expect(callbackSpy.calls.count()).toBe(1);
+
+                expect(shape1.getCoordinates()).toEqual([10, 5, -5]);
+            });
+        });
+
+        describe('move animation with offset object 2 - async', function () {
+
+            var shape1, callbackSpy, i;
+
+            beforeEach(function (done) {
+
+                var animate = false,
+                    scene1 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
+                    callback = function () {
+                        callbackSpy();
+                        animate = false;
+                        done();
+                    },
+                    requestAnimationFrameCallback = function () {
+                        if (animate) {
+                            scene1.render();
+                            window.requestAnimationFrame(
+                                requestAnimationFrameCallback
+                            );
+                        }
+                    };
+
+                i = 0;
+                callbackSpy = jasmine.createSpy('callback');
+                shape1 = new CanvasShapes.Shape([0, 0, 0]);
+                scene1.addShape(shape1);
+
+                animate = true;
+                window.requestAnimationFrame(requestAnimationFrameCallback);
+
+                shape1.move(0, { z: -5 }, callback, shape1);
+            });
+
+            it('moves the shape properly', function () {
+
+                expect(callbackSpy).toHaveBeenCalled();
+                expect(callbackSpy.calls.count()).toBe(1);
+
+                expect(shape1.getCoordinates()).toEqual([0, 0, -5]);
+            });
+        });
+
+        describe('move animation with offset object 3 - async', function () {
+
+            var shape1, callbackSpy, i;
+
+            beforeEach(function (done) {
+
+                var animate = false,
+                    scene1 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
+                    callback = function () {
+                        callbackSpy();
+                        animate = false;
+                        done();
+                    },
+                    requestAnimationFrameCallback = function () {
+                        if (animate) {
+                            scene1.render();
+                            window.requestAnimationFrame(
+                                requestAnimationFrameCallback
+                            );
+                        }
+                    };
+
+                i = 0;
+                callbackSpy = jasmine.createSpy('callback');
+                shape1 = new CanvasShapes.Polygon([[10, 10], [50, 50], [100, 10]]);
+                scene1.addShape(shape1);
+
+                animate = true;
+                window.requestAnimationFrame(requestAnimationFrameCallback);
+
+                shape1.move(0, { x: 5, y: -5 }, callback, shape1);
+            });
+
+            it('moves the shape properly', function () {
+
+                expect(callbackSpy).toHaveBeenCalled();
+                expect(callbackSpy.calls.count()).toBe(1);
+
+                expect(shape1.getCoordinates()).toEqual([[15, 5], [55, 45], [105, 5]]);
             });
         });
     });
