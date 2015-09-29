@@ -70,6 +70,7 @@ CanvasShapes.GroupAbstract = (function () {
                     shapes[i].is(CanvasShapes.ShapeInterface)
                 ) {
                     this.shapes.push(shapes[i]);
+                    shapes[i].setParent(this);
                 } else {
                     throw new CanvasShapes.Error(1010);
                 }

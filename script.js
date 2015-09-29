@@ -59,8 +59,8 @@ require([
     scene6 = renderer.addScene({ id: 'scene6', width: 300, height: 200 });
 
     // adding all shapes
-    // group.addShapes([]);
-    renderer.addShapes([line, square, rectangle, circle1, arc1, point16, group, polygon1, polygon2]);
+    group.addShapes([square]);
+    renderer.addShapes([line, rectangle, circle1, arc1, point16, group, polygon1, polygon2]);
 
     // those polygons must be on separate layers
     scene3.newLayer(polygon1);

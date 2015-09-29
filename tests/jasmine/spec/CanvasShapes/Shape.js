@@ -58,6 +58,45 @@ define([
             });
         });
 
+        describe('abstract methods', function () {
+
+            it('sets and gets parent correctly', function () {
+
+                var shape1 = new CanvasShapes.Shape(),
+                    shape2 = new CanvasShapes.Shape(),
+                    group = new CanvasShapes.Group(),
+                    error = new CanvasShapes.Error(1046);
+
+                expect(function () {
+                    shape1.setParent(shape2);
+                }).toThrow(error);
+
+                expect(function () {
+                    shape1.setParent(group);
+                    group.addShapes([shape2]);
+                }).not.toThrow();
+
+                expect(shape1.getParent()).toBe(group);
+                expect(shape2.getParent()).toBe(group);
+            });
+
+            it('gets rendering parent correctly', function () {
+
+                var shape1 = new CanvasShapes.Shape(),
+                    shape2 = new CanvasShapes.Shape(),
+                    group = new CanvasShapes.Group();
+
+                expect(shape1.getRenderingShape()).toBe(shape1);
+                expect(shape2.getRenderingShape()).toBe(shape2);
+
+                shape1.setParent(group);
+                group.addShapes([shape2]);
+
+                expect(shape1.getRenderingShape()).toBe(group);
+                expect(shape2.getRenderingShape()).toBe(group);
+            });
+        });
+
         describe('methods', function () {
 
             it('isColliding method', function () {

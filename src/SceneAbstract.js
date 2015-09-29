@@ -239,6 +239,9 @@ CanvasShapes.SceneAbstract = (function () {
                 this.requestedRendering = {};
             }
 
+            // shape may be a part of a group
+            shape = shape.getRenderingShape();
+
             // looking for layer
             for (i in this.layers) {
                 layerObject = this.layers[i];
