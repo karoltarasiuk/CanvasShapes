@@ -9,7 +9,7 @@
 CanvasShapes.Renderer = (function () {
 
     var Renderer = function () {
-        Renderer.RENDERERS.push(this);
+        RENDERERS.push(this);
         this.scenes = [];
     };
 
@@ -116,34 +116,55 @@ CanvasShapes.Renderer = (function () {
         }
     });
 
-    Renderer.RENDERERS = [];
-    Renderer.RUNNING = false;
+    /* STATIC CONTEXT */
+
+    var RENDERERS = [];
+    var RUNNING = false;
+    var FPS = 0;
+    var FRAMES = 0;
+    var START_TIME = null;
 
     function getAnimationFrame() {
 
         window.requestAnimationFrame(function () {
 
-            var i;
+            var i, time;
 
-            if (!Renderer.RUNNING) {
+            if (!RUNNING) {
                 return;
             }
 
-            for (i = 0; i < Renderer.RENDERERS.length; i++) {
-                Renderer.RENDERERS[i].render();
+            for (i = 0; i < RENDERERS.length; i++) {
+                RENDERERS[i].render();
             }
+
+            FRAMES++;
+            time = ((new Date()).getTime() - START_TIME) / 1000;
+            FPS = Math.floor(FRAMES / time);
 
             getAnimationFrame();
         });
     }
 
     Renderer.start = function () {
-        Renderer.RUNNING = true;
+        RUNNING = true;
+        FPS = 0;
+        FRAMES = 0;
+        START_TIME = (new Date()).getTime();
         getAnimationFrame();
     };
 
     Renderer.stop = function () {
-        Renderer.RUNNING = false;
+        RUNNING = false;
+    };
+
+    Renderer.getFPS = function () {
+
+        if (!RUNNING) {
+            return 0;
+        }
+
+        return FPS;
     };
 
     return Renderer;

@@ -200,7 +200,7 @@ define([
 
         describe('static methods - async', function () {
 
-            var renderer1, renderer2;
+            var renderer1, renderer2, renderer3, fps1, fps2;
 
             beforeEach(function (done) {
 
@@ -211,8 +211,16 @@ define([
                 spyOn(renderer2, 'render');
 
                 CanvasShapes.Renderer.start();
+
                 setTimeout(function () {
+
+                    fps1 = CanvasShapes.Renderer.getFPS();
                     CanvasShapes.Renderer.stop();
+                    fps2 = CanvasShapes.Renderer.getFPS();
+
+                    renderer3 = new CanvasShapes.Renderer();
+                    spyOn(renderer3, 'render');
+
                     done();
                 }, 100);
             });
@@ -221,7 +229,13 @@ define([
 
                 expect(renderer1.render).toHaveBeenCalled();
                 expect(renderer2.render).toHaveBeenCalled();
-                expect(CanvasShapes.Renderer.RUNNING).toBe(false);
+                expect(renderer3.render).not.toHaveBeenCalled();
+            });
+
+            it('getting FPS', function () {
+
+                expect(fps1).not.toBe(0);
+                expect(fps2).toBe(0);
             });
         });
     });

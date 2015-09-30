@@ -13,7 +13,7 @@ require([
 ], function (
     _,
     CanvasShapes
-) {window.CanvasShapes = CanvasShapes;
+) {
     var renderer = CanvasShapes.init(),
         group = new CanvasShapes.Group(),
         point1 = new CanvasShapes.Point([10, 10]),
@@ -143,4 +143,12 @@ require([
     polygon2.move(3500, { x: 20, y: 10 }, function () {
         console.log('POLYGON 2 MOVED');
     });
+
+    setInterval(function () {
+        document.getElementById('fps').innerHTML =
+            CanvasShapes.Renderer.getFPS();
+    }, 100);
+
+    // exposing CanvasShapes to public context for debugging purposes
+    window.CanvasShapes = CanvasShapes;
 });
