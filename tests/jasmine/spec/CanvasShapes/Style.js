@@ -39,8 +39,29 @@ define([
 
                 expect(function () {
                     new CanvasShapes.Style();
-                    new CanvasShapes.Style({});
+                    new CanvasShapes.Style(function () {});
                 }).not.toThrow();
+            });
+
+            it('throws error when wrong arguments passed', function () {
+
+                var temp = new CanvasShapes.Error(1048);
+
+                expect(function () {
+                    new CanvasShapes.Style(1);
+                }).toThrow(temp);
+                expect(function () {
+                    new CanvasShapes.Style(true);
+                }).toThrow(temp);
+                expect(function () {
+                    new CanvasShapes.Style([]);
+                }).toThrow(temp);
+                expect(function () {
+                    new CanvasShapes.Style({});
+                }).toThrow(temp);
+                expect(function () {
+                    new CanvasShapes.Style('string');
+                }).toThrow(temp);
             });
         });
 
@@ -50,33 +71,41 @@ define([
 
                 var style = new CanvasShapes.Style();
 
-                expect(style.definitions['default']).toEqual({});
-                style.initialize(1);
-                expect(style.definitions['default']).toEqual({});
-                style.initialize(true);
-                expect(style.definitions['default']).toEqual({});
-                style.initialize('string');
-                expect(style.definitions['default']).toEqual({});
-                style.initialize({});
-                expect(style.definitions['default']).toEqual({});
-                style.initialize([]);
-                expect(style.definitions['default']).toEqual({});
+                expect(_.isFunction(style.definitions['default'])).toBe(true);
             });
 
             it('setting definitions', function () {
 
                 var style = new CanvasShapes.Style();
 
-                style.setDefinition(1, 'some');
-                expect(style.definitions.some).toEqual({});
-                style.setDefinition(true, 'other');
-                expect(style.definitions.other).toEqual({});
-                style.setHoverDefinition('string');
-                expect(style.definitions.hover).toEqual({});
-                style.setActiveDefinition({});
-                expect(style.definitions.active).toEqual({});
-                style.setDefinition([]);
-                expect(style.definitions['default']).toEqual({});
+                style.setDefinition(function () {}, 'some');
+                expect(_.isFunction(style.definitions.some)).toBe(true);
+                style.setHoverDefinition(function () {});
+                expect(_.isFunction(style.definitions.hover)).toBe(true);
+                style.setActiveDefinition(function () {});
+                expect(_.isFunction(style.definitions.active)).toBe(true);
+            });
+
+            it('throws error when wrong arguments passed to setDefinition', function () {
+
+                var temp = new CanvasShapes.Error(1048),
+                    style = new CanvasShapes.Style();
+
+                expect(function () {
+                    style.setDefinition(1);
+                }).toThrow(temp);
+                expect(function () {
+                    style.setDefinition(true);
+                }).toThrow(temp);
+                expect(function () {
+                    style.setDefinition([]);
+                }).toThrow(temp);
+                expect(function () {
+                    style.setDefinition({});
+                }).toThrow(temp);
+                expect(function () {
+                    style.setDefinition('string');
+                }).toThrow(temp);
             });
 
             it('setting style', function () {
@@ -95,30 +124,25 @@ define([
 
                 spyOn(layer, 'getContext').and.returnValue(contextStub);
 
-                style.setDefinition(1, 'some');
-                style.setDefinition(true, 'other');
-                style.setHoverDefinition('string');
-                style.setActiveDefinition({});
-                style.setDefinition([]);
-                style.setDefinition({
-                    fill: true
+                style.setDefinition(function () {}, 'some');
+                style.setHoverDefinition(function () {});
+                style.setActiveDefinition(function () {});
+                style.setDefinition(function () {});
+                style.setDefinition(function (context) {
+                    context.fill();
                 }, 'fillOnly');
-                style.setDefinition({
-                    stroke: true
+                style.setDefinition(function (context) {
+                    context.stroke();
                 }, 'strokeOnly');
-                style.setDefinition({
-                    fill: true,
-                    stroke: true
+                style.setDefinition(function (context) {
+                    context.fill();
+                    context.stroke();
                 }, 'both');
 
                 spyOn(contextStub, 'fill');
                 spyOn(contextStub, 'stroke');
 
                 style.set(layer, 'some');
-                expect(contextStub.fill.calls.any()).toBe(false);
-                expect(contextStub.stroke.calls.any()).toBe(false);
-
-                style.set(layer, 'other');
                 expect(contextStub.fill.calls.any()).toBe(false);
                 expect(contextStub.stroke.calls.any()).toBe(false);
 

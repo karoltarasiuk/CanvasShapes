@@ -108,8 +108,8 @@ CanvasShapes.Point = (function () {
                     switch (face) {
                         case Point.FACES.CIRCLE:
                             this.face = new CanvasShapes.Circle(this, size);
-                            this.face.setStyle(new CanvasShapes.Style({
-                                fill: true
+                            this.face.setStyle(new CanvasShapes.Style(function (context) {
+                                context.fill();
                             }));
                             break;
                     }

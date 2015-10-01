@@ -18,6 +18,9 @@ CanvasShapes.StyleInterface = (function () {
          * If `which` param is not specified it will retrieve the first
          * available style.
          *
+         * WARNING: this method due to performance reasons doesn't perform any
+         * type checking on arguments.
+         *
          * @param {CanvasShapes.SceneLayer} layer
          * @param {integer} which [OPTIONAL]
          */

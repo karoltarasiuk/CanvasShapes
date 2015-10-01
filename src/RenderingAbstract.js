@@ -85,7 +85,7 @@ CanvasShapes.RenderingAbstract = (function () {
          */
         getStyle: function () {
             if (!this.style) {
-                this.style = new CanvasShapes.Style({});
+                this.style = new CanvasShapes.Style();
             }
             return this.style;
         },
