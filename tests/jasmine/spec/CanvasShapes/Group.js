@@ -267,9 +267,9 @@ define([
                     shape2 = new CanvasShapes.Point([60, 60]),
                     shape3 = new CanvasShapes.Point([30, 30], 'circle'),
                     shape4 = new CanvasShapes.Point([60, 60], 'circle'),
-                    style = new CanvasShapes.Style({
-                        stroke: true,
-                        fill: true
+                    style = new CanvasShapes.Style(function (context) {
+                        context.fill();
+                        context.stroke();
                     });
 
                 // shapes added to group, but style not set deeply

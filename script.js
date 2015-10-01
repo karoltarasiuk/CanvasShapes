@@ -42,11 +42,13 @@ require([
         polygon2 = new CanvasShapes.Polygon([point12, point14, point15, point13]),
         square = new CanvasShapes.Square([point6, point7, point8]),
         rectangle = new CanvasShapes.Rectangle([point9, point10, point11]),
-        strokeStyle = new CanvasShapes.Style({
-            stroke: true
+        strokeStyle = new CanvasShapes.Style(function (context) {
+            context.strokeStyle = 'black';
+            context.stroke();
         }),
-        fillStyle = new CanvasShapes.Style({
-            fill: true
+        fillStyle = new CanvasShapes.Style(function (context) {
+            context.fillStyle = 'orange';
+            context.fill();
         }),
         scene3 = new CanvasShapes.Scene({ id: 'scene3', width: 300, height: 300 }),
         scene1, scene2, scene4, scene5, scene6;

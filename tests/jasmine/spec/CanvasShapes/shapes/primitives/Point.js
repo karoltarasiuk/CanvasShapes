@@ -143,8 +143,8 @@ define([
                     [0, 0],
                     CanvasShapes.Point.FACES.CIRCLE
                 ),
-                style = new CanvasShapes.Style({
-                    fill: true
+                style = new CanvasShapes.Style(function (context) {
+                    context.fill();
                 });
 
             // it should return null when point doesn't have a face

@@ -66,8 +66,8 @@ define([
             it('setting and getting style', function () {
 
                 var rendering = new CanvasShapes.Shape(),
-                    style = new CanvasShapes.Style({
-                        fill: true
+                    style = new CanvasShapes.Style(function (context) {
+                        context.fill();
                     });
 
                 rendering.setStyle(style);
