@@ -139,7 +139,18 @@ CanvasShapes.Arc = (function () {
                 context = layer.getContext(),
                 coordinates = this.processCoordinates(
                     this.coordinates, layer
-                );
+                ),
+                radius = this.radius;
+
+            if (
+                _.isObject(layer) && _.isFunction(layer.is) &&
+                layer.is(CanvasShapes.SceneLayerInterface) &&
+                this.is(CanvasShapes.RenderingInterface) &&
+                this.getRelativeRendering()
+            ) {
+                // radius is calculated relatively to the layer width
+                radius = radius * layer.getWidth() / 100;
+            }
 
             context.beginPath();
 
@@ -147,7 +158,7 @@ CanvasShapes.Arc = (function () {
                 context.arc(
                     coordinates[0][0],
                     coordinates[0][1],
-                    this.radius,
+                    radius,
                     this.startAngle,
                     this.endAngle,
                     this.anticlockwise
@@ -165,7 +176,7 @@ CanvasShapes.Arc = (function () {
                     coordinates[1][1],
                     coordinates[2][0],
                     coordinates[2][1],
-                    this.radius
+                    radius
                 );
                 context.lineTo(
                     coordinates[2][0],
