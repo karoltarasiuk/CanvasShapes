@@ -53,6 +53,7 @@ CanvasShapes.Error = (function () {
         1046: "CanvasShapes.ShapeAbstract - in `setParent()`: invalid format of arguments passed",
         1047: "CanvasShapes.CoordinatesAbstract - in `translateOffsetToCoordinates()`: invalid format of arguments passed",
         1048: "CanvasShapes.StyleAbstract - in `setDefinition()`: invalid format of arguments passed",
+        1049: "CanvasShapes.CoordinatesAbstract - in `translateCoordinates()`: invalid format of arguments passed",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
@@ -132,6 +133,7 @@ CanvasShapes.Error = (function () {
         9055: "CanvasShapes.ShapeInterface - `getParent()` is not implemented",
         9056: "CanvasShapes.ShapeInterface - `getRenderingShape()` is not implemented",
         9057: "CanvasShapes.CoordinatesInterface - `translateOffsetToCoordinates()` is not implemented",
+        9058: "CanvasShapes.CoordinatesInterface - `translateCoordinates()` is not implemented",
     };
 
     /**

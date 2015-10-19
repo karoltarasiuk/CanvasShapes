@@ -105,6 +105,31 @@ CanvasShapes.CoordinatesInterface = (function () {
         },
 
         /**
+         * Translates coordinates by a given offset and multiplier, returning a new
+         * set of coordinates. It assumes that coordinates are passed as an array
+         * of coordinates. Passing single array of numbers will cause the function
+         * to throw an exception. Offset object is defined as follows:
+         * ```
+         * {
+         *     x: {number},
+         *     y: {number},
+         *     z: {number} [OPTIONAL]
+         * }
+         * ```
+         * Also important thing to notice is that offset is applied before
+         * multiplier.
+         *
+         * @param  {array}  coordinates
+         * @param  {object} offset
+         * @param  {number} multipler
+         *
+         * @return {[type]}           [description]
+         */
+        translateCoordinates: function (coordinates, offset, multiplier) {
+            throw new CanvasShapes.Error(9058);
+        },
+
+        /**
          * Validates whether array of coordinates is valid. If
          * `throwException` is `true`, it will throw exception when passed
          * coordinates are not valid, instead of returning `false`.
@@ -113,9 +138,9 @@ CanvasShapes.CoordinatesInterface = (function () {
          * Example `coordinates` parameter value: [[0, 0], [1, 1]]
          *
          * @param {array} coordinates
-         * @param {boolean} throwException
-         * @param {integer} minimumCoordinatesNumber
-         * @param {integer} maximumCoordinatesNumber
+         * @param {boolean} throwException [OPTIONAL]
+         * @param {integer} minimumCoordinatesNumber [OPTIONAL]
+         * @param {integer} maximumCoordinatesNumber [OPTIONAL]
          *
          * @return {boolean}
          */

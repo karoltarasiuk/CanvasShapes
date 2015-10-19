@@ -115,6 +115,7 @@ define([
             it('translateOffsetToCoordinates', function () {
 
                 var shape = new CanvasShapes.Shape(),
+                    error = new CanvasShapes.Error(1047),
                     arr = [
                         [{ x: 3, y: 2, z: 1 }, [3, 2, 1]],
                         [{ x: 3, z: 1 }, [3, 0, 1]],
@@ -126,10 +127,149 @@ define([
                         [{}, [0, 0, 0]],
                     ];
 
+                expect(function () {
+                    shape.translateOffsetToCoordinates();
+                }).toThrow(error);
+
+                expect(function () {
+                    shape.translateOffsetToCoordinates(true);
+                }).toThrow(error);
+
+                expect(function () {
+                    shape.translateOffsetToCoordinates(1);
+                }).toThrow(error);
+
+                expect(function () {
+                    shape.translateOffsetToCoordinates('string');
+                }).toThrow(error);
+
+                expect(function () {
+                    shape.translateOffsetToCoordinates([]);
+                }).toThrow(error);
+
                 for (i = 0; i < arr.length; i++) {
                     expect(
                         shape.translateOffsetToCoordinates(arr[i][0])
                     ).toEqual(arr[i][1]);
+                }
+            });
+
+            it('translates coordinates by offset and multiplier', function () {
+
+                var shape = new CanvasShapes.Shape(),
+                    arr = [
+                        [[[2, 3, 4]], {}, undefined, [[2, 3, 4]]],
+                        [[[2, 3, 4]], {}, 1, [[2, 3, 4]]],
+                        [[[2, 3, 4]], {}, 2, [[4, 6, 8]]],
+                        [[[2, 3, 4]], { x: 1 }, undefined, [[3, 3, 4]]],
+                        [[[2, 3, 4]], { x: -1 }, 1, [[1, 3, 4]]],
+                        [[[2, 3, 4]], { x: -1 }, 2, [[2, 6, 8]]],
+                        [[[2, 3, 4]], { y: 1 }, undefined, [[2, 4, 4]]],
+                        [[[2, 3, 4]], { y: -1 }, 1, [[2, 2, 4]]],
+                        [[[2, 3, 4]], { y: -1 }, 2, [[4, 4, 8]]],
+                        [[[2, 3, 4]], { z: 1 }, undefined, [[2, 3, 5]]],
+                        [[[2, 3, 4]], { z: -1 }, 1, [[2, 3, 3]]],
+                        [[[2, 3, 4]], { z: -1 }, 2, [[4, 6, 6]]],
+                        [
+                            [[2, 3, 4]],
+                            { x: 1, y: 1, z: 1 },
+                            undefined,
+                            [[3, 4, 5]]
+                        ],
+                        [[[2, 3, 4]], { x: -1, y: -1, z: -1 }, 1, [[1, 2, 3]]],
+                        [[[2, 3, 4]], { x: -1, y: -1, z: -1 }, 2, [[2, 4, 6]]]
+                    ],
+                    error = new CanvasShapes.Error(1049),
+                    error2 = new CanvasShapes.Error(1047),
+                    error3 = new CanvasShapes.Error(1011);
+
+                expect(function () {
+                    shape.translateCoordinates();
+                }).toThrow(error3);
+
+                expect(function () {
+                    // empty array is OK, as min and max number of coordinates
+                    // in validateCoordinatesArray is not specified, so it will
+                    // proceed to translate offset parameter
+                    shape.translateCoordinates([]);
+                }).toThrow(error2);
+
+                expect(function () {
+                    shape.translateCoordinates([[]]);
+                }).toThrow(error3);
+
+                expect(function () {
+                    shape.translateCoordinates(true);
+                }).toThrow(error3);
+
+                expect(function () {
+                    shape.translateCoordinates(1);
+                }).toThrow(error3);
+
+                expect(function () {
+                    shape.translateCoordinates('string');
+                }).toThrow(error3);
+
+                expect(function () {
+                    shape.translateCoordinates({});
+                }).toThrow(error3);
+
+                expect(function () {
+                    shape.translateCoordinates([true]);
+                }).toThrow(error3);
+
+                expect(function () {
+                    shape.translateCoordinates([1, 2, 3]);
+                }).toThrow(error3);
+
+                expect(function () {
+                    shape.translateCoordinates([[1, 1, 1]], []);
+                }).toThrow(error2);
+
+                expect(function () {
+                    shape.translateCoordinates([[1, 1, 1]], true);
+                }).toThrow(error2);
+
+                expect(function () {
+                    shape.translateCoordinates([[1, 1, 1]], 1);
+                }).toThrow(error2);
+
+                expect(function () {
+                    shape.translateCoordinates([[1, 1, 1]], 'string');
+                }).toThrow(error2);
+
+                expect(function () {
+                    shape.translateCoordinates([[1, 1, 1]], {}, {});
+                }).toThrow(error);
+
+                expect(function () {
+                    shape.translateCoordinates([[1, 1, 1]], {}, []);
+                }).toThrow(error);
+
+                expect(function () {
+                    shape.translateCoordinates([[1, 1, 1]], {}, true);
+                }).toThrow(error);
+
+                expect(function () {
+                    shape.translateCoordinates([[1, 1, 1]], {}, 'string');
+                }).toThrow(error);
+
+                expect(function () {
+                    shape.translateCoordinates([[1, 1, 1]], {});
+                }).not.toThrow();
+
+                expect(function () {
+                    shape.translateCoordinates([[1, 1, 1]], {}, 1);
+                }).not.toThrow();
+
+                for (i = 0; i < arr.length; i++) {
+                    expect(
+                        shape.translateCoordinates(
+                            arr[i][0],
+                            arr[i][1],
+                            arr[i][2]
+                        )
+                    ).toEqual(arr[i][3]);
                 }
             });
 

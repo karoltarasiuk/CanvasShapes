@@ -109,7 +109,7 @@ CanvasShapes.CoordinatesAbstract = (function () {
                 ret = [],
                 dictionary = ['x', 'y', 'z'];
 
-            if (!_.isObject(offset)) {
+            if (!_.isObject(offset) || _.isArray(offset)) {
                 throw new CanvasShapes.Error(1047);
             }
 
@@ -122,6 +122,34 @@ CanvasShapes.CoordinatesAbstract = (function () {
             }
 
             return ret;
+        },
+
+        /**
+         * @implements {CanvasShapes.CoordinatesInterface}
+         */
+        translateCoordinates: function (coordinates, offset, multiplier) {
+
+            var i, j,
+                newCoordinates = [];
+
+            this.validateCoordinatesArray(coordinates, true);
+            offset = this.translateOffsetToCoordinates(offset);
+
+            if (!multiplier) {
+                multiplier = 1;
+            } else if (!_.isNumber(multiplier)) {
+                throw new CanvasShapes.Error(1049);
+            }
+
+            for (i = 0; i < coordinates.length; i++) {
+                newCoordinates[i] = [];
+                for (j = 0; j < coordinates[i].length; j++) {
+                    newCoordinates[i][j] =
+                        (coordinates[i][j] + offset[j]) * multiplier;
+                }
+            }
+
+            return newCoordinates;
         },
 
         /**
