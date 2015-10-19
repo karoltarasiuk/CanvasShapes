@@ -116,7 +116,7 @@ CanvasShapes.CoordinatesInterface = (function () {
          *     z: {number} [OPTIONAL]
          * }
          * ```
-         * Also important thing to notice is that offset is applied before
+         * Also important thing to notice is that offset is applied after
          * multiplier.
          *
          * @param  {array}  coordinates

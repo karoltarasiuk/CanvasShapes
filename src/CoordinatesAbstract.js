@@ -145,7 +145,7 @@ CanvasShapes.CoordinatesAbstract = (function () {
                 newCoordinates[i] = [];
                 for (j = 0; j < coordinates[i].length; j++) {
                     newCoordinates[i][j] =
-                        (coordinates[i][j] + offset[j]) * multiplier;
+                        coordinates[i][j] * multiplier + offset[j];
                 }
             }
 
