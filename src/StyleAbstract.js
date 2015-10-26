@@ -18,6 +18,8 @@ CanvasShapes.StyleAbstract = (function () {
         definitions: null,
 
         DEFAULT: 'default',
+        HOVER: 'hover',
+        ACTIVE: 'active',
 
         /**
          * Initializes the style with default definition.
@@ -33,8 +35,9 @@ CanvasShapes.StyleAbstract = (function () {
          */
         initialize: function (definition) {
 
+            this.shapes = [];
             this.definitions = [];
-            this.setDefinition(definition, 'default');
+            this.setDefinition(definition, this.DEFAULT);
         },
 
         /**
@@ -50,7 +53,7 @@ CanvasShapes.StyleAbstract = (function () {
          * @param {function} definition
          */
         setHoverDefinition: function (definition) {
-            this.setDefinition(definition, 'hover');
+            this.setDefinition(definition, this.HOVER);
         },
 
         /**
@@ -66,7 +69,7 @@ CanvasShapes.StyleAbstract = (function () {
          * @param {function} definition
          */
         setActiveDefinition: function (definition) {
-            this.setDefinition(definition, 'active');
+            this.setDefinition(definition, this.ACTIVE);
         },
 
         /**
@@ -86,7 +89,17 @@ CanvasShapes.StyleAbstract = (function () {
          */
         setDefinition: function (definition, which) {
 
-            if (!_.isFunction(definition)) {
+            if (!which) {
+                which = this.DEFAULT;
+            }
+
+            if (
+                !_.isString(which) ||
+                (
+                    !_.isFunction(definition) &&
+                    (!_.isObject(definition) || _.isArray(definition))
+                )
+            ) {
                 throw new CanvasShapes.Error(1048);
             }
 
@@ -94,19 +107,211 @@ CanvasShapes.StyleAbstract = (function () {
         },
 
         /**
+         * Gets the hover definition.
+         *
+         * @return {[object,function]}
+         */
+        getHoverDefinition: function () {
+            return this.getDefinition(this.HOVER);
+        },
+
+        /**
+         * Gets the active definition.
+         *
+         * @return {[object,function]}
+         */
+        getActiveDefinition: function () {
+            return this.getDefinition(this.ACTIVE);
+        },
+
+        /**
+         * Fetches the existing definition.
+         *
+         * @param  {string}            which [OPTIONAL]
+         * @return {[object,function]}
+         */
+        getDefinition: function (which) {
+
+            if (!which) {
+                which = this.DEFAULT;
+            }
+
+            if (!_.isString(which) || !_.isObject(this.definitions[which])) {
+                throw new CanvasShapes.Error(1051);
+            }
+
+            return this.definitions[which];
+        },
+
+        /**
          * @implements {CanvasShapes.StyleInterface}
          */
         set: function (layer, which) {
 
-            var context = layer.getContext();
+            var context = layer.getContext(),
+                definitionFunction;
 
             if (!_.isString(which)) {
                 which = this.DEFAULT;
             }
 
-            if (this.definitions[which]) {
-                this.definitions[which](context);
+            if (_.isFunction(this.definitions[which])) {
+                definitionFunction = this.definitions[which];
+            } else {
+                definitionFunction = _.bind(function (context) {
+                    if (this.definitions[which].strokeStyle) {
+                        context.strokeStyle = this.definitions[which].strokeStyle;
+                        context.stroke();
+                    }
+                    if (this.definitions[which].fillStyle) {
+                        context.fillStyle = this.definitions[which].fillStyle;
+                        context.fill();
+                    }
+                }, this);
             }
+
+            definitionFunction(context);
+        },
+
+        /**
+         * @implements {CanvasShapes.StyleInterface}
+         */
+        addToShapes: function (shapes, deep) {
+
+            var i;
+
+            if (deep && !_.isBoolean(deep)) {
+                throw new CanvasShapes.Error(1052);
+            }
+
+            if (!_.isArray(shapes)) {
+                shapes = [shapes];
+            }
+
+            for (i = 0; i < shapes.length; i++) {
+                if (
+                    !_.isObject(shapes[i]) || !_.isFunction(shapes[i].is) ||
+                    !shapes[i].is(CanvasShapes.RenderingInterface)
+                ) {
+                    throw new CanvasShapes.Error(1052);
+                } else {
+                    shapes[i].setStyle(this, deep);
+                    this.shapes.push(shapes[i]);
+                }
+            }
+        },
+
+        /**
+         * @implements {CanvasShapes.StyleInterface}
+         */
+        animate: function (
+            totalAnimationTime,
+            definitionObject,
+            callback,
+            which
+        ) {
+            var that = this;
+
+            if (!which) {
+                which = this.DEFAULT;
+            }
+
+            if (
+                !_.isFunction(callback) || !_.isNumber(totalAnimationTime) ||
+                !_.isString(which) || !_.isObject(this.definitions[which]) ||
+                !(_.isObject(definitionObject) && !_.isArray(definitionObject))
+            ) {
+                throw new CanvasShapes.Error(1050);
+            }
+
+            // for each shape using this style we execute the same animation
+            _.each(this.shapes, function (shape) {
+                shape.animate(new CanvasShapes.AnimationFrame(
+                    shape,
+                    totalAnimationTime,
+                    function (currentTime) {
+
+                        var newDefinition = {},
+                            ratio = currentTime / this.totalAnimationTime,
+                            calculateCurrentColor = function (
+                                baseColor,
+                                desiredColor,
+                                ratio
+                            ) {
+                                var newColor = {};
+
+                                if (CanvasShapes.Tools.colorToHex(baseColor)) {
+                                    baseColor =
+                                        CanvasShapes.Tools.colorToHex(baseColor);
+                                }
+
+                                if (CanvasShapes.Tools.colorToHex(desiredColor)) {
+                                    desiredColor =
+                                        CanvasShapes.Tools.colorToHex(desiredColor);
+                                }
+
+                                baseColor = CanvasShapes.Tools.hexToRGB(baseColor);
+                                desiredColor =
+                                    CanvasShapes.Tools.hexToRGB(desiredColor);
+
+                                if (
+                                    !_.isObject(baseColor) ||
+                                    !_.isObject(desiredColor)
+                                ) {
+                                    return baseColor;
+                                }
+
+                                newColor.r = baseColor.r +
+                                    (desiredColor.r - baseColor.r) * ratio;
+                                newColor.g = baseColor.g +
+                                    (desiredColor.g - baseColor.g) * ratio;
+                                newColor.b = baseColor.b +
+                                    (desiredColor.b - baseColor.b) * ratio;
+
+                                return CanvasShapes.Tools.objectToHex(newColor);
+                            };
+
+                        if (_.isNaN(ratio) || ratio > 1) {
+                            ratio = 1;
+                        }
+
+                        if (this.definition.strokeStyle) {
+                            if (this.baseDefinition.strokeStyle) {
+                                newDefinition.strokeStyle = calculateCurrentColor(
+                                    this.baseDefinition.strokeStyle,
+                                    this.definition.strokeStyle,
+                                    ratio
+                                );
+                            } else {
+                                newDefinition.strokeStyle =
+                                    this.definition.strokeStyle;
+                            }
+                        }
+
+                        if (this.definition.fillStyle) {
+                            if (this.baseDefinition.fillStyle) {
+                                newDefinition.fillStyle = calculateCurrentColor(
+                                    this.baseDefinition.fillStyle,
+                                    this.definition.fillStyle,
+                                    ratio
+                                );
+                            } else {
+                                newDefinition.fillStyle = this.definition.fillStyle;
+                            }
+                        }
+
+                        this.style.setDefinition(newDefinition, this.which);
+                    },
+                    callback,
+                    {
+                        definition: definitionObject,
+                        baseDefinition: that.definitions[which],
+                        which: which,
+                        style: that
+                    },
+                    'style'
+                ));
+            });
         }
     });
 

@@ -148,10 +148,10 @@ define([
                 });
 
             // it should return null when point doesn't have a face
-            point1.setStyle(style);
+            style.addToShapes(point1);
             expect(point1.getStyle()).toBe(null);
 
-            point2.setStyle(style);
+            style.addToShapes(point2);
             expect(point2.getStyle()).toBe(style);
         });
 

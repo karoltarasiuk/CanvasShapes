@@ -15,6 +15,9 @@ CanvasShapes.AnimationFrameAbstract = (function () {
     {
         className: 'CanvasShapes.AnimationFrameAbstract',
 
+        /**
+         * @implements {CanvasShapes.SceneInterface}
+         */
         next: function () {
 
             var currentTime = (new Date()).getTime();
@@ -41,9 +44,19 @@ CanvasShapes.AnimationFrameAbstract = (function () {
             }
         },
 
+        /**
+         * @implements {CanvasShapes.SceneInterface}
+         */
         reset: function () {
             delete this.callbackCalled;
             delete this.startTime;
+        },
+
+        /**
+         * @implements {CanvasShapes.SceneInterface}
+         */
+        getType: function () {
+            return this.type;
         }
     });
 

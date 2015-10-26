@@ -87,8 +87,8 @@ CanvasShapes.Scene = (function () {
          */
         render: function (shape) {
 
-            var i, j, layerObject, layer, shapeObject,
-                callbacks = {};
+            var i, j, k, layerObject, layer, shapeObject,
+                callbacks = [];
 
             this.initializeLayers();
 
@@ -119,12 +119,9 @@ CanvasShapes.Scene = (function () {
                         shape = shapeObject.shape;
                         shape.render(layer);
 
-                        if (shapeObject.animationFrame) {
-                            // it gets executed after clearing all
-                            // the shapes from `this.requestedRendering`
-                            callbacks[shape.getUUID()] =
-                                shapeObject.animationFrame;
-                        }
+                        // callbacks get executed after clearing all
+                        // the shapes from `this.requestedRendering`
+                        callbacks.push(shapeObject.animationFrames);
                     }
                 }
 
@@ -132,9 +129,11 @@ CanvasShapes.Scene = (function () {
                 this.requestedRendering = {};
 
                 // executing all the callbacks
-                for (i in callbacks) {
+                for (i = 0; i < callbacks.length; i++) {
                     if (_.isObject(callbacks[i])) {
-                        callbacks[i].next();
+                        for (j in callbacks[i]) {
+                            callbacks[i][j].next();
+                        }
                     } else {
                         callbacks[i]();
                     }

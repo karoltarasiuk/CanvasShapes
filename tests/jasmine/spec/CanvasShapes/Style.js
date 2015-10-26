@@ -40,6 +40,7 @@ define([
                 expect(function () {
                     new CanvasShapes.Style();
                     new CanvasShapes.Style(function () {});
+                    new CanvasShapes.Style({});
                 }).not.toThrow();
             });
 
@@ -57,9 +58,6 @@ define([
                     new CanvasShapes.Style([]);
                 }).toThrow(temp);
                 expect(function () {
-                    new CanvasShapes.Style({});
-                }).toThrow(temp);
-                expect(function () {
                     new CanvasShapes.Style('string');
                 }).toThrow(temp);
             });
@@ -74,16 +72,27 @@ define([
                 expect(_.isFunction(style.definitions['default'])).toBe(true);
             });
 
-            it('setting definitions', function () {
+            it('setting and getting definitions', function () {
 
-                var style = new CanvasShapes.Style();
+                var style = new CanvasShapes.Style(),
+                    some = function () {},
+                    hover = function () {},
+                    active = function () {},
+                    obj = {};
 
-                style.setDefinition(function () {}, 'some');
+                style.setDefinition(some, 'some');
                 expect(_.isFunction(style.definitions.some)).toBe(true);
-                style.setHoverDefinition(function () {});
+                style.setHoverDefinition(hover);
                 expect(_.isFunction(style.definitions.hover)).toBe(true);
-                style.setActiveDefinition(function () {});
+                style.setActiveDefinition(active);
                 expect(_.isFunction(style.definitions.active)).toBe(true);
+                style.setDefinition(obj, 'obj');
+                expect(_.isObject(style.definitions.obj)).toBe(true);
+
+                expect(style.getDefinition('some')).toBe(some);
+                expect(style.getHoverDefinition()).toBe(hover);
+                expect(style.getActiveDefinition()).toBe(active);
+                expect(style.getDefinition('obj')).toBe(obj);
             });
 
             it('throws error when wrong arguments passed to setDefinition', function () {
@@ -101,14 +110,94 @@ define([
                     style.setDefinition([]);
                 }).toThrow(temp);
                 expect(function () {
-                    style.setDefinition({});
-                }).toThrow(temp);
-                expect(function () {
                     style.setDefinition('string');
                 }).toThrow(temp);
             });
 
-            it('setting style', function () {
+            it('sets and gets the same definition', function () {
+
+                var definition = {},
+                    style = new CanvasShapes.Style(definition);
+
+                expect(style.getDefinition()).toBe(definition);
+
+                style.setDefinition(definition);
+                expect(style.getDefinition()).toBe(definition);
+
+                style.setHoverDefinition(definition);
+                expect(style.getHoverDefinition()).toBe(definition);
+
+                style.setActiveDefinition(definition);
+                expect(style.getActiveDefinition()).toBe(definition);
+
+                style.setDefinition(definition, 'random');
+                expect(style.getDefinition('random')).toBe(definition);
+            });
+
+            it('sets style as an object', function () {
+
+                var scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 200,
+                        height: 200
+                    }),
+                    layer = new CanvasShapes.SceneLayer(scene, 80, 80, 10, 10),
+                    style = new CanvasShapes.Style(),
+                    contextStub = {
+                        fill: function () {},
+                        stroke: function () {}
+                    };
+
+                spyOn(layer, 'getContext').and.returnValue(contextStub);
+
+                style.setDefinition({}, 'some');
+                style.setHoverDefinition({});
+                style.setActiveDefinition({});
+                style.setDefinition({});
+                style.setDefinition({
+                    fillStyle: 'red'
+                }, 'fillOnly');
+                style.setDefinition({
+                    strokeStyle: 'blue'
+                }, 'strokeOnly');
+                style.setDefinition({
+                    strokeStyle: 'blue',
+                    fillStyle: 'red'
+                }, 'both');
+
+                spyOn(contextStub, 'fill');
+                spyOn(contextStub, 'stroke');
+
+                style.set(layer, 'some');
+                expect(contextStub.fill.calls.any()).toBe(false);
+                expect(contextStub.stroke.calls.any()).toBe(false);
+
+                style.set(layer, 'hover');
+                expect(contextStub.fill.calls.any()).toBe(false);
+                expect(contextStub.stroke.calls.any()).toBe(false);
+
+                style.set(layer, 'active');
+                expect(contextStub.fill.calls.any()).toBe(false);
+                expect(contextStub.stroke.calls.any()).toBe(false);
+
+                style.set(layer, 'default');
+                expect(contextStub.fill.calls.any()).toBe(false);
+                expect(contextStub.stroke.calls.any()).toBe(false);
+
+                style.set(layer, 'fillOnly');
+                expect(contextStub.fill.calls.count()).toBe(1);
+                expect(contextStub.stroke.calls.count()).toBe(0);
+
+                style.set(layer, 'strokeOnly');
+                expect(contextStub.fill.calls.count()).toBe(1);
+                expect(contextStub.stroke.calls.count()).toBe(1);
+
+                style.set(layer, 'both');
+                expect(contextStub.fill.calls.count()).toBe(2);
+                expect(contextStub.stroke.calls.count()).toBe(2);
+            });
+
+            it('sets style as a function', function () {
 
                 var scene = new CanvasShapes.Scene({
                         element: document.createElement('div'),
@@ -169,6 +258,244 @@ define([
                 style.set(layer, 'both');
                 expect(contextStub.fill.calls.count()).toBe(2);
                 expect(contextStub.stroke.calls.count()).toBe(2);
+            });
+        });
+
+        describe('can animate - async', function () {
+
+            var contextStub, callbackSpy, shape;
+
+            beforeEach(function (done) {
+
+                var animate = false,
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 200,
+                        height: 200
+                    }),
+                    layer = new CanvasShapes.SceneLayer(scene, 80, 80, 10, 10),
+                    style = new CanvasShapes.Style(),
+                    callback = function () {
+                        callbackSpy();
+                        animate = false;
+                        done();
+                    },
+                    requestAnimationFrameCallback = function () {
+                        if (animate) {
+                            scene.render();
+                            window.requestAnimationFrame(
+                                requestAnimationFrameCallback
+                            );
+                        }
+                    };
+
+                contextStub = {
+                    fill: function () {},
+                    stroke: function () {}
+                };
+
+                spyOn(layer, 'getContext').and.returnValue(contextStub);
+                spyOn(contextStub, 'fill');
+                spyOn(contextStub, 'stroke');
+                callbackSpy = jasmine.createSpy('callback');
+
+                shape = new CanvasShapes.Shape();
+                style.addToShapes(shape);
+                scene.addShape(shape);
+
+                style.setDefinition({
+                    fillStyle: 'red'
+                });
+                style.set(layer);
+
+                animate = true;
+                window.requestAnimationFrame(requestAnimationFrameCallback);
+
+                style.animate(10, {
+                    fillStyle: 'yellow'
+                }, callback);
+            });
+
+            it('animate properly calling all the methods properly', function () {
+
+                expect(callbackSpy).toHaveBeenCalled();
+                expect(callbackSpy.calls.count()).toBe(1);
+                expect(contextStub.fill).toHaveBeenCalled();
+                expect(contextStub.stroke).not.toHaveBeenCalled();
+
+                expect(shape.getStyle().getDefinition()).toEqual({
+                    fillStyle: '#ffff00'
+                });
+            });
+        });
+
+        describe(
+            'can\'t animate two animations of the same type at a time - async',
+        function () {
+
+            var contextStub, callback1Spy, callback2Spy, shape;
+
+            beforeEach(function (done) {
+
+                var animate = false,
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 200,
+                        height: 200
+                    }),
+                    layer = new CanvasShapes.SceneLayer(scene, 80, 80, 10, 10),
+                    fillStyle = new CanvasShapes.Style(),
+                    strokeStyle = new CanvasShapes.Style(),
+                    callback1 = function () {
+                        callback1Spy();
+                        animate = false;
+                        done();
+                    },
+                    callback2 = function () {
+                        callback2Spy();
+                    },
+                    requestAnimationFrameCallback = function () {
+                        if (animate) {
+                            scene.render();
+                            window.requestAnimationFrame(
+                                requestAnimationFrameCallback
+                            );
+                        }
+                    };
+
+                contextStub = {
+                    fill: function () {},
+                    stroke: function () {}
+                };
+
+                spyOn(layer, 'getContext').and.returnValue(contextStub);
+                spyOn(contextStub, 'fill');
+                spyOn(contextStub, 'stroke');
+                callback1Spy = jasmine.createSpy('callback1');
+                callback2Spy = jasmine.createSpy('callback2');
+
+                shape = new CanvasShapes.Shape();
+                strokeStyle.addToShapes(shape);
+                // this will overwrite strokeStyle
+                fillStyle.addToShapes(shape);
+                scene.addShape(shape);
+
+                fillStyle.setDefinition({
+                    fillStyle: 'red'
+                });
+                fillStyle.set(layer);
+
+                strokeStyle.setDefinition({
+                    strokeStyle: 'red'
+                });
+                strokeStyle.set(layer);
+
+                animate = true;
+                window.requestAnimationFrame(requestAnimationFrameCallback);
+
+                strokeStyle.animate(10, {
+                    strokeStyle: 'yellow'
+                }, callback2);
+
+                // this will overwrite the animation of the same type
+                fillStyle.animate(100, {
+                    fillStyle: 'yellow'
+                }, callback1);
+            });
+
+            it('animate properly calling all the methods properly', function () {
+
+                expect(callback1Spy).toHaveBeenCalled();
+                expect(callback1Spy.calls.count()).toBe(1);
+                expect(callback2Spy).not.toHaveBeenCalled();
+                expect(contextStub.fill).toHaveBeenCalled();
+                expect(contextStub.stroke).toHaveBeenCalled();
+
+                expect(shape.getStyle().getDefinition()).toEqual({
+                    fillStyle: '#ffff00'
+                });
+            });
+        });
+
+        describe(
+            'can animate two animations of different type at a time - async',
+        function () {
+
+            var contextStub, callback1Spy, callback2Spy, shape;
+
+            beforeEach(function (done) {
+
+                var animate = false,
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 200,
+                        height: 200
+                    }),
+                    layer = new CanvasShapes.SceneLayer(scene, 80, 80, 10, 10),
+                    strokeStyle = new CanvasShapes.Style(),
+                    callback1 = function () {
+                        callback1Spy();
+                        animate = false;
+                        done();
+                    },
+                    callback2 = function () {
+                        callback2Spy();
+                    },
+                    requestAnimationFrameCallback = function () {
+                        if (animate) {
+                            scene.render();
+                            window.requestAnimationFrame(
+                                requestAnimationFrameCallback
+                            );
+                        }
+                    };
+
+                contextStub = {
+                    fill: function () {},
+                    stroke: function () {}
+                };
+
+                spyOn(layer, 'getContext').and.returnValue(contextStub);
+                spyOn(contextStub, 'fill');
+                spyOn(contextStub, 'stroke');
+                callback1Spy = jasmine.createSpy('callback1');
+                callback2Spy = jasmine.createSpy('callback2');
+
+                shape = new CanvasShapes.Point([0, 0], 'circle');
+                strokeStyle.addToShapes(shape);
+                scene.addShape(shape);
+
+                strokeStyle.setDefinition({
+                    strokeStyle: 'red'
+                });
+                strokeStyle.set(layer);
+
+                animate = true;
+                window.requestAnimationFrame(requestAnimationFrameCallback);
+
+                strokeStyle.animate(10, {
+                    strokeStyle: 'yellow'
+                }, callback2);
+
+                // this will change the position of a point - different type
+                // of animation running simultaneously which is allowed
+                shape.move(100, [10, 10], callback1);
+            });
+
+            it('animate properly calling all the methods properly', function () {
+
+                expect(callback1Spy).toHaveBeenCalled();
+                expect(callback1Spy.calls.count()).toBe(1);
+                expect(callback2Spy).toHaveBeenCalled();
+                expect(callback2Spy.calls.count()).toBe(1);
+                expect(contextStub.fill).not.toHaveBeenCalled();
+                expect(contextStub.stroke).toHaveBeenCalled();
+
+                expect(shape.getStyle().getDefinition()).toEqual({
+                    strokeStyle: '#ffff00'
+                });
+
+                expect(shape.getCoordinates()).toEqual([10, 10]);
             });
         });
     });
