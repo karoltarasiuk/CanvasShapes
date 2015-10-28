@@ -70,7 +70,7 @@ define([
                         context.fill();
                     });
 
-                rendering.setStyle(style);
+                style.addToShapes(rendering);
                 expect(rendering.style).toBe(style);
                 expect(rendering.getStyle()).toBe(style);
             });

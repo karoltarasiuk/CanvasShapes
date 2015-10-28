@@ -233,14 +233,15 @@ CanvasShapes.SceneAbstract = (function () {
          */
         requestRendering: function (shape, animationFrame) {
 
-            var i, j, layer, layerObject, requestedLayer, found;
+            var i, j, layer, layerObject, requestedLayer, found, originalShape,
+                uuid;
 
             if (!_.isObject(this.requestedRendering)) {
                 this.requestedRendering = {};
             }
 
             // shape may be a part of a group
-            shape = shape.getRenderingShape();
+            originalShape = shape = shape.getRenderingShape();
 
             // looking for layer
             for (i in this.layers) {
@@ -269,9 +270,10 @@ CanvasShapes.SceneAbstract = (function () {
                     if (j === shape.getUUID()) {
                         // checking if layers are the same
                         if (i === layer.getUUID()) {
-                            // updating animation frame
+                            // adding new animation frame
                             this.requestedRendering[i].shapes[j]
-                                .animationFrame = animationFrame;
+                                .animationFrames[animationFrame.getType()] =
+                                    animationFrame;
                             return;
                         } else {
                             // we remove the shape as layer has changed, and
@@ -284,28 +286,53 @@ CanvasShapes.SceneAbstract = (function () {
 
             // in case of this is a new shape, we fetch the layer object
             // or create a new one
-            if (this.requestedRendering[layer.getUUID()]) {
-                // the layer shape is already in `this.requestedRendering`
-                requestedLayer = this.requestedRendering[layer.getUUID()];
-            } else {
+            if (!this.requestedRendering[layer.getUUID()]) {
+
                 this.requestedRendering[layer.getUUID()] = {
                     layer: layer,
                     shapes: {}
                 };
                 requestedLayer = this.requestedRendering[layer.getUUID()];
-            }
 
-            // we should add all the shapes as this layer will be cleared
-            for (j in layerObject.shapes) {
-                shape = layerObject.shapes[j];
+                // we should add all the shapes as this layer will be cleared
+                for (j in layerObject.shapes) {
+                    shape = layerObject.shapes[j];
+                    uuid = shape.getUUID();
 
-                if (!requestedLayer.shapes[shape.getUUID()]) {
-                    // this shape was not added previously
-                    requestedLayer.shapes[layerObject.shapes[j].getUUID()] = {};
+                    if (!requestedLayer.shapes[uuid]) {
+                        // this shape was not added previously
+                        requestedLayer.shapes[uuid] = {
+                            animationFrames: {}
+                        };
+                    }
+
+                    requestedLayer.shapes[uuid].shape = shape;
+
+                    if (originalShape === shape && animationFrame) {
+                        requestedLayer.shapes[uuid]
+                            .animationFrames[animationFrame.getType()] =
+                                animationFrame;
+                    }
                 }
-                requestedLayer.shapes[shape.getUUID()].shape = shape;
-                requestedLayer.shapes[shape.getUUID()].animationFrame =
-                    animationFrame;
+
+            } else {
+                requestedLayer = this.requestedRendering[layer.getUUID()];
+                uuid = shape.getUUID();
+
+                if (!requestedLayer.shapes[uuid]) {
+                    // this shape was not added previously
+                    requestedLayer.shapes[uuid] = {
+                        animationFrames: {}
+                    };
+                }
+
+                requestedLayer.shapes[uuid].shape = shape;
+
+                if (animationFrame) {
+                    requestedLayer.shapes[uuid]
+                        .animationFrames[animationFrame.getType()] =
+                            animationFrame;
+                }
             }
         },
 

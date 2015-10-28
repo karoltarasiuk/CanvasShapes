@@ -42,13 +42,11 @@ require([
         polygon2 = new CanvasShapes.Polygon([point12, point14, point15, point13]),
         square = new CanvasShapes.Square([point6, point7, point8]),
         rectangle = new CanvasShapes.Rectangle([point9, point10, point11]),
-        strokeStyle = new CanvasShapes.Style(function (context) {
-            context.strokeStyle = 'black';
-            context.stroke();
+        strokeStyle = new CanvasShapes.Style({
+            strokeStyle: 'black'
         }),
-        fillStyle = new CanvasShapes.Style(function (context) {
-            context.fillStyle = 'orange';
-            context.fill();
+        fillStyle = new CanvasShapes.Style({
+            fillStyle: 'orange'
         }),
         scene3 = new CanvasShapes.Scene({ id: 'scene3', width: 300, height: 300 }),
         scene1, scene2, scene4, scene5, scene6;
@@ -79,26 +77,22 @@ require([
     circle1.setRelativeRendering(true);
 
     // styling shapes
-    // group.setStyle(strokeStyle, true);
-    polygon1.setStyle(strokeStyle);
-    polygon2.setStyle(strokeStyle);
-    square.setStyle(fillStyle);
+    strokeStyle.addToShapes([
+        polygon1, polygon2, arc1, circle1, line, rectangle
+    ]);
+    fillStyle.addToShapes([square]);
     point1.setFace('circle', 10);
     point16.setFace('circle', 10);
-    arc1.setStyle(strokeStyle);
-    circle1.setStyle(strokeStyle);
-    line.setStyle(strokeStyle);
-    rectangle.setStyle(strokeStyle);
 
     // rendering all the shapes once
     // renderer.render();
 
     // starting animation loop
     CanvasShapes.Renderer.start();
-    point16.move(500, [100, 100], function () {console.log('POINT 1 MOVED');
-        point16.move(500, [100, 0], function () {console.log('POINT 2 MOVED');
-            point16.move(500, [0, 100], function () {console.log('POINT 3 MOVED');
-                point16.move(500, [0, 50], function () {console.log('POINT 4 MOVED');
+    point16.move(500, [100, 100], function () {
+        point16.move(500, [100, 0], function () {
+            point16.move(500, [0, 100], function () {
+                point16.move(500, [0, 50], function () {
                     point16.move(2000, function (coords, totalTime, curTime) {
                         var ratio;
                         if (curTime >= totalTime) {
@@ -111,7 +105,7 @@ require([
                             coords[1] = Math.sin(ratio) * 50 + 50;
                         }
                         return coords;
-                    }, function () {console.log('POINT 5 MOVED');
+                    }, function () {console.log('POINT MOVED');
                         CanvasShapes.Renderer.stop();
                     });
                 });
@@ -144,6 +138,18 @@ require([
     });
     polygon2.move(3500, { x: 20, y: 10 }, function () {
         console.log('POLYGON 2 MOVED');
+    });
+
+    fillStyle.animate(3500, {
+        fillStyle: 'green'
+    }, function () {
+        console.log('FILL STYLE CHANGED');
+    });
+
+    strokeStyle.animate(3500, {
+        strokeStyle: 'red'
+    }, function () {
+        console.log('STROKE STYLE CHANGED');
     });
 
     setInterval(function () {

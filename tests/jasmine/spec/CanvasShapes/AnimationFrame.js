@@ -33,6 +33,24 @@ define([
                 function () {},
                 {}
             ); }).not.toThrow();
+
+            expect(function () { new CanvasShapes.AnimationFrame(
+                new CanvasShapes.Shape(),
+                10,
+                function () {},
+                function () {},
+                {},
+                ''
+            ); }).not.toThrow();
+
+            expect(function () { new CanvasShapes.AnimationFrame(
+                new CanvasShapes.Shape(),
+                10,
+                function () {},
+                function () {},
+                {},
+                'type'
+            ); }).not.toThrow();
         });
 
         it('can\'t initialize', function () {
@@ -210,6 +228,65 @@ define([
                     'not object'
                 );
             }).toThrow(error1);
+            expect(function () {
+                new CanvasShapes.AnimationFrame(
+                    new CanvasShapes.Shape(),
+                    10,
+                    function () {},
+                    function () {},
+                    {},
+                    1
+                );
+            }).toThrow(error1);
+            expect(function () {
+                new CanvasShapes.AnimationFrame(
+                    new CanvasShapes.Shape(),
+                    10,
+                    function () {},
+                    function () {},
+                    {},
+                    true
+                );
+            }).toThrow(error1);
+            expect(function () {
+                new CanvasShapes.AnimationFrame(
+                    new CanvasShapes.Shape(),
+                    10,
+                    function () {},
+                    function () {},
+                    {},
+                    []
+                );
+            }).toThrow(error1);
+            expect(function () {
+                new CanvasShapes.AnimationFrame(
+                    new CanvasShapes.Shape(),
+                    10,
+                    function () {},
+                    function () {},
+                    {},
+                    {}
+                );
+            }).toThrow(error1);
+        });
+
+        it('sets variables without overwriting existing', function () {
+
+            var shape = new CanvasShapes.Shape(),
+                frame = new CanvasShapes.AnimationFrame(
+                    shape,
+                    10,
+                    function () {},
+                    function () {},
+                    {
+                        nonExistingPropery: 'a',
+                        type: 'b'
+                    }
+                );
+
+            expect(frame.nonExistingPropery).toBe('a');
+            // type cannot be overwritten because it exists
+            expect(frame.type).toBe('');
         });
 
         it('calls next and reset methods properly', function () {
@@ -245,6 +322,38 @@ define([
             frame.reset();
             expect(frame.callbackCalled).toBeUndefined();
             expect(frame.startTime).toBeUndefined();
+        });
+
+        it('gets type properly', function () {
+
+            var shape = new CanvasShapes.Shape(),
+                frame1 = new CanvasShapes.AnimationFrame(
+                    shape,
+                    10,
+                    function () {},
+                    function () {},
+                    {}
+                ),
+                frame2 = new CanvasShapes.AnimationFrame(
+                    shape,
+                    10,
+                    function () {},
+                    function () {},
+                    {},
+                    ''
+                ),
+                frame3 = new CanvasShapes.AnimationFrame(
+                    shape,
+                    10,
+                    function () {},
+                    function () {},
+                    {},
+                    'type'
+                );
+
+            expect(frame1.getType()).toBe('');
+            expect(frame2.getType()).toBe('');
+            expect(frame3.getType()).toBe('type');
         });
     });
 });

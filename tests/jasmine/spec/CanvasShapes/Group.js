@@ -274,7 +274,7 @@ define([
 
                 // shapes added to group, but style not set deeply
                 group1.addShapes([shape1, shape2]);
-                group1.setStyle(style);
+                style.addToShapes(group1);
                 expect(group1.getStyle()).toBe(style);
                 group1.eachShape(function () {
                     expect(this.getStyle()).not.toBe(style);
@@ -282,7 +282,7 @@ define([
                 });
 
                 // setting style deeply, but points don't have faces
-                group1.setStyle(style, true);
+                style.addToShapes(group1, true);
                 expect(group1.getStyle()).toBe(style);
                 group1.eachShape(function () {
                     expect(this.getStyle()).not.toBe(style);
@@ -291,7 +291,7 @@ define([
 
                 // setting style deeply, and points have faces
                 group2.addShapes([shape3, shape4]);
-                group2.setStyle(style, true);
+                style.addToShapes(group2, true);
                 expect(group2.getStyle()).toBe(style);
                 group2.eachShape(function () {
                     expect(this.getStyle()).toBe(style);

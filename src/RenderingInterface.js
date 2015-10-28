@@ -37,8 +37,12 @@ CanvasShapes.RenderingInterface = (function () {
          * Allows you to assign the style to a rendering shape. If `deep` is
          * `true`, the style will be applied to the children shapes as well.
          *
+         * [WARNING] This method shouldn't be used separately unless you know
+         * exactly what you are doing. To add a style to a shape please use
+         * `addToShape` from `CanvasShapes.StyleInterface`.
+         *
          * @param {CanvasShapes.StyleInterface} style
-         * @param {boolean} deep
+         * @param {boolean}                     deep
          */
         setStyle: function (style, deep) {
             throw new CanvasShapes.Error(9029);
