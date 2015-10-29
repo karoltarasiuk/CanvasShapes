@@ -147,7 +147,7 @@ CanvasShapes.Tools = (function () {
 
         // @see http://stackoverflow.com/a/5624139/571230
         return "#" + ((1 << 24) + (r << 16) + (g << 8) + b)
-            .toString(16).slice(1);
+            .toString(16).slice(1).substr(0, 6);
     }
 
     function colorToHex(color) {

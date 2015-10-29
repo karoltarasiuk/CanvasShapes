@@ -123,6 +123,7 @@ define([
                     ['#112233', undefined, { r: 17, g: 34, b: 51 }],
                     ['#112233', true, [ 17, 34, 51 ]],
                     ['#aabbcc', undefined, { r: 170, g: 187, b: 204 }],
+                    ['#aabbcc', true, [ 170, 187, 204 ]],
                     ['#aabbcc', true, [ 170, 187, 204 ]]
                 ];
 
@@ -143,7 +144,9 @@ define([
                     [ 1, true, 3, null],
                     [ [], 2, 3, null],
                     [ 17, 34, 51, '#112233'],
-                    [ 170, 187, 204, '#aabbcc']
+                    [ 170, 187, 204, '#aabbcc'],
+                    // decimal places are ignored
+                    [ 170.437831, 187.123321, 204.75981, '#aabbcc']
                 ];
 
             for (i = 0; i < cases.length; i++) {
