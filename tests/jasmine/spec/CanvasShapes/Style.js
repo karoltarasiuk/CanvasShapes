@@ -259,6 +259,90 @@ define([
                 expect(contextStub.fill.calls.count()).toBe(2);
                 expect(contextStub.stroke.calls.count()).toBe(2);
             });
+
+            it(
+                'animate throws an error when incorrect arguments passed',
+            function () {
+
+                var style = new CanvasShapes.Style(),
+                    error = new CanvasShapes.Error(1050);
+
+                expect(function () {
+                    style.animate();
+                }).toThrow(error);
+                expect(function () {
+                    style.animate('string');
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(true);
+                }).toThrow(error);
+                expect(function () {
+                    style.animate({});
+                }).toThrow(error);
+                expect(function () {
+                    style.animate([]);
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10);
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10, 'string');
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10, 10);
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10, true);
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10, []);
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10, {}, 1);
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10, {}, true);
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10, {}, 'string');
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10, {}, {});
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10, {}, []);
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10, {}, function () {}, 1);
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10, {}, function () {}, true);
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10, {}, function () {}, 'string');
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10, {}, function () {}, []);
+                }).toThrow(error);
+                expect(function () {
+                    style.animate(10, {}, function () {}, {});
+                }).toThrow(error);
+            });
+
+            it('animates when correct arguments passed', function () {
+
+                var style = new CanvasShapes.Style();
+
+                expect(function () {
+                    style.animate(10, {});
+                }).not.toThrow();
+                expect(function () {
+                    style.animate(10, {}, function () {});
+                }).not.toThrow();
+                expect(function () {
+                    style.animate(10, {}, function () {}, 'default');
+                }).not.toThrow();
+            });
         });
 
         describe('can animate - async', function () {

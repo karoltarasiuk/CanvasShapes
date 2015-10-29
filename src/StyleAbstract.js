@@ -217,7 +217,8 @@ CanvasShapes.StyleAbstract = (function () {
             }
 
             if (
-                !_.isFunction(callback) || !_.isNumber(totalAnimationTime) ||
+                (callback && !_.isFunction(callback)) ||
+                !_.isNumber(totalAnimationTime) ||
                 !_.isString(which) || !_.isObject(this.definitions[which]) ||
                 !(_.isObject(definitionObject) && !_.isArray(definitionObject))
             ) {
