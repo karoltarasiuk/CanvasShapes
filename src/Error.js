@@ -57,6 +57,7 @@ CanvasShapes.Error = (function () {
         1050: "CanvasShapes.StyleAbstract - in `animate()`: invalid format of arguments passed",
         1051: "CanvasShapes.StyleAbstract - in `getDefinition()`: invalid format of arguments passed",
         1052: "CanvasShapes.StyleAbstract - in `addToShape()`: invalid format of arguments passed",
+        1053: "CanvasShapes.Renderer - in `addShapes()`: invalid format of arguments passed",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",

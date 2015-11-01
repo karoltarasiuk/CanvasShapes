@@ -48,14 +48,29 @@ CanvasShapes.Renderer = (function () {
 
         /**
          * Adds all the shapes passed in arguments to all the scenes.
+         *
+         * You can also specify that any of those shapes must be rendered on a
+         * separate and new layer. To do so pass a string `"new"` as a second
+         * arugment. Any other value of it will raise an exception.
+         *
+         * @param {array} shapes
+         * @param {string} layer [OPTIONAL]
          */
-        addShapes: function (shapes) {
+        addShapes: function (shapes, layer) {
 
             var i, j;
 
+            if (layer && layer !== 'new') {
+                throw new CanvasShapes.Error(1053);
+            }
+
             for (i = 0; i < this.scenes.length; i++) {
                 for (j = 0; j < shapes.length; j++) {
-                    this.scenes[i].addShape(shapes[j]);
+                    if (layer === 'new') {
+                        this.scenes[i].newLayer(shapes[j]);
+                    } else {
+                        this.scenes[i].addShape(shapes[j]);
+                    }
                 }
             }
         },

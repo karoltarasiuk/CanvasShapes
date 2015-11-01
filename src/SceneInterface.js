@@ -97,12 +97,12 @@ CanvasShapes.SceneInterface = (function () {
          * twice, and in some cases can cause infinite loop which will raise an
          * error eventually (after stack exceeds).
          *
-         * @param {CanvasShapes.SceneLayerInterface} layer
-         * @param {CanvasShapes.ShapeInterface} shape [OPTIONAL]
+         * @param {CanvasShapes.ShapeInterface} shape
+         * @param {CanvasShapes.SceneLayerInterface} layer [OPTIONAL]
          *
          * @return {CanvasShapes.SceneLayerInterface}
          */
-        addShape: function (layer, shape) {
+        addShape: function (shape, layer) {
             throw new CanvasShapes.Error(9019);
         },
 

@@ -68,6 +68,8 @@ require([
     // another way of doing exactly the same
     scene3.addShape(polygon2, scene3.newLayer());
     scene6.addShape(polygon2, scene6.newLayer());
+    // circle1 on a new layer in any scene
+    renderer.addShapes([circle1], 'new');
 
     // setting relative rendering
     square.setRelativeRendering(true);

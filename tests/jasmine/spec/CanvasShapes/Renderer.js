@@ -99,6 +99,10 @@ define([
                 expect(function () {
                     renderer.addShapes([shape1, shape2]);
                 }).not.toThrow();
+
+                expect(function () {
+                    renderer.addShapes([shape1, shape2], 'new');
+                }).not.toThrow();
             });
 
             it('events manipulation', function () {
