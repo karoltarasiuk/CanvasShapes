@@ -303,7 +303,7 @@ require([
                 fillStyle: '#ede6cc'
             });
 
-            this.elements.animatedBackground.sun.move(1000, [85, 12]);
+            this.elements.animatedBackground.sun.move(1000, [85, 15]);
             for (i = 0; i < starPositions.length; i++) {
                 tempCoords = that.starCoordinates.apply(undefined, starPositions[i]);
                 this.elements.animatedBackground.stars[i].move(1000, tempCoords);
@@ -353,7 +353,7 @@ require([
                 fillStyle: '#d2b48c'
             });
 
-            this.elements.animatedBackground.sun.move(1000, [85, 112]);
+            this.elements.animatedBackground.sun.move(1000, [85, 115]);
             for (i = 0; i < starPositions.length; i++) {
                 tempCoords = that.starCoordinates.apply(undefined, starPositions[i]);
                 this.elements.animatedBackground.stars[i].move(1000, tempCoords);
