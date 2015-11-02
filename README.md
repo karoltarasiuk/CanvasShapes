@@ -1,4 +1,4 @@
-#JSONChecker readme
+#CanvasShapes readme
 
 The goal of this library is to provide nice interface for drawing using canvas element. There are few main contepts you need to get familiar with before you start working with this library:
 
