@@ -10,7 +10,8 @@ build:
 	cp build/CanvasShapes.js tests/jasmine/src/
 
 open: build
-	open http://localhost:8000/
+	# opening first as server will be up first anyway
+	open http://localhost:8000/examples/
 	python -m SimpleHTTPServer 8000
 
 tests: build
