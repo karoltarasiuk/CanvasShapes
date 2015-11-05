@@ -367,8 +367,10 @@ require([
         return Showcase;
     })();
 
-    var i,
-        HOW_MANY = 1,
+    var i, j,
+        ROWS = 1,
+        COLS = 1,
+        HOW_MANY = ROWS * COLS,
         scenesIDs = [],
         showcases = [],
         showcase,
@@ -390,13 +392,15 @@ require([
         showcases = [];
         scenesIDs = [];
 
-        for (i = 0; i < HOW_MANY; i++) {
-            scenesIDs.push('scene' + i);
-            $('#scenes').append('<div id="scene' + i + '" style="float: left;"></div>');
+        for (i = 0; i < ROWS; i++) {
+            for (j = 0; j < COLS; j++) {
+                scenesIDs.push('scene_' + i + '_' + j);
+                $('#scenes').append('<div id="scene_' + i + '_' + j + '" style="float: left;"></div>');
+            }
+            $('#scenes').append('<div style="clear: both;"></div>');
         }
-        $('#scenes').append('<div style="clear: both;"></div>');
 
-        if (HOW_MANY === 1) {
+        if (COLS === 1 && ROWS === 1) {
             if (ww > wh) {
                 ww = wh;
             } else {
@@ -405,7 +409,7 @@ require([
             width = ww;
             height = wh;
         } else {
-            width = ww / HOW_MANY;
+            width = ww / COLS;
             height = width;
         }
 
