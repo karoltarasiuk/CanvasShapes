@@ -155,7 +155,7 @@ require([
     });
 
     setInterval(function () {
-        document.getElementById('fps').innerHTML =
+        document.getElementById('fps').getElementsByClassName('fps')[0].innerHTML =
             CanvasShapes.Renderer.getFPS();
     }, 100);
 

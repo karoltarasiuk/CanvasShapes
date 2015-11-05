@@ -424,7 +424,7 @@ require([
         }
 
         setInterval(function () {
-            document.getElementById('fps').innerHTML = CanvasShapes.Renderer.getFPS();
+            $("#fps .fps").html(CanvasShapes.Renderer.getFPS());
         }, 100);
 
     }).resize();
