@@ -118,7 +118,7 @@ define([
                         RENDER_OFF_SCREEN: false
                     });
 
-                expect(scene1.shouldRenderOffScreen()).toBe(true);
+                expect(scene1.shouldRenderOffScreen()).toBe(false);
                 expect(scene2.shouldRenderOffScreen()).toBe(true);
                 expect(scene3.shouldRenderOffScreen()).toBe(false);
             });
@@ -158,9 +158,9 @@ define([
                 canvas2 = layer2.getCanvas();
                 canvas3 = layer3.getCanvas();
 
-                expect(canvas1.style.marginLeft).toBe(-layer1.getWidth() + 'px');
-                expect(canvas1.style.marginTop).toBe(-layer1.getHeight() + 'px');
-                expect(canvas1.style.position).toBe('fixed');
+                expect(canvas1.style.marginLeft).toBe('');
+                expect(canvas1.style.marginTop).toBe('');
+                expect(canvas1.style.position).toBe('absolute');
                 expect(canvas1.style.top).toBe('0px');
                 expect(canvas1.style.left).toBe('0px');
 
@@ -217,11 +217,11 @@ define([
                         element: document.createElement('div'),
                         width: 100,
                         height: 100,
-                        RENDER_OFF_SCREEN: false
+                        RENDER_OFF_SCREEN: true
                     });
 
-                expect(scene1.shouldRenderOffScreen()).toBe(true);
-                expect(scene2.shouldRenderOffScreen()).toBe(false);
+                expect(scene1.shouldRenderOffScreen()).toBe(false);
+                expect(scene2.shouldRenderOffScreen()).toBe(true);
             });
 
             it('adding shapes', function () {

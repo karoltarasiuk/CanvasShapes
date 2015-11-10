@@ -77,14 +77,14 @@ CanvasShapes.Scene = (function () {
             // checking whether this scene's layers should be rendered outside
             // of the screen
             if (
-                config.RENDER_OFF_SCREEN === false ||
-                CanvasShapes.Config.get('RENDER_OFF_SCREEN') === false
+                config.RENDER_OFF_SCREEN === true ||
+                CanvasShapes.Config.get('RENDER_OFF_SCREEN') === true
             ) {
-                this._shouldRenderOffScreen = false;
-            } else {
                 this._shouldRenderOffScreen = true;
                 this.mainLayer = new CanvasShapes.SceneLayer(this);
                 this.mainLayerContext = this.mainLayer.getContext('2d');
+            } else {
+                this._shouldRenderOffScreen = false;
             }
         },
 
