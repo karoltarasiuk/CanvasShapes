@@ -20,7 +20,7 @@ require([
             this.width = width;
             this.height = height;
             this.domId = domId;
-            this.renderer = renderer = CanvasShapes.init();
+            this.renderer = CanvasShapes.init();
             this.setupScene();
             this.createObjects();
             this.addAllShapes();
