@@ -50,8 +50,6 @@ CanvasShapes.Scene = (function () {
 
         initialize: function (config) {
 
-            var defaultLayer;
-
             this.config = config;
             this.width = this.config.width;
             this.height = this.config.height;
@@ -75,6 +73,19 @@ CanvasShapes.Scene = (function () {
             }
 
             this.initializeListeners();
+
+            // checking whether this scene's layers should be rendered outside
+            // of the screen
+            if (
+                config.RENDER_OFF_SCREEN === false ||
+                CanvasShapes.Config.get('RENDER_OFF_SCREEN') === false
+            ) {
+                this._shouldRenderOffScreen = false;
+            } else {
+                this._shouldRenderOffScreen = true;
+                this.mainLayer = new CanvasShapes.SceneLayer(this);
+                this.mainLayerContext = this.mainLayer.getContext('2d');
+            }
         },
 
         validateConfig: function (config) {
@@ -127,6 +138,16 @@ CanvasShapes.Scene = (function () {
 
                 // all shapes were rendered so we can clear this list
                 this.requestedRendering = {};
+
+                // if shapes were rendered off screen we need to copy them to
+                // the main canvas
+                if (this.shouldRenderOffScreen()) {
+                    this.mainLayer.clear();
+                    for (i in this.layers) {
+                        this.mainLayerContext
+                            .drawImage(this.layers[i].layer.getCanvas(), 0, 0);
+                    }
+                }
 
                 // executing all the callbacks
                 for (i = 0; i < callbacks.length; i++) {

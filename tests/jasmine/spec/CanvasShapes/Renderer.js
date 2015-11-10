@@ -80,7 +80,8 @@ define([
 
             it('adding shapes', function () {
 
-                var renderer = new CanvasShapes.Renderer(),
+                var i, j, count,
+                    renderer = new CanvasShapes.Renderer(),
                     scene = new CanvasShapes.Scene({
                         element: document.createElement('div'),
                         width: 100,
@@ -103,6 +104,26 @@ define([
                 expect(function () {
                     renderer.addShapes([shape1, shape2], 'new');
                 }).not.toThrow();
+
+                for (i = 0; i < renderer.scenes.length; i++) {
+                    count = 0;
+                    for (j in renderer.scenes[i].layers) {
+                        count++;
+                    }
+                    expect(count).toBe(2);
+                }
+
+                expect(function () {
+                    renderer.addShapes([shape2], 'new');
+                }).not.toThrow();
+
+                for (i = 0; i < renderer.scenes.length; i++) {
+                    count = 0;
+                    for (j in renderer.scenes[i].layers) {
+                        count++;
+                    }
+                    expect(count).toBe(3);
+                }
             });
 
             it('events manipulation', function () {

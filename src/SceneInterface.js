@@ -18,6 +18,18 @@ CanvasShapes.SceneInterface = (function () {
         },
 
         /**
+         * Checks whether this scene should be rendered off screen, as global
+         * config value (`RENDER_OFF_SCREEN`) can be surpassed by internal scene
+         * config value. The method itself only checks
+         * `this._shouldRenderOffScreen`, which should be set on initialization.
+         *
+         * @return {Boolean}
+         */
+        shouldRenderOffScreen: function () {
+            throw new CanvasShapes.Error(9062);
+        },
+
+        /**
          * Renders all the layers, on which there are shapes which requested
          * rendering.
          *

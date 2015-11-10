@@ -2,9 +2,23 @@
 
 CanvasShapes.SceneLayer = (function () {
 
-    var SceneLayer = function (scene, width, height, left, top) {
+    /**
+     * SceneLayer constructor.
+     *
+     * When `offScreen` parameter is passed, layer CSS position is `fixed` and
+     * `margin-top` and `margin-left` are set to negative `height` and `top`
+     * respectively.
+     *
+     * @param {CanvasShapes.SceneInterface} scene
+     * @param {float}                       width [OPTIONAL]
+     * @param {float}                       height [OPTIONAL]
+     * @param {float}                       left [OPTIONAL]
+     * @param {float}                       top [OPTIONAL]
+     * @param {boolean}                     offScreen [OPTIONAL]
+     */
+    var SceneLayer = function (scene, width, height, left, top, offScreen) {
         this.setUUID();
-        this.initialize(scene, width, height, left, top);
+        this.initialize(scene, width, height, left, top, offScreen);
     };
 
     CanvasShapes.Class.extend(
@@ -19,7 +33,21 @@ CanvasShapes.SceneLayer = (function () {
 
         top: null,
 
-        initialize: function (scene, width, height, left, top) {
+        /**
+         * SceneLayer initialization method.
+         *
+         * When `offScreen` parameter is passed, layer CSS position is `fixed`
+         * and `margin-top` and `margin-left` are set to negative `height` and
+         * `top` respectively.
+         *
+         * @param {CanvasShapes.SceneInterface} scene
+         * @param {float}                       width [OPTIONAL]
+         * @param {float}                       height [OPTIONAL]
+         * @param {float}                       left [OPTIONAL]
+         * @param {float}                       top [OPTIONAL]
+         * @param {boolean}                     offScreen [OPTIONAL]
+         */
+        initialize: function (scene, width, height, left, top, offScreen) {
 
             this.scene = scene;
 
@@ -41,6 +69,12 @@ CanvasShapes.SceneLayer = (function () {
 
             if (top) {
                 this.top = top;
+            }
+
+            this.offScreen = false;
+
+            if (offScreen === true) {
+                this.offScreen = true;
             }
 
             this.initializeCanvas();
@@ -91,6 +125,13 @@ CanvasShapes.SceneLayer = (function () {
             this.canvas.style.position = 'absolute';
             this.canvas.style.top = this.top + 'px';
             this.canvas.style.left = this.left + 'px';
+
+            if (this.offScreen) {
+                this.canvas.className = 'offScreen';
+                this.canvas.style.position = 'fixed';
+                this.canvas.style.marginTop = -this.height + 'px';
+                this.canvas.style.marginLeft = -this.width + 'px';
+            }
 
             dom.appendChild(this.canvas);
         }

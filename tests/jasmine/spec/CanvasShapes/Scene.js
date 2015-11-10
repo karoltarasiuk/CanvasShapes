@@ -98,6 +98,85 @@ define([
                 }).toThrow(error1);
             });
 
+            it('shouldRenderOffScreen method', function () {
+
+                var scene1 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
+                    scene2 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100,
+                        RENDER_OFF_SCREEN: true
+                    }),
+                    scene3 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100,
+                        RENDER_OFF_SCREEN: false
+                    });
+
+                expect(scene1.shouldRenderOffScreen()).toBe(true);
+                expect(scene2.shouldRenderOffScreen()).toBe(true);
+                expect(scene3.shouldRenderOffScreen()).toBe(false);
+            });
+
+            it('positions layers properly', function () {
+
+                var layer1, layer2, layer3, i, canvas1, canvas2, canvas3,
+                    scene1 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
+                    scene2 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100,
+                        RENDER_OFF_SCREEN: true
+                    }),
+                    scene3 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100,
+                        RENDER_OFF_SCREEN: false
+                    });
+
+                layer1 = scene1.newLayer();
+                layer2 = scene2.newLayer(
+                    undefined,
+                    undefined,
+                    undefined,
+                    20,
+                    10
+                );
+                layer3 = scene3.newLayer();
+
+                canvas1 = layer1.getCanvas();
+                canvas2 = layer2.getCanvas();
+                canvas3 = layer3.getCanvas();
+
+                expect(canvas1.style.marginLeft).toBe(-layer1.getWidth() + 'px');
+                expect(canvas1.style.marginTop).toBe(-layer1.getHeight() + 'px');
+                expect(canvas1.style.position).toBe('fixed');
+                expect(canvas1.style.top).toBe('0px');
+                expect(canvas1.style.left).toBe('0px');
+
+                expect(canvas2.style.marginLeft).toBe(-layer2.getWidth() + 'px');
+                expect(canvas2.style.marginTop).toBe(-layer2.getHeight() + 'px');
+                expect(canvas2.style.position).toBe('fixed');
+                expect(canvas2.style.top).toBe('10px');
+                expect(canvas2.style.left).toBe('20px');
+
+                expect(canvas3.style.marginLeft).toBe('');
+                expect(canvas3.style.marginTop).toBe('');
+                expect(canvas3.style.position).toBe('absolute');
+                expect(canvas3.style.top).toBe('0px');
+                expect(canvas3.style.left).toBe('0px');
+            });
+
             it('initializing layers', function () {
 
                 var i, UUID,
@@ -125,6 +204,24 @@ define([
                 expect(scene.layers[UUID].layer.is('CanvasShapes.SceneLayer'))
                     .toBe(true);
                 expect(scene.layers[UUID].shapes).toEqual({});
+            });
+
+            it('returning whether should render off screen', function () {
+
+                var scene1 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
+                    scene2 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100,
+                        RENDER_OFF_SCREEN: false
+                    });
+
+                expect(scene1.shouldRenderOffScreen()).toBe(true);
+                expect(scene2.shouldRenderOffScreen()).toBe(false);
             });
 
             it('adding shapes', function () {

@@ -58,6 +58,7 @@ CanvasShapes.Error = (function () {
         1051: "CanvasShapes.StyleAbstract - in `getDefinition()`: invalid format of arguments passed",
         1052: "CanvasShapes.StyleAbstract - in `addToShape()`: invalid format of arguments passed",
         1053: "CanvasShapes.Renderer - in `addShapes()`: invalid format of arguments passed",
+        1054: "CanvasShapes.SceneLayerAbstract - canvas mandatory but missing",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
@@ -141,6 +142,8 @@ CanvasShapes.Error = (function () {
         9059: "CanvasShapes.StyleInterface - `animate()` is not implemented",
         9060: "CanvasShapes.StyleInterface - `addToShape()` is not implemented",
         9061: "CanvasShapes.AnimationFrameInterface - `getType()` is not implemented",
+        9062: "CanvasShapes.SceneInterface - `shouldRenderOffScreen()` is not implemented",
+        9063: "CanvasShapes.SceneLayerInterface - `getCanvas()` is not implemented",
     };
 
     /**

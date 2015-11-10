@@ -110,7 +110,7 @@ CanvasShapes.SceneAbstract = (function () {
         requestedRendering: null,
 
         /**
-         * Initializes event listeners. Call ONLY when `this.dom` is ready!
+         * @implements {CanvasShapes.SceneInterface}
          */
         initializeListeners: function () {
             if (!this.dom || !this.dom.addEventListener) {
@@ -125,6 +125,13 @@ CanvasShapes.SceneAbstract = (function () {
         /**
          * @implements {CanvasShapes.SceneInterface}
          */
+        shouldRenderOffScreen: function () {
+            return this._shouldRenderOffScreen === true ? true : false;
+        },
+
+        /**
+         * @implements {CanvasShapes.SceneInterface}
+         */
         newLayer: function (shape, width, height, left, top) {
 
             var layerObject,
@@ -133,7 +140,8 @@ CanvasShapes.SceneAbstract = (function () {
                     width,
                     height,
                     left,
-                    top
+                    top,
+                    this.shouldRenderOffScreen()
                 );
 
             if (shape && !shape.is(CanvasShapes.ShapeInterface)) {
@@ -158,7 +166,14 @@ CanvasShapes.SceneAbstract = (function () {
 
             if (!_.isObject(this.layers)) {
                 this.layers = {};
-                layer = new CanvasShapes.SceneLayer(this);
+                layer = new CanvasShapes.SceneLayer(
+                    this,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    this.shouldRenderOffScreen()
+                );
                 this.layers[layer.getUUID()] = {
                     layer: layer,
                     shapes: {}

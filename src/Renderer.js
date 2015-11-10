@@ -58,7 +58,7 @@ CanvasShapes.Renderer = (function () {
          */
         addShapes: function (shapes, layer) {
 
-            var i, j;
+            var i, j, layerInstance;
 
             if (layer && layer !== 'new') {
                 throw new CanvasShapes.Error(1053);
@@ -67,7 +67,11 @@ CanvasShapes.Renderer = (function () {
             for (i = 0; i < this.scenes.length; i++) {
                 for (j = 0; j < shapes.length; j++) {
                     if (layer === 'new') {
-                        this.scenes[i].newLayer(shapes[j]);
+                        if (layerInstance) {
+                            this.scenes[i].addShape(shapes[j], layerInstance);
+                        } else {
+                            layerInstance = this.scenes[i].newLayer(shapes[j]);
+                        }
                     } else {
                         this.scenes[i].addShape(shapes[j]);
                     }
@@ -133,11 +137,12 @@ CanvasShapes.Renderer = (function () {
 
     /* STATIC CONTEXT */
 
-    var RENDERERS = [];
-    var RUNNING = false;
-    var FPS = 0;
-    var FRAMES = 0;
-    var START_TIME = null;
+    var RENDERERS = [],
+        RUNNING = false,
+        FPS = 0,
+        FRAMES_DATA = [],
+        FRAMES_LIMIT = 100,
+        MIN_FRAMES = 2;
 
     function getAnimationFrame() {
 
@@ -153,9 +158,15 @@ CanvasShapes.Renderer = (function () {
                 RENDERERS[i].render();
             }
 
-            FRAMES++;
-            time = ((new Date()).getTime() - START_TIME) / 1000;
-            FPS = Math.floor(FRAMES / time);
+            FRAMES_DATA.push((new Date()).getTime() / 1000);
+            if (FRAMES_DATA.length > FRAMES_LIMIT) {
+                FRAMES_DATA.shift();
+            }
+
+            if (FRAMES_DATA.length > MIN_FRAMES) {
+                time = FRAMES_DATA[FRAMES_DATA.length - 1] - FRAMES_DATA[0];
+                FPS = Math.floor(FRAMES_DATA.length / time);
+            }
 
             getAnimationFrame();
         });
@@ -164,8 +175,7 @@ CanvasShapes.Renderer = (function () {
     Renderer.start = function () {
         RUNNING = true;
         FPS = 0;
-        FRAMES = 0;
-        START_TIME = (new Date()).getTime();
+        FRAMES_DATA = [];
         getAnimationFrame();
     };
 

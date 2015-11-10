@@ -31,6 +31,8 @@ define([
             expect(config.get('d')).toBe(d);
 
             expect(config.get('EPSILON')).not.toBe(null);
+            expect(config.get('EQUALITY_ALLOWED_ERROR')).toBe(0.0000000001);
+            expect(config.get('RENDER_OFF_SCREEN')).toBe(false);
             expect(config.get('RUBBISH')).toBe(null);
         });
 

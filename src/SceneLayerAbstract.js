@@ -20,6 +20,13 @@ CanvasShapes.SceneLayerAbstract = (function () {
         scene: null,
 
         /**
+         * HTML Canvas element associated with this layer.
+         *
+         * @type {HTMLCanvasElement}
+         */
+        canvas: null,
+
+        /**
          * 2D context of the layer. Must be set on initialisation.
          *
          * @type {CanvasRenderingContext2D}
@@ -50,6 +57,18 @@ CanvasShapes.SceneLayerAbstract = (function () {
             }
 
             return this.scene;
+        },
+
+        /**
+         * @implements {CanvasShapes.SceneLayerInterface}
+         */
+        getCanvas: function () {
+
+            if (!this.canvas) {
+                throw new CanvasShapes.Erorr(1054);
+            }
+
+            return this.canvas;
         },
 
         /**
