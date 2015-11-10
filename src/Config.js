@@ -37,7 +37,17 @@ CanvasShapes.Config = (function () {
          *
          * @type {float}
          */
-        EQUALITY_ALLOWED_ERROR: 0.0000000001
+        EQUALITY_ALLOWED_ERROR: 0.0000000001,
+
+        /**
+         * Decides whether layers should be rendered off screen and copied into
+         * the final layer placed in the scene container, or on screen in the
+         * scene container. The latter seems to be faster, hence default is
+         * `false`.
+         *
+         * @type {boolean}
+         */
+        RENDER_OFF_SCREEN: false,
     };
 
     function set(option, value) {

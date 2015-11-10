@@ -20,6 +20,15 @@ CanvasShapes.SceneLayerInterface = (function () {
         },
 
         /**
+         * Gets canvas element associated with this layer.
+         *
+         * @return {HTMLCanvasElement}
+         */
+        getCanvas: function () {
+            throw new CanvasShapes.Error(9063);
+        },
+
+        /**
          * Allows you to get 2D context of the canvas object contained in
          * this layer.
          *
