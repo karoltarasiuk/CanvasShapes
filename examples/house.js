@@ -369,7 +369,8 @@ require([
 
     var i, j,
         ROWS = 1,
-        COLS = 1,
+        COLS = 4,
+        SIZE_RATIO = 0.75,
         HOW_MANY = ROWS * COLS,
         scenesIDs = [],
         showcases = [],
@@ -418,7 +419,13 @@ require([
         }
 
         for (i = 0; i < HOW_MANY; i++) {
-            showcases.push(new Showcase(width, height, scenesIDs[i]));
+            if (i == 2) {
+                showcases.push(new Showcase(width * Math.pow(SIZE_RATIO, i), height, scenesIDs[i]));
+            } else if (i === 3) {
+                showcases.push(new Showcase(width, height * Math.pow(SIZE_RATIO, i), scenesIDs[i]));
+            } else {
+                showcases.push(new Showcase(width * Math.pow(SIZE_RATIO, i), height * Math.pow(SIZE_RATIO, i), scenesIDs[i]));
+            }
         }
 
         CanvasShapes.Renderer.start();
