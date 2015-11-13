@@ -91,9 +91,9 @@ CanvasShapes.CoordinatesInterface = (function () {
          * defined as follows:
          * ```
          * {
-         *     x: {number},
-         *     y: {number},
-         *     z: {number} [OPTIONAL]
+         *     x: {float},
+         *     y: {float},
+         *     z: {float} [OPTIONAL]
          * }
          * ```
          *
@@ -111,9 +111,9 @@ CanvasShapes.CoordinatesInterface = (function () {
          * to throw an exception. Offset object is defined as follows:
          * ```
          * {
-         *     x: {number},
-         *     y: {number},
-         *     z: {number} [OPTIONAL]
+         *     x: {float},
+         *     y: {float},
+         *     z: {float} [OPTIONAL]
          * }
          * ```
          * Also important thing to notice is that offset is applied after
@@ -121,7 +121,7 @@ CanvasShapes.CoordinatesInterface = (function () {
          *
          * @param  {array}  coordinates
          * @param  {object} offset
-         * @param  {number} multipler
+         * @param  {float} multipler
          *
          * @return {[type]}           [description]
          */

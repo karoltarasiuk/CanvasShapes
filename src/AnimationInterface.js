@@ -52,9 +52,9 @@ CanvasShapes.AnimationInterface = (function () {
          * treated as an offset added to each coordinate. It's format is:
          * ```
          * {
-         *     x: {number},
-         *     y: {number},
-         *     z: {number} [OPTIONAL]
+         *     x: {float},
+         *     y: {float},
+         *     z: {float} [OPTIONAL]
          * }
          * ```
          * If you decide to omit some coordinates it will be treated as `0`.

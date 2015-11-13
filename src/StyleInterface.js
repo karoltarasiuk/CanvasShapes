@@ -54,7 +54,7 @@ CanvasShapes.StyleInterface = (function () {
          * base definition (or left empty to change a default one).
          *
          * @param  {function} callback
-         * @param  {number}   totalAnimationTime
+         * @param  {integer}  totalAnimationTime
          * @param  {object}   definitionObject
          * @param  {string}   which [OPTIONAL]
          *

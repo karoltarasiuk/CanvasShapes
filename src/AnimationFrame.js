@@ -23,7 +23,7 @@ CanvasShapes.AnimationFrame = (function () {
      * may be useful to bind them to desired context before passing here.
      *
      * @param {CanvasShapes.RenderingInterface}   shape
-     * @param {number}                            totalAnimationTime
+     * @param {integer}                           totalAnimationTime
      * @param {function}                          stepCallback
      * @param {function}                          callback [OPTIONAL]
      * @param {object}                            variables [OPTIONAL]
