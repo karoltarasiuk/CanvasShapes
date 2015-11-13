@@ -49,6 +49,18 @@ CanvasShapes.SceneLayer = (function () {
          */
         initialize: function (scene, width, height, left, top, offScreen) {
 
+            if (
+                !_.isObject(scene) || !_.isFunction(scene.is) ||
+                !scene.is(CanvasShapes.SceneInterface) ||
+                (!_.isUndefined(width) && !_.isNumber(width)) ||
+                (!_.isUndefined(height) && !_.isNumber(height)) ||
+                (!_.isUndefined(left) && !_.isNumber(left)) ||
+                (!_.isUndefined(top) && !_.isNumber(top)) ||
+                (!_.isUndefined(offScreen) && !_.isBoolean(offScreen))
+            ) {
+                throw new CanvasShapes.Error(1055);
+            }
+
             this.scene = scene;
 
             if (width) {

@@ -35,6 +35,121 @@ define([
                 ).toThrow(temp);
             });
 
+            it('can\'t instantiate normal class', function () {
+
+                var error = new CanvasShapes.Error(1055),
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 200,
+                        height: 200
+                    });
+
+                // scene is wrong
+                expect(function () {
+                    new CanvasShapes.SceneLayer({});
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer([]);
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(true);
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer('string');
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(1);
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(function () {});
+                }).toThrow(error);
+
+                // width is wrong
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, {});
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, []);
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, function () {});
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, true);
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 'string');
+                }).toThrow(error);
+
+                // height is wrong
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, {});
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, []);
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, function () {});
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, true);
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 'string');
+                }).toThrow(error);
+
+                // left is wrong
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, {});
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, []);
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, function () {});
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, true);
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, 'string');
+                }).toThrow(error);
+
+                // top is wrong
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, 0, {});
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, 0, []);
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, 0, function () {});
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, 0, true);
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, 0, 'string');
+                }).toThrow(error);
+
+                // offScreen is wrong
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, 0, 0, {});
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, 0, 0, []);
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, 0, 0, function () {});
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, 0, 0, 1);
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.SceneLayer(scene, 0, 0, 0, 0, 'string');
+                }).toThrow(error);
+            });
+
             it('can instantiate normal class', function () {
 
                 var layer1, layer2, layer3, layer4,
