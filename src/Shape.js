@@ -210,30 +210,30 @@ CanvasShapes.Shape = (function () {
                         ratio = 1;
                     }
 
-                    if (_.isFunction(this.coordinates)) {
-                        newCoordinates = this.coordinates(
-                            this.startingCoordinates,
+                    if (_.isFunction(this.variables.coordinates)) {
+                        newCoordinates = this.variables.coordinates(
+                            this.variables.startingCoordinates,
                             this.totalAnimationTime,
                             currentTime
                         );
                     } else {
 
-                        for (i = 0; i < this.coordinates.length; i++) {
-                            if (_.isArray(this.coordinates[i])) {
+                        for (i = 0; i < this.variables.coordinates.length; i++) {
+                            if (_.isArray(this.variables.coordinates[i])) {
                                 if (!_.isArray(newCoordinates[i])) {
                                     newCoordinates[i] = [];
                                 }
-                                for (j = 0; j < this.coordinates[i].length; j++) {
+                                for (j = 0; j < this.variables.coordinates[i].length; j++) {
                                     newCoordinates[i][j] =
-                                        this.startingCoordinates[i][j] +
-                                        (this.coordinates[i][j] -
-                                        this.startingCoordinates[i][j]) *
+                                        this.variables.startingCoordinates[i][j] +
+                                        (this.variables.coordinates[i][j] -
+                                        this.variables.startingCoordinates[i][j]) *
                                         ratio;
                                 }
                             } else {
                                 newCoordinates[i] =
-                                    this.startingCoordinates[i] +
-                                    (this.coordinates[i] - this.startingCoordinates[i]) *
+                                    this.variables.startingCoordinates[i] +
+                                    (this.variables.coordinates[i] - this.variables.startingCoordinates[i]) *
                                     ratio;
                             }
                         }

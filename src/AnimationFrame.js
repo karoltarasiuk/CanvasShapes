@@ -62,13 +62,12 @@ CanvasShapes.AnimationFrame = (function () {
         }
 
         this.type = type;
+        this.variables = {};
 
         // setting variables carefully to not overwrite existing properties
         if (variables) {
             for (i in variables) {
-                if (this[i] === undefined) {
-                    this[i] = variables[i];
-                }
+                this.variables[i] = variables[i];
             }
         }
     };

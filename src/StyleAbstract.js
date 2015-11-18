@@ -276,32 +276,36 @@ CanvasShapes.StyleAbstract = (function () {
                             ratio = 1;
                         }
 
-                        if (this.definition.strokeStyle) {
-                            if (this.baseDefinition.strokeStyle) {
+                        if (this.variables.definition.strokeStyle) {
+                            if (this.variables.baseDefinition.strokeStyle) {
                                 newDefinition.strokeStyle = calculateCurrentColor(
-                                    this.baseDefinition.strokeStyle,
-                                    this.definition.strokeStyle,
+                                    this.variables.baseDefinition.strokeStyle,
+                                    this.variables.definition.strokeStyle,
                                     ratio
                                 );
                             } else {
                                 newDefinition.strokeStyle =
-                                    this.definition.strokeStyle;
+                                    this.variables.definition.strokeStyle;
                             }
                         }
 
-                        if (this.definition.fillStyle) {
-                            if (this.baseDefinition.fillStyle) {
+                        if (this.variables.definition.fillStyle) {
+                            if (this.variables.baseDefinition.fillStyle) {
                                 newDefinition.fillStyle = calculateCurrentColor(
-                                    this.baseDefinition.fillStyle,
-                                    this.definition.fillStyle,
+                                    this.variables.baseDefinition.fillStyle,
+                                    this.variables.definition.fillStyle,
                                     ratio
                                 );
                             } else {
-                                newDefinition.fillStyle = this.definition.fillStyle;
+                                newDefinition.fillStyle =
+                                    this.variables.definition.fillStyle;
                             }
                         }
 
-                        this.style.setDefinition(newDefinition, this.which);
+                        this.variables.style.setDefinition(
+                            newDefinition,
+                            this.variables.which
+                        );
                     },
                     callback,
                     {

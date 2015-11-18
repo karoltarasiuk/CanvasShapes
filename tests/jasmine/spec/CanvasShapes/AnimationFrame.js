@@ -284,7 +284,7 @@ define([
                     }
                 );
 
-            expect(frame.nonExistingPropery).toBe('a');
+            expect(frame.variables.nonExistingPropery).toBe('a');
             // type cannot be overwritten because it exists
             expect(frame.type).toBe('');
         });
