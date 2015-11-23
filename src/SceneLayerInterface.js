@@ -48,6 +48,24 @@ CanvasShapes.SceneLayerInterface = (function () {
         },
 
         /**
+         * Get top offset of the layer relatively to the scene.
+         *
+         * @return {integer}
+         */
+        getTop: function () {
+            throw new CanvasShapes.Error(9064);
+        },
+
+        /**
+         * Get left offset of the layer relatively to the scene.
+         *
+         * @return {integer}
+         */
+        getLeft: function () {
+            throw new CanvasShapes.Error(9064);
+        },
+
+        /**
          * Allows you to get height of the layer in px.
          *
          * @return {integer}

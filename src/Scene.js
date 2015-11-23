@@ -289,6 +289,7 @@ CanvasShapes.Scene = (function () {
                     handlers = this.handlers[event.getType()];
                 }
 
+                e = event;
             } else {
                 // traditional event or eventType string
                 if (_.isObject(event) && _.isString(event.type)) {
@@ -309,7 +310,7 @@ CanvasShapes.Scene = (function () {
 
             // we create the event object only when it's really needed
             if (handlers.length > 0 && !e) {
-                e = CanvasShapes.Event.getInstance(event, this.dom);
+                e = CanvasShapes.Event.getInstance(event, this);
             }
 
             for (i = 0; i < handlers.length; i++) {

@@ -70,10 +70,44 @@ CanvasShapes.GeometryTools = (function () {
         );
     }
 
+    /**
+     * Checks whether passed point lays within a polygon. Based on ray-casting
+     * algorithm.
+     *
+     * @see http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+     * @source https://github.com/substack/point-in-polygon
+     *
+     * @param  {[type]}  point              [description]
+     * @param  {[type]}  polygonCoordinates [description]
+     * @return {Boolean}                    [description]
+     */
+    function isInsidePolygon(point, polygonCoordinates) {
+
+        var i, j, xi, xj, yi, yj, intersect,
+            x = point[0], y = point[1],
+            inside = false;
+
+        for (
+            i = 0,
+            j = polygonCoordinates.length - 1;
+            i < polygonCoordinates.length;
+            j = i++
+        ) {
+            xi = polygonCoordinates[i][0], yi = polygonCoordinates[i][1];
+            xj = polygonCoordinates[j][0], yj = polygonCoordinates[j][1];
+            intersect = ((yi > y) != (yj > y))
+                && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+            if (intersect) inside = !inside;
+        }
+
+        return inside;
+    }
+
     return {
         angleMeasure: angleMeasure,
         segmentLength: segmentLength,
         radiansToDegrees: radiansToDegrees,
-        degreesToRadians: degreesToRadians
+        degreesToRadians: degreesToRadians,
+        isInsidePolygon: isInsidePolygon
     };
 })();

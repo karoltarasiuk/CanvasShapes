@@ -9,11 +9,12 @@ CanvasShapes.Event = (function () {
      * `target` argument is optional, and is used to overwrite the target from
      * the native DOM event object, or set the target for custom event.
      *
-     * @param {[object,string]} event
-     * @param {object}          target [OPTIONAL]
+     * @param {[object,string]}             event
+     * @param {CanvasShapes.SceneInterface} scene
+     * @param {object}                      target [OPTIONAL]
      */
-    var Event = function (event, target) {
-        this.initialize(event, target);
+    var Event = function (event, scene, target) {
+        this.initialize(event, scene, target);
     };
 
     CanvasShapes.Class.extend(
@@ -198,15 +199,16 @@ CanvasShapes.Event = (function () {
      * `target` argument is optional, and is used to overwrite the target from
      * the native DOM event object, or set the target for custom event.
      *
-     * @param {[object,string]} event
-     * @param {object}          target [OPTIONAL]
+     * @param {[object,string]}             event
+     * @param {CanvasShapes.SceneInterface} scene
+     * @param {object}                      target [OPTIONAL]
      */
-    Event.getInstance = function (event, target) {
+    Event.getInstance = function (event, scene, target) {
 
         var category = Event.getCategory(event);
 
         if (category) {
-            return new category.baseClass(event, target);
+            return new category.baseClass(event, scene, target);
         }
 
         return null;

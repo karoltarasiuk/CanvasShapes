@@ -71,6 +71,31 @@ CanvasShapes.Polygon = (function () {
 
             context.closePath();
             style.set(layer);
+        },
+
+        isColliding: function (mouseCoordinates) {
+
+            var layer = mouseCoordinates.scene.getLayer(this),
+                processedCoordinates = this.processCoordinates(
+                    this.getCoordinates(), layer
+                );
+
+            if (
+                !_.isObject(mouseCoordinates) ||
+                !_.isNumber(mouseCoordinates.x) ||
+                !_.isNumber(mouseCoordinates.y)
+            ) {
+                throw new CanvasShapes.Error(1037);
+            }
+
+            if (CanvasShapes.GeometryTools.isInsidePolygon(
+                [mouseCoordinates.x, mouseCoordinates.y],
+                processedCoordinates
+            )) {
+                return true;
+            }
+
+            return false;
         }
     });
 

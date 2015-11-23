@@ -12,8 +12,8 @@ CanvasShapes.Event.Input = (function () {
      * @param {[object,string]} event
      * @param {object}          target [OPTIONAL]
      */
-    var InputEvent = function (event, target) {
-        this.initialize(event, target);
+    var InputEvent = function (event, scene, target) {
+        this.initialize(event, scene, target);
     };
 
     CanvasShapes.Class.extend(

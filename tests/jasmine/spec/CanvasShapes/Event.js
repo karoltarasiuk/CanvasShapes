@@ -35,445 +35,191 @@ define([
                 ).toThrow(temp);
             });
 
-            it('can instantiate CanvasShapes.Event', function () {
+            var i,
+                eventClasses = {
+                    "CanvasShapes.Event": CanvasShapes.Event,
+                    "CanvasShapes.Event.Mouse": CanvasShapes.Event.Mouse,
+                    "CanvasShapes.Event.Input": CanvasShapes.Event.Input
+                },
+                process = function (EventClass) {
 
-                var event, dom,
-                    error1 = new CanvasShapes.Error(1035),
-                    error2 = new CanvasShapes.Error(1039);
+                    var event, dom, span,
+                        scene = new CanvasShapes.Scene({
+                            element: document.createElement('div'),
+                            width: 100,
+                            height: 100
+                        }),
+                        error1 = new CanvasShapes.Error(1035),
+                        error2 = new CanvasShapes.Error(1056),
+                        error3 = new CanvasShapes.Error(1039);
 
-                // NOT STRING
-                expect(function () { new CanvasShapes.Event(); })
-                    .toThrow(error1);
-                expect(function () { new CanvasShapes.Event(1); })
-                    .toThrow(error1);
-                expect(function () { new CanvasShapes.Event({}); })
-                    .toThrow(error1);
-                expect(function () { new CanvasShapes.Event([]); })
-                    .toThrow(error1);
-                expect(function () { new CanvasShapes.Event(true); })
-                    .toThrow(error1);
+                    // NOT STRING
+                    expect(function () { new EventClass(); })
+                        .toThrow(error1);
+                    expect(function () { new EventClass(1); })
+                        .toThrow(error1);
+                    expect(function () { new EventClass({}); })
+                        .toThrow(error1);
+                    expect(function () { new EventClass([]); })
+                        .toThrow(error1);
+                    expect(function () { new EventClass(true); })
+                        .toThrow(error1);
 
-                // NOT DOM
-                expect(function () { new CanvasShapes.Event('custom', {}); })
-                    .toThrow(error2);
-                expect(function () { new CanvasShapes.Event('custom', 1); })
-                    .toThrow(error2);
-                expect(function () { new CanvasShapes.Event('custom', []); })
-                    .toThrow(error2);
-                expect(function () { new CanvasShapes.Event('custom', 'dom'); })
-                    .toThrow(error2);
-                expect(function () { new CanvasShapes.Event('custom', true); })
-                    .toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event({ type: 'custom', target: {} });
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event({ type: 'custom', target: 1 });
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event({ type: 'custom', target: [] });
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event({ type: 'custom', target: 'dom' });
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event({ type: 'custom', target: true });
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event({ type: 'custom', target: {} }, {});
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event({ type: 'custom', target: 1 }, 1);
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event({ type: 'custom', target: [] }, []);
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event(
-                        { type: 'custom', target: 'dom' },
-                        'dom'
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event(
-                        { type: 'custom', target: true },
-                        true
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event(
-                        {
-                            type: 'custom',
-                            target: document.createElement('div')
-                        },
-                        {}
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event(
-                        {
-                            type: 'custom',
-                            target: document.createElement('div')
-                        },
-                        1
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event(
-                        {
-                            type: 'custom',
-                            target: document.createElement('div')
-                        },
-                        []
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event(
-                        {
-                            type: 'custom',
-                            target: document.createElement('div')
-                        },
-                        'dom'
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event(
-                        {
-                            type: 'custom',
-                            target: document.createElement('div')
-                        },
-                        true
-                    );
-                }).toThrow(error2);
+                    // NOT SCENE
+                    expect(function () { new EventClass('custom'); })
+                        .toThrow(error2);
+                    expect(function () { new EventClass('custom', {}); })
+                        .toThrow(error2);
+                    expect(function () { new EventClass('custom', 1); })
+                        .toThrow(error2);
+                    expect(function () { new EventClass('custom', []); })
+                        .toThrow(error2);
+                    expect(function () { new EventClass('custom', 'dom'); })
+                        .toThrow(error2);
+                    expect(function () { new EventClass('custom', true); })
+                        .toThrow(error2);
 
-                // ALL GOOD
-                expect(function () {
-                    new CanvasShapes.Event({ type: 'custom' });
-                }).not.toThrow();
-                expect(function () { new CanvasShapes.Event('custom'); })
-                    .not.toThrow();
-                expect(function () {
-                    new CanvasShapes.Event(
-                        {
-                            type: 'custom',
-                            target: document.createElement('div')
-                        }
-                    );
-                }).not.toThrow();
-                expect(function () {
-                    new CanvasShapes.Event(
-                        'custom',
-                        document.createElement('p')
-                    );
-                }).not.toThrow();
-                expect(function () {
-                    new CanvasShapes.Event(
-                        {
-                            type: 'custom',
-                            target: document.createElement('span')
-                        },
-                        document.createElement('a')
-                    );
-                }).not.toThrow();
+                    // TARGET IS NOT DOM
+                    expect(function () {
+                        new EventClass({ type: 'custom', target: {} });
+                    }).toThrow(error2);
+                    expect(function () {
+                        new EventClass({ type: 'custom', target: 1 });
+                    }).toThrow(error2);
+                    expect(function () {
+                        new EventClass({ type: 'custom', target: [] });
+                    }).toThrow(error2);
+                    expect(function () {
+                        new EventClass({ type: 'custom', target: 'dom' });
+                    }).toThrow(error2);
+                    expect(function () {
+                        new EventClass({ type: 'custom', target: true });
+                    }).toThrow(error2);
+                    expect(function () {
+                        new EventClass({ type: 'custom', target: {} }, {});
+                    }).toThrow(error2);
+                    expect(function () {
+                        new EventClass({ type: 'custom', target: 1 }, 1);
+                    }).toThrow(error2);
+                    expect(function () {
+                        new EventClass({ type: 'custom', target: [] }, []);
+                    }).toThrow(error2);
+                    expect(function () {
+                        new EventClass(
+                            { type: 'custom', target: 'dom' },
+                            'dom'
+                        );
+                    }).toThrow(error2);
+                    expect(function () {
+                        new EventClass(
+                            { type: 'custom', target: true },
+                            true
+                        );
+                    }).toThrow(error2);
+                    expect(function () {
+                        new EventClass(
+                            {
+                                type: 'custom',
+                                target: document.createElement('div')
+                            },
+                            {}
+                        );
+                    }).toThrow(error2);
+                    expect(function () {
+                        new EventClass(
+                            {
+                                type: 'custom',
+                                target: document.createElement('div')
+                            },
+                            1
+                        );
+                    }).toThrow(error2);
+                    expect(function () {
+                        new EventClass(
+                            {
+                                type: 'custom',
+                                target: document.createElement('div')
+                            },
+                            []
+                        );
+                    }).toThrow(error2);
+                    expect(function () {
+                        new EventClass(
+                            {
+                                type: 'custom',
+                                target: document.createElement('div')
+                            },
+                            'dom'
+                        );
+                    }).toThrow(error2);
+                    expect(function () {
+                        new EventClass(
+                            {
+                                type: 'custom',
+                                target: document.createElement('div')
+                            },
+                            true
+                        );
+                    }).toThrow(error2);
 
-                // SECOND TARGET IS OVERWRITING THE FIRST
-                dom = document.createElement('p');
-                event = new CanvasShapes.Event('custom', dom);
-                expect(event.target).toBe(dom);
-                event = new CanvasShapes.Event(
-                    { type: 'custom', target: document.createElement('span') },
-                    dom
-                );
-                expect(event.target).toBe(dom);
-            });
+                    // ALL GOOD
+                    expect(function () {
+                        new EventClass({ type: 'custom' }, scene);
+                    }).not.toThrow();
+                    expect(function () { new EventClass('custom', scene); })
+                        .not.toThrow();
+                    expect(function () {
+                        new EventClass(
+                            {
+                                type: 'custom',
+                                target: document.createElement('div')
+                            },
+                            scene
+                        );
+                    }).not.toThrow();
+                    expect(function () {
+                        new EventClass(
+                            'custom',
+                            scene,
+                            document.createElement('p')
+                        );
+                    }).not.toThrow();
+                    expect(function () {
+                        new EventClass(
+                            {
+                                type: 'custom',
+                                target: document.createElement('span')
+                            },
+                            scene,
+                            document.createElement('a')
+                        );
+                    }).not.toThrow();
 
-            it('can instantiate CanvasShapes.Event.Mouse', function () {
+                    // TARGET PRECEDENCE
+                    dom = document.createElement('p');
+                    span = document.createElement('span');
+                    event = new EventClass('custom', scene, dom);
+                    expect(event.target).toBe(dom);
+                    event = new EventClass('custom', scene);
+                    expect(event.target).toBe(scene.dom);
+                    event = new EventClass(
+                        { type: 'custom', target: span },
+                        scene
+                    );
+                    expect(event.target).toBe(span);
+                    event = new EventClass(
+                        { type: 'custom', target: span },
+                        scene,
+                        dom
+                    );
+                    expect(event.target).toBe(dom);
+                };
 
-                var error1 = new CanvasShapes.Error(1035),
-                    error2 = new CanvasShapes.Error(1039),
-                    error3 = new CanvasShapes.Error(1041);
-
-                // NOT STRING
-                expect(function () { new CanvasShapes.Event.Mouse(); })
-                    .toThrow(error1);
-                expect(function () { new CanvasShapes.Event.Mouse(1); })
-                    .toThrow(error1);
-                expect(function () { new CanvasShapes.Event.Mouse({}); })
-                    .toThrow(error1);
-                expect(function () { new CanvasShapes.Event.Mouse([]); })
-                    .toThrow(error1);
-                expect(function () { new CanvasShapes.Event.Mouse(true); })
-                    .toThrow(error1);
-
-                // NOT DOM
-                expect(function () {
-                    new CanvasShapes.Event.Mouse('custom', {});
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse('custom', 1);
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse('custom', []);
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse('custom', 'dom');
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse('custom', true);
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse({
-                        type: 'custom',
-                        target: {}
-                    });
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse({ type: 'custom', target: 1 });
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse(
-                        { type: 'custom', target: [] }
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse(
-                        { type: 'custom', target: 'dom' }
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse(
-                        { type: 'custom', target: true }
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse(
-                        { type: 'custom', target: {} },
-                        {}
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse(
-                        { type: 'custom', target: 1 },
-                        1
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse(
-                        { type: 'custom', target: [] },
-                        []
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse(
-                        { type: 'custom', target: 'dom' },
-                        'dom'
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse(
-                        { type: 'custom', target: true },
-                        true
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse(
-                        {
-                            type: 'custom',
-                            target: document.createElement('div')
-                        },
-                        {}
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse(
-                        {
-                            type: 'custom',
-                            target: document.createElement('div')
-                        },
-                        1
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse(
-                        {
-                            type: 'custom',
-                            target: document.createElement('div')
-                        },
-                        []
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse(
-                        {
-                            type: 'custom',
-                            target: document.createElement('div')
-                        },
-                        'dom'
-                    );
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Mouse(
-                        {
-                            type: 'custom',
-                            target: document.createElement('div')
-                        },
-                        true
-                    );
-                }).toThrow(error2);
-
-                // NOT MOUSE EVENT OR NO VALID TARGET
-                expect(function () {
-                    new CanvasShapes.Event.Mouse({ type: 'custom' });
-                }).toThrow(error3);
-                expect(function () { new CanvasShapes.Event.Mouse('custom'); })
-                    .toThrow(error3);
-                expect(function () { new CanvasShapes.Event.Mouse({
-                    type: 'custom',
-                    target: document.createElement('div')
-                }); }).toThrow(error3);
-                expect(function () { new CanvasShapes.Event.Mouse(
-                    'custom',
-                    document.createElement('p')
-                ); }).toThrow(error3);
-                expect(function () { new CanvasShapes.Event.Mouse({
-                    type: 'custom',
-                    target: document.createElement('span')
-                }, document.createElement('a') ); }).toThrow(error3);
-
-                // ALL GOOD
-                expect(function () { new CanvasShapes.Event.Mouse({
-                    type: 'click',
-                    pageX: 100,
-                    pageY: 100,
-                    target: document.createElement('span')
-                }); }).not.toThrow();
-                expect(function () { new CanvasShapes.Event.Mouse({
-                    type: 'click',
-                    pageX: 100,
-                    pageY: 100
-                }, document.createElement('p')); }).not.toThrow();
-                expect(function () { new CanvasShapes.Event.Mouse({
-                    type: 'click',
-                    pageX: 100,
-                    pageY: 100,
-                    target: document.createElement('div')
-                }, document.createElement('a')); }).not.toThrow();
-            });
-
-            it('can instantiate CanvasShapes.Event.Input', function () {
-
-                var error1 = new CanvasShapes.Error(1035),
-                    error2 = new CanvasShapes.Error(1039);
-
-                // NOT STRING
-                expect(function () { new CanvasShapes.Event.Input(); })
-                    .toThrow(error1);
-                expect(function () { new CanvasShapes.Event.Input(1); })
-                    .toThrow(error1);
-                expect(function () { new CanvasShapes.Event.Input({}); })
-                    .toThrow(error1);
-                expect(function () { new CanvasShapes.Event.Input([]); })
-                    .toThrow(error1);
-                expect(function () { new CanvasShapes.Event.Input(true); })
-                    .toThrow(error1);
-
-                // NOT DOM
-                expect(function () {
-                    new CanvasShapes.Event.Input('custom', {});
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Input('custom', 1);
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Input('custom', []);
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Input('custom', 'dom');
-                }).toThrow(error2);
-                expect(function () {
-                    new CanvasShapes.Event.Input('custom', true);
-                }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: {}
-                }); }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: 1
-                }); }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: []
-                }); }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: 'dom'
-                }); }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: true
-                }); }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: {}
-                }, {}); }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: 1
-                }, 1); }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: []
-                }, []); }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: 'dom'
-                }, 'dom'); }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: true
-                }, true); }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: document.createElement('div')
-                }, {}); }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: document.createElement('div')
-                }, 1); }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: document.createElement('div')
-                }, []); }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: document.createElement('div')
-                }, 'dom'); }).toThrow(error2);
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: document.createElement('div')
-                }, true); }).toThrow(error2);
-
-                // ALL GOOD
-                expect(function () {
-                    new CanvasShapes.Event.Input({ type: 'custom' });
-                }).not.toThrow();
-                expect(function () {
-                    new CanvasShapes.Event.Input('custom');
-                }).not.toThrow();
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: document.createElement('div')
-                }); }).not.toThrow();
-                expect(function () { new CanvasShapes.Event.Input(
-                    'custom',
-                    document.createElement('p')
-                ); }).not.toThrow();
-                expect(function () { new CanvasShapes.Event.Input({
-                    type: 'custom',
-                    target: document.createElement('span')
-                }, document.createElement('a') ); }).not.toThrow();
-            });
+            for (i in eventClasses) {
+                it('can instantiate CanvasShapes.Event based classes: ' + i, function () {
+                    process(eventClasses[i]);
+                });
+            }
         });
 
         describe('static methods', function () {
@@ -688,7 +434,12 @@ define([
             it ('CanvasShapes.Event.getInstance', function () {
 
                 var error1 = new CanvasShapes.Error(1040),
-                    error2 = new CanvasShapes.Error(1039);
+                    error2 = new CanvasShapes.Error(1039),
+                    scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    });
 
                 expect(function () { CanvasShapes.Event.getInstance(); })
                     .toThrow(error1);
@@ -707,86 +458,87 @@ define([
                 expect(function () { CanvasShapes.Event.getInstance({
                     type: 'custom',
                     target: {}
-                }); }).toThrow(error2);
+                }, scene); }).toThrow(error2);
                 expect(function () { CanvasShapes.Event.getInstance({
                     type: 'custom',
                     target: []
-                }); }).toThrow(error2);
+                }, scene); }).toThrow(error2);
                 expect(function () { CanvasShapes.Event.getInstance({
                     type: 'custom',
                     target: 1
-                }); }).toThrow(error2);
+                }, scene); }).toThrow(error2);
                 expect(function () { CanvasShapes.Event.getInstance({
                     type: 'custom',
                     target: 'string'
-                }); }).toThrow(error2);
+                }, scene); }).toThrow(error2);
                 expect(function () { CanvasShapes.Event.getInstance({
                     type: 'custom',
                     target: true
-                }); }).toThrow(error2);
+                }, scene); }).toThrow(error2);
                 expect(function () { CanvasShapes.Event.getInstance({
                     type: 'custom',
                     target: function () {}
-                }); }).toThrow(error2);
+                }, scene); }).toThrow(error2);
 
                 expect(function () {
-                    CanvasShapes.Event.getInstance({ type: 'custom' }, {});
+                    CanvasShapes.Event.getInstance({ type: 'custom' }, scene, {});
                 }).toThrow(error2);
                 expect(function () {
-                    CanvasShapes.Event.getInstance({ type: 'custom' }, []);
+                    CanvasShapes.Event.getInstance({ type: 'custom' }, scene, []);
                 }).toThrow(error2);
                 expect(function () {
-                    CanvasShapes.Event.getInstance({ type: 'custom' }, 1);
+                    CanvasShapes.Event.getInstance({ type: 'custom' }, scene, 1);
                 }).toThrow(error2);
                 expect(function () { CanvasShapes.Event.getInstance(
                     { type: 'custom' },
+                    scene,
                     'string');
                 }).toThrow(error2);
                 expect(function () {
-                    CanvasShapes.Event.getInstance({ type: 'custom' }, true);
+                    CanvasShapes.Event.getInstance({ type: 'custom' }, scene, true);
                 }).toThrow(error2);
                 expect(function () { CanvasShapes.Event.getInstance(
                     { type: 'custom' },
+                    scene,
                     function () {});
                 }).toThrow(error2);
 
                 expect(function () { CanvasShapes.Event.getInstance({
                     type: 'custom',
                     target: document.createElement('div')
-                }, {}); }).toThrow(error2);
+                }, scene, {}); }).toThrow(error2);
                 expect(function () { CanvasShapes.Event.getInstance({
                     type: 'custom',
                     target: document.createElement('div')
-                }, []); }).toThrow(error2);
+                }, scene, []); }).toThrow(error2);
                 expect(function () { CanvasShapes.Event.getInstance({
                     type: 'custom',
                     target: document.createElement('div')
-                }, 1); }).toThrow(error2);
+                }, scene, 1); }).toThrow(error2);
                 expect(function () { CanvasShapes.Event.getInstance({
                     type: 'custom',
                     target: document.createElement('div')
-                }, 'string'); }).toThrow(error2);
+                }, scene, 'string'); }).toThrow(error2);
                 expect(function () { CanvasShapes.Event.getInstance({
                     type: 'custom',
                     target: document.createElement('div')
-                }, true); }).toThrow(error2);
+                }, scene, true); }).toThrow(error2);
                 expect(function () { CanvasShapes.Event.getInstance({
                     type: 'custom',
                     target: document.createElement('div')
-                }, function () {}); }).toThrow(error2);
+                }, scene, function () {}); }).toThrow(error2);
 
                 expect(function () { CanvasShapes.Event.getInstance({
                     type: 'custom',
                     target: document.createElement('div')
-                }); }).not.toThrow();
+                }, scene); }).not.toThrow();
                 expect(function () { CanvasShapes.Event.getInstance({
-                    type: 'custom' },
-                    document.createElement('div'));
-                }).not.toThrow();
+                    type: 'custom'
+                }, scene, document.createElement('div')); }).not.toThrow();
                 expect(function () { CanvasShapes.Event.getInstance({
                     type: 'custom',
                     target: document.createElement('div')
-                }, document.createElement('div')); }).not.toThrow();
+                }, scene, document.createElement('div')); }).not.toThrow();
             });
         });
 
@@ -794,85 +546,21 @@ define([
 
             it('initialize()', function () {
 
-                var event = CanvasShapes.Event.getInstance({ type: 'custom' }),
-                    error1 = new CanvasShapes.Error(1035),
-                    error2 = new CanvasShapes.Error(1039);
-
-                expect(function () { event.initialize(); }).toThrow(error1);
-                expect(function () { event.initialize(1); }).toThrow(error1);
-                expect(function () { event.initialize(true); }).toThrow(error1);
-                expect(function () { event.initialize({}); }).toThrow(error1);
-                expect(function () { event.initialize([]); }).toThrow(error1);
-                expect(function () { event.initialize(function () {}); })
-                    .toThrow(error1);
-
-                expect(function () {
-                    event.initialize({ type: 'custom', target: {} });
-                }).toThrow(error2);
-                expect(function () {
-                    event.initialize({ type: 'custom', target: [] });
-                }).toThrow(error2);
-                expect(function () {
-                    event.initialize({ type: 'custom', target: 1 });
-                }).toThrow(error2);
-                expect(function () {
-                    event.initialize({ type: 'custom', target: 'string' });
-                }).toThrow(error2);
-                expect(function () {
-                    event.initialize({ type: 'custom', target: true });
-                }).toThrow(error2);
-                expect(function () { event.initialize({
-                    type: 'custom',
-                    target: function () {}
-                }); }).toThrow(error2);
-
-                expect(function () {
-                    event.initialize({ type: 'custom' }, {});
-                }).toThrow(error2);
-                expect(function () {
-                    event.initialize({ type: 'custom' }, []);
-                }).toThrow(error2);
-                expect(function () {
-                    event.initialize({ type: 'custom' }, 1);
-                }).toThrow(error2);
-                expect(function () {
-                    event.initialize({ type: 'custom' }, 'string');
-                }).toThrow(error2);
-                expect(function () {
-                    event.initialize({ type: 'custom' }, true);
-                }).toThrow(error2);
-                expect(function () {
-                    event.initialize({ type: 'custom' }, function () {});
-                }).toThrow(error2);
-
-                expect(function () { event.initialize({
-                    type: 'custom',
-                    target: document.createElement('div')
-                }, {}); }).toThrow(error2);
-                expect(function () { event.initialize({
-                    type: 'custom',
-                    target: document.createElement('div')
-                }, []); }).toThrow(error2);
-                expect(function () { event.initialize({
-                    type: 'custom',
-                    target: document.createElement('div')
-                }, 1); }).toThrow(error2);
-                expect(function () { event.initialize({
-                    type: 'custom',
-                    target: document.createElement('div')
-                }, 'string'); }).toThrow(error2);
-                expect(function () { event.initialize({
-                    type: 'custom',
-                    target: document.createElement('div')
-                }, true); }).toThrow(error2);
-                expect(function () { event.initialize({
-                    type: 'custom',
-                    target: document.createElement('div')
-                }, function () {}); }).toThrow(error2);
+                // this is tested in .getInstance and constructors
             });
 
             it('getType()', function () {
-                var event = CanvasShapes.Event.getInstance({ type: 'custom' });
+
+                var scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
+                    event = CanvasShapes.Event.getInstance(
+                        { type: 'custom' },
+                        scene
+                    );
+
                 expect(event.getType()).toBe('custom');
             });
         });

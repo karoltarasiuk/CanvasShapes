@@ -24,13 +24,21 @@ CanvasShapes.EventAbstract = (function () {
          * `event`, custom `event` object with `type` property defined, or a
          * `string` containing a custom event type.
          *
+         * `scene` is a Scene instance when the even occured. We don't pass a
+         * layer as scene simply doesn't know which layer the event should go
+         * to. It's because it can have multiple layers rendered off the screen
+         * and copied to one visible layer.
+         *
          * `target` argument is optional, and is used to overwrite the target
          * from the native DOM event object, or set the target for custom event.
+         * If `target` is not passed explicitly, it falls back to `event.target`
+         * and then to `scene.dom`.
          *
-         * @param {[object,string]} event
-         * @param {object}          target [OPTIONAL]
+         * @param {[object,string]}             event
+         * @param {CanvasShapes.SceneInterface} scene
+         * @param {object}                      target [OPTIONAL]
          */
-        initialize: function (event, target) {
+        initialize: function (event, scene, target) {
 
             if (_.isString(event)) {
                 event = {
@@ -43,16 +51,28 @@ CanvasShapes.EventAbstract = (function () {
             }
 
             if (
-                (target && !CanvasShapes.Tools.isElement(target)) ||
-                (_.isObject(event) && event.target &&
-                !CanvasShapes.Tools.isElement(event.target))
+                !_.isObject(scene) || !_.isFunction(scene.is) ||
+                !scene.is(CanvasShapes.SceneInterface)
             ) {
+                throw new CanvasShapes.Error(1056);
+            }
+
+            if (!target) {
+                if (event.target) {
+                    target = event.target;
+                } else {
+                    target = scene.dom;
+                }
+            }
+
+            if (!CanvasShapes.Tools.isElement(target)) {
                 throw new CanvasShapes.Error(1039);
             }
 
             this.event = event;
             this.category = CanvasShapes.Event.getCategory(this.event);
-            this.target = target ? target : event.target ? event.target : null;
+            this.target = target;
+            this.scene = scene;
         },
 
         /**

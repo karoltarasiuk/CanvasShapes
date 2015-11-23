@@ -59,7 +59,7 @@ CanvasShapes.Rectangle = (function () {
             coordinates.push(point);
 
             // I have added new coordinate to the array, and now 4 is valid
-            // I need to addjust the numbers, as polygon initialisation will
+            // I need to adjust the numbers, as polygon initialisation will
             // validate them again.
             this.MAX_COORDINATES++;
             this.MIN_COORDINATES++;

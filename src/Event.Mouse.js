@@ -12,8 +12,8 @@ CanvasShapes.Event.Mouse = (function () {
      * @param {[object,string]} event
      * @param {object}          target [OPTIONAL]
      */
-    var MouseEvent = function (event, target) {
-        this.initialize(event, target);
+    var MouseEvent = function (event, scene, target) {
+        this.initialize(event, scene, target);
     };
 
     CanvasShapes.Class.extend(

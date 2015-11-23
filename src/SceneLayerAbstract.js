@@ -100,6 +100,20 @@ CanvasShapes.SceneLayerAbstract = (function () {
         /**
          * @implements {CanvasShapes.SceneLayerInterface}
          */
+        getTop: function () {
+            return this.top;
+        },
+
+        /**
+         * @implements {CanvasShapes.SceneLayerInterface}
+         */
+        getLeft: function () {
+            return this.left;
+        },
+
+        /**
+         * @implements {CanvasShapes.SceneLayerInterface}
+         */
         clear: function () {
             this.getContext().clearRect(
                 0,
