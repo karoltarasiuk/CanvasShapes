@@ -71,7 +71,7 @@ require([
 
             var that = this;
 
-            this.elements.square.on('click', function (e) {
+            this.elements.square.on('contextmenu', function (e) {
                 if (this.isColliding(e)) {
                     that.elements.squareStyle.setDefinition({
                         strokeStyle: 'darkRed',

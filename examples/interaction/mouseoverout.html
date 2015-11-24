@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>CanvasShapes - mouse - click events</title>
+        <title>CanvasShapes - mouse - over and out events</title>
         <script type="text/javascript" src="../../lib/jquery.js"></script>
-        <script type="text/javascript" data-main="click" src="../../lib/require.min.js"></script>
+        <script type="text/javascript" data-main="mouseoverout" src="../../lib/require.min.js"></script>
     </head>
     <body>
         <p style="padding: 10px; padding-right: 60px;">
-            Click on the square to turn it to red. Click outside the square but within a scene to turn it back to blue.
+            Move the cursor within a scene to turn a square into red. Move it outside to turn it back to blue.
+
+            Mouse over and out events (like any other events) are working being triggered on a DOM element, which is a DIV with a scene.
+            This is why it's not really possible to trigger them on a shape itself. If you want to emulate them on a shape, check
+            <a href="mousemove.html">mouse move</a> event with usage of isColliding() method.
         </p>
         <div id="scenes"></div>
         <div id="fps" style="position: fixed; width: 50px; height: 50px; top: 0px; right: 0px; background-color: black; color: white; text-align: center; font-weight: bold; font-family: Arial;">

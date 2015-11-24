@@ -44,8 +44,9 @@ define([
                 process = function (EventClass) {
 
                     var event, dom, span,
+                        div = document.createElement('div'),
                         scene = new CanvasShapes.Scene({
-                            element: document.createElement('div'),
+                            element: div,
                             width: 100,
                             height: 100
                         }),
@@ -206,7 +207,7 @@ define([
                         { type: 'custom', target: span },
                         scene
                     );
-                    expect(event.target).toBe(span);
+                    expect(event.target).toBe(div);
                     event = new EventClass(
                         { type: 'custom', target: span },
                         scene,
@@ -454,31 +455,6 @@ define([
                 expect(function () {
                     CanvasShapes.Event.getInstance(function () {});
                 }).toThrow(error1);
-
-                expect(function () { CanvasShapes.Event.getInstance({
-                    type: 'custom',
-                    target: {}
-                }, scene); }).toThrow(error2);
-                expect(function () { CanvasShapes.Event.getInstance({
-                    type: 'custom',
-                    target: []
-                }, scene); }).toThrow(error2);
-                expect(function () { CanvasShapes.Event.getInstance({
-                    type: 'custom',
-                    target: 1
-                }, scene); }).toThrow(error2);
-                expect(function () { CanvasShapes.Event.getInstance({
-                    type: 'custom',
-                    target: 'string'
-                }, scene); }).toThrow(error2);
-                expect(function () { CanvasShapes.Event.getInstance({
-                    type: 'custom',
-                    target: true
-                }, scene); }).toThrow(error2);
-                expect(function () { CanvasShapes.Event.getInstance({
-                    type: 'custom',
-                    target: function () {}
-                }, scene); }).toThrow(error2);
 
                 expect(function () {
                     CanvasShapes.Event.getInstance({ type: 'custom' }, scene, {});

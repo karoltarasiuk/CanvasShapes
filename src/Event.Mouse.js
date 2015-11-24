@@ -25,25 +25,27 @@ CanvasShapes.Event.Mouse = (function () {
         /**
          * @override {CanvasShapes.EventAbstract}
          */
-        initialize: function (event, target) {
+        initialize: function (event, scene, target) {
+
+            var rect;
 
             CanvasShapes.EventAbstract.prototype.initialize.apply(
                 this,
                 arguments
             );
 
+            rect = this.target.getBoundingClientRect();
+
             if (
                 !this.target || !CanvasShapes.Tools.isElement(this.target) ||
                 !_.isObject(this.event) || !_.isNumber(this.event.pageX) ||
-                !_.isNumber(this.event.pageY) ||
-                !_.isNumber(this.target.offsetLeft) ||
-                !_.isNumber(this.target.offsetTop)
+                !_.isNumber(this.event.pageY)
             ) {
                 throw new CanvasShapes.Error(1041);
             }
 
-            this.x = this.event.pageX - this.target.offsetLeft;
-            this.y = this.event.pageY - this.target.offsetTop;
+            this.x = this.event.pageX - (rect.left + document.body.scrollLeft);
+            this.y = this.event.pageY - (rect.top + document.body.scrollTop);
         }
     });
 

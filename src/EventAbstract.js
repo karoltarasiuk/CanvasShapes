@@ -58,11 +58,7 @@ CanvasShapes.EventAbstract = (function () {
             }
 
             if (!target) {
-                if (event.target) {
-                    target = event.target;
-                } else {
-                    target = scene.dom;
-                }
+                target = scene.dom;
             }
 
             if (!CanvasShapes.Tools.isElement(target)) {
