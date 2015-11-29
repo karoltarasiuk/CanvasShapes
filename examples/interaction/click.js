@@ -71,8 +71,11 @@ require([
 
             var that = this;
 
+            this.clicksNumber = 0;
+
             this.elements.square.on('click', function (e) {
-                if (this.isColliding(e)) {
+                that.clicksNumber++;
+                if (that.clicksNumber % 2 === 1) {
                     that.elements.squareStyle.setDefinition({
                         strokeStyle: 'darkRed',
                         fillStyle: '#FFCDCD'

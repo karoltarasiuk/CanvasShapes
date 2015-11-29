@@ -72,17 +72,19 @@ require([
             var that = this;
 
             this.elements.square.on('mousemove', function (e) {
-                if (this.isColliding(e)) {
-                    that.elements.squareStyle.setDefinition({
-                        strokeStyle: 'darkRed',
-                        fillStyle: '#FFCDCD'
-                    });
-                } else {
-                    that.elements.squareStyle.setDefinition({
-                        strokeStyle: 'darkBlue',
-                        fillStyle: 'lightBlue'
-                    });
-                }
+                that.elements.squareStyle.setDefinition({
+                    strokeStyle: 'darkRed',
+                    fillStyle: '#FFCDCD'
+                });
+                this.sceneInterfaceHandlers.requestRendering(this);
+                that.renderer.render();
+            });
+
+            this.elements.square.on('mouseout', function (e) {
+                that.elements.squareStyle.setDefinition({
+                    strokeStyle: 'darkBlue',
+                    fillStyle: 'lightBlue'
+                });
                 this.sceneInterfaceHandlers.requestRendering(this);
                 that.renderer.render();
             });

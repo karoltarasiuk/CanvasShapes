@@ -75,6 +75,17 @@ CanvasShapes.Shape = (function () {
          */
         on: function (eventType, handler, context) {
 
+            var newHandler, originalEventType,
+                that = this,
+                eventsUsingIsColliding = [
+                    'click',
+                    'contextmenu',
+                    'dblclick',
+                    'mousemove',
+                    'mouseup',
+                    'mousedown'
+                ];
+
             if (!this.isOnScene()) {
                 throw new CanvasShapes.Error(1042);
             }
@@ -83,7 +94,56 @@ CanvasShapes.Shape = (function () {
                 context = this;
             }
 
-            this.sceneInterfaceHandlers.on(eventType, handler, context);
+            if (eventType === 'mouseover' || eventType === 'mouseout') {
+                // emulation of those based on mousemove
+                originalEventType = eventType;
+
+                newHandler = (function () {
+
+                    var inOrOut,
+                        newHandler = _.bind(function (e) {
+
+                            var isColliding = that.isColliding(e);
+
+                            if (isColliding) {
+                                if (
+                                    originalEventType === 'mouseover' &&
+                                    inOrOut === 'out'
+
+                                ) {
+                                    handler.apply(this, arguments);
+                                }
+                                inOrOut = 'in';
+
+                            } else if (!isColliding) {
+                                if (
+                                    originalEventType === 'mouseout' &&
+                                    inOrOut === 'in'
+                                ) {
+                                    handler.apply(this, arguments);
+                                }
+                                inOrOut = 'out';
+                            }
+
+                        }, context);
+
+                    return newHandler;
+                })();
+
+                eventType = 'mousemove';
+
+            } else if (eventsUsingIsColliding.indexOf(eventType) !== -1) {
+                // checking whether the event is colliding with a shape
+                newHandler = _.bind(function (e) {
+                    if (that.isColliding(e)) {
+                        handler.apply(this, arguments);
+                    }
+                }, context);
+            } else {
+                newHandler = handler;
+            }
+
+            this.sceneInterfaceHandlers.on(eventType, newHandler, context);
         },
 
         /**
