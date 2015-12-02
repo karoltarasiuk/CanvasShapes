@@ -60,6 +60,42 @@ CanvasShapes.Line = (function () {
 
             context.closePath();
             style.set(layer);
+        },
+
+        /**
+         * @implements {CanvasShapes.InteractionInterface}
+         */
+        isColliding: function (mouseCoordinates) {
+
+            var layer = mouseCoordinates.scene.getLayer(this),
+                processedCoordinates = this.processCoordinates(
+                    this.getCoordinates(), layer
+                ),
+                allowedError = _.max([
+                    layer.getWidth(),
+                    layer.getHeight()]
+                ) * 0.01;
+
+            if (allowedError < 1) {
+                allowedError = 1;
+            }
+
+            if (
+                !_.isObject(mouseCoordinates) ||
+                !_.isNumber(mouseCoordinates.x) ||
+                !_.isNumber(mouseCoordinates.y)
+            ) {
+                throw new CanvasShapes.Error(1037);
+            }
+
+            if (CanvasShapes.GeometryTools.isOnTheSegment(
+                [mouseCoordinates.x, mouseCoordinates.y],
+                processedCoordinates, allowedError
+            )) {
+                return true;
+            }
+
+            return false;
         }
     });
 

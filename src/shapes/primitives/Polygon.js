@@ -73,6 +73,9 @@ CanvasShapes.Polygon = (function () {
             style.set(layer);
         },
 
+        /**
+         * @implements {CanvasShapes.InteractionInterface}
+         */
         isColliding: function (mouseCoordinates) {
 
             var layer = mouseCoordinates.scene.getLayer(this),
