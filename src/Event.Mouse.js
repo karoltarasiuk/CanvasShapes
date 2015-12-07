@@ -23,7 +23,7 @@ CanvasShapes.Event.Mouse = (function () {
         className: 'CanvasShapes.Event',
 
         /**
-         * @override {CanvasShapes.EventAbstract}
+         * @overrides {CanvasShapes.EventAbstract}
          */
         initialize: function (event, scene, target) {
 

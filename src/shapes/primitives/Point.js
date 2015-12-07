@@ -65,7 +65,7 @@ CanvasShapes.Point = (function () {
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
-         * @override {CanvasShapes.RenderingAbstract}
+         * @overrides {CanvasShapes.RenderingAbstract}
          */
         setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {
             CanvasShapes.Shape.prototype.setSceneInterfaceHandlers.apply(
@@ -128,7 +128,7 @@ CanvasShapes.Point = (function () {
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
-         * @override {CanvasShapes.RenderingAbstract}
+         * @overrides {CanvasShapes.RenderingAbstract}
          */
         getStyle: function () {
             if (this.face) {
@@ -139,7 +139,7 @@ CanvasShapes.Point = (function () {
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
-         * @override {CanvasShapes.RenderingAbstract}
+         * @overrides {CanvasShapes.RenderingAbstract}
          */
         setStyle: function (style, deep) {
             if (this.face) {

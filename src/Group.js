@@ -20,7 +20,7 @@ CanvasShapes.Group = (function () {
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
-         * @override {CanvasShapes.RenderingAbstract}
+         * @overrides {CanvasShapes.RenderingAbstract}
          */
         setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {
             CanvasShapes.Shape.prototype.setSceneInterfaceHandlers.apply(
@@ -93,7 +93,7 @@ CanvasShapes.Group = (function () {
 
         /**
          * @implements {CanvasShapes.CoordinatesInterface}
-         * @override {CanvasShapes.CoordinatesAbstract}
+         * @overrides {CanvasShapes.CoordinatesAbstract}
          *
          * Sets the same coordinates for each member.
          *
@@ -109,7 +109,7 @@ CanvasShapes.Group = (function () {
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
-         * @override {CanvasShapes.RenderingAbstract}
+         * @overrides {CanvasShapes.RenderingAbstract}
          */
         setStyle: function (style, deep) {
 
