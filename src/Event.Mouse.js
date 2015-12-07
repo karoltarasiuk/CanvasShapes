@@ -13,7 +13,7 @@ CanvasShapes.Event.Mouse = (function () {
      * @param {object}          target [OPTIONAL]
      */
     var MouseEvent = function (event, scene, target) {
-        this.initialize(event, scene, target);
+        this.initialise(event, scene, target);
     };
 
     CanvasShapes.Class.extend(
@@ -25,11 +25,11 @@ CanvasShapes.Event.Mouse = (function () {
         /**
          * @overrides {CanvasShapes.EventAbstract}
          */
-        initialize: function (event, scene, target) {
+        initialise: function (event, scene, target) {
 
             var rect;
 
-            CanvasShapes.EventAbstract.prototype.initialize.apply(
+            CanvasShapes.EventAbstract.prototype.initialise.apply(
                 this,
                 arguments
             );

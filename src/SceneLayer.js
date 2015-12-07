@@ -18,7 +18,7 @@ CanvasShapes.SceneLayer = (function () {
      */
     var SceneLayer = function (scene, width, height, left, top, offScreen) {
         this.setUUID();
-        this.initialize(scene, width, height, left, top, offScreen);
+        this.initialise(scene, width, height, left, top, offScreen);
     };
 
     CanvasShapes.Class.extend(
@@ -34,7 +34,7 @@ CanvasShapes.SceneLayer = (function () {
         top: null,
 
         /**
-         * SceneLayer initialization method.
+         * SceneLayer initialisation method.
          *
          * When `offScreen` parameter is passed, layer CSS position is `fixed`
          * and `margin-top` and `margin-left` are set to negative `height` and
@@ -47,7 +47,7 @@ CanvasShapes.SceneLayer = (function () {
          * @param {float}                       top [OPTIONAL]
          * @param {boolean}                     offScreen [OPTIONAL]
          */
-        initialize: function (scene, width, height, left, top, offScreen) {
+        initialise: function (scene, width, height, left, top, offScreen) {
 
             if (
                 !_.isObject(scene) || !_.isFunction(scene.is) ||
@@ -89,7 +89,7 @@ CanvasShapes.SceneLayer = (function () {
                 this.offScreen = true;
             }
 
-            this.initializeCanvas();
+            this.initialiseCanvas();
 
             if (!this.canvas.getContext) {
                 throw new CanvasShapes.Error(1004);
@@ -98,7 +98,7 @@ CanvasShapes.SceneLayer = (function () {
             this.context = this.canvas.getContext('2d');
         },
 
-        initializeCanvas: function () {
+        initialiseCanvas: function () {
 
             var dom = this.scene.getDom(),
                 sceneWidth = this.scene.getWidth(),

@@ -11,9 +11,9 @@ CanvasShapes.SceneInterface = (function () {
         className: 'CanvasShapes.SceneInterface',
 
         /**
-         * Initializes event listeners. Call ONLY when `this.dom` is ready!
+         * Initialises event listeners. Call ONLY when `this.dom` is ready!
          */
-        initializeListeners: function () {
+        initialiseListeners: function () {
             throw new CanvasShapes.Error(9041);
         },
 
@@ -21,7 +21,7 @@ CanvasShapes.SceneInterface = (function () {
          * Checks whether this scene should be rendered off screen, as global
          * config value (`RENDER_OFF_SCREEN`) can be surpassed by internal scene
          * config value. The method itself only checks
-         * `this._shouldRenderOffScreen`, which should be set on initialization.
+         * `this._shouldRenderOffScreen`, which should be set on initialisation.
          *
          * @return {Boolean}
          */

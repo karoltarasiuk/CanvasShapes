@@ -112,14 +112,14 @@ CanvasShapes.SceneAbstract = (function () {
         /**
          * @implements {CanvasShapes.SceneInterface}
          */
-        initializeListeners: function () {
+        initialiseListeners: function () {
             if (!this.dom || !this.dom.addEventListener) {
                 throw new CanvasShapes.Error(1027);
             }
 
             this.handlers = {};
             this.ignoredEvents = {};
-            CanvasShapes.Event.initializeListeners(this);
+            CanvasShapes.Event.initialiseListeners(this);
         },
 
         /**
@@ -151,16 +151,16 @@ CanvasShapes.SceneAbstract = (function () {
             if (shape) {
                 this.addShape(shape, layer);
             } else {
-                this.initializeLayers();
+                this.initialiseLayers();
             }
 
             return layer;
         },
 
         /**
-         * Initialize array of layers creating one default
+         * Initialise array of layers creating one default
          */
-        initializeLayers: function () {
+        initialiseLayers: function () {
 
             var layer;
 
@@ -188,7 +188,7 @@ CanvasShapes.SceneAbstract = (function () {
 
             var i, layerObject;
 
-            this.initializeLayers();
+            this.initialiseLayers();
 
             if (layer && !layer.is(CanvasShapes.SceneLayerInterface)) {
                 throw new CanvasShapes.Error(1022);
@@ -384,7 +384,7 @@ CanvasShapes.SceneAbstract = (function () {
 
             var i, j, count, tempCount, layerObject;
 
-            this.initializeLayers();
+            this.initialiseLayers();
 
             // looking for layer with the least number of shapes
             if (shape === undefined) {

@@ -18,7 +18,7 @@ CanvasShapes.Point = (function () {
         this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
-        this.initialize(coordinates, face, size);
+        this.initialise(coordinates, face, size);
     };
 
     Point.FACES = {
@@ -47,7 +47,7 @@ CanvasShapes.Point = (function () {
          */
         face: null,
 
-        initialize: function (coordinates, face, size) {
+        initialise: function (coordinates, face, size) {
 
             this.validateCoordinates(coordinates, true);
             this.coordinates = coordinates;

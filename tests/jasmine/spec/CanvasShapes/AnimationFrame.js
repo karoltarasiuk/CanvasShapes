@@ -11,7 +11,7 @@ define([
 
     describe('CanvasShapes.AnimationFrame', function () {
 
-        it('initializes properly', function () {
+        it('initialises properly', function () {
 
             expect(function () { new CanvasShapes.AnimationFrame(
                 new CanvasShapes.Shape(),
@@ -53,7 +53,7 @@ define([
             ); }).not.toThrow();
         });
 
-        it('can\'t initialize', function () {
+        it('can\'t initialise', function () {
 
             var error1 = new CanvasShapes.Error(8023),
                 error2 = new CanvasShapes.Error(8024);

@@ -22,7 +22,7 @@ CanvasShapes.StyleAbstract = (function () {
         ACTIVE: 'active',
 
         /**
-         * Initializes the style with default definition.
+         * Initialises the style with default definition.
          *
          * The `definition` is a function accepting a `context` of a layer, e.g:
          * ```
@@ -33,7 +33,7 @@ CanvasShapes.StyleAbstract = (function () {
          *
          * @param {function} definition
          */
-        initialize: function (definition) {
+        initialise: function (definition) {
 
             this.shapes = [];
             this.definitions = [];

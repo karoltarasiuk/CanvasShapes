@@ -11,7 +11,7 @@ CanvasShapes.Style = (function () {
             definition = function () {};
         }
 
-        this.initialize(definition);
+        this.initialise(definition);
     };
 
     CanvasShapes.Class.extend(

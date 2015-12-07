@@ -16,7 +16,7 @@ CanvasShapes.Rectangle = (function () {
         this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
-        this.initialize(coordinates);
+        this.initialise(coordinates);
     };
 
     CanvasShapes.Class.extend(
@@ -25,7 +25,7 @@ CanvasShapes.Rectangle = (function () {
     {
         className: 'CanvasShapes.Rectangle',
 
-        initialize: function (coordinates) {
+        initialise: function (coordinates) {
 
             var angle, processedCoordinates,
                 point = [];
@@ -63,7 +63,7 @@ CanvasShapes.Rectangle = (function () {
             // validate them again.
             this.MAX_COORDINATES++;
             this.MIN_COORDINATES++;
-            CanvasShapes.Polygon.prototype.initialize.call(this, coordinates);
+            CanvasShapes.Polygon.prototype.initialise.call(this, coordinates);
         }
     });
 

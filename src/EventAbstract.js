@@ -20,7 +20,7 @@ CanvasShapes.EventAbstract = (function () {
         className: 'CanvasShapes.EventAbstract',
 
         /**
-         * Initialization method of the new Event object. It accepts native DOM
+         * Initialisation method of the new Event object. It accepts native DOM
          * `event`, custom `event` object with `type` property defined, or a
          * `string` containing a custom event type.
          *
@@ -38,7 +38,7 @@ CanvasShapes.EventAbstract = (function () {
          * @param {CanvasShapes.SceneInterface} scene
          * @param {object}                      target [OPTIONAL]
          */
-        initialize: function (event, scene, target) {
+        initialise: function (event, scene, target) {
 
             if (_.isString(event)) {
                 event = {

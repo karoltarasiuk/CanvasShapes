@@ -177,7 +177,7 @@ define([
                 expect(canvas3.style.left).toBe('0px');
             });
 
-            it('initializing layers', function () {
+            it('initialising layers', function () {
 
                 var i, UUID,
                     count = 0,
@@ -188,7 +188,7 @@ define([
                     });
 
                 expect(function () {
-                    layer = scene.initializeLayers();
+                    layer = scene.initialiseLayers();
                 }).not.toThrow();
 
                 expect(scene.layers).not.toBe(undefined);
@@ -460,11 +460,11 @@ define([
                 expect(scene2.getDom()).toBe(dom2);
             });
 
-            it('initializing listeners', function () {
+            it('initialising listeners', function () {
 
                 var scene1, dom1 = document.createElement('div');
 
-                // initializeListeners() is being called on initialisation
+                // initialiseListeners() is being called on initialisation
                 expect(function () {
                     scene1 = new CanvasShapes.Scene({
                         element: dom1,

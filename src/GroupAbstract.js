@@ -18,17 +18,17 @@ CanvasShapes.GroupAbstract = (function () {
 
         /**
          * Array with all existing shapes in the group.
-         * Must be initialized for each instance, i.e. within constructor.
+         * Must be initialised for each instance, i.e. within constructor.
          * @type {array}
          */
         shapes: null,
 
         /**
-         * Initialization function. Must be called when creating each instance.
-         * It initializes `this.shapes` array needed in any other method. This
-         * method should be called every time on group initialization.
+         * Initialisation function. Must be called when creating each instance.
+         * It initialises `this.shapes` array needed in any other method. This
+         * method should be called every time on group initialisation.
          */
-        initialize: function () {
+        initialise: function () {
             this.shapes = [];
         },
 

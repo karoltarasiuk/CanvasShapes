@@ -14,14 +14,14 @@ CanvasShapes.Line = (function () {
         this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
-        this.initialize(coordinates);
+        this.initialise(coordinates);
     };
 
     CanvasShapes.Class.extend(Line.prototype, CanvasShapes.Shape.prototype, {
 
         className: 'CanvasShapes.Line',
 
-        initialize: function (coordinates) {
+        initialise: function (coordinates) {
 
             var i;
 

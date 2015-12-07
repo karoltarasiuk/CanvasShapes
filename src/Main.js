@@ -3,7 +3,7 @@
 var CanvasShapes = {};
 
 /**
- * Initializes a library and returns the object you should start with.
+ * Initialises a library and returns the object you should start with.
  *
  * @return {CanvasShapes.Renderer}
  */

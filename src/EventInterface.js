@@ -14,7 +14,7 @@ CanvasShapes.EventInterface = (function () {
         className: 'CanvasShapes.EventInterface',
 
         /**
-         * Initialization method of the new Event object. It accepts native DOM
+         * Initialisation method of the new Event object. It accepts native DOM
          * `event`, custom `event` object with `type` property defined, or a
          * `string` containing a custom event type.
          *
@@ -24,7 +24,7 @@ CanvasShapes.EventInterface = (function () {
          * @param {[object,string]} event
          * @param {object}          target [OPTIONAL]
          */
-        initialize: function (event, target) {
+        initialise: function (event, target) {
             throw new CanvasShapes.Error(9044);
         },
 

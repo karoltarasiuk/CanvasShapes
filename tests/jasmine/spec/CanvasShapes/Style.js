@@ -65,7 +65,7 @@ define([
 
         describe('abstract methods', function () {
 
-            it('initializes style properly', function () {
+            it('initialises style properly', function () {
 
                 var style = new CanvasShapes.Style();
 

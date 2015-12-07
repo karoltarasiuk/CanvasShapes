@@ -14,7 +14,7 @@ CanvasShapes.Event = (function () {
      * @param {object}                      target [OPTIONAL]
      */
     var Event = function (event, scene, target) {
-        this.initialize(event, scene, target);
+        this.initialise(event, scene, target);
     };
 
     CanvasShapes.Class.extend(
@@ -104,14 +104,14 @@ CanvasShapes.Event = (function () {
      * Remember that only one custom category is allowed. If you want to get rid
      * of the default one, use `Event.deregisterCategory`.
      *
-     * When `initializeListeners` is passed, it will be called whenever scene
-     * object requests listeners initialization. Scene object will also become
+     * When `initialiseListeners` is passed, it will be called whenever scene
+     * object requests listeners initialisation. Scene object will also become
      * a context for this call.
      *
      * @param  {string}   category
      * @param  {function} baseClass
      * @param  {object}   eventsObject [OPTIONAL]
-     * @param  {function} initializeListeners [OPTIONAL]
+     * @param  {function} initialiseListeners [OPTIONAL]
      *
      * @return {boolean}
      */
@@ -119,7 +119,7 @@ CanvasShapes.Event = (function () {
         category,
         baseClass,
         eventsObject,
-        initializeListeners
+        initialiseListeners
     ) {
         if (!_.isString(category) || category.length === 0) {
             throw new CanvasShapes.Error(1030);
@@ -137,7 +137,7 @@ CanvasShapes.Event = (function () {
             throw new CanvasShapes.Error(1033);
         }
 
-        if (initializeListeners && !_.isFunction(initializeListeners)) {
+        if (initialiseListeners && !_.isFunction(initialiseListeners)) {
             throw new CanvasShapes.Error(1034);
         }
 
@@ -145,7 +145,7 @@ CanvasShapes.Event = (function () {
             category: category,
             baseClass: baseClass,
             eventsObject: eventsObject,
-            initializeListeners: initializeListeners
+            initialiseListeners: initialiseListeners
         };
     };
 
@@ -168,12 +168,12 @@ CanvasShapes.Event = (function () {
     };
 
     /**
-     * Initialize listeners for each registered category. `scene` is a context
+     * Initialise listeners for each registered category. `scene` is a context
      * of this call.
      *
      * @param  {CanvasShapes.SceneInterface} scene
      */
-    Event.initializeListeners = function (scene) {
+    Event.initialiseListeners = function (scene) {
 
         var i;
 
@@ -185,8 +185,8 @@ CanvasShapes.Event = (function () {
         }
 
         for (i in CATEGORIES) {
-            if (CATEGORIES[i].initializeListeners) {
-                CATEGORIES[i].initializeListeners.call(scene);
+            if (CATEGORIES[i].initialiseListeners) {
+                CATEGORIES[i].initialiseListeners.call(scene);
             }
         }
     };

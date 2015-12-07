@@ -37,7 +37,7 @@ CanvasShapes.Scene = (function () {
             throw new CanvasShapes.Error(1001);
         }
 
-        this.initialize(config);
+        this.initialise(config);
     };
 
     CanvasShapes.Class.extend(
@@ -48,7 +48,7 @@ CanvasShapes.Scene = (function () {
 
         className: 'CanvasShapes.Scene',
 
-        initialize: function (config) {
+        initialise: function (config) {
 
             this.config = config;
             this.width = this.config.width;
@@ -72,7 +72,7 @@ CanvasShapes.Scene = (function () {
                 this.dom.style.position = 'relative';
             }
 
-            this.initializeListeners();
+            this.initialiseListeners();
 
             // checking whether this scene's layers should be rendered outside
             // of the screen
@@ -101,7 +101,7 @@ CanvasShapes.Scene = (function () {
             var i, j, k, layerObject, layer, shapeObject,
                 callbacks = [];
 
-            this.initializeLayers();
+            this.initialiseLayers();
 
             if (shape) {
                 for (i in this.layers) {

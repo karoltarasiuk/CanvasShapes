@@ -8,7 +8,7 @@ CanvasShapes.Group = (function () {
      */
     var Group = function () {
         this.setUUID();
-        this.initialize();
+        this.initialise();
     };
 
     CanvasShapes.Class.extend(

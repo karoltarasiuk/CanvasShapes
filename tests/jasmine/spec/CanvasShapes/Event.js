@@ -248,7 +248,7 @@ define([
                     category: 'custom',
                     baseClass : CanvasShapes.Event,
                     eventsObject : undefined,
-                    initializeListeners : undefined
+                    initialiseListeners : undefined
                 });
 
                 temp = CanvasShapes.Event.getCategory('click');
@@ -265,7 +265,7 @@ define([
                         CONTEXTMENU: 'contextmenu',
                         DBLCLICK: 'dblclick'
                     },
-                    initializeListeners : temp.initializeListeners
+                    initialiseListeners : temp.initialiseListeners
                 });
 
                 temp = CanvasShapes.Event.getCategory('keydown');
@@ -277,7 +277,7 @@ define([
                         KEYUP: 'keyup',
                         KEYPRESS: 'keypress'
                     },
-                    initializeListeners : temp.initializeListeners
+                    initialiseListeners : temp.initialiseListeners
                 });
             });
 
@@ -396,11 +396,11 @@ define([
                     category: 'custom',
                     baseClass : CanvasShapes.Event,
                     eventsObject : undefined,
-                    initializeListeners : undefined
+                    initialiseListeners : undefined
                 });
             });
 
-            it('CanvasShapes.Event.initializeListeners', function () {
+            it('CanvasShapes.Event.initialiseListeners', function () {
 
                 var error1 = new CanvasShapes.Error(1038),
                     scene = new CanvasShapes.Scene({
@@ -409,26 +409,26 @@ define([
                         height: 100
                     });
 
-                expect(function () {CanvasShapes.Event.initializeListeners(); })
+                expect(function () {CanvasShapes.Event.initialiseListeners(); })
                     .toThrow(error1);
                 expect(function () {
-                    CanvasShapes.Event.initializeListeners(1);
+                    CanvasShapes.Event.initialiseListeners(1);
                 }).toThrow(error1);
                 expect(function () {
-                    CanvasShapes.Event.initializeListeners(true);
+                    CanvasShapes.Event.initialiseListeners(true);
                 }).toThrow(error1);
                 expect(function () {
-                    CanvasShapes.Event.initializeListeners('string');
+                    CanvasShapes.Event.initialiseListeners('string');
                 }).toThrow(error1);
                 expect(function () {
-                    CanvasShapes.Event.initializeListeners([]);
+                    CanvasShapes.Event.initialiseListeners([]);
                 }).toThrow(error1);
                 expect(function () {
-                    CanvasShapes.Event.initializeListeners({});
+                    CanvasShapes.Event.initialiseListeners({});
                 }).toThrow(error1);
 
                 expect(function () {
-                    CanvasShapes.Event.initializeListeners(scene);
+                    CanvasShapes.Event.initialiseListeners(scene);
                 }).not.toThrow();
             });
 
@@ -520,7 +520,7 @@ define([
 
         describe('abstract methods', function () {
 
-            it('initialize()', function () {
+            it('initialise()', function () {
 
                 // this is tested in .getInstance and constructors
             });
