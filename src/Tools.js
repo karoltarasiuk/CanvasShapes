@@ -160,6 +160,47 @@ CanvasShapes.Tools = (function () {
     }
 
     /**
+     * Checks whether passed value is within a given interval.
+     * `excludingEndpoints` defaults to false.
+     *
+     * @param  {float}   value
+     * @param  {float}   intervalMin
+     * @param  {float}   intervalMax
+     * @param  {boolean} excludingEndpoints [OPTIONAL]
+     *
+     * @return {boolean}
+     */
+    function isValueWithinInterval(
+        value,
+        intervalMin,
+        intervalMax,
+        excludingEndpoints
+    ) {
+        var temp;
+
+        if (
+            !_.isNumber(value) ||
+            !_.isNumber(intervalMin) ||
+            !_.isNumber(intervalMax)
+        ) {
+            return false;
+        }
+
+        // swapping values if max is bigger
+        if (intervalMax < intervalMin) {
+            temp = intervalMin;
+            intervalMin = intervalMax;
+            intervalMax = temp;
+        }
+
+        if (excludingEndpoints) {
+            return value > intervalMin && value < intervalMax;
+        } else {
+            return value >= intervalMin && value <= intervalMax;
+        }
+    }
+
+    /**
      * Color pre-defined strings, and their hex values.
      *
      * @see  https://developer.mozilla.org/en/docs/Web/CSS/color_value
@@ -323,6 +364,7 @@ CanvasShapes.Tools = (function () {
         arrayToHex: arrayToHex,
         objectToHex: objectToHex,
         rgbToHex: rgbToHex,
-        colorToHex: colorToHex
+        colorToHex: colorToHex,
+        isValueWithinInterval: isValueWithinInterval
     };
 })();

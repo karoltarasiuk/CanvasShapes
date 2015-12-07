@@ -74,31 +74,37 @@ CanvasShapes.Polygon = (function () {
         },
 
         /**
+         * Due to the complexity of calculations allowedError in
+         * CanvasShapes.Polygon applies to the position of a point, and not to
+         * the distance to its edge.
+         *
          * @implements {CanvasShapes.InteractionInterface}
          */
         isColliding: function (mouseCoordinates) {
 
-            var layer = mouseCoordinates.scene.getLayer(this),
-                processedCoordinates = this.processCoordinates(
-                    this.getCoordinates(), layer
-                );
+            var layer, processedCoordinates, allowedError;
 
             if (
                 !_.isObject(mouseCoordinates) ||
                 !_.isNumber(mouseCoordinates.x) ||
-                !_.isNumber(mouseCoordinates.y)
+                !_.isNumber(mouseCoordinates.y) ||
+                !_.isObject(mouseCoordinates.scene) ||
+                !_.isFunction(mouseCoordinates.scene.is) ||
+                !mouseCoordinates.scene.is(CanvasShapes.SceneInterface)
             ) {
-                throw new CanvasShapes.Error(1037);
+                throw new CanvasShapes.Error(1058);
             }
 
-            if (CanvasShapes.GeometryTools.isInsidePolygon(
+            layer = mouseCoordinates.scene.getLayer(this);
+            processedCoordinates = this.processCoordinates(
+                this.getCoordinates(), layer
+            );
+            allowedError = this.calculateAllowedError(layer);
+
+            return CanvasShapes.GeometryTools.isInsidePolygon(
                 [mouseCoordinates.x, mouseCoordinates.y],
-                processedCoordinates
-            )) {
-                return true;
-            }
-
-            return false;
+                processedCoordinates, allowedError
+            );
         }
     });
 

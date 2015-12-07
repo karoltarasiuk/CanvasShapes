@@ -218,6 +218,53 @@ define([
                     .colorToHex(i)).toEqual(PREDEFINED_COLORS[i]);
             }
         });
+
+        it('isValueWithinInterval method', function () {
+
+            var i,
+                specs = [{
+                    result: false
+                }, {
+                    value: 1,
+                    result: false
+                }, {
+                    value: 1,
+                    min: 0,
+                    result: false
+                }, {
+                    value: 1,
+                    min: 0,
+                    max: 2,
+                    result: true
+                }, {
+                    value: 1,
+                    min: 0,
+                    max: 2,
+                    excluding: true,
+                    result: true
+                }, {
+                    value: 2,
+                    min: 0,
+                    max: 2,
+                    excluding: true,
+                    result: false
+                }, {
+                    value: 1.9999999,
+                    min: 0,
+                    max: 2,
+                    excluding: true,
+                    result: true
+                }];
+
+            for (i = 0; i < specs.length; i++) {
+                expect(CanvasShapes.Tools.isValueWithinInterval(
+                    specs[i].value,
+                    specs[i].min,
+                    specs[i].max,
+                    specs[i].excluding
+                )).toBe(specs[i].result);
+            }
+        });
     });
 
     /**

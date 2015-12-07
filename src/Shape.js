@@ -30,30 +30,77 @@ CanvasShapes.Shape = (function () {
         },
 
         /**
+         * Allows you to overwrite global IS_COLLIDING_RATIO config value.
+         *
+         * @param {boolean} isCollidingRatio
+         */
+        setIsCollidingRatio: function (isCollidingRatio) {
+
+            if (!_.isNumber(isCollidingRatio)) {
+                throw new CanvasShapes.Error(1057);
+            }
+
+            this._isCollidingRatio = isCollidingRatio;
+        },
+
+        /**
+         * Calculates allowed error parameter used in `isColliding` method. It's
+         * never less than 1. Also internal `_isCollidingRatio` property set in
+         * `setIsCollidingRatio()` takes precedence over global
+         * `IS_COLLIDING_RATIO` config value. The calculation is relative to the
+         * size of a layer, which means, since one shape can sit on
+         * multiple layers, that layer must be passed as an argument.
+         *
+         * @param  {CanvasShapes.SceneLayerInterface} layer
+         * @return {float}
+         */
+        calculateAllowedError: function (layer) {
+
+            var isCollidingRatio = this._isCollidingRatio ||
+                    CanvasShapes.Config.get('IS_COLLIDING_RATIO'),
+                allowedError = _.max([
+                    layer.getWidth(),
+                    layer.getHeight()]
+                ) * isCollidingRatio;
+
+            if (allowedError < 1) {
+                allowedError = 1;
+            }
+
+            return allowedError;
+        },
+
+        /**
          * @implements {CanvasShapes.InteractionInterface}
          */
         isColliding: function (mouseCoordinates) {
 
-            var coordinates;
+            var layer, allowedError, coordinates;
 
             if (
                 !_.isObject(mouseCoordinates) ||
                 !_.isNumber(mouseCoordinates.x) ||
-                !_.isNumber(mouseCoordinates.y)
+                !_.isNumber(mouseCoordinates.y) ||
+                !_.isObject(mouseCoordinates.scene) ||
+                !_.isFunction(mouseCoordinates.scene.is) ||
+                !mouseCoordinates.scene.is(CanvasShapes.SceneInterface)
             ) {
                 throw new CanvasShapes.Error(1037);
             }
 
+            layer = mouseCoordinates.scene.getLayer(this);
+            allowedError = this.calculateAllowedError(layer);
             coordinates = this.getCentreCoordinates();
 
-            if (
-                coordinates[0] === mouseCoordinates.x &&
-                coordinates[1] === mouseCoordinates.y
-            ) {
-                return true;
-            }
-
-            return false;
+            return CanvasShapes.Tools.isValueWithinInterval(
+                coordinates[0],
+                mouseCoordinates.x + allowedError,
+                mouseCoordinates.x - allowedError
+            ) && CanvasShapes.Tools.isValueWithinInterval(
+                coordinates[1],
+                mouseCoordinates.y + allowedError,
+                mouseCoordinates.y - allowedError
+            );
         },
 
         /**

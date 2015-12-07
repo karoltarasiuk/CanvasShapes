@@ -67,35 +67,29 @@ CanvasShapes.Line = (function () {
          */
         isColliding: function (mouseCoordinates) {
 
-            var layer = mouseCoordinates.scene.getLayer(this),
-                processedCoordinates = this.processCoordinates(
-                    this.getCoordinates(), layer
-                ),
-                allowedError = _.max([
-                    layer.getWidth(),
-                    layer.getHeight()]
-                ) * 0.01;
-
-            if (allowedError < 1) {
-                allowedError = 1;
-            }
+            var layer, processedCoordinates, allowedError;
 
             if (
                 !_.isObject(mouseCoordinates) ||
                 !_.isNumber(mouseCoordinates.x) ||
-                !_.isNumber(mouseCoordinates.y)
+                !_.isNumber(mouseCoordinates.y) ||
+                !_.isObject(mouseCoordinates.scene) ||
+                !_.isFunction(mouseCoordinates.scene.is) ||
+                !mouseCoordinates.scene.is(CanvasShapes.SceneInterface)
             ) {
-                throw new CanvasShapes.Error(1037);
+                throw new CanvasShapes.Error(1059);
             }
 
-            if (CanvasShapes.GeometryTools.isOnTheSegment(
+            layer = mouseCoordinates.scene.getLayer(this);
+            processedCoordinates = this.processCoordinates(
+                this.getCoordinates(), layer
+            );
+            allowedError = this.calculateAllowedError(layer);
+
+            return CanvasShapes.GeometryTools.isOnTheSegment(
                 [mouseCoordinates.x, mouseCoordinates.y],
                 processedCoordinates, allowedError
-            )) {
-                return true;
-            }
-
-            return false;
+            );
         }
     });
 

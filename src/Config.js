@@ -45,9 +45,20 @@ CanvasShapes.Config = (function () {
          * scene container. The latter seems to be faster, hence default is
          * `false`.
          *
+         * @see http://karoltarasiuk.com/CanvasShapes/examples/performance/
+         *
          * @type {boolean}
          */
         RENDER_OFF_SCREEN: false,
+
+        /**
+         * Global setting for allowed error ratio relative to the size of a
+         * layer. Can be overwritten separately per each shape. Check
+         * `setIsCollidingRatio` in `CanvasShapes.Shape`.
+         *
+         * @type {float}
+         */
+        IS_COLLIDING_RATIO: 0.01,
     };
 
     function set(option, value) {

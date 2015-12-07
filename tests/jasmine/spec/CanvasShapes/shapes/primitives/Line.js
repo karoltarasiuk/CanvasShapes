@@ -86,5 +86,80 @@ define([
                 line.render(layer);
             }).not.toThrow();
         });
+
+        it('isColliding method', function () {
+
+            var scene, layer, shape1Class,
+                mouseCoordinates = {},
+                error = new CanvasShapes.Error(1059),
+                line = new CanvasShapes.Line([[10, 10], [90, 90]]);
+
+            scene = new CanvasShapes.Scene({
+                element: document.createElement('div'),
+                width: 100,
+                height: 100
+            });
+            layer = scene.newLayer(line);
+
+            expect(function () {
+                line.isColliding();
+            }).toThrow(error);
+
+            expect(function () {
+                line.isColliding({});
+            }).toThrow(error);
+
+            expect(function () {
+                line.isColliding(false);
+            }).toThrow(error);
+
+            expect(function () {
+                line.isColliding('string');
+            }).toThrow(error);
+
+            expect(function () {
+                line.isColliding(1);
+            }).toThrow(error);
+
+            expect(function () {
+                line.isColliding(function () {});
+            }).toThrow(error);
+
+            expect(function () {
+                line.isColliding({
+                    x: 1
+                });
+            }).toThrow(error);
+
+            expect(function () {
+                line.isColliding({
+                    x: 1,
+                    y: 1
+                });
+            }).toThrow(error);
+
+            expect(function () {
+                line.isColliding({
+                    x: 1,
+                    y: 1,
+                    scene: {}
+                });
+            }).toThrow(error);
+
+            mouseCoordinates.scene = scene;
+            mouseCoordinates.x = 20;
+            mouseCoordinates.y = 20;
+
+            expect(line.isColliding(mouseCoordinates)).toBe(true);
+
+            mouseCoordinates.x = 20;
+            mouseCoordinates.y = 22;
+            expect(line.isColliding(mouseCoordinates)).toBe(false);
+
+            line.setIsCollidingRatio(0.1);
+            mouseCoordinates.x = 20;
+            mouseCoordinates.y = 22;
+            expect(line.isColliding(mouseCoordinates)).toBe(true);
+        });
     });
 });

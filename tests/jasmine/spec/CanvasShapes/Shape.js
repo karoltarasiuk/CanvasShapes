@@ -99,12 +99,76 @@ define([
 
         describe('methods', function () {
 
+            it('setIsCollidingRatio method', function () {
+
+                var error = new CanvasShapes.Error(1057),
+                    shape = new CanvasShapes.Shape([10, 10]);
+
+                expect(function () {
+                    shape.setIsCollidingRatio(true);
+                }).toThrow(error);
+
+                expect(function () {
+                    shape.setIsCollidingRatio({});
+                }).toThrow(error);
+
+                expect(function () {
+                    shape.setIsCollidingRatio([]);
+                }).toThrow(error);
+
+                expect(function () {
+                    shape.setIsCollidingRatio('string');
+                }).toThrow(error);
+
+                expect(function () {
+                    shape.setIsCollidingRatio(function () {});
+                }).toThrow(error);
+
+                expect(function () {
+                    shape.setIsCollidingRatio(100);
+                }).not.toThrow();
+            });
+
+            it('calculateAllowedError method', function () {
+
+                var scene, layer,
+                    shape = new CanvasShapes.Shape([10, 10]);
+
+                scene = new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    width: 50,
+                    height: 50
+                });
+                layer = scene.newLayer(shape);
+
+                expect(shape.calculateAllowedError(layer)).toBe(1);
+
+                shape.setIsCollidingRatio(0);
+                expect(shape.calculateAllowedError(layer)).toBe(1);
+
+                shape.setIsCollidingRatio(0.02);
+                expect(shape.calculateAllowedError(layer)).toBe(1);
+
+                shape.setIsCollidingRatio(0.015);
+                expect(shape.calculateAllowedError(layer)).toBe(1);
+
+                shape.setIsCollidingRatio(0.04);
+                expect(shape.calculateAllowedError(layer)).toBe(2);
+            });
+
             it('isColliding method', function () {
 
-                var layer, shape1Class, shape1,
+                var scene, layer, shape1Class, shape1,
                     error2 = new CanvasShapes.Error(1037),
                     error3 = new CanvasShapes.Error(9042),
                     shape2 = new CanvasShapes.Shape([10, 10]);
+
+                scene = new CanvasShapes.Scene({
+                    element: document.createElement('div'),
+                    width: 100,
+                    height: 100
+                });
+                layer = scene.newLayer(shape2);
 
                 shape1Class = function () {};
                 _.extend(
@@ -158,11 +222,30 @@ define([
                 }).toThrow(error2);
 
                 expect(function () {
-                    shape2.isColliding({ x: 1, y: 2 });
+                    shape2.isColliding({ x: 1, y: [], scene: {} });
+                }).toThrow(error2);
+
+                expect(function () {
+                    shape2.isColliding({ x: 1, y: 2, scene: scene });
                 }).not.toThrow();
 
-                expect(shape2.isColliding({ x: 1, y: 2 })).toBe(false);
-                expect(shape2.isColliding({ x: 10, y: 10 })).toBe(true);
+                expect(shape2.isColliding({ x: 1, y: 2, scene: scene })).toBe(false);
+                expect(shape2.isColliding({ x: 11.0001, y: 11.0001, scene: scene })).toBe(false);
+                expect(shape2.isColliding({ x: 8.999, y: 8.999, scene: scene })).toBe(false);
+
+                expect(shape2.isColliding({ x: 10, y: 10, scene: scene })).toBe(true);
+                expect(shape2.isColliding({ x: 9, y: 9, scene: scene })).toBe(true);
+                expect(shape2.isColliding({ x: 11, y: 11, scene: scene })).toBe(true);
+
+                shape2.setIsCollidingRatio(0.05);
+
+                expect(shape2.isColliding({ x: 1, y: 2, scene: scene })).toBe(false);
+                expect(shape2.isColliding({ x: 15.0001, y: 15.0001, scene: scene })).toBe(false);
+                expect(shape2.isColliding({ x: 4.999, y: 4.999, scene: scene })).toBe(false);
+
+                expect(shape2.isColliding({ x: 10, y: 10, scene: scene })).toBe(true);
+                expect(shape2.isColliding({ x: 5, y: 5, scene: scene })).toBe(true);
+                expect(shape2.isColliding({ x: 15, y: 15, scene: scene })).toBe(true);
             });
 
             it('events manipulation', function () {

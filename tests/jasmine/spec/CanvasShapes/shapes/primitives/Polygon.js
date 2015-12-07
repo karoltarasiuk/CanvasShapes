@@ -90,5 +90,80 @@ define([
                 polygon.render(layer);
             }).not.toThrow();
         });
+
+        it('isColliding method', function () {
+
+            var scene, layer, shape1Class,
+                mouseCoordinates = {},
+                error = new CanvasShapes.Error(1058),
+                polygon = new CanvasShapes.Polygon([[10, 10], [90, 90], [90, 10]]);
+
+            scene = new CanvasShapes.Scene({
+                element: document.createElement('div'),
+                width: 100,
+                height: 100
+            });
+            layer = scene.newLayer(polygon);
+
+            expect(function () {
+                polygon.isColliding();
+            }).toThrow(error);
+
+            expect(function () {
+                polygon.isColliding({});
+            }).toThrow(error);
+
+            expect(function () {
+                polygon.isColliding(false);
+            }).toThrow(error);
+
+            expect(function () {
+                polygon.isColliding('string');
+            }).toThrow(error);
+
+            expect(function () {
+                polygon.isColliding(1);
+            }).toThrow(error);
+
+            expect(function () {
+                polygon.isColliding(function () {});
+            }).toThrow(error);
+
+            expect(function () {
+                polygon.isColliding({
+                    x: 1
+                });
+            }).toThrow(error);
+
+            expect(function () {
+                polygon.isColliding({
+                    x: 1,
+                    y: 1
+                });
+            }).toThrow(error);
+
+            expect(function () {
+                polygon.isColliding({
+                    x: 1,
+                    y: 1,
+                    scene: {}
+                });
+            }).toThrow(error);
+
+            mouseCoordinates.scene = scene;
+            mouseCoordinates.x = 20;
+            mouseCoordinates.y = 20;
+
+            expect(polygon.isColliding(mouseCoordinates)).toBe(true);
+
+            mouseCoordinates.x = 20;
+            mouseCoordinates.y = 23;
+            expect(polygon.isColliding(mouseCoordinates)).toBe(false);
+
+            polygon.setIsCollidingRatio(0.1);
+            mouseCoordinates.x = 20;
+            mouseCoordinates.y = 23;
+            expect(polygon.isColliding(mouseCoordinates)).toBe(true);
+        });
     });
 });

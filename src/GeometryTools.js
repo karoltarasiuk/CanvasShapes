@@ -81,26 +81,77 @@ CanvasShapes.GeometryTools = (function () {
      * @param  {[type]}  polygonCoordinates [description]
      * @return {Boolean}                    [description]
      */
-    function isInsidePolygon(point, polygonCoordinates) {
+    function isInsidePolygon(point, polygonCoordinates, allowedError) {
 
-        var i, j, xi, xj, yi, yj, intersect,
-            x = point[0], y = point[1],
-            inside = false;
+        var i, j, k, xi, xj, yi, yj, intersect, xShift, yShift,
+            x = point[0], y = point[1];
 
-        for (
-            i = 0,
-            j = polygonCoordinates.length - 1;
-            i < polygonCoordinates.length;
-            j = i++
-        ) {
-            xi = polygonCoordinates[i][0], yi = polygonCoordinates[i][1];
-            xj = polygonCoordinates[j][0], yj = polygonCoordinates[j][1];
-            intersect = ((yi > y) != (yj > y))
-                && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-            if (intersect) inside = !inside;
+        function isInside(polygonCoordinates, xShift, yShift) {
+
+            var inside = false;
+
+            if (!xShift) {
+                xShift = 0;
+            }
+
+            if (!yShift) {
+                yShift = 0;
+            }
+
+            for (
+                i = 0,
+                j = polygonCoordinates.length - 1;
+                i < polygonCoordinates.length;
+                j = i++
+            ) {
+                xi = polygonCoordinates[i][0] + xShift;
+                yi = polygonCoordinates[i][1] + yShift;
+                xj = polygonCoordinates[j][0] + xShift;
+                yj = polygonCoordinates[j][1] + yShift;
+
+                intersect = ((yi > y) != (yj > y)) &&
+                    (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+
+                if (intersect) {
+                    inside = !inside;
+                }
+            }
+
+            return inside;
         }
 
-        return inside;
+        if (!allowedError) {
+            return isInside(polygonCoordinates);
+        } else {
+            for (k = 0; k < 4; k++) {
+                // changing coordinates of a polygon to make it a little bit bigger
+                // to accommodate allowed error
+                switch (k) {
+                    case 0:
+                        xShift = allowedError;
+                        yShift = allowedError;
+                        break;
+                    case 1:
+                        xShift = allowedError;
+                        yShift = -allowedError;
+                        break;
+                    case 2:
+                        xShift = -allowedError;
+                        yShift = allowedError;
+                        break;
+                    case 3:
+                        xShift = -allowedError;
+                        yShift = -allowedError;
+                        break;
+                }
+
+                if (isInside(polygonCoordinates, xShift, yShift)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -197,9 +248,8 @@ CanvasShapes.GeometryTools = (function () {
             allowedError = 0;
         }
 
-        return (
-            distanceLine >= 0 - allowedError &&
-            distanceLine <= 0 + allowedError
+        return CanvasShapes.Tools.isValueWithinInterval(
+            distanceLine, 0 - allowedError, 0 + allowedError
         );
     }
 
@@ -222,9 +272,8 @@ CanvasShapes.GeometryTools = (function () {
             allowedError = 0;
         }
 
-        return (
-            distanceSegment >= 0 - allowedError &&
-            distanceSegment <= 0 + allowedError
+        return CanvasShapes.Tools.isValueWithinInterval(
+            distanceSegment, 0 - allowedError, 0 + allowedError
         );
     }
 
