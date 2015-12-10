@@ -188,11 +188,8 @@ define([
                 }).toThrow(error3);
 
                 expect(function () {
-                    // empty array is OK, as min and max number of coordinates
-                    // in validateCoordinatesArray is not specified, so it will
-                    // proceed to translate offset parameter
                     shape.translateCoordinates([]);
-                }).toThrow(error2);
+                }).toThrow(error3);
 
                 expect(function () {
                     shape.translateCoordinates([[]]);
@@ -286,7 +283,8 @@ define([
                         {},
                         'a',
                         10,
-                        true
+                        true,
+                        []
                     ],
                     shape = new CanvasShapes.Shape(),
                     error = new CanvasShapes.Error(1011);

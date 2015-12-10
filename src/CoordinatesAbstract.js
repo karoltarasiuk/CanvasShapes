@@ -85,8 +85,7 @@ CanvasShapes.CoordinatesAbstract = (function () {
                         }
                     }
                 }
-            }
-            else if (
+            } else if (
                 _.isObject(coordinates) && _.isFunction(coordinates.is) &&
                 coordinates.is(CanvasShapes.CoordinatesInterface)
             ) {
@@ -187,6 +186,10 @@ CanvasShapes.CoordinatesAbstract = (function () {
                     _.isNumber(maximumCoordinatesNumber) &&
                     coordinates.length > maximumCoordinatesNumber
                 ) {
+                    valid = false;
+                }
+
+                if (coordinates.length < 1) {
                     valid = false;
                 }
             }

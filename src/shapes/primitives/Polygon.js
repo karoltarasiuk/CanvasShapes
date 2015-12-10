@@ -24,8 +24,6 @@ CanvasShapes.Polygon = (function () {
 
         initialise: function (coordinates) {
 
-            var i;
-
             this.validateCoordinatesArray(
                 coordinates,
                 true,

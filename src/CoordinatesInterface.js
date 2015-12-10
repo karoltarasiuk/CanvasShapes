@@ -78,7 +78,7 @@ CanvasShapes.CoordinatesInterface = (function () {
          * Example `coordinates` parameter value: [0, 0].
          *
          * @param {[array,CanvasShapes.CoordinatesInterface]} coordinates
-         * @param {boolean} throwException
+         * @param {boolean} throwException [OPTIONAL]
          *
          * @return {boolean}
          */

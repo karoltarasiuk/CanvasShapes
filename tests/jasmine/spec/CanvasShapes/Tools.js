@@ -52,10 +52,27 @@ define([
             var temp, i,
                 regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-            for(i = 0; i < 100; i++) {
+            for (i = 0; i < 1000; i++) {
                 temp = CanvasShapes.Tools.uuid();
                 expect(regex.test(temp)).toBe(true);
             }
+        });
+
+        it('checks the uniqueness of UUID', function () {
+
+            var count = 1000,
+                counter = 0,
+                UUIDs = {};
+
+            for (i = 0; i < count; i++) {
+                UUIDs[CanvasShapes.Tools.uuid()] = true;
+            }
+
+            for (i in UUIDs) {
+                counter++;
+            }
+
+            expect(counter).toBe(count);
         });
 
         it('isNode method', function () {

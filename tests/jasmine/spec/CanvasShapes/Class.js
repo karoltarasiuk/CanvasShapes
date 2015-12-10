@@ -149,16 +149,81 @@ define([
             it('gets and sets UUID properly', function () {
 
                 var regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
-                    classInstance = new CanvasShapes.Class();
+                    classInstance = new CanvasShapes.Class(),
+                    UUID = 'CUSTOM_UUID';
 
                 expect(regex.test(classInstance.getUUID())).toBe(true);
+
+                classInstance.setUUID(UUID);
+                expect(classInstance.getUUID()).toBe(UUID);
             });
 
             it('populates objects registry properly', function () {
 
-                var classInstance = new CanvasShapes.Class();
+                var classInstance = new CanvasShapes.Class(),
+                    classInstance2 = {};
+
                 expect(CanvasShapes.Class.getObject(classInstance.getUUID()))
                     .toBe(classInstance);
+                expect(CanvasShapes.Class.getObject('SOME_UUID')).toBe(null);
+
+                CanvasShapes.Class.setObject('SOME_UUID', classInstance2);
+                expect(CanvasShapes.Class.getObject('SOME_UUID'))
+                    .toBe(classInstance2);
+            });
+
+            it('replaces existing object properly', function () {
+
+                var returnValue,
+                    classInstance1 = new CanvasShapes.Class(),
+                    classInstance2 = {},
+                    classInstance3 = {};
+
+                returnValue = CanvasShapes.Class.setObject(
+                    classInstance1.getUUID(),
+                    classInstance2
+                );
+
+                expect(returnValue).toBe(classInstance1);
+
+                returnValue = CanvasShapes.Class.setObject(
+                    'NEW CUSTOM UUID',
+                    classInstance2
+                );
+
+                expect(returnValue).toBe(null);
+            });
+
+            it('removes from objects registry properly', function () {
+
+                var ret,
+                    classInstance = new CanvasShapes.Class();
+
+                ret = CanvasShapes.Class.removeObject(classInstance.getUUID());
+
+                expect(ret).toBe(classInstance);
+                expect(CanvasShapes.Class.getObject(classInstance.getUUID()))
+                    .toBe(null);
+            });
+
+            it('gets and empties OBJECTS properly', function () {
+
+                var ret, objects, classInstance;
+
+                ret = CanvasShapes.Class.emptyObjects();
+                expect(CanvasShapes.Class.getObjects()).toEqual({});
+
+                classInstance = new CanvasShapes.Class();
+
+                objects = {};
+                objects[classInstance.getUUID()] = classInstance;
+
+                expect(CanvasShapes.Class.getObjects()).toEqual(objects);
+
+                ret = CanvasShapes.Class.emptyObjects();
+                expect(ret).toEqual(objects);
+
+                expect(CanvasShapes.Class.getObjects()).toEqual({});
             });
         });
     });

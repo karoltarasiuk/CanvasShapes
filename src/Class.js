@@ -91,20 +91,69 @@ CanvasShapes.Class = (function () {
      * Gets the object from registry by its UUID.
      *
      * @param  {string} UUID
-     * @return {object}
+     * @return {[null,object]}
      */
     Class.getObject = function (UUID) {
-        return OBJECTS[UUID];
+
+        if (OBJECTS[UUID]) {
+            return OBJECTS[UUID];
+        }
+
+        return null;
     };
 
     /**
-     * Sets the object in a registry
+     * Sets the object in a registry. If in the registry, there was already an
+     * object with given UUID it will be replaced with a new one, and returned.
+     * If there was no object function will return `null`.
      *
      * @param {string} UUID
      * @param {object} object
+     *
+     * @return {[null,object]}
      */
     Class.setObject = function (UUID, object) {
+
+        var obj = null;
+
+        if (OBJECTS[UUID]) {
+            obj = OBJECTS[UUID];
+        }
+
         OBJECTS[UUID] = object;
+
+        return obj;
+    };
+
+    /**
+     * Removes object from a registry specified by its UUID. Function returns
+     * either removed object or `null` if nothing was removed.
+     *
+     * @param  {string} UUID
+     * @return {[null,object]}
+     */
+    Class.removeObject = function (UUID) {
+
+        var obj = null;
+
+        if (OBJECTS[UUID]) {
+            obj = OBJECTS[UUID];
+            delete OBJECTS[UUID];
+        }
+
+        return obj;
+    };
+
+    /**
+     * Empties the objects registry and returns the old version of it.
+     *
+     * @return {object}
+     */
+    Class.emptyObjects = function () {
+
+        var old = OBJECTS;
+        OBJECTS = {};
+        return old;
     };
 
     /**

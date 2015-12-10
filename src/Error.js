@@ -40,7 +40,7 @@ CanvasShapes.Error = (function () {
         1033: "CanvasShapes.Event.registerCategory - passed eventsObject is not an object",
         1034: "CanvasShapes.Event.registerCategory - passed initialiseListeners is not a function",
         1035: "CanvasShapes.EventAbstract - in `initialise()`: invalid format of `event` argument passed",
-        1036: "",
+        1036: "CanvasShapes.Shape - in `constructor`: wrong format of arguments passed",
         1037: "CanvasShapes.Shape - in `isColliding`: passed `mouseCoordinates` is not in valid format",
         1038: "CanvasShapes.Event.initialiseListeners - passed arugment is not an instance of CanvasShapes.SceneInterface",
         1039: "CanvasShapes.EventAbstract - in `initialise()`: `target` is not a DOM element",
@@ -62,8 +62,9 @@ CanvasShapes.Error = (function () {
         1055: "CanvasShapes.SceneLayer - in `initialise()`: invalid format of arguments passed",
         1056: "CanvasShapes.EventAbstract - in `initialise()`: `scene` is not an instance of CanvasShapes.SceneInterface",
         1057: "CanvasShapes.Shape - in `setIsCollidingRatio()`: `isCollidingRatio` should be boolean",
-        1058: "CanvasShapes.Polygon - in `isColliding`: passed `mouseCoordinates` is not in valid format",
-        1059: "CanvasShapes.Line - in `isColliding`: passed `mouseCoordinates` is not in valid format",
+        1058: "CanvasShapes.Polygon - in `isColliding()`: passed `mouseCoordinates` is not in valid format",
+        1059: "CanvasShapes.Line - in `isColliding()`: passed `mouseCoordinates` is not in valid format",
+        1060: "CanvasShapes.Shape - in `fromJSON()`: passed `obj` is not in valid format",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
@@ -89,6 +90,7 @@ CanvasShapes.Error = (function () {
         8022: "CanvasShapes.AnimationAbstract - can't instantiate abstract",
         8023: "CanvasShapes.AnimationFrameInterface - can't instantiate interface",
         8024: "CanvasShapes.AnimationFrameAbstract - can't instantiate abstract",
+        8025: "CanvasShapes.JSONInterface - can't instantiate interface",
         // Not implemented methods errors
         9001: 'CanvasShapes.RenderingInterface - `render()` is not implemented',
         9002: 'CanvasShapes.RenderingAbstract - `renderOnSingleLayer()` is not implemented',
@@ -151,6 +153,8 @@ CanvasShapes.Error = (function () {
         9063: "CanvasShapes.SceneLayerInterface - `getCanvas()` is not implemented",
         9064: "CanvasShapes.SceneLayerInterface - `getTop()` is not implemented",
         9065: "CanvasShapes.SceneLayerInterface - `getLeft()` is not implemented",
+        9067: "CanvasShapes.JSONInterface - `toJSON()` is not implemented",
+        9068: "CanvasShapes.JSONInterface - `fromJSON()` is not implemented",
     };
 
     /**

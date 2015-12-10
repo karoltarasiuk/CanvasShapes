@@ -32,9 +32,15 @@ CanvasShapes.ClassInterface = (function () {
          * also return this UUID. This method should always add the shape to
          * the global registry of all objects.
          *
+         * If 'UUID' is passed it will be used as an unique identifier. Remember
+         * to use it cautiously, as it's up to you to provide a unique one. The
+         * general recommendation is to avoid using this feature unless
+         * deserialisation is needed.
+         *
+         * @param  {string} UUID [OPTIONAL]
          * @return {string}
          */
-        setUUID: function () {
+        setUUID: function (UUID) {
             throw new CanvasShapes.Error(9050);
         },
 
