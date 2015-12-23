@@ -44,15 +44,15 @@ CanvasShapes.Arc = (function () {
             throw new CanvasShapes.Error(1024);
         }
 
-        if (_.isUndefined(radius)) {
+        if (radius === undefined) {
             throw new CanvasShapes.Error(1025);
         }
 
-        if (_.isUndefined(startAngle)) {
+        if (startAngle === undefined) {
             startAngle = 0;
         }
 
-        if (_.isUndefined(endAngle)) {
+        if (endAngle === undefined) {
             endAngle = 2 * Math.PI;
         }
 

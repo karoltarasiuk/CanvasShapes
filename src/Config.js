@@ -76,7 +76,7 @@ CanvasShapes.Config = (function () {
 
     function get(option) {
 
-        if (!_.isUndefined(options[option])) {
+        if (options[option] !== undefined) {
             return options[option];
         }
 

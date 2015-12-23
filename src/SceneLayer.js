@@ -52,11 +52,11 @@ CanvasShapes.SceneLayer = (function () {
             if (
                 !_.isObject(scene) || !_.isFunction(scene.is) ||
                 !scene.is(CanvasShapes.SceneInterface) ||
-                (!_.isUndefined(width) && !_.isNumber(width)) ||
-                (!_.isUndefined(height) && !_.isNumber(height)) ||
-                (!_.isUndefined(left) && !_.isNumber(left)) ||
-                (!_.isUndefined(top) && !_.isNumber(top)) ||
-                (!_.isUndefined(offScreen) && !_.isBoolean(offScreen))
+                (width !== undefined && !_.isNumber(width)) ||
+                (height !== undefined && !_.isNumber(height)) ||
+                (left !== undefined && !_.isNumber(left)) ||
+                (top !== undefined && !_.isNumber(top)) ||
+                (offScreen !== undefined && !_.isBoolean(offScreen))
             ) {
                 throw new CanvasShapes.Error(1055);
             }

@@ -52,7 +52,7 @@ CanvasShapes.Point = (function () {
             this.validateCoordinates(coordinates, true);
             this.coordinates = coordinates;
 
-            if (_.isUndefined(face)) {
+            if (face === undefined) {
                 face = Point.DEFAULTS.FACE;
             }
 
@@ -99,7 +99,7 @@ CanvasShapes.Point = (function () {
          */
         setFace: function (face, size) {
 
-            if (_.isUndefined(size)) {
+            if (size === undefined) {
                 size = Point.DEFAULTS.SIZE;
             }
 

@@ -216,14 +216,14 @@ CanvasShapes.Shape = (function () {
 
             if (
                 _.isString(handlerOrType) &&
-                _.isUndefined(eventTypeOrContext) &&
-                _.isUndefined(context)
+                eventTypeOrContext === undefined &&
+                context === undefined
             ) {
                 // this.off('some-event-type')
                 this.sceneInterfaceHandlers.off(handlerOrType, this);
 
             } else if (
-                _.isUndefined(context) &&
+                context === undefined &&
                 _.isObject(eventTypeOrContext)
             ) {
                 // this.off('some-event-type', contextObject)
@@ -233,7 +233,7 @@ CanvasShapes.Shape = (function () {
                 );
 
             } else if (
-                _.isUndefined(context) &&
+                context === undefined &&
                 _.isString(eventTypeOrContext)
             ) {
                 // this.off(someHandlerFunction, 'some-event-type')
@@ -282,7 +282,7 @@ CanvasShapes.Shape = (function () {
 
             if (_.isArray(coordinates)) {
                 if (
-                    (_.isUndefined(this.MIN_COORDINATES) && _.isUndefined(this.MAX_COORDINATES)) ||
+                    (this.MIN_COORDINATES === undefined && this.MAX_COORDINATES === undefined) ||
                     (this.MIN_COORDINATES === 1 && this.MAX_COORDINATES === 1)
                 ) {
                     this.validateCoordinates(coordinates, true);

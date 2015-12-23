@@ -67,7 +67,7 @@ CanvasShapes.Event = (function () {
 
         // category not found, look for custom event category
         for (i in CATEGORIES) {
-            if (_.isUndefined(CATEGORIES[i].eventsObject)) {
+            if (CATEGORIES[i].eventsObject === undefined) {
                 return CATEGORIES[i];
             }
         }

@@ -180,7 +180,7 @@ CanvasShapes.Scene = (function () {
 
             this.handlers[eventType].push({
                 handler: handler,
-                context: _.isUndefined(context) ? this : context
+                context: context === undefined ? this : context
             });
         },
 
@@ -196,8 +196,8 @@ CanvasShapes.Scene = (function () {
 
                     if (
                         _.isString(handlerOrType) &&
-                        _.isUndefined(eventTypeOrContext) &&
-                        _.isUndefined(context)
+                        eventTypeOrContext === undefined &&
+                        context === undefined
                     ) {
                         // this.off('some-event-type')
                         if (i === handlerOrType) {
@@ -207,8 +207,8 @@ CanvasShapes.Scene = (function () {
 
                     } else if (
                         _.isFunction(handlerOrType) &&
-                        _.isUndefined(eventTypeOrContext) &&
-                        _.isUndefined(context)
+                        eventTypeOrContext === undefined &&
+                        context === undefined
                     ) {
                         // this.off(someHandlerFunction)
                         if (this.handlers[i][j].handler === handlerOrType) {
@@ -217,7 +217,7 @@ CanvasShapes.Scene = (function () {
                         }
 
                     } else if (
-                        _.isUndefined(context) &&
+                        context === undefined &&
                         _.isObject(eventTypeOrContext)
                     ) {
                         // this.off('some-event-type', contextObject)
@@ -231,7 +231,7 @@ CanvasShapes.Scene = (function () {
                         }
 
                     } else if (
-                        _.isUndefined(context) &&
+                        context === undefined &&
                         _.isString(eventTypeOrContext)
                     ) {
                         // this.off(someHandlerFunction, 'some-event-type')
@@ -315,7 +315,7 @@ CanvasShapes.Scene = (function () {
 
             for (i = 0; i < handlers.length; i++) {
                 if (
-                    !_.isUndefined(context) &&
+                    context !== undefined &&
                     handlers[i].context !== context
                 ) {
                     continue;
