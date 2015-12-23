@@ -90,7 +90,6 @@ CanvasShapes.Error = (function () {
         8022: "CanvasShapes.AnimationAbstract - can't instantiate abstract",
         8023: "CanvasShapes.AnimationFrameInterface - can't instantiate interface",
         8024: "CanvasShapes.AnimationFrameAbstract - can't instantiate abstract",
-        8025: "CanvasShapes.JSONInterface - can't instantiate interface",
         // Not implemented methods errors
         9001: 'CanvasShapes.RenderingInterface - `render()` is not implemented',
         9002: 'CanvasShapes.RenderingAbstract - `renderOnSingleLayer()` is not implemented',
@@ -153,8 +152,6 @@ CanvasShapes.Error = (function () {
         9063: "CanvasShapes.SceneLayerInterface - `getCanvas()` is not implemented",
         9064: "CanvasShapes.SceneLayerInterface - `getTop()` is not implemented",
         9065: "CanvasShapes.SceneLayerInterface - `getLeft()` is not implemented",
-        9067: "CanvasShapes.JSONInterface - `toJSON()` is not implemented",
-        9068: "CanvasShapes.JSONInterface - `fromJSON()` is not implemented",
     };
 
     /**

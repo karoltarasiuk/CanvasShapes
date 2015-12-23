@@ -31,7 +31,6 @@ CanvasShapes.Shape = (function () {
         CanvasShapes.CoordinatesAbstract.prototype,
         CanvasShapes.InteractionAbstract.prototype,
         CanvasShapes.AnimationAbstract.prototype,
-        CanvasShapes.JSONInterface.prototype,
     {
         className: 'CanvasShapes.Shape',
 
@@ -367,58 +366,6 @@ CanvasShapes.Shape = (function () {
                     coordinates: coordinates
                 }
             ));
-        },
-
-        /**
-         * @implements {CanvasShapes.JSONInterface}
-         */
-        toJSON: function (toString) {
-
-            var obj = {
-                    metadata: {
-                        className: this.className,
-                        UUID: this.getUUID()
-                    },
-                    data: {}
-                };
-
-            if (this.coordinates) {
-                obj.data.coordinates = this.coordinates;
-            }
-
-            if (toString === true) {
-                obj = JSON.stringify(obj);
-            }
-
-            return obj;
-        },
-
-        /**
-         * @implements {CanvasShapes.JSONInterface}
-         */
-        fromJSON: function (obj) {
-
-            var shape;
-
-            if (_.isString(obj)) {
-                obj = JSON.parse(obj);
-            }
-
-            if (
-                !_.isObject(obj.metadata) || !_.isObject(obj.data) ||
-                !_.isString(obj.metadata.className) ||
-                !_.isString(obj.metadata.UUID) ||
-                (obj.data.coordinates && !_.isArray(obj.data.coordinates))
-            ) {
-                throw new CanvasShapes.Error(1060);
-            }
-
-            shape = new CanvasShapes.Shape(obj.data.coordinates);
-            CanvasShapes.Class.removeObject(shape.getUUID());
-            shape.setUUID(obj.metadata.UUID);
-            CanvasShapes.Class.setObject(shape.getUUID(), shape);
-
-            return shape;
         }
     });
 
