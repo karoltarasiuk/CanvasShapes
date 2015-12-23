@@ -2,11 +2,9 @@
 
 define([
     'lodash',
-    'JSONChecker',
-    'uuid',
+    'uuid'
 ], function (
     _,
-    JSONChecker,
     uuid
 ) {
     'use strict';

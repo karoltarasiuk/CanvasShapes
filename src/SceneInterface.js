@@ -1,4 +1,4 @@
-/*global _, CanvasShapes, JSONChecker*/
+/*global _, CanvasShapes*/
 
 CanvasShapes.SceneInterface = (function () {
 

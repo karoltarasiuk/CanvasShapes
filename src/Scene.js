@@ -1,42 +1,9 @@
-/*global _, CanvasShapes, JSONChecker*/
+/*global _, CanvasShapes*/
 
 CanvasShapes.Scene = (function () {
 
-    var sceneConfigSpecification, sceneConfigChecker, Scene;
-
-    sceneConfigSpecification = [{
-        type: 'object',
-        properties: [{
-            name: 'id',
-            spec: { type: 'string' }
-        }, {
-            name: 'width',
-            spec: { type: 'number' }
-        }, {
-            name: 'height',
-            spec: { type: 'number' }
-        }]
-    }, {
-        type: 'object',
-        properties: [{
-            name: 'element'
-        }, {
-            name: 'width',
-            spec: { type: 'number' }
-        }, {
-            name: 'height',
-            spec: { type: 'number' }
-        }]
-    }];
-    sceneConfigChecker = new JSONChecker(sceneConfigSpecification);
-
-    Scene = function (config) {
+    var Scene = function (config) {
         this.setUUID();
-
-        if (!this.validateConfig(config)) {
-            throw new CanvasShapes.Error(1001);
-        }
-
         this.initialise(config);
     };
 
@@ -49,6 +16,10 @@ CanvasShapes.Scene = (function () {
         className: 'CanvasShapes.Scene',
 
         initialise: function (config) {
+
+            if (!this.validateConfig(config)) {
+                throw new CanvasShapes.Error(1001);
+            }
 
             this.config = config;
             this.width = this.config.width;
@@ -88,9 +59,16 @@ CanvasShapes.Scene = (function () {
             }
         },
 
+        /**
+         * Checking whether config object is valid
+         *
+         * @param  {object}  config
+         * @return {boolean}
+         */
         validateConfig: function (config) {
-
-            return sceneConfigChecker.check(config);
+            return _.isObject(config) && _.isNumber(config.width) &&
+                _.isNumber(config.height) && (_.isString(config.id) ||
+                CanvasShapes.Tools.isElement(config.element));
         },
 
         /**

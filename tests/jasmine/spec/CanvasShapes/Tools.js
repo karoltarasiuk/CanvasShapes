@@ -114,8 +114,8 @@ define([
             expect(CanvasShapes.Tools.isElement(span)).toBe(true);
             expect(CanvasShapes.Tools.isElement(text)).toBe(false);
             expect(CanvasShapes.Tools.isElement(attr)).toBe(false);
-            expect(CanvasShapes.Tools.isElement(null)).toBe(null);
-            expect(CanvasShapes.Tools.isElement(undefined)).toBe(undefined);
+            expect(CanvasShapes.Tools.isElement(null)).toBe(false);
+            expect(CanvasShapes.Tools.isElement(undefined)).toBe(false);
             expect(CanvasShapes.Tools.isElement(true)).toBe(false);
             expect(CanvasShapes.Tools.isElement(1)).toBe(false);
             expect(CanvasShapes.Tools.isElement('string')).toBe(false);
