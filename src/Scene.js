@@ -31,7 +31,7 @@ CanvasShapes.Scene = (function () {
                 this.dom = this.config.element;
             }
 
-            if (!this.dom) {
+            if (!CanvasShapes.Tools.isElement(this.dom)) {
                 throw new CanvasShapes.Error(1005);
             }
 
