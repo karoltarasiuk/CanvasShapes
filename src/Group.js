@@ -13,8 +13,8 @@ CanvasShapes.Group = (function () {
 
     CanvasShapes.Class.extend(
         Group.prototype,
-        CanvasShapes.GroupAbstract.prototype,
         CanvasShapes.Shape.prototype,
+        CanvasShapes.GroupAbstract.prototype,
     {
         className: 'CanvasShapes.Group',
 
@@ -79,6 +79,8 @@ CanvasShapes.Group = (function () {
          * @implements {CanvasShapes.CoordinatesInterface}
          *
          * Returns array of coordinates of the children.
+         *
+         * @return {array}
          */
         getCoordinates: function () {
 
@@ -113,7 +115,20 @@ CanvasShapes.Group = (function () {
          */
         setStyle: function (style, deep) {
 
-            var i;
+            if (deep !== undefined && !_.isBoolean(deep)) {
+                throw new CanvasShapes.Error(1068);
+            }
+
+            if (!_.isString(style)) {
+                if (
+                    !_.isObject(style) || !_.isFunction(style.is) ||
+                    !style.is(CanvasShapes.StyleInterface)
+                ) {
+                    throw new CanvasShapes.Error(1068);
+                }
+
+                style = style.getUUID();
+            }
 
             this.style = style;
 
@@ -122,6 +137,83 @@ CanvasShapes.Group = (function () {
                     this.setStyle(style, deep);
                 }, [style, deep]);
             }
+        },
+
+        /**
+         * @implements {CanvasShapes.JSONInterface}
+         */
+        toJSON: function (toString) {
+
+            var coordinates,
+                obj = {
+                    metadata: {
+                        className: this.className,
+                        UUID: this.getUUID()
+                    },
+                    data: {
+                        shapes: []
+                    }
+                };
+
+            for (i = 0; i < this.shapes.length; i++) {
+                if (filter.apply(this.shapes[i], args)) {
+                    ret.push(this.shapes[i]);
+                }
+            }
+
+            if (toString === true) {
+                obj = JSON.stringify(obj);
+            }
+
+            return obj;
+        },
+
+        /**
+         * @implements {CanvasShapes.JSONInterface}
+         */
+        fromJSON: function (obj) {
+
+            var i, shape, classNameParts, tempObj, classObject;
+
+            if (_.isString(obj)) {
+                obj = JSON.parse(obj);
+            }
+
+            if (
+                !_.isObject(obj.metadata) || !_.isObject(obj.data) ||
+                !_.isString(obj.metadata.className) ||
+                !_.isString(obj.metadata.UUID) ||
+                (obj.data.coordinates && !_.isArray(obj.data.coordinates))
+            ) {
+                throw new CanvasShapes.Error(1060);
+            }
+
+            if (obj.metadata.className === 'CanvasShapes.Shape') {
+
+                shape = new CanvasShapes.Shape(obj.data.coordinates);
+                CanvasShapes.Class.swapUUID(shape.getUUID(), obj.metadata.UUID);
+
+                return shape;
+            }
+
+            classObject = CanvasShapes.Class.getClass(obj.metadata.className);
+
+            if (!classObject) {
+                throw new CanvasShapes.Error(1070);
+            }
+
+            if (
+                CanvasShapes.Shape.prototype.fromJSON ===
+                classObject.prototype.fromJSON
+            ) {
+                // I don't want to modify original object
+                tempObj = _.cloneDeep(obj);
+                tempObj.metadata.className = 'CanvasShapes.Shape';
+            } else {
+                tempObj = obj;
+            }
+
+            return classObject.prototype.fromJSON.call(null, tempObj);
         }
     });
 

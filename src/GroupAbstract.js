@@ -58,23 +58,33 @@ CanvasShapes.GroupAbstract = (function () {
          */
         addShapes: function (shapes) {
 
-            var i = 0;
+            var shape,
+                i = 0;
 
             if (!_.isArray(shapes)) {
                 shapes = [shapes];
             }
 
             for (i = 0; i < shapes.length; i++) {
+
+                if (_.isString(shapes[i])) {
+                    shape = CanvasShapes.Class.getObject(shapes[i]);
+                } else {
+                    shape = shapes[i];
+                }
+
                 if (
-                    shapes[i].is &&
-                    shapes[i].is(CanvasShapes.ShapeInterface)
+                    _.isObject(shape) && _.isFunction(shape.is) &&
+                    shape.is(CanvasShapes.ShapeInterface)
                 ) {
-                    this.shapes.push(shapes[i]);
-                    shapes[i].setParent(this);
+                    this.shapes.push(shape.getUUID());
+                    shape.setParent(this.getUUID());
                 } else {
                     throw new CanvasShapes.Error(1010);
                 }
             }
+
+            console.log(this.shapes);
         },
 
         /**
@@ -82,20 +92,22 @@ CanvasShapes.GroupAbstract = (function () {
          */
         eachShape: function (iteratee, args, deep) {
 
-            var i,
+            var i, group, shape,
                 ret = [];
 
             // going through each shape
             for (i = 0; i < this.shapes.length; i++) {
 
-                ret.push(iteratee.apply(this.shapes[i], args));
+                shape = CanvasShapes.Class.getObject(this.shapes[i]);
+                ret.push(iteratee.apply(shape, args));
 
                 // checking for deep iteration, and whether shape is a group
                 if (
                     deep === true &&
-                    this.shapes[i].is(CanvasShapes.GroupInterface)
+                    _.isObject(shape) &&_.isFunction(shape.is) &&
+                    shape.is(CanvasShapes.GroupInterface)
                 ) {
-                    ret.push(this.shapes[i].eachShape(iteratee, args, deep));
+                    ret.push(shape.eachShape(iteratee, args, deep));
                 }
             }
 
@@ -107,7 +119,7 @@ CanvasShapes.GroupAbstract = (function () {
          */
         removeShapes: function (filter, args, deep) {
 
-            var i,
+            var i, group,
                 ret = 0;
 
             if (filter) {
@@ -121,12 +133,15 @@ CanvasShapes.GroupAbstract = (function () {
                         ret++;
                     }
 
+                    group = CanvasShapes.Class.getObject(this.shapes[i]);
+
                     // checking for deep iteration, and whether shape is a group
                     if (
                         deep === true &&
-                        this.shapes[i].is(CanvasShapes.GroupInterface)
+                        _.isObject(group) && _.isFunction(group.is) &&
+                        group.is(CanvasShapes.GroupInterface)
                     ) {
-                        ret += this.shapes[i].removeShapes(filter, args, deep);
+                        ret += group.removeShapes(filter, args, deep);
                     }
                 }
             } else {

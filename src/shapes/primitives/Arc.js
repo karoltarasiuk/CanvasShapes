@@ -33,52 +33,15 @@ CanvasShapes.Arc = (function () {
         endAngle,
         anticlockwise
     ) {
-        this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
-
-        if (
-            !_.isArray(coordinates) ||
-            (coordinates.length !== 1 && coordinates.length !== 3)
-        ) {
-            throw new CanvasShapes.Error(1024);
-        }
-
-        if (_.isUndefined(radius)) {
-            throw new CanvasShapes.Error(1025);
-        }
-
-        if (_.isUndefined(startAngle)) {
-            startAngle = 0;
-        }
-
-        if (_.isUndefined(endAngle)) {
-            endAngle = 2 * Math.PI;
-        }
-
-        if (anticlockwise !== true) {
-            anticlockwise = false;
-        }
-
-        if (coordinates.length === 1) {
-            this.mode = Arc.MODES.CIRCLE;
-        } else {
-            this.mode = Arc.MODES.POINTTOPPOINT;
-        }
-
-        // checking if passed coordinates are in a correct format
-        this.validateCoordinatesArray(
+        this.initialise(
             coordinates,
-            true,
-            this.MIN_COORDINATES,
-            this.MAX_COORDINATES
+            radius,
+            startAngle,
+            endAngle,
+            anticlockwise
         );
-
-        this.coordinates = coordinates;
-        this.radius = radius;
-        this.startAngle = startAngle;
-        this.endAngle = endAngle;
-        this.anticlockwise = anticlockwise;
     };
 
     /**
@@ -129,6 +92,59 @@ CanvasShapes.Arc = (function () {
          * @type {boolean}
          */
         anticlockwise: false,
+
+        initialise: function (
+            coordinates,
+            radius,
+            startAngle,
+            endAngle,
+            anticlockwise
+        ) {
+            this.initialiseShapeConstants();
+
+            if (
+                !_.isArray(coordinates) ||
+                (coordinates.length !== 1 && coordinates.length !== 3)
+            ) {
+                throw new CanvasShapes.Error(1024);
+            }
+
+            if (_.isUndefined(radius)) {
+                throw new CanvasShapes.Error(1025);
+            }
+
+            if (_.isUndefined(startAngle)) {
+                startAngle = 0;
+            }
+
+            if (_.isUndefined(endAngle)) {
+                endAngle = 2 * Math.PI;
+            }
+
+            if (anticlockwise !== true) {
+                anticlockwise = false;
+            }
+
+            if (coordinates.length === 1) {
+                this.mode = Arc.MODES.CIRCLE;
+            } else {
+                this.mode = Arc.MODES.POINTTOPPOINT;
+            }
+
+            // checking if passed coordinates are in a correct format
+            this.validateCoordinates(
+                coordinates,
+                true,
+                this.MIN_COORDINATES,
+                this.MAX_COORDINATES
+            );
+
+            this.coordinates = coordinates;
+            this.radius = radius;
+            this.startAngle = startAngle;
+            this.endAngle = endAngle;
+            this.anticlockwise = anticlockwise;
+        },
 
         /**
          * @implements {CanvasShapes.RenderingInterface}

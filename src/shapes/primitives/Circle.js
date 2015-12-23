@@ -17,27 +17,32 @@ CanvasShapes.Circle = (function () {
      * @param {float} radius
      */
     var Circle = function (coordinates, radius) {
-        this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
-
-        this.mode = CanvasShapes.Arc.MODES.CIRCLE;
-
-        this.validateCoordinates(coordinates, true);
-        this.coordinates = [coordinates];
-
-        // I have translated the original coordinates array to the one supported
-        // by CanvasShapes.Arc, which means I need to adjust MAX_COORDINATES too
-        this.MAX_COORDINATES = 3;
-
-        this.radius = radius;
-        this.startAngle = 0;
-        this.endAngle = 2 * Math.PI;
+        this.initialise(coordinates, radius);
     };
 
     CanvasShapes.Class.extend(Circle.prototype, CanvasShapes.Arc.prototype, {
 
         className: 'CanvasShapes.Circle',
+
+        initialise: function (coordinates, radius) {
+
+            this.initialiseShapeConstants();
+
+            this.mode = CanvasShapes.Arc.MODES.CIRCLE;
+
+            this.validateCoordinates(coordinates, true);
+            this.coordinates = [coordinates];
+
+            // I have translated the original coordinates array to the one supported
+            // by CanvasShapes.Arc, which means I need to adjust MAX_COORDINATES too
+            this.MAX_COORDINATES = 3;
+
+            this.radius = radius;
+            this.startAngle = 0;
+            this.endAngle = 2 * Math.PI;
+        },
 
         /**
          * Coordinates are being translated to the array of coordinates to fit

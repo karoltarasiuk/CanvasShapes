@@ -16,11 +16,18 @@ CanvasShapes.ShapeAbstract = (function () {
          * @implements {CanvasShapes.ShapeInterface}
          */
         setParent: function (group) {
-            if (
-                !_.isObject(group) || !_.isFunction(group.is) ||
-                !group.is(CanvasShapes.GroupInterface)
-            ) {
-                throw new CanvasShapes.Error(1046);
+
+            if (CanvasShapes.Class.isUUID(group)) {
+                this.parent = group;
+            } else {
+                if (
+                    !_.isObject(group) || !_.isFunction(group.is) ||
+                    !group.is(CanvasShapes.GroupInterface)
+                ) {
+                    throw new CanvasShapes.Error(1046);
+                } else {
+                    group = group.getUUID();
+                }
             }
 
             this.parent = group;
@@ -38,14 +45,16 @@ CanvasShapes.ShapeAbstract = (function () {
          */
         getRenderingShape: function () {
 
-            var parent = this.getParent();
+            var parent = this.getParent(),
+                group = CanvasShapes.Class.getObject(parent);
 
             if (!parent) {
-                return this;
+                return this.getUUID();
             }
 
-            while (parent.getParent()) {
-                parent = parent.getParent();
+            while (group.getParent()) {
+                parent = group.getParent();
+                group = CanvasShapes.Class.getObject(parent);
             }
 
             return parent;

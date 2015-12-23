@@ -11,7 +11,6 @@ CanvasShapes.Quadrilateral = (function () {
      * @param {array} coordinates
      */
     var Quadrilateral = function (coordinates) {
-        this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
         this.initialise(coordinates);

@@ -12,7 +12,6 @@ CanvasShapes.Polygon = (function () {
      * @param {array} coordinates
      */
     var Polygon = function (coordinates) {
-        this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
         this.initialise(coordinates);
@@ -24,7 +23,11 @@ CanvasShapes.Polygon = (function () {
 
         initialise: function (coordinates) {
 
-            this.validateCoordinatesArray(
+            this.initialiseShapeConstants();
+
+            coordinates = this.convertCoordinatesObjects(coordinates);
+
+            this.validateCoordinates(
                 coordinates,
                 true,
                 this.MIN_COORDINATES,

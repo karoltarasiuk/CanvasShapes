@@ -6,22 +6,7 @@ CanvasShapes.Shape = (function () {
         MAX_COORDINATES = undefined;
 
     var Shape = function (coordinates) {
-        this.setUUID();
-        this.MIN_COORDINATES = MIN_COORDINATES;
-        this.MAX_COORDINATES = MAX_COORDINATES;
-
-        if (coordinates) {
-            if (
-                _.isArray(coordinates) && (
-                    this.validateCoordinates(coordinates) ||
-                    this.validateCoordinatesArray(coordinates)
-                )
-            ) {
-                this.setCoordinates(coordinates);
-            } else {
-                throw new CanvasShapes.Error(1036);
-            }
-        }
+        this.initialise(coordinates);
     };
 
     CanvasShapes.Class.extend(
@@ -34,6 +19,26 @@ CanvasShapes.Shape = (function () {
         CanvasShapes.JSONInterface.prototype,
     {
         className: 'CanvasShapes.Shape',
+
+        initialise: function (coordinates) {
+
+            this.initialiseShapeConstants();
+
+            if (coordinates) {
+                if (
+                    _.isArray(coordinates) &&
+                    this.validateCoordinates(coordinates)
+                ) {
+                    this.setCoordinates(coordinates);
+                } else {
+                    throw new CanvasShapes.Error(1036);
+                }
+            }
+        },
+
+        initialiseShapeConstants: function () {
+            this.setUUID();
+        },
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
@@ -282,14 +287,7 @@ CanvasShapes.Shape = (function () {
                 );
 
             if (_.isArray(coordinates)) {
-                if (
-                    (_.isUndefined(this.MIN_COORDINATES) && _.isUndefined(this.MAX_COORDINATES)) ||
-                    (this.MIN_COORDINATES === 1 && this.MAX_COORDINATES === 1)
-                ) {
-                    this.validateCoordinates(coordinates, true);
-                } else {
-                    this.validateCoordinatesArray(coordinates, true, this.MIN_COORDINATES, this.MAX_COORDINATES);
-                }
+                this.validateCoordinates(coordinates, true, this.MIN_COORDINATES, this.MAX_COORDINATES);
             } else if (_.isFunction(coordinates)) {
                 // do absolutely nothing
             } else if (_.isObject(coordinates)) {
@@ -374,7 +372,8 @@ CanvasShapes.Shape = (function () {
          */
         toJSON: function (toString) {
 
-            var obj = {
+            var coordinates,
+                obj = {
                     metadata: {
                         className: this.className,
                         UUID: this.getUUID()
@@ -382,8 +381,9 @@ CanvasShapes.Shape = (function () {
                     data: {}
                 };
 
-            if (this.coordinates) {
-                obj.data.coordinates = this.coordinates;
+            coordinates = this.getCoordinates();
+            if (coordinates) {
+                obj.data.coordinates = coordinates;
             }
 
             if (toString === true) {
@@ -398,7 +398,7 @@ CanvasShapes.Shape = (function () {
          */
         fromJSON: function (obj) {
 
-            var shape;
+            var i, shape, classNameParts, tempObj, classObject;
 
             if (_.isString(obj)) {
                 obj = JSON.parse(obj);
@@ -413,12 +413,32 @@ CanvasShapes.Shape = (function () {
                 throw new CanvasShapes.Error(1060);
             }
 
-            shape = new CanvasShapes.Shape(obj.data.coordinates);
-            CanvasShapes.Class.removeObject(shape.getUUID());
-            shape.setUUID(obj.metadata.UUID);
-            CanvasShapes.Class.setObject(shape.getUUID(), shape);
+            if (obj.metadata.className === 'CanvasShapes.Shape') {
 
-            return shape;
+                shape = new CanvasShapes.Shape(obj.data.coordinates);
+                CanvasShapes.Class.swapUUID(shape.getUUID(), obj.metadata.UUID);
+
+                return shape;
+            }
+
+            classObject = CanvasShapes.Class.getClass(obj.metadata.className);
+
+            if (!classObject) {
+                throw new CanvasShapes.Error(1070);
+            }
+
+            if (
+                CanvasShapes.Shape.prototype.fromJSON ===
+                classObject.prototype.fromJSON
+            ) {
+                // I don't want to modify original object
+                tempObj = _.cloneDeep(obj);
+                tempObj.metadata.className = 'CanvasShapes.Shape';
+            } else {
+                tempObj = obj;
+            }
+
+            return classObject.prototype.fromJSON.call(null, tempObj);
         }
     });
 

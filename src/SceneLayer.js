@@ -49,6 +49,8 @@ CanvasShapes.SceneLayer = (function () {
          */
         initialise: function (scene, width, height, left, top, offScreen) {
 
+            var sceneWidth, sceneHeight;
+
             if (
                 !_.isObject(scene) || !_.isFunction(scene.is) ||
                 !scene.is(CanvasShapes.SceneInterface) ||
@@ -62,6 +64,8 @@ CanvasShapes.SceneLayer = (function () {
             }
 
             this.scene = scene;
+            sceneWidth = this.scene.getWidth();
+            sceneHeight = this.scene.getHeight();
 
             if (width) {
                 this.width = width;
@@ -77,16 +81,28 @@ CanvasShapes.SceneLayer = (function () {
 
             if (left) {
                 this.left = left;
+            } else {
+                if (sceneHeight !== this.height) {
+                    this.top = Math.floor((sceneHeight - this.height) / 2);
+                } else {
+                    this.top = 0;
+                }
             }
 
             if (top) {
                 this.top = top;
+            } else {
+                if (sceneWidth !== this.width) {
+                    this.left = Math.floor((sceneWidth - this.width) / 2);
+                } else {
+                    this.left = 0;
+                }
             }
-
-            this.offScreen = false;
 
             if (offScreen === true) {
                 this.offScreen = true;
+            } else {
+                this.offScreen = false;
             }
 
             this.initialiseCanvas();
@@ -100,32 +116,10 @@ CanvasShapes.SceneLayer = (function () {
 
         initialiseCanvas: function () {
 
-            var dom = this.scene.getDom(),
-                sceneWidth = this.scene.getWidth(),
-                sceneHeight = this.scene.getHeight();
+            var dom = this.scene.getDom();
 
             if (!dom) {
                 throw new CanvasShapes.Error(1007);
-            }
-
-            if (sceneWidth !== this.width) {
-                if (this.left === null) {
-                    this.left = Math.floor((sceneWidth - this.width) / 2);
-                }
-            } else {
-                if (this.left === null) {
-                    this.left = 0;
-                }
-            }
-
-            if (sceneHeight !== this.height) {
-                if (this.top === null) {
-                    this.top = Math.floor((sceneHeight - this.height) / 2);
-                }
-            } else {
-                if (this.top === null) {
-                    this.top = 0;
-                }
             }
 
             // creating actual canvas HTML element

@@ -15,6 +15,28 @@ CanvasShapes.CoordinatesInterface = (function () {
         className: 'CanvasShapes.CoordinatesInterface',
 
         /**
+         * Converts object references in `coordinates` to UUIDs.
+         *
+         * @param  {array} coordinates
+         * @return {array}
+         */
+        convertCoordinatesObjects: function (coordinates) {
+            throw new CanvasShapes.Error(9069);
+        },
+
+        /**
+         * Checks whether passed coordinates are single, or it's an array of
+         * coordinates. It returns `true` for the former, and `false` in any
+         * other case, including `coordinates` being invalid.
+         *
+         * @param  {array}   coordinates
+         * @return {boolean}
+         */
+        areCoordinatesSingle: function (coordinates) {
+            throw new CanvasShapes.Error(9070);
+        },
+
+        /**
          * Normalizes coordinates and returns shallow copy of any coordinates
          * array. If object is passed, the method will try to fetch its
          * coordinates and create a shallow copy too. Method will detect whether
@@ -40,7 +62,8 @@ CanvasShapes.CoordinatesInterface = (function () {
         },
 
         /**
-         * Returns coordinates of the centre of theshape.
+         * Returns coordinates of the centre of the shape. Unlike other
+         * coordinates related methods it return single coordinates array.
          *
          * @return {[array,CanvasShapes.CoordinatesInterface]}
          */
@@ -49,9 +72,10 @@ CanvasShapes.CoordinatesInterface = (function () {
         },
 
         /**
-         * Returns coordinates of the shape.
+         * Returns coordinates of the shape. It returns `undefined` iff there
+         * are no coordinates associated with this object.
          *
-         * @return {[array,CanvasShapes.CoordinatesInterface]}
+         * @return {[undefined,array,CanvasShapes.CoordinatesInterface]}
          */
         getCoordinates: function () {
             throw new CanvasShapes.Error(9007);
@@ -68,22 +92,6 @@ CanvasShapes.CoordinatesInterface = (function () {
          */
         setCoordinates: function (coordinates) {
             throw new CanvasShapes.Error(9049);
-        },
-
-        /**
-         * Validates whether coordinates object/array is valid. If
-         * `throwException` is `true`, it will throw exception when passed
-         * coordinates are not valid, instead of returning `false`.
-         *
-         * Example `coordinates` parameter value: [0, 0].
-         *
-         * @param {[array,CanvasShapes.CoordinatesInterface]} coordinates
-         * @param {boolean} throwException [OPTIONAL]
-         *
-         * @return {boolean}
-         */
-        validateCoordinates: function (coordinates, throwException) {
-            throw new CanvasShapes.Error(9013);
         },
 
         /**
@@ -106,9 +114,7 @@ CanvasShapes.CoordinatesInterface = (function () {
 
         /**
          * Translates coordinates by a given offset and multiplier, returning a new
-         * set of coordinates. It assumes that coordinates are passed as an array
-         * of coordinates. Passing single array of numbers will cause the function
-         * to throw an exception. Offset object is defined as follows:
+         * set of coordinates. Offset object is defined as follows:
          * ```
          * {
          *     x: {float},
@@ -144,7 +150,7 @@ CanvasShapes.CoordinatesInterface = (function () {
          *
          * @return {boolean}
          */
-        validateCoordinatesArray: function (
+        validateCoordinates: function (
             coordinates,
             throwException,
             minimumCoordinatesNumber,

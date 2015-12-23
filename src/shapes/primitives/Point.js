@@ -15,7 +15,6 @@ CanvasShapes.Point = (function () {
      * @param {float} size
      */
     var Point = function (coordinates, face, size) {
-        this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
         this.initialise(coordinates, face, size);
@@ -49,6 +48,8 @@ CanvasShapes.Point = (function () {
 
         initialise: function (coordinates, face, size) {
 
+            this.initialiseShapeConstants();
+
             this.validateCoordinates(coordinates, true);
             this.coordinates = coordinates;
 
@@ -56,11 +57,9 @@ CanvasShapes.Point = (function () {
                 face = Point.DEFAULTS.FACE;
             }
 
-            if (!face) {
-                return;
+            if (face) {
+                this.setFace(face, size);
             }
-
-            this.setFace(face, size);
         },
 
         /**
@@ -74,7 +73,7 @@ CanvasShapes.Point = (function () {
             );
 
             if (this.face) {
-                this.face.setSceneInterfaceHandlers(sceneInterfaceHandlers);
+                this.getFace().setSceneInterfaceHandlers(sceneInterfaceHandlers);
             }
         },
 
@@ -82,8 +81,11 @@ CanvasShapes.Point = (function () {
          * @implements {CanvasShapes.RenderingInterface}
          */
         render: function (layer) {
+
+            var face;
+
             if (this.face) {
-                this.face.render(layer);
+                this.getFace().render(layer);
             }
         },
 
@@ -99,7 +101,7 @@ CanvasShapes.Point = (function () {
          */
         setFace: function (face, size) {
 
-            if (_.isUndefined(size)) {
+            if (size === undefined) {
                 size = Point.DEFAULTS.SIZE;
             }
 
@@ -107,23 +109,34 @@ CanvasShapes.Point = (function () {
                 if (_.contains(Point.FACES, face)) {
                     switch (face) {
                         case Point.FACES.CIRCLE:
-                            this.face = new CanvasShapes.Circle(this, size);
-                            this.face.setStyle(new CanvasShapes.Style(function (context) {
+                            face = new CanvasShapes.Circle(this.getUUID(), size);
+                            face.setStyle(new CanvasShapes.Style(function (context) {
                                 context.fill();
                             }));
+                            this.face = face.getUUID();
                             break;
                     }
                 } else {
-                    throw new CanvasShapes.Error(1008);
+                    // string with UUID was passed
+                    this.face = face;
                 }
             } else if (
                 _.isObject(face) && _.isFunction(face.is) &&
                 face.is(CanvasShapes.RenderingInterface)
             ) {
-                this.face = face;
+                this.face = face.getUUID();
             } else {
                 throw new CanvasShapes.Error(1026);
             }
+        },
+
+        /**
+         * Getter for `face` of the point
+         *
+         * @return {[null,CanvasShapes.RenderingInterface]}
+         */
+        getFace: function () {
+            return CanvasShapes.Class.getObject(this.face);
         },
 
         /**
@@ -132,7 +145,7 @@ CanvasShapes.Point = (function () {
          */
         getStyle: function () {
             if (this.face) {
-                return this.face.getStyle();
+                return this.getFace().getStyle();
             }
             return null;
         },
@@ -142,8 +155,11 @@ CanvasShapes.Point = (function () {
          * @overrides {CanvasShapes.RenderingAbstract}
          */
         setStyle: function (style, deep) {
-            if (this.face) {
-                this.face.setStyle(style, deep);
+
+            var face = this.getFace();
+
+            if (face) {
+                face.setStyle(style, deep);
             }
         },
 
@@ -153,8 +169,64 @@ CanvasShapes.Point = (function () {
         setCoordinates: function (coordinates) {
             this.coordinates = coordinates;
             if (this.face) {
-                this.face.setCoordinates([coordinates]);
+                this.getFace().setCoordinates([coordinates]);
             }
+        },
+
+        /**
+         * @implements {CanvasShapes.JSONInterface}
+         */
+        toJSON: function (toString) {
+
+            var obj = {
+                    metadata: {
+                        className: this.className,
+                        UUID: this.getUUID()
+                    },
+                    data: {
+                        coordinates: this.getCoordinates()
+                    }
+                };
+
+            if (this.face) {
+                obj.data.face = this.face;
+            }
+
+            if (toString === true) {
+                obj = JSON.stringify(obj);
+            }
+
+            return obj;
+        },
+
+        /**
+         * @implements {CanvasShapes.JSONInterface}
+         */
+        fromJSON: function (obj) {
+
+            var point, face;
+
+            if (_.isString(obj)) {
+                obj = JSON.parse(obj);
+            }
+
+            if (
+                !_.isObject(obj.metadata) || !_.isObject(obj.data) ||
+                !_.isString(obj.metadata.className) ||
+                !_.isString(obj.metadata.UUID) ||
+                (obj.data.coordinates && !_.isArray(obj.data.coordinates))
+            ) {
+                throw new CanvasShapes.Error(1063);
+            }
+
+            point = new CanvasShapes.Point(obj.data.coordinates, face);
+            CanvasShapes.Class.swapUUID(point.getUUID(), obj.metadata.UUID);
+
+            if (obj.data.face) {
+                point.setFace(obj.data.face);
+            }
+
+            return point;
         }
     });
 

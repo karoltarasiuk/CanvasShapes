@@ -9,7 +9,7 @@ define([
     ObjectComparer
 ) {
 
-    describe('CanvasShapes.Shape', function () {
+    describe('CanvasShapes.Coordinates', function () {
 
         describe('instantiating', function () {
 
@@ -52,8 +52,8 @@ define([
                 var coordinates1 = [10, 10],
                     coordinates2 = [[10, 10], [20, 20]],
                     coordinates3 = [
-                        new CanvasShapes.Shape([10, 10]),
-                        new CanvasShapes.Point([20, 20])
+                        (new CanvasShapes.Shape([10, 10])).getUUID(),
+                        (new CanvasShapes.Point([20, 20])).getUUID()
                     ],
                     scene = new CanvasShapes.Scene({
                         element: document.createElement('div'),
@@ -99,8 +99,8 @@ define([
                     shape.validateCoordinates(coordinates1, true);
                 }).not.toThrow();
 
-                expect(shape.validateCoordinates(shape)).toBe(true);
-                expect(function () { shape.validateCoordinates(shape, true); })
+                expect(shape.validateCoordinates(shape.getUUID())).toBe(true);
+                expect(function () { shape.validateCoordinates(shape.getUUID(), true); })
                     .not.toThrow();
 
                 for (i = 0; i < wrongCoordinates.length; i++) {
@@ -217,7 +217,7 @@ define([
 
                 expect(function () {
                     shape.translateCoordinates([1, 2, 3]);
-                }).toThrow(error3);
+                }).toThrow(error2);
 
                 expect(function () {
                     shape.translateCoordinates([[1, 1, 1]], []);
@@ -252,6 +252,10 @@ define([
                 }).toThrow(error);
 
                 expect(function () {
+                    shape.translateCoordinates([1, 1, 1], {});
+                }).not.toThrow();
+
+                expect(function () {
                     shape.translateCoordinates([[1, 1, 1]], {});
                 }).not.toThrow();
 
@@ -275,8 +279,8 @@ define([
                 var i,
                     coordinates1 = [[10, 10], [20, 20]],
                     coordinates2 = [
-                        new CanvasShapes.Shape([10, 10]),
-                        new CanvasShapes.Point([20, 20])
+                        (new CanvasShapes.Shape([10, 10])).getUUID(),
+                        (new CanvasShapes.Point([20, 20])).getUUID()
                     ],
                     wrongCoordinates = [
                         [10],
@@ -289,64 +293,64 @@ define([
                     shape = new CanvasShapes.Shape(),
                     error = new CanvasShapes.Error(1011);
 
-                expect(shape.validateCoordinatesArray(coordinates1)).toBe(true);
+                expect(shape.validateCoordinates(coordinates1)).toBe(true);
                 expect(function () {
-                    shape.validateCoordinatesArray(coordinates1, true);
+                    shape.validateCoordinates(coordinates1, true);
                 }).not.toThrow();
 
-                expect(shape.validateCoordinatesArray(coordinates2)).toBe(true);
+                expect(shape.validateCoordinates(coordinates2)).toBe(true);
                 expect(function () {
-                    shape.validateCoordinatesArray(coordinates2, true);
+                    shape.validateCoordinates(coordinates2, true);
                 }).not.toThrow();
 
                 expect(
-                    shape.validateCoordinatesArray(coordinates1, false, 2, 2)
+                    shape.validateCoordinates(coordinates1, false, 2, 2)
                 ).toBe(true);
                 expect(function () {
-                    shape.validateCoordinatesArray(coordinates1, true, 2, 2);
+                    shape.validateCoordinates(coordinates1, true, 2, 2);
                 }).not.toThrow();
 
                 expect(
-                    shape.validateCoordinatesArray(coordinates2, false, 2, 2)
+                    shape.validateCoordinates(coordinates2, false, 2, 2)
                 ).toBe(true);
                 expect(function () {
-                    shape.validateCoordinatesArray(coordinates2, true, 2, 2);
+                    shape.validateCoordinates(coordinates2, true, 2, 2);
                 }).not.toThrow();
 
                 expect(
-                    shape.validateCoordinatesArray(coordinates1, false, 1, 1)
+                    shape.validateCoordinates(coordinates1, false, 1, 1)
                 ).toBe(false);
                 expect(function () {
-                    shape.validateCoordinatesArray(coordinates1, true, 1, 1);
+                    shape.validateCoordinates(coordinates1, true, 1, 1);
                 }).toThrow(error);
 
                 expect(
-                    shape.validateCoordinatesArray(coordinates2, false, 1, 1)
+                    shape.validateCoordinates(coordinates2, false, 1, 1)
                 ).toBe(false);
                 expect(function () {
-                    shape.validateCoordinatesArray(coordinates2, true, 1, 1);
+                    shape.validateCoordinates(coordinates2, true, 1, 1);
                 }).toThrow(error);
 
                 expect(
-                    shape.validateCoordinatesArray(coordinates1, false, 3, 3)
+                    shape.validateCoordinates(coordinates1, false, 3, 3)
                 ).toBe(false);
                 expect(function () {
-                    shape.validateCoordinatesArray(coordinates1, true, 3, 3);
+                    shape.validateCoordinates(coordinates1, true, 3, 3);
                 }).toThrow(error);
 
                 expect(
-                    shape.validateCoordinatesArray(coordinates2, false, 3, 3)
+                    shape.validateCoordinates(coordinates2, false, 3, 3)
                 ).toBe(false);
                 expect(function () {
-                    shape.validateCoordinatesArray(coordinates2, true, 3, 3);
+                    shape.validateCoordinates(coordinates2, true, 3, 3);
                 }).toThrow(error);
 
                 for (i = 0; i < wrongCoordinates.length; i++) {
                     expect(
-                        shape.validateCoordinatesArray(wrongCoordinates[i])
+                        shape.validateCoordinates(wrongCoordinates[i])
                     ).toBe(false);
                     expect(function () {
-                        shape.validateCoordinatesArray(
+                        shape.validateCoordinates(
                             wrongCoordinates[i],
                             true
                         );

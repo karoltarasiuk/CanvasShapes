@@ -107,22 +107,57 @@ CanvasShapes.Class = (function () {
      * object with given UUID it will be replaced with a new one, and returned.
      * If there was no object function will return `null`.
      *
+     * If `object` already exists and `UUID` is different, it will be replaced
+     * with a passed one. If `UUID` is the same, nothing will happen. In both
+     * those cases function will return `null` anyway.
+     *
      * @param {string} UUID
-     * @param {object} object
+     * @param {object} obj
      *
      * @return {[null,object]}
      */
-    Class.setObject = function (UUID, object) {
+    Class.setObject = function (UUID, obj) {
 
-        var obj = null;
+        var i,
+            old = null;
 
         if (OBJECTS[UUID]) {
-            obj = OBJECTS[UUID];
+            old = OBJECTS[UUID];
+        } else {
+            for (i in OBJECTS) {
+                if (OBJECTS[i] === obj && i !== UUID) {
+                    delete OBJECTS[i];
+                    break;
+                }
+            }
         }
 
-        OBJECTS[UUID] = object;
+        OBJECTS[UUID] = obj;
 
-        return obj;
+        return old;
+    };
+
+    /**
+     * Swaps the UUID for a passed object. Returns `true` if successful. If
+     * object under the `oldUUID` didn't exist it returns `false`.
+     *
+     * @param  {string} oldUUID
+     * @param  {string} newUUID
+     *
+     * @return {boolean}
+     */
+    Class.swapUUID = function (oldUUID, newUUID) {
+
+        var obj;
+
+        if (OBJECTS[oldUUID]) {
+            obj = OBJECTS[oldUUID];
+            delete OBJECTS[oldUUID];
+            OBJECTS[newUUID] = obj;
+            obj.setUUID(newUUID);
+        }
+
+        return !!obj;
     };
 
     /**
@@ -163,6 +198,84 @@ CanvasShapes.Class = (function () {
      */
     Class.getObjects = function () {
         return OBJECTS;
+    };
+
+    /**
+     * Gets class object from comma separated object notation string. It looks
+     * for it only within CanvasShapes namespace, so if your object is not
+     * there, `null` will be returned.
+     *
+     * @param  {string} className
+     * @return {null,object}
+     */
+    Class.getClass = function (className) {
+
+        var i, classNameParts,
+            classObject = CanvasShapes;
+
+        if (!_.isString(className)) {
+            return null;
+        }
+
+        classNameParts = className.split('.');
+
+        if (
+            classNameParts.length < 2 ||
+            classNameParts[0] !== 'CanvasShapes'
+        ) {
+            return null;
+        }
+
+        for (i = 1; i < classNameParts.length; i++) {
+            if (!_.isObject(classObject[classNameParts[i]])) {
+                return null;
+            }
+            classObject = classObject[classNameParts[i]];
+        }
+
+        return classObject;
+    };
+
+    /**
+     * Checks whether passed string is a UUID
+     *
+     * @param  {string}  UUID
+     * @return {boolean}
+     */
+    Class.isUUID = function (UUID) {
+        return CanvasShapes.Tools.isuuid(UUID);
+    };
+
+    /**
+     * Creates an object from provided JSON. It will create it based on
+     * `metadata.className` attribute. It will throw an exception if something
+     * wrong will happen.
+     *
+     * @param  {[object,string]} obj
+     * @return {object}
+     */
+    Class.fromJSON = function (obj) {
+
+        var classObject;
+
+        if (
+            !_.isObject(obj.metadata) || !_.isObject(obj.data) ||
+            !_.isString(obj.metadata.className) ||
+            !_.isString(obj.metadata.UUID)
+        ) {
+            throw new CanvasShapes.Error(1064);
+        }
+
+        classObject = Class.getClass(obj.metadata.className);
+
+        if (
+            !_.isObject(classObject) ||
+            !_.isFunction(classObject.prototype.fromJSON)
+        ) {
+            throw new CanvasShapes.Error(1066);
+        }
+
+        return classObject.prototype.fromJSON.call(null, obj);
     };
 
     return Class;

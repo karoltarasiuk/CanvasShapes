@@ -104,7 +104,7 @@ CanvasShapes.SceneInterface = (function () {
          * It's very useful when within one scene you want to have a different
          * configuration of layers than in a second scene of the same renderer.
          *
-         * You need to be careful, as the shape can be a child of a group, and
+         * [WARNING] You need to be careful, as the shape can be a child of a group, and
          * adding it as a standalone shape to the scene will cause it to render
          * twice, and in some cases can cause infinite loop which will raise an
          * error eventually (after stack exceeds).
@@ -129,8 +129,8 @@ CanvasShapes.SceneInterface = (function () {
          * type checking. It assuems all the passed arguments are of the correct
          * type. It does though check whether shape is associated with a layer.
          *
-         * @param {CanvasShapes.Shape}               shape
-         * @param {CanvasShapes.AnimationFrame}      animationFrame [OPTIONAL]
+         * @param {CanvasShapes.Shape}                   shape
+         * @param {CanvasShapes.AnimationFrameInterface} animationFrame [OPTIONAL]
          */
         requestRendering: function (shape, animationFrame) {
             throw new CanvasShapes.Error(9048);

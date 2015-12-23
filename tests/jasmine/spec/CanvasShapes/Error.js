@@ -23,10 +23,6 @@ define([
             expect(error.getMessageByCode(8013)).toBe(
                 "CanvasShapes.ClassInterface - can't instantiate interface"
             );
-            expect(error.getMessageByCode(9013)).toBe(
-                'CanvasShapes.CoordinatesInterface - `validateCoordinates()` ' +
-                'is not implemented'
-            );
         });
 
         it('converting to string', function () {

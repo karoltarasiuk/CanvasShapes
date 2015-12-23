@@ -31,6 +31,11 @@ CanvasShapes.JSONInterface = (function () {
          * }
          * ```
          *
+         * If an object depends on other serializable objects (point's face or
+         * shape's style) it shouldn't be serialized separately. All this should
+         * be managed by scene's `toJSON` method, which will resolve all those
+         * dependencies without creating extra and redundant data.
+         *
          * @param  {boolean} toString [OPTIONAL]
          * @return {string}
          */
@@ -46,6 +51,11 @@ CanvasShapes.JSONInterface = (function () {
          * `this` argument is `null`, so there is no context you can rely on. It
          * should also support backwards compatibility in case when breaking
          * changes to the structure will be introduced.
+         *
+         * If an object depends on other serializable objects (point's face or
+         * shape's style) it shouldn't be serialized separately. All this should
+         * be managed by scene's `fromJSON` method, which will resolve all those
+         * dependencies without creating extra and redundant data.
          *
          * @param  {[object,string]} JSON
          * @return {object}

@@ -150,8 +150,6 @@ CanvasShapes.SceneAbstract = (function () {
 
             if (shape) {
                 this.addShape(shape, layer);
-            } else {
-                this.initialiseLayers();
             }
 
             return layer;
@@ -165,7 +163,7 @@ CanvasShapes.SceneAbstract = (function () {
             var layer;
 
             if (!_.isObject(this.layers)) {
-                this.layers = {};
+                this.layers = [];
                 layer = new CanvasShapes.SceneLayer(
                     this,
                     undefined,
@@ -174,10 +172,10 @@ CanvasShapes.SceneAbstract = (function () {
                     undefined,
                     this.shouldRenderOffScreen()
                 );
-                this.layers[layer.getUUID()] = {
-                    layer: layer,
-                    shapes: {}
-                };
+                this.layers.push({
+                    layer: layer.getUUID(),
+                    shapes: []
+                });
             }
         },
 
@@ -188,55 +186,76 @@ CanvasShapes.SceneAbstract = (function () {
 
             var i, layerObject;
 
-            this.initialiseLayers();
-
-            if (layer && !layer.is(CanvasShapes.SceneLayerInterface)) {
+            // checking whether passed layer is OK
+            if (
+                layer && !CanvasShapes.Class.isUUID(layer) &&
+                (!_.isObject(layer) || _.isFunction(layer.is) ||
+                !layer.is(CanvasShapes.SceneLayerInterface))
+            ) {
                 throw new CanvasShapes.Error(1022);
             }
 
-            if (shape && shape.is && shape.is(CanvasShapes.ShapeInterface)) {
-                // retrieving current layer object for this shape
-                layerObject = this.getLayerObject(shape);
-                if (layerObject) {
-                    if (layer) {
-                        if (layer !== layerObject.layer) {
-                            // removing shape from this layer object
-                            delete layerObject.shapes[shape.getUUID()];
-                            // we need to add shape to a new layer object
-                            if (!this.layers[layer.getUUID()]) {
-                                this.layers[layer.getUUID()] = {
-                                    layer: layer,
-                                    shapes: {}
-                                };
-                            }
+            if (_.isObject(layer)) {
+                layer = layer.getUUID();
+            }
 
-                            this.layers[layer.getUUID()]
-                                .shapes[shape.getUUID()] = shape;
-                        }
-                    } else {
-                        // we leave the shape as it is
-                        layer = layerObject.layer;
-                    }
-                } else {
-                    // shape wasn't added yet
-                    if (!layer) {
-                        layer = this.getLayer();
-                    }
-
-                    if (!this.layers[layer.getUUID()]) {
-                        this.layers[layer.getUUID()] = {
-                            layer: layer,
-                            shapes: {}
-                        };
-                    }
-
-                    this.layers[layer.getUUID()]
-                        .shapes[shape.getUUID()] = shape;
-                }
-            } else {
+            // checking whether passed shape is OK
+            if (
+                CanvasShapes.Class.isUUID(shape) &&
+                (_.isObject(shape) || _.isFunction(shape.is) ||
+                shape.is(CanvasShapes.ShapeInterface))
+            ) {
                 throw new CanvasShapes.Error(1020);
             }
 
+            if (_.isObject(shape)) {
+                shape = shape.getUUID();
+            }
+
+            // retrieving current layer object for this shape
+            layerObject = this.getLayerObject(shape);
+
+            if (layerObject) {
+
+                if (!layer) {
+                    // layer was not passed, so all stay as it was
+                    layer = layerObject.layer;
+
+                } else if (layer !== layerObject.layer) {
+
+                    // removing shape from this layer object
+                    for (i = 0; i < layerObject.shapes.length; i++) {
+                        if (layerObject.shapes[i] === shape) {
+                            CanvasShapes.Tools.removeByIndex(
+                                layerObject.shapes, i
+                            );
+                            break;
+                        }
+                    }
+
+                    // fetching layer object by new layer and adding the shape
+                    layerObject = this.getLayerObjectByLayer(layer, true);
+                    layerObject.shapes.push(shape);
+                }
+            } else {
+                // shape wasn't added yet, fetching correct layer
+                if (!layer) {
+                    layerObject = this.getLayerObject();
+                } else {
+                    layerObject = this.getLayerObjectByLayer(layer);
+                }
+
+                layerObject.shapes.push(shape);
+            }
+
+            // this is TRICKY!!!
+            // this is TRICKY!!!
+            // this is TRICKY!!!
+            // this is TRICKY!!!
+            // this is TRICKY!!!
+            // this is TRICKY!!!
+            // this is TRICKY!!!
+            // this is TRICKY!!!
             shape.setSceneInterfaceHandlers(this.getSceneInterfaceHandlers());
             this.requestRendering(shape);
 
@@ -248,107 +267,82 @@ CanvasShapes.SceneAbstract = (function () {
          */
         requestRendering: function (shape, animationFrame) {
 
-            var i, j, layer, layerObject, requestedLayer, found, originalShape,
-                uuid;
+            var i, j, layer, layerObject, requestedLayerObject, temp;
 
-            if (!_.isObject(this.requestedRendering)) {
-                this.requestedRendering = {};
+            if (!_.isArray(this.requestedRendering)) {
+                this.requestedRendering = [];
             }
 
-            // shape may be a part of a group
-            originalShape = shape = shape.getRenderingShape();
+            layerObject = this.getLayerObject(shape);
 
-            // looking for layer
-            for (i in this.layers) {
-                layerObject = this.layers[i];
-                for (j in layerObject.shapes) {
-                    if (shape === layerObject.shapes[j]) {
-                        layer = layerObject.layer;
-                        found = true;
-                        break;
-                    }
-                }
-                if (found) {
-                    break;
-                }
-            }
-
-            if (!layer) {
-                // shape is not associated with any layer...
+            if (!layerObject) {
+                // shape is not associated with any layer
                 throw new CanvasShapes.Error(1044);
             }
 
+            layer = layerObject.layer;
+
+            if (
+                animationFrame && (!_.isObject(animationFrame) ||
+                !_.isFunction(animationFrame.is) ||
+                !animationFrame.is(CanvasShapes.AnimationFrameInterface))
+            ) {
+                throw new CanvasShapes.Error(1073);
+            }
+
             // checking if shape changed the layer
-            for (i in this.requestedRendering) {
-                for (j in this.requestedRendering[i].shapes) {
+            for (i = 0; i < this.requestedRendering.length; i++) {
+                for (j = 0; j < this.requestedRendering[i].shapes.length; j++) {
                     // found a shape
-                    if (j === shape.getUUID()) {
+                    if (this.requestedRendering[i].shapes[j].shape === shape) {
                         // checking if layers are the same
-                        if (i === layer.getUUID()) {
-                            // adding new animation frame
-                            this.requestedRendering[i].shapes[j]
-                                .animationFrames[animationFrame.getType()] =
-                                    animationFrame;
+                        if (this.requestedRendering[i].layer === layer) {
+                            // adding new animation frame if it was passed
+                            if (animationFrame) {
+                                this.requestedRendering[i].shapes[j]
+                                    .animationFrames[animationFrame.getType()] =
+                                        animationFrame;
+                            }
                             return;
                         } else {
                             // we remove the shape as layer has changed, and
                             // shape must be added to a new one
-                            delete this.requestedRendering[i].shapes[j];
+                            CanvasShapes.Tools.removeByIndex(
+                                this.requestedRendering[i].shapes, j
+                            );
                         }
                     }
                 }
             }
 
-            // in case of this is a new shape, we fetch the layer object
-            // or create a new one
-            if (!this.requestedRendering[layer.getUUID()]) {
-
-                this.requestedRendering[layer.getUUID()] = {
-                    layer: layer,
-                    shapes: {}
-                };
-                requestedLayer = this.requestedRendering[layer.getUUID()];
-
-                // we should add all the shapes as this layer will be cleared
-                for (j in layerObject.shapes) {
-                    shape = layerObject.shapes[j];
-                    uuid = shape.getUUID();
-
-                    if (!requestedLayer.shapes[uuid]) {
-                        // this shape was not added previously
-                        requestedLayer.shapes[uuid] = {
-                            animationFrames: {}
-                        };
-                    }
-
-                    requestedLayer.shapes[uuid].shape = shape;
-
-                    if (originalShape === shape && animationFrame) {
-                        requestedLayer.shapes[uuid]
-                            .animationFrames[animationFrame.getType()] =
-                                animationFrame;
-                    }
-                }
-
-            } else {
-                requestedLayer = this.requestedRendering[layer.getUUID()];
-                uuid = shape.getUUID();
-
-                if (!requestedLayer.shapes[uuid]) {
-                    // this shape was not added previously
-                    requestedLayer.shapes[uuid] = {
-                        animationFrames: {}
-                    };
-                }
-
-                requestedLayer.shapes[uuid].shape = shape;
-
-                if (animationFrame) {
-                    requestedLayer.shapes[uuid]
-                        .animationFrames[animationFrame.getType()] =
-                            animationFrame;
+            // in case of this is a new shape, or shaped changed its layer, we
+            // need to fetch the requested rendering object ...
+            for (i = 0; i < this.requestedRendering.length; i++) {
+                if (this.requestedRendering[i].layer === layer) {
+                    requestedLayerObject = this.requestedRendering[i];
                 }
             }
+
+            // ... or create a new one, if it's not there yet
+            if (!requestedLayerObject) {
+                requestedLayerObject = {
+                    layer: layer,
+                    shapes: []
+                };
+                this.requestedRendering.push(requestedLayerObject);
+            }
+
+            // and finally we add a shape to the structure
+            temp = {
+                shape: shape,
+                animationFrames: {}
+            };
+
+            if (animationFrame) {
+                temp.animationFrames[animationFrame.getType()] = animationFrame;
+            }
+
+            requestedLayerObject.shapes.push(temp);
         },
 
         /**
@@ -371,52 +365,100 @@ CanvasShapes.SceneAbstract = (function () {
          * getLayer called without any arguments should ALWAYS return a
          * layerObject.
          *
-         * @param {[CanvasShapes.ShapeInterface]} shape [OPTIONAL]
-         * @return {[null,object]} format:
+         * Format of returned object:
+         * ```
          * {
-         *     layer: CanvasShapes.SceneLayerInterface
-         *     shapes: {
-         *         UUID: CanvasShapes.ShapeInterface
-         *     }
+         *     layer: UUID
+         *     shapes: [
+         *         UUID,
+         *         UUID,
+         *         ...
+         *     ]
          * }
+         * ```
+         *
+         * @param {[CanvasShapes.ShapeInterface]} shape [OPTIONAL]
+         * @return {[null,object]}
          */
         getLayerObject: function (shape) {
 
-            var i, j, count, tempCount, layerObject;
-
-            this.initialiseLayers();
+            var i, j, count, tempCount,
+                layerObject = null;
 
             // looking for layer with the least number of shapes
             if (shape === undefined) {
 
-                tempCount = -1;
-
-                for (i in this.layers) {
-                    count = 0;
-                    for (j in this.layers[i].shapes) {
-                        count++;
-                    }
-                    if (count > tempCount) {
+                for (i = 0; i < this.layers.length; i++) {
+                    count = this.layers[i].shapes.length;
+                    if (tempCount === undefined || count < tempCount) {
+                        tempCount = count;
                         layerObject = this.layers[i];
                     }
                 }
 
             // finding by shape
             } else if (
-                _.isObject(shape) && shape.is &&
-                shape.is(CanvasShapes.ShapeInterface)
+                CanvasShapes.Class.isUUID(shape) ||
+                (_.isObject(shape) && shape.is &&
+                shape.is(CanvasShapes.ShapeInterface))
             ) {
+                if (_.isObject(shape)) {
+                    shape = shape.getUUID();
+                }
+
                 for (i in this.layers) {
-                    if (this.layers[i].shapes[shape.getUUID()]) {
+                    if (
+                        _.indexOf(this.layers[i].shapes, shape) !== -1
+                    ) {
                         layerObject = this.layers[i];
                     }
                 }
+
             } else {
                 throw new CanvasShapes.Error(1021);
             }
 
-            if (layerObject) {
-                return layerObject;
+            return layerObject;
+        },
+
+        /**
+         * Allows you to retrieve a layer object specific to the passed layer.
+         * If `add` is passed as `true` it will create a new layer object for
+         * this layer associating it with this scene.
+         *
+         * @param  {[string,CanvasShapes.SceneLayerInterface]} layer
+         * @param  {boolean}                                   add
+         *
+         * @return {object}
+         */
+        getLayerObjectByLayer: function (layer, add) {
+
+            var i;
+
+            // checking whether passed layer is OK
+            if (
+                layer && !CanvasShapes.Class.isUUID(layer) &&
+                (!_.isObject(layer) || _.isFunction(layer.is) ||
+                !layer.is(CanvasShapes.SceneLayerInterface))
+            ) {
+                throw new CanvasShapes.Error(1072);
+            }
+
+            if (_.isObject(layer)) {
+                layer = layer.getUUID();
+            }
+
+            for (i = 0; i < this.layers.length; i++) {
+                if (this.layers[i].layer === layer) {
+                    return this.layers[i];
+                }
+            }
+
+            if (add === true) {
+                this.layers.push({
+                    layer: layer,
+                    shapes: []
+                });
             }
 
             return null;

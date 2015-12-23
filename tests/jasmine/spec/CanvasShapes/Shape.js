@@ -111,8 +111,8 @@ define([
                     group.addShapes([shape2]);
                 }).not.toThrow();
 
-                expect(shape1.getParent()).toBe(group);
-                expect(shape2.getParent()).toBe(group);
+                expect(shape1.getParent()).toBe(group.getUUID());
+                expect(shape2.getParent()).toBe(group.getUUID());
             });
 
             it('gets rendering parent correctly', function () {
@@ -121,14 +121,14 @@ define([
                     shape2 = new CanvasShapes.Shape(),
                     group = new CanvasShapes.Group();
 
-                expect(shape1.getRenderingShape()).toBe(shape1);
-                expect(shape2.getRenderingShape()).toBe(shape2);
+                expect(shape1.getRenderingShape()).toBe(shape1.getUUID());
+                expect(shape2.getRenderingShape()).toBe(shape2.getUUID());
 
                 shape1.setParent(group);
                 group.addShapes([shape2]);
 
-                expect(shape1.getRenderingShape()).toBe(group);
-                expect(shape2.getRenderingShape()).toBe(group);
+                expect(shape1.getRenderingShape()).toBe(group.getUUID());
+                expect(shape2.getRenderingShape()).toBe(group.getUUID());
             });
         });
 

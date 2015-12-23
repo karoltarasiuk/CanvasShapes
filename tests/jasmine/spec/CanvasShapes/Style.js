@@ -9,7 +9,7 @@ define([
     ObjectComparer
 ) {
 
-    describe('CanvasShapes.Shape', function () {
+    describe('CanvasShapes.Style', function () {
 
         describe('instantiating', function () {
 

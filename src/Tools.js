@@ -200,6 +200,11 @@ CanvasShapes.Tools = (function () {
         }
     }
 
+    function isuuid(uuid) {
+        var regexp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        return _.isString(uuid) && !!regexp.exec(uuid);
+    }
+
     /**
      * Color pre-defined strings, and their hex values.
      *
@@ -360,6 +365,7 @@ CanvasShapes.Tools = (function () {
         isNode: isNode,
         isElement: isElement,
         uuid: uuid,
+        isuuid: isuuid,
         hexToRGB: hexToRGB,
         arrayToHex: arrayToHex,
         objectToHex: objectToHex,

@@ -44,6 +44,7 @@ CanvasShapes.Scene = (function () {
         Scene.prototype,
         CanvasShapes.SceneAbstract.prototype,
         CanvasShapes.InteractionAbstract.prototype,
+        CanvasShapes.JSONInterface.prototype,
     {
 
         className: 'CanvasShapes.Scene',
@@ -86,6 +87,8 @@ CanvasShapes.Scene = (function () {
             } else {
                 this._shouldRenderOffScreen = false;
             }
+
+            this.initialiseLayers();
         },
 
         validateConfig: function (config) {
@@ -101,63 +104,80 @@ CanvasShapes.Scene = (function () {
             var i, j, k, layerObject, layer, shapeObject,
                 callbacks = [];
 
-            this.initialiseLayers();
-
             if (shape) {
-                for (i in this.layers) {
+                // getting rendering shape UUID
+                if (_.isObject(shape)) {
+                    shape = shape.getRenderingShape();
+                } else {
+                    shape = CanvasShapes.Class.getObject(shape)
+                        .getRenderingShape();
+                }
+
+                for (i = 0; i < this.layers.length; i++) {
                     layerObject = this.layers[i];
-                    for (j in layerObject.shapes) {
+                    for (j = 0; j < layerObject.shapes.length; j++) {
                         if (shape === layerObject.shapes[j]) {
+                            // we clear whole layer and re-render it
                             layerObject.layer.clear();
                             for (j in layerObject.shapes) {
-                                layerObject.shapes[j].render(layerObject.layer);
+                                shape = CanvasShapes.Class.getObject(
+                                    layerObject.shapes[j]
+                                );
+                                shape.render(layerObject.layer);
                             }
                             return;
                         }
                     }
                 }
-            } else if (_.isObject(this.requestedRendering)) {
 
-                for (i in this.requestedRendering) {
+                return;
+            }
 
-                    layerObject = this.requestedRendering[i];
-                    layer = layerObject.layer;
-                    layer.clear();
+            if (_.isEmpty(this.requestedRendering)) {
+                return;
+            }
 
-                    for (j in layerObject.shapes) {
+            for (i = 0; i < this.requestedRendering.length; i++) {
 
-                        shapeObject = this.requestedRendering[i].shapes[j];
-                        shape = shapeObject.shape;
-                        shape.render(layer);
+                layerObject = this.requestedRendering[i];
+                layer = CanvasShapes.Class.getObject(layerObject.layer);
+                layer.clear();
 
-                        // callbacks get executed after clearing all
-                        // the shapes from `this.requestedRendering`
-                        callbacks.push(shapeObject.animationFrames);
-                    }
+                // re-rendering all the shapes on associated layer
+                for (j = 0; j < layerObject.shapes.length; j++) {
+
+                    shapeObject = this.requestedRendering[i].shapes[j];
+                    shape = CanvasShapes.Class.getObject(shapeObject.shape)
+                        .getRenderingShape();
+                    shape.render(layer);
+
+                    // callbacks get executed after clearing all
+                    // the shapes from `this.requestedRendering`
+                    callbacks.push(shapeObject.animationFrames);
                 }
+            }
 
-                // all shapes were rendered so we can clear this list
-                this.requestedRendering = {};
+            // all shapes were rendered so we can clear this list
+            this.requestedRendering = {};
 
-                // if shapes were rendered off screen we need to copy them to
-                // the main canvas
-                if (this.shouldRenderOffScreen()) {
-                    this.mainLayer.clear();
-                    for (i in this.layers) {
-                        this.mainLayerContext
-                            .drawImage(this.layers[i].layer.getCanvas(), 0, 0);
-                    }
+            // if shapes were rendered off screen we need to copy them to
+            // the main canvas
+            if (this.shouldRenderOffScreen()) {
+                this.mainLayer.clear();
+                for (i in this.layers) {
+                    this.mainLayerContext
+                        .drawImage(this.layers[i].layer.getCanvas(), 0, 0);
                 }
+            }
 
-                // executing all the callbacks
-                for (i = 0; i < callbacks.length; i++) {
-                    if (_.isObject(callbacks[i])) {
-                        for (j in callbacks[i]) {
-                            callbacks[i][j].next();
-                        }
-                    } else {
-                        callbacks[i]();
+            // executing all the callbacks
+            for (i = 0; i < callbacks.length; i++) {
+                if (_.isObject(callbacks[i])) {
+                    for (j in callbacks[i]) {
+                        callbacks[i][j].next();
                     }
+                } else {
+                    callbacks[i]();
                 }
             }
         },
@@ -322,6 +342,135 @@ CanvasShapes.Scene = (function () {
                 }
                 handlers[i].handler.call(handlers[i].context, e);
             }
+        },
+
+        /**
+         * @implements {CanvasShapes.JSONInterface}
+         */
+        toJSON: function (toString) {
+
+            var layerUUID, shapeUUID, layerJSON,
+                obj = {
+                    metadata: {
+                        className: this.className,
+                        UUID: this.getUUID()
+                    },
+                    data: {
+                        layers: {},
+                        shapes: {},
+                        styles: {}
+                    }
+                };
+
+            obj.data.config = this.config;
+
+            for (layerUUID in this.layers) {
+
+                layerJSON = {
+                    metadata: {
+                        className: this.layers[layerUUID].layer.className,
+                        UUID: layerUUID
+                    },
+                    data: {}
+                };
+
+                layerJSON.data.width = this.layers[layerUUID].layer.width;
+                layerJSON.data.height = this.layers[layerUUID].layer.height;
+                layerJSON.data.top = this.layers[layerUUID].layer.top;
+                layerJSON.data.left = this.layers[layerUUID].layer.left;
+
+                if (this.layers[layerUUID].layer.offScreen) {
+                    layerJSON.data.offScreen =
+                        this.layers[layerUUID].layer.offScreen;
+                }
+
+                obj.data.layers[layerUUID] = {
+                    layer: layerJSON,
+                    shapes: []
+                };
+
+                for (shapeUUID in this.layers[layerUUID].shapes) {
+                    obj.data.layers[layerUUID].shapes.push(shapeUUID);
+                }
+            }
+
+            if (toString === true) {
+                obj = JSON.stringify(obj);
+            }
+
+            return obj;
+        },
+
+        /**
+         * @implements {CanvasShapes.JSONInterface}
+         */
+        fromJSON: function (obj) {
+
+            var i, scene, layerUUID, shapeUUID,
+                layers = {},
+                shapes = {};
+
+            if (_.isString(obj)) {
+                obj = JSON.parse(obj);
+            }
+
+            if (
+                !_.isObject(obj.metadata) || !_.isObject(obj.data) ||
+                !_.isString(obj.metadata.className) ||
+                !_.isString(obj.metadata.UUID) ||
+                !_.isObject(obj.data.config) || !_.isObject(obj.data.layers) ||
+                !_.isObject(obj.data.shapes)
+            ) {
+                throw new CanvasShapes.Error(1061);
+            }
+
+            // recreating scene
+            scene = new CanvasShapes.Scene(obj.data.config);
+            CanvasShapes.Class.removeObject(scene.getUUID());
+            scene.setUUID(obj.metadata.UUID);
+            CanvasShapes.Class.setObject(scene.getUUID(), scene);
+
+            // recreating all the shapes
+            for (shapeUUID in obj.data.shapes) {
+                shapes[shapeUUID] = CanvasShapes.Shape.prototype
+                    .fromJSON.call(null, obj.data.shapes[shapeUUID]);
+            }
+
+            // recreating layers
+            for (layerUUID in obj.data.layers) {
+
+                if (
+                    !_.isObject(obj.data.layers[layerUUID].layer.metadata) ||
+                    !_.isObject(obj.data.layers[layerUUID].layer.data) ||
+                    !_.isString(obj.data.layers[layerUUID].layer.metadata.className) ||
+                    !_.isString(obj.data.layers[layerUUID].layer.metadata.UUID) ||
+                    !_.isNumber(obj.data.layers[layerUUID].layer.data.width) ||
+                    !_.isNumber(obj.data.layers[layerUUID].layer.data.height) ||
+                    !_.isNumber(obj.data.layers[layerUUID].layer.data.left) ||
+                    !_.isNumber(obj.data.layers[layerUUID].layer.data.top)
+                ) {
+                    throw new CanvasShapes.Error(1062);
+                }
+
+                layers[layerUUID] = new CanvasShapes.SceneLayer(
+                    scene,
+                    obj.data.layers[layerUUID].layer.data.width,
+                    obj.data.layers[layerUUID].layer.data.height,
+                    obj.data.layers[layerUUID].layer.data.left,
+                    obj.data.layers[layerUUID].layer.data.top,
+                    obj.data.layers[layerUUID].layer.data.offScreen
+                );
+            }
+
+            // adding shapes to layers
+            for (layerUUID in obj.data.layers) {
+                for (i = 0; i < obj.data.layers[layerUUID].shapes.length; i++) {
+                    shapeUUID = obj.data.layers[layerUUID].shapes[i];
+                    scene.addShape(shapes[shapeUUID], layers[layerUUID]);
+                }
+            }
+
+            return scene;
         }
     });
 

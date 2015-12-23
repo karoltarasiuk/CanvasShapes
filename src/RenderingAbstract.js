@@ -76,7 +76,19 @@ CanvasShapes.RenderingAbstract = (function () {
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
-        setStyle: function (style, deep) {
+        setStyle: function (style) {
+
+            if (!_.isString(style)) {
+                if (
+                    !_.isObject(style) || !_.isFunction(style.is) ||
+                    !style.is(CanvasShapes.StyleInterface)
+                ) {
+                    throw new CanvasShapes.Error(1067);
+                }
+
+                style = style.getUUID();
+            }
+
             this.style = style;
         },
 
@@ -84,10 +96,17 @@ CanvasShapes.RenderingAbstract = (function () {
          * @implements {CanvasShapes.RenderingInterface}
          */
         getStyle: function () {
+
+            var style;
+
             if (!this.style) {
-                this.style = new CanvasShapes.Style();
+                style = new CanvasShapes.Style();
+                this.style = style.getUUID();
+            } else {
+                style = CanvasShapes.Class.getObject(this.style);
             }
-            return this.style;
+
+            return style;
         },
 
         /**

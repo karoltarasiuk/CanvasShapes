@@ -11,7 +11,6 @@ CanvasShapes.Line = (function () {
      * @param {array} coordinates
      */
     var Line = function (coordinates) {
-        this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
         this.initialise(coordinates);
@@ -23,9 +22,11 @@ CanvasShapes.Line = (function () {
 
         initialise: function (coordinates) {
 
-            var i;
+            this.initialiseShapeConstants();
 
-            this.validateCoordinatesArray(
+            coordinates = this.convertCoordinatesObjects(coordinates);
+
+            this.validateCoordinates(
                 coordinates,
                 true,
                 this.MIN_COORDINATES,
@@ -90,6 +91,54 @@ CanvasShapes.Line = (function () {
                 [mouseCoordinates.x, mouseCoordinates.y],
                 processedCoordinates, allowedError
             );
+        },
+
+        /**
+         * @implements {CanvasShapes.JSONInterface}
+         */
+        toJSON: function (toString) {
+
+            var obj = {
+                    metadata: {
+                        className: this.className,
+                        UUID: this.getUUID()
+                    },
+                    data: {
+                        coordinates: this.getCoordinates()
+                    }
+                };
+
+            if (toString === true) {
+                obj = JSON.stringify(obj);
+            }
+
+            return obj;
+        },
+
+        /**
+         * @implements {CanvasShapes.JSONInterface}
+         */
+        fromJSON: function (obj) {
+
+            var line;
+
+            if (_.isString(obj)) {
+                obj = JSON.parse(obj);
+            }
+
+            if (
+                !_.isObject(obj.metadata) || !_.isObject(obj.data) ||
+                !_.isString(obj.metadata.className) ||
+                !_.isString(obj.metadata.UUID) ||
+                (obj.data.coordinates && !_.isArray(obj.data.coordinates))
+            ) {
+                throw new CanvasShapes.Error(1063);
+            }
+// STYLE!!!!!!!
+            line = new CanvasShapes.Line(obj.data.coordinates);
+            CanvasShapes.Class.swapUUID(line.getUUID(), obj.metadata.UUID);
+
+            return line;
         }
     });
 

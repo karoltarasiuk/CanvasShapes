@@ -19,28 +19,69 @@ CanvasShapes.CoordinatesAbstract = (function () {
         /**
          * @implements {CanvasShapes.CoordinatesInterface}
          */
-        processCoordinates: function (coordinates, layer) {
+        convertCoordinatesObjects: function (coordinates) {
 
-            var i, multiple,
-                ret = [];
+            var i,
+                newCoordinates = [];
+
+            if (_.isArray(coordinates)) {
+                for (i = 0; i < coordinates.length; i++) {
+                    if (
+                        _.isObject(coordinates[i]) &&
+                        _.isFunction(coordinates[i].is) &&
+                        coordinates[i].is(CanvasShapes.CoordinatesInterface)
+                    ) {
+                        newCoordinates[i] = coordinates[i].getUUID();
+                    } else {
+                        newCoordinates[i] = coordinates[i];
+                    }
+                }
+            }
+
+            return newCoordinates;
+        },
+
+        /**
+         * @implements {CanvasShapes.CoordinatesInterface}
+         */
+        areCoordinatesSingle: function (coordinates) {
 
             if (
-                (_.isArray(coordinates) && coordinates.length > 0) &&
-                (_.isArray(coordinates[0]) || _.isObject(coordinates[0]))
+                (_.isArray(coordinates) && coordinates.length > 0 &&
+                _.isNumber(coordinates[0])) || _.isString(coordinates)
             ) {
-                multiple = true;
-            } else {
+                return true;
+            }
+
+            return false;
+        },
+
+        /**
+         * @implements {CanvasShapes.CoordinatesInterface}
+         */
+        processCoordinates: function (coordinates, layer) {
+
+            var i, tempCoordinates, single,
+                ret = [];
+
+            if (this.areCoordinatesSingle(coordinates)) {
+                single = true;
                 coordinates = [coordinates];
             }
 
             for (i = 0; i < coordinates.length; i++) {
                 if (_.isArray(coordinates[i])) {
                     ret.push(coordinates[i].slice(0));
-                } else if (
-                    _.isObject(coordinates[i]) &&
-                    coordinates[i].is(CanvasShapes.CoordinatesInterface)
-                ) {
-                    ret.push(coordinates[i].getCentreCoordinates().slice(0));
+                } else if(_.isString(coordinates[i])) {
+                    tempCoordinates = CanvasShapes.Class
+                        .getObject(coordinates[i]);
+                    if (tempCoordinates) {
+                        ret.push(tempCoordinates.getCentreCoordinates().slice(0));
+                    } else {
+                        throw new CanvasShapes.Error(1069);
+                    }
+                } else {
+                    throw new CanvasShapes.Error(1069);
                 }
             }
 
@@ -57,46 +98,11 @@ CanvasShapes.CoordinatesAbstract = (function () {
                 }
             }
 
-            if (multiple) {
-                return ret;
-            } else {
-                return ret[0];
-            }
-        },
-
-        /**
-         * @implements {CanvasShapes.CoordinatesInterface}
-         */
-        validateCoordinates: function (coordinates, throwException) {
-
-            var i,
-                valid = false;
-
-            if (_.isArray(coordinates)) {
-                if (coordinates.length > 1) {
-
-                    valid = true;
-
-                    // checking each element in an array whether it's a number
-                    for (i = 0; i < coordinates.length; i++) {
-                        if (!_.isNumber(coordinates[i])) {
-                            valid = false;
-                            break;
-                        }
-                    }
-                }
-            } else if (
-                _.isObject(coordinates) && _.isFunction(coordinates.is) &&
-                coordinates.is(CanvasShapes.CoordinatesInterface)
-            ) {
-                valid = true;
+            if (single) {
+                ret = ret[0];
             }
 
-            if (valid === false && throwException) {
-                throw new CanvasShapes.Error(1011);
-            }
-
-            return valid;
+            return ret;
         },
 
         /**
@@ -128,10 +134,17 @@ CanvasShapes.CoordinatesAbstract = (function () {
          */
         translateCoordinates: function (coordinates, offset, multiplier) {
 
-            var i, j,
+            var i, j, single, tempCoordinates,
                 newCoordinates = [];
 
-            this.validateCoordinatesArray(coordinates, true);
+            if (this.areCoordinatesSingle(coordinates)) {
+                tempCoordinates = [coordinates];
+                single = true;
+            } else {
+                tempCoordinates = coordinates;
+            }
+
+            this.validateCoordinates(tempCoordinates, true);
             offset = this.translateOffsetToCoordinates(offset);
 
             if (!multiplier) {
@@ -140,12 +153,16 @@ CanvasShapes.CoordinatesAbstract = (function () {
                 throw new CanvasShapes.Error(1049);
             }
 
-            for (i = 0; i < coordinates.length; i++) {
+            for (i = 0; i < tempCoordinates.length; i++) {
                 newCoordinates[i] = [];
-                for (j = 0; j < coordinates[i].length; j++) {
+                for (j = 0; j < tempCoordinates[i].length; j++) {
                     newCoordinates[i][j] =
-                        coordinates[i][j] * multiplier + offset[j];
+                        tempCoordinates[i][j] * multiplier + offset[j];
                 }
+            }
+
+            if (single) {
+                newCoordinates = newCoordinates[0];
             }
 
             return newCoordinates;
@@ -154,43 +171,96 @@ CanvasShapes.CoordinatesAbstract = (function () {
         /**
          * @implements {CanvasShapes.CoordinatesInterface}
          */
-        validateCoordinatesArray: function (
+        validateCoordinates: function (
             coordinates,
             throwException,
             minimumCoordinatesNumber,
             maximumCoordinatesNumber
         ) {
-            var i,
+            var i, tempCoordinates,
                 valid = true;
 
-            if (!_.isArray(coordinates)) {
+            if (this.areCoordinatesSingle(coordinates)) {
+                tempCoordinates = [coordinates];
+            } else {
+                tempCoordinates = coordinates;
+            }
+
+            if (!_.isArray(tempCoordinates)) {
 
                 valid = false;
 
             } else {
 
-                for (i = 0; i < coordinates.length; i++) {
-                    if (!this.validateCoordinates(coordinates[i])) {
+                for (i = 0; i < tempCoordinates.length; i++) {
+                    if (!this._validateSingleCoordinates(tempCoordinates[i])) {
                         valid = false;
                     }
                 }
 
                 if (
                     _.isNumber(minimumCoordinatesNumber) &&
-                    coordinates.length < minimumCoordinatesNumber
+                    tempCoordinates.length < minimumCoordinatesNumber
                 ) {
                     valid = false;
                 }
 
                 if (
                     _.isNumber(maximumCoordinatesNumber) &&
-                    coordinates.length > maximumCoordinatesNumber
+                    tempCoordinates.length > maximumCoordinatesNumber
                 ) {
                     valid = false;
                 }
 
-                if (coordinates.length < 1) {
+                if (tempCoordinates.length < 1) {
                     valid = false;
+                }
+            }
+
+            if (valid === false && throwException) {
+                throw new CanvasShapes.Error(1011);
+            }
+
+            return valid;
+        },
+
+        /**
+         * Validates whether coordinates object/array is valid. If
+         * `throwException` is `true`, it will throw exception when passed
+         * coordinates are not valid, instead of returning `false`.
+         *
+         * Example `coordinates` parameter value: [0, 0].
+         *
+         * @param {[array,CanvasShapes.CoordinatesInterface]} coordinates
+         * @param {boolean} throwException [OPTIONAL]
+         *
+         * @return {boolean}
+         */
+        _validateSingleCoordinates: function (coordinates, throwException) {
+
+            var i, tempObject,
+                valid = false;
+
+            if (_.isArray(coordinates)) {
+                if (coordinates.length > 1) {
+
+                    valid = true;
+
+                    // checking each element in an array whether it's a number
+                    for (i = 0; i < coordinates.length; i++) {
+                        if (!_.isNumber(coordinates[i])) {
+                            valid = false;
+                            break;
+                        }
+                    }
+                }
+            } else if (_.isString(coordinates)) {
+                tempObject = CanvasShapes.Class.getObject(coordinates);
+                if (
+                    _.isObject(tempObject) && _.isFunction(tempObject.is) &&
+                    tempObject.is(CanvasShapes.CoordinatesInterface)
+                ) {
+                    valid = true;
                 }
             }
 
@@ -207,18 +277,17 @@ CanvasShapes.CoordinatesAbstract = (function () {
         getCentreCoordinates: function () {
 
             var i,
-                coordinates = this.coordinates,
+                coordinates = this.getCoordinates(),
                 j = 0,
                 x = 0,
                 y = 0,
                 z = 0;
 
-            if (
-                _.isArray(coordinates) && coordinates.length > 0 &&
-                !_.isArray(coordinates[0]) && !_.isObject(coordinates[0])
-            ) {
+            if (this.areCoordinatesSingle(coordinates)) {
                 coordinates = [coordinates];
             }
+
+            coordinates = this.processCoordinates(coordinates);
 
             for (i = 0; i < coordinates.length; i++) {
                 x += coordinates[i][0];

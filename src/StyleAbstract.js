@@ -35,6 +35,7 @@ CanvasShapes.StyleAbstract = (function () {
          */
         initialise: function (definition) {
 
+            this.setUUID();
             this.shapes = [];
             this.definitions = [];
             this.setDefinition(definition, this.DEFAULT);

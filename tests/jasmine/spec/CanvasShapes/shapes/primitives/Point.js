@@ -106,32 +106,32 @@ define([
             point1.setSceneInterfaceHandlers(sceneInterfaceHandlers);
             expect(point1.sceneInterfaceHandlers[0])
                 .toBe(sceneInterfaceHandlers);
-            expect(point1.face).toBe(null);
+            expect(point1.getFace()).toBe(null);
 
             point2.setSceneInterfaceHandlers(sceneInterfaceHandlers);
-            expect(point2.face.sceneInterfaceHandlers[0])
+            expect(point2.getFace().sceneInterfaceHandlers[0])
                 .toBe(sceneInterfaceHandlers);
 
             for (i in sceneInterfaceHandlers) {
 
                 expect(point1.sceneInterfaceHandlers[i]).toBeDefined();
                 expect(point2.sceneInterfaceHandlers[i]).toBeDefined();
-                expect(point2.face.sceneInterfaceHandlers[i]).toBeDefined();
+                expect(point2.getFace().sceneInterfaceHandlers[i]).toBeDefined();
                 expect(point1.sceneInterfaceHandlers[0][i]).toBeDefined();
                 expect(point2.sceneInterfaceHandlers[0][i]).toBeDefined();
-                expect(point2.face.sceneInterfaceHandlers[0][i]).toBeDefined();
+                expect(point2.getFace().sceneInterfaceHandlers[0][i]).toBeDefined();
 
                 expect(_.isFunction(point1.sceneInterfaceHandlers[i]))
                     .toBe(true);
                 expect(_.isFunction(point2.sceneInterfaceHandlers[i]))
                     .toBe(true);
-                expect(_.isFunction(point2.face.sceneInterfaceHandlers[i]))
+                expect(_.isFunction(point2.getFace().sceneInterfaceHandlers[i]))
                     .toBe(true);
                 expect(_.isFunction(point1.sceneInterfaceHandlers[0][i]))
                     .toBe(true);
                 expect(_.isFunction(point2.sceneInterfaceHandlers[0][i]))
                     .toBe(true);
-                expect(_.isFunction(point2.face.sceneInterfaceHandlers[0][i]))
+                expect(_.isFunction(point2.getFace().sceneInterfaceHandlers[0][i]))
                     .toBe(true);
             }
         });

@@ -71,7 +71,7 @@ define([
                     });
 
                 style.addToShapes(rendering);
-                expect(rendering.style).toBe(style);
+                expect(rendering.style).toBe(style.getUUID());
                 expect(rendering.getStyle()).toBe(style);
             });
 

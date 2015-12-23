@@ -9,18 +9,22 @@
 CanvasShapes.Renderer = (function () {
 
     var Renderer = function () {
+        this.setUUID();
         RENDERERS.push(this);
-        this.scenes = [];
+        this.scenes = {};
     };
 
-    CanvasShapes.Class.extend(Renderer.prototype, {
+    CanvasShapes.Class.extend(
+        Renderer.prototype,
+        CanvasShapes.JSONInterface.prototype,
+    {
 
         className: 'CanvasShapes.Renderer',
 
         /**
-         * Array of added scenes
+         * Hashmap of added scenes. Keys are UUIDs.
          *
-         * @type {array}
+         * @type {object}
          */
         scenes: null,
 
@@ -28,12 +32,17 @@ CanvasShapes.Renderer = (function () {
          * Add scene to the renderer. It can be passed as a ready to use scene
          * or scene configuration object.
          *
+         * [WARNING] You shouldn't add the same scene to multiple renderers, as
+         * it may create significant performance drop and unexpected results, as
+         * scene will be processed more than once, being physically bound to the
+         * same DOM element.
+         *
          * @param {[CanvasShapes.SceneInterface, Object]} scene
          * @return {CanvasShapes.SceneInterface}
          */
         addScene: function (scene) {
 
-            if (scene && scene.is) {
+            if (_.isObject(scene) && _.isFunction(scene.is)) {
                 if (!scene.is(CanvasShapes.SceneInterface)) {
                     throw new CanvasShapes.Error(1023);
                 }
@@ -41,9 +50,47 @@ CanvasShapes.Renderer = (function () {
                 scene = new CanvasShapes.Scene(scene);
             }
 
-            this.scenes.push(scene);
+            this.scenes[scene.getUUID()] = scene;
 
             return scene;
+        },
+
+        /**
+         * It removes scene from a renderer. `scene` can be passed as an object
+         * or UUID. If `destroy` is passed as `true` it will also empty the DOM
+         * element.
+         *
+         * @param  {[string,object]} scene
+         * @param  {boolean}         destroy
+         */
+        removeScene: function (scene, destroy) {
+
+            var i;
+
+            for (i in this.scenes) {
+                if (i === scene || this.scenes[i] === scene) {
+                    if (destroy === true) {
+                        this.scenes[i].dom.innerHTML = '';
+                    }
+                    delete this.scenes[i];
+                    break;
+                }
+            }
+        },
+
+        /**
+         * Removes all the scenes from a renderer. If `destroy` is passed as
+         * `true` it will also empty the DOM element.
+         *
+         * @param  {boolen} destroy
+         */
+        removeScenes: function (destroy) {
+
+            var i;
+
+            for (i in this.scenes) {
+                this.removeScene(i, destroy);
+            }
         },
 
         /**
@@ -64,7 +111,7 @@ CanvasShapes.Renderer = (function () {
                 throw new CanvasShapes.Error(1053);
             }
 
-            for (i = 0; i < this.scenes.length; i++) {
+            for (i in this.scenes) {
                 for (j = 0; j < shapes.length; j++) {
                     if (layer === 'new') {
                         if (layerInstance) {
@@ -87,7 +134,7 @@ CanvasShapes.Renderer = (function () {
 
             var i;
 
-            for (i = 0; i < this.scenes.length; i++) {
+            for (i in this.scenes) {
                 this.scenes[i].render();
             }
         },
@@ -101,7 +148,7 @@ CanvasShapes.Renderer = (function () {
 
             var i;
 
-            for (i = 0; i < this.scenes.length; i++) {
+            for (i in this.scenes) {
                 this.scenes[i].on.apply(this.scenes[i], arguments);
             }
         },
@@ -115,7 +162,7 @@ CanvasShapes.Renderer = (function () {
 
             var i;
 
-            for (i = 0; i < this.scenes.length; i++) {
+            for (i in this.scenes) {
                 this.scenes[i].off.apply(this.scenes[i], arguments);
             }
         },
@@ -129,9 +176,96 @@ CanvasShapes.Renderer = (function () {
 
             var i;
 
-            for (i = 0; i < this.scenes.length; i++) {
+            for (i in this.scenes) {
                 this.scenes[i].dispatch.apply(this.scenes[i], arguments);
             }
+        },
+
+        /**
+         * @implements {CanvasShapes.JSONInterface}
+         */
+        toJSON: function (toString) {
+
+            var i,
+                registry = CanvasShapes.Class.getObjects(),
+                registryJSON = {},
+                obj = {
+                    metadata: {
+                        className: this.className,
+                        UUID: this.getUUID()
+                    },
+                    data: {
+                        scenes: []
+                    }
+                };
+
+            for (i in registry) {
+                if (
+                    _.isObject(registry[i]) &&
+                    _.isFunction(registry[i].toJSON) &&
+                    _.isFunction(registry[i].is) &&
+                    !registry[i].is(CanvasShapes.Renderer)
+                ) {
+                    registryJSON[i] = registry[i].toJSON();
+                }
+            }
+
+            obj.data.registry = registryJSON;
+
+            for (i in this.scenes) {
+                obj.data.scenes.push(i);
+            }
+
+            if (toString === true) {
+                obj = JSON.stringify(obj);
+            }
+
+            return obj;
+        },
+
+        /**
+         * @implements {CanvasShapes.JSONInterface}
+         */
+        fromJSON: function (obj) {
+
+            var i, renderer,
+                registry = {};
+
+            if (_.isString(obj)) {
+                obj = JSON.parse(obj);
+            }
+
+            if (
+                !_.isObject(obj.metadata) || !_.isObject(obj.data) ||
+                !_.isString(obj.metadata.className) ||
+                !_.isString(obj.metadata.UUID) ||
+                !_.isObject(obj.data.registry) ||
+                !_.isArray(obj.data.scenes)
+            ) {
+                throw new CanvasShapes.Error(1071);
+            }
+
+            for (i in obj.data.registry) {
+                if (
+                    _.isObject(obj.data.registry[i]) &&
+                    _.isObject(obj.data.registry[i].metadata) &&
+                    obj.data.registry[i].metadata.className !==
+                        'CanvasShapes.Renderer'
+                ) {
+                    registry[i] = CanvasShapes.Class.fromJSON(
+                        obj.data.registry[i]
+                    );
+                }
+            }
+
+            renderer = new CanvasShapes.Renderer();
+
+            for (i = 0; i < obj.data.scenes.length; i++) {
+                console.log(i, obj.data.scenes[i], registry);
+                renderer.addScene(registry[obj.data.scenes[i]]);
+            }
+
+            return renderer;
         }
     });
 

@@ -16,14 +16,16 @@ CanvasShapes.GroupInterface = (function () {
 
         /**
          * Allows you to get all the shapes within a group.
+         *
          * You can specify a filter function and arguments for it. It will be
-         * invoked on each shape. If the filter returns `true`, the shape will
-         * be included in results array.
+         * invoked on each shape (this method will pass UUID). If the filter
+         * returns `true`, the shape will be included in results array. Results
+         * array format is an array of UUIDs.
          *
          * @param {function} filter
-         * @param {array} args
+         * @param {array}    args
          *
-         * @return {array} [description]
+         * @return {array}
          */
         getShapes: function (filter, args) {
             throw new CanvasShapes.Error(9015);
@@ -33,7 +35,7 @@ CanvasShapes.GroupInterface = (function () {
          * Allows to add a new shape(s) into the group. It will return true if
          * adding was successful, or false if can't add more objects.
          *
-         * @param {[array,CanvasShape.ShapeInterface]} shapes [description]
+         * @param  {[array,CanvasShape.ShapeInterface]} shapes
          * @return {boolean}
          */
         addShapes: function (shapes) {
@@ -49,8 +51,8 @@ CanvasShapes.GroupInterface = (function () {
          * returned values for each subgroup.
          *
          * @param {function} iteratee
-         * @param {array} args
-         * @param {boolean} deep
+         * @param {array}    args
+         * @param {boolean}  deep
          *
          * @return {array}
          */
@@ -62,21 +64,21 @@ CanvasShapes.GroupInterface = (function () {
          * Iterates through all the shapes in the group. If no arguments are
          * passed it will remove all shapes.
          *
-         * If `filter` function is passed, it invokes this
-         * function on each shape with given `args` (arguments). If the shape
-         * is another group, you can pass `deep` parameter as true to run the
-         * same function on every child. It will return the number of deleted
-         * shapes.
+         * If `filter` function is passed, it invokes this function on each
+         * shape (by passing its UUID) with given `args` (arguments). If the
+         * shape is another group, you can pass `deep` parameter as true to run
+         * the same function on every child. It will return the number of
+         * deleted shapes.
          *
-         * Notice that if the shape which is a group, is to be deleted,
-         * its children will be deleted too, and number of children will be
-         * included in the returned value.
+         * Notice that if the shape which is a group, is to be deleted, its
+         * children will be deleted too, and number of children will be included
+         * in the returned value.
          *
          * Group shouldn't be allowing to delete a shape by index.
          *
          * @param {function} filter [OPTIONAL]
-         * @param {array} args [OPTIONAL]
-         * @param {boolean} deep [OPTIONAL]
+         * @param {array}    args [OPTIONAL]
+         * @param {boolean}  deep [OPTIONAL]
          *
          * @return {integer}
          */

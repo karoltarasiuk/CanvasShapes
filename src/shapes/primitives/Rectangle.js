@@ -13,7 +13,6 @@ CanvasShapes.Rectangle = (function () {
      * @param {array} coordinates
      */
     var Rectangle = function (coordinates) {
-        this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
         this.initialise(coordinates);
@@ -30,7 +29,9 @@ CanvasShapes.Rectangle = (function () {
             var angle, processedCoordinates,
                 point = [];
 
-            this.validateCoordinatesArray(
+            coordinates = this.convertCoordinatesObjects(coordinates);
+
+            this.validateCoordinates(
                 coordinates,
                 true,
                 this.MIN_COORDINATES,
