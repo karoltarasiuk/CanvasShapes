@@ -41,17 +41,29 @@ CanvasShapes.ClassAbstract = (function () {
          */
         setUUID: function (UUID) {
 
-            if (this.UUID) {
-                CanvasShapes.Class.removeObject(this.UUID);
+            var currentUUID = this.getUUID(),
+                newUUID = CanvasShapes.Tools.uuid();
+
+            if (UUID && !CanvasShapes.Class.isUUID(UUID)) {
+                throw new CanvasShapes.Error(1061);
             }
 
             if (UUID) {
+                if (currentUUID) {
+                    CanvasShapes.Class.swapUUID(currentUUID, UUID);
+                } else {
+                    CanvasShapes.Class.setObject(UUID, this);
+                }
                 this.UUID = UUID;
             } else {
-                this.UUID = CanvasShapes.Tools.uuid();
+                if (currentUUID) {
+                    CanvasShapes.Class.swapUUID(currentUUID, newUUID);
+                } else {
+                    CanvasShapes.Class.setObject(newUUID, this);
+                }
+                this.UUID = newUUID;
             }
 
-            CanvasShapes.Class.setObject(this.UUID, this);
             return this.getUUID();
         },
 

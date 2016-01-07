@@ -201,6 +201,36 @@ CanvasShapes.Tools = (function () {
     }
 
     /**
+     * Checks whether passed string is a valid UUID
+     *
+     * @param  {string}  uuid
+     * @return {boolean}
+     */
+    function isuuid(uuid) {
+        var regexp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        return _.isString(uuid) && !!regexp.exec(uuid);
+    }
+
+    /**
+     * Methods exposed from this module.
+     *
+     * @type {object}
+     */
+    var EXPOSED = {
+        removeByIndex: removeByIndex,
+        isNode: isNode,
+        isElement: isElement,
+        uuid: uuid,
+        hexToRGB: hexToRGB,
+        arrayToHex: arrayToHex,
+        objectToHex: objectToHex,
+        rgbToHex: rgbToHex,
+        colorToHex: colorToHex,
+        isValueWithinInterval: isValueWithinInterval,
+        isuuid: isuuid
+    };
+
+    /**
      * Color pre-defined strings, and their hex values.
      *
      * @see  https://developer.mozilla.org/en/docs/Web/CSS/color_value
@@ -355,16 +385,5 @@ CanvasShapes.Tools = (function () {
         rebeccapurple:          '#663399'
     };
 
-    return {
-        removeByIndex: removeByIndex,
-        isNode: isNode,
-        isElement: isElement,
-        uuid: uuid,
-        hexToRGB: hexToRGB,
-        arrayToHex: arrayToHex,
-        objectToHex: objectToHex,
-        rgbToHex: rgbToHex,
-        colorToHex: colorToHex,
-        isValueWithinInterval: isValueWithinInterval
-    };
+    return EXPOSED;
 })();

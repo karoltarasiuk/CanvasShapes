@@ -95,6 +95,10 @@ CanvasShapes.Class = (function () {
      */
     Class.getObject = function (UUID) {
 
+        if (!Class.isUUID(UUID)) {
+            throw new CanvasShapes.Error(1063);
+        }
+
         if (OBJECTS[UUID]) {
             return OBJECTS[UUID];
         }
@@ -103,38 +107,86 @@ CanvasShapes.Class = (function () {
     };
 
     /**
-     * Sets the object in a registry. If in the registry, there was already an
-     * object with given UUID it will be replaced with a new one, and returned.
-     * If there was no object function will return `null`.
+     * Sets the object in a registry. If in the registry, there was already some
+     * object with the same UUID it will be replaced with a new one. If `obj`
+     * exists under different UUID, it will be swapped.
+     *
+     * Function will return old object (under passed `UUID`) or `true`
+     * otherwise.
      *
      * @param {string} UUID
-     * @param {object} object
+     * @param {object} obj
      *
-     * @return {[null,object]}
+     * @return {[true,object]}
      */
-    Class.setObject = function (UUID, object) {
+    Class.setObject = function (UUID, obj) {
 
-        var obj = null;
+        var i,
+            old = null;
 
-        if (OBJECTS[UUID]) {
-            obj = OBJECTS[UUID];
+        if (!Class.isUUID(UUID) || !_.isObject(obj)) {
+            throw new CanvasShapes.Error(1062);
         }
 
-        OBJECTS[UUID] = object;
+        // overwrite if UUID is already in use
+        if (OBJECTS[UUID]) {
+            old = OBJECTS[UUID];
+        }
 
-        return obj;
+        // remove if obj is seved somewhere else
+        for (i in OBJECTS) {
+            if (OBJECTS[i] === obj && i !== UUID) {
+                delete OBJECTS[i];
+                break;
+            }
+        }
+
+        OBJECTS[UUID] = obj;
+
+        return old;
+    };
+
+    /**
+     * Swaps the UUID for a passed object. Returns `true` if successful. If
+     * object under the `oldUUID` doesn't exist it returns `false`. It only
+     * swaps it within registry - it doesn't touch an object itself.
+     *
+     * @param  {string} oldUUID
+     * @param  {string} newUUID
+     *
+     * @return {boolean}
+     */
+    Class.swapUUID = function (oldUUID, newUUID) {
+
+        var obj;
+
+        if (!Class.isUUID(oldUUID) || !Class.isUUID(newUUID)) {
+            throw new CanvasShapes.Error(1064);
+        }
+
+        obj = Class.getObject(oldUUID);
+        if (obj) {
+            delete OBJECTS[oldUUID];
+            OBJECTS[newUUID] = obj;
+        }
+
+        return !!obj;
     };
 
     /**
      * Removes object from a registry specified by its UUID. Function returns
      * either removed object or `null` if nothing was removed.
      *
-     * @param  {string} UUID
+     * @param  {string}        UUID
      * @return {[null,object]}
      */
     Class.removeObject = function (UUID) {
 
         var obj = null;
+
+        if (!Class.isUUID(UUID)) {
+            throw new CanvasShapes.Error(1065);
+        }
 
         if (OBJECTS[UUID]) {
             obj = OBJECTS[UUID];
@@ -163,6 +215,52 @@ CanvasShapes.Class = (function () {
      */
     Class.getObjects = function () {
         return OBJECTS;
+    };
+
+    /**
+     * Gets class object from comma separated object notation string. It looks
+     * for it only within CanvasShapes namespace, so if your object is not
+     * there, `null` will be returned.
+     *
+     * @param  {string}      className
+     * @return {null,object}
+     */
+    Class.getClass = function (className) {
+
+        var i, classNameParts,
+            classObject = CanvasShapes;
+
+        if (!_.isString(className)) {
+            throw new CanvasShapes.Error(1066);
+        }
+
+        classNameParts = className.split('.');
+
+        if (
+            classNameParts.length < 2 ||
+            classNameParts[0] !== 'CanvasShapes'
+        ) {
+            return null;
+        }
+
+        for (i = 1; i < classNameParts.length; i++) {
+            if (!_.isObject(classObject[classNameParts[i]])) {
+                return null;
+            }
+            classObject = classObject[classNameParts[i]];
+        }
+
+        return classObject;
+    };
+
+    /**
+     * Checks whether passed string is a UUID
+     *
+     * @param  {string}  UUID
+     * @return {boolean}
+     */
+    Class.isUUID = function (UUID) {
+        return CanvasShapes.Tools.isuuid(UUID);
     };
 
     return Class;

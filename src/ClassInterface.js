@@ -34,8 +34,8 @@ CanvasShapes.ClassInterface = (function () {
          *
          * If 'UUID' is passed it will be used as an unique identifier. Remember
          * to use it cautiously, as it's up to you to provide a unique one. The
-         * general recommendation is to avoid using this feature unless
-         * deserialisation is needed.
+         * general recommendation is to avoid using this feature unless some
+         * kind of deserialisation is needed.
          *
          * @param  {string} UUID [OPTIONAL]
          * @return {string}

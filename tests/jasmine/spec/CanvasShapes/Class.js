@@ -150,7 +150,7 @@ define([
 
                 var regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
                     classInstance = new CanvasShapes.Class(),
-                    UUID = 'CUSTOM_UUID';
+                    UUID = 'aaaaaaaa-bbbb-3ccc-9ddd-eeeeeeeeeeee';
 
                 expect(regex.test(classInstance.getUUID())).toBe(true);
 
@@ -161,15 +161,25 @@ define([
             it('populates objects registry properly', function () {
 
                 var classInstance = new CanvasShapes.Class(),
-                    classInstance2 = {};
+                    classInstance2 = {},
+                    error1 = new CanvasShapes.Error(1063);
 
                 expect(CanvasShapes.Class.getObject(classInstance.getUUID()))
                     .toBe(classInstance);
-                expect(CanvasShapes.Class.getObject('SOME_UUID')).toBe(null);
+                expect(function () {
+                    CanvasShapes.Class.getObject('SOME_UUID');
+                }).toThrow(error1);
+                expect(CanvasShapes.Class.getObject(
+                    'aaaaaaaa-bbbb-4ccc-9ddd-eeeeeeeeeeee'
+                )).toBe(null);
 
-                CanvasShapes.Class.setObject('SOME_UUID', classInstance2);
-                expect(CanvasShapes.Class.getObject('SOME_UUID'))
-                    .toBe(classInstance2);
+                CanvasShapes.Class.setObject(
+                    'aaaaaaaa-bbbb-4ccc-9ddd-eeeeeeeeeeee',
+                    classInstance2
+                );
+                expect(CanvasShapes.Class.getObject(
+                    'aaaaaaaa-bbbb-4ccc-9ddd-eeeeeeeeeeee'
+                )).toBe(classInstance2);
             });
 
             it('replaces existing object properly', function () {
@@ -177,7 +187,8 @@ define([
                 var returnValue,
                     classInstance1 = new CanvasShapes.Class(),
                     classInstance2 = {},
-                    classInstance3 = {};
+                    classInstance3 = {},
+                    error1 = new CanvasShapes.Error(1062);
 
                 returnValue = CanvasShapes.Class.setObject(
                     classInstance1.getUUID(),
@@ -186,8 +197,15 @@ define([
 
                 expect(returnValue).toBe(classInstance1);
 
+                expect(function () {
+                    returnValue = CanvasShapes.Class.setObject(
+                        'NEW CUSTOM UUID',
+                        classInstance2
+                    );
+                }).toThrow(error1);
+
                 returnValue = CanvasShapes.Class.setObject(
-                    'NEW CUSTOM UUID',
+                    'aaaaaaaa-bbbb-4ccc-9ddd-eeeeeeffffff',
                     classInstance2
                 );
 

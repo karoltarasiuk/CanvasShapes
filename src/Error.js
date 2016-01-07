@@ -65,6 +65,12 @@ CanvasShapes.Error = (function () {
         1058: "CanvasShapes.Polygon - in `isColliding()`: passed `mouseCoordinates` is not in valid format",
         1059: "CanvasShapes.Line - in `isColliding()`: passed `mouseCoordinates` is not in valid format",
         1060: "CanvasShapes.Shape - in `fromJSON()`: passed `obj` is not in valid format",
+        1061: "CanvasShapes.Class - in `setUUID()`: passed `UUID` is not valid",
+        1062: "CanvasShapes.Class - in `setObject()`: passed arguments are not valid",
+        1063: "CanvasShapes.Class - in `getObject()`: passed `UUID` is not valid",
+        1064: "CanvasShapes.Class - in `swapUUID()`: passed parameters are not valid",
+        1065: "CanvasShapes.Class - in `removeObject()`: passed parameters are not valid",
+        1066: "CanvasShapes.Class - in `getClass()`: passed `className` is not a string",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
