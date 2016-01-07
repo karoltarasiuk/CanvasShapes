@@ -1,12 +1,10 @@
 /*global define, describe, it, expect*/
 define([
     "lodash",
-    "CanvasShapes",
-    "ObjectComparer"
+    "CanvasShapes"
 ], function(
     _,
-    CanvasShapes,
-    ObjectComparer
+    CanvasShapes
 ) {
 
     describe('CanvasShapes.Event', function () {
