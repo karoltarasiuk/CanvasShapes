@@ -3,7 +3,6 @@ require.config({
         jasmine: 'lib/jasmine-2.0.0/jasmine',
         jasminehtml: 'lib/jasmine-2.0.0/jasmine-html',
         boot: 'lib/jasmine-2.0.0/boot',
-        lodash: 'lib/lodash.min',
         JSONChecker: 'lib/JSONChecker',
         uuid: 'lib/uuid',
         CanvasShapes: 'src/CanvasShapes',

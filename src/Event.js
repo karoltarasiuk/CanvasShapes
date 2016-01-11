@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.Event = (function () {
 
@@ -42,13 +42,14 @@ CanvasShapes.Event = (function () {
         var i, j;
 
         if (
-            !_.isString(event) &&
-            (!_.isObject(event) || !_.isString(event.type))
+            !CanvasShapes._.isString(event) &&
+            (!CanvasShapes._.isObject(event) ||
+                !CanvasShapes._.isString(event.type))
         ) {
             throw new CanvasShapes.Error(1040);
         }
 
-        if (_.isString(event)) {
+        if (CanvasShapes._.isString(event)) {
             event = {
                 type: event
             };
@@ -56,7 +57,7 @@ CanvasShapes.Event = (function () {
 
         // search for registered event within some category
         for (i in CATEGORIES) {
-            if (_.isObject(CATEGORIES[i].eventsObject)) {
+            if (CanvasShapes._.isObject(CATEGORIES[i].eventsObject)) {
                 for (j in CATEGORIES[i].eventsObject) {
                     if (CATEGORIES[i].eventsObject[j] === event.type) {
                         return CATEGORIES[i];
@@ -84,7 +85,7 @@ CanvasShapes.Event = (function () {
         var i, j;
 
         for (i in CATEGORIES) {
-                if (_.isObject(CATEGORIES[i].eventsObject)) {
+                if (CanvasShapes._.isObject(CATEGORIES[i].eventsObject)) {
                     for (j in CATEGORIES[i].eventsObject) {
                         if (CATEGORIES[i].eventsObject[j] === eventType) {
                             return true;
@@ -121,11 +122,11 @@ CanvasShapes.Event = (function () {
         eventsObject,
         initialiseListeners
     ) {
-        if (!_.isString(category) || category.length === 0) {
+        if (!CanvasShapes._.isString(category) || category.length === 0) {
             throw new CanvasShapes.Error(1030);
         }
 
-        if (!_.isFunction(baseClass)) {
+        if (!CanvasShapes._.isFunction(baseClass)) {
             throw new CanvasShapes.Error(1032);
         }
 
@@ -133,11 +134,14 @@ CanvasShapes.Event = (function () {
             throw new CanvasShapes.Error(1031);
         }
 
-        if (eventsObject && !_.isObject(eventsObject)) {
+        if (eventsObject && !CanvasShapes._.isObject(eventsObject)) {
             throw new CanvasShapes.Error(1033);
         }
 
-        if (initialiseListeners && !_.isFunction(initialiseListeners)) {
+        if (
+            initialiseListeners &&
+            !CanvasShapes._.isFunction(initialiseListeners)
+        ) {
             throw new CanvasShapes.Error(1034);
         }
 
@@ -156,7 +160,7 @@ CanvasShapes.Event = (function () {
      */
     Event.deregisterCategory = function (category) {
 
-        if (!_.isString(category)) {
+        if (!CanvasShapes._.isString(category)) {
             throw new CanvasShapes.Error(1028);
         }
 
@@ -178,7 +182,8 @@ CanvasShapes.Event = (function () {
         var i;
 
         if (
-            !_.isObject(scene) || !_.isFunction(scene.is) ||
+            !CanvasShapes._.isObject(scene) ||
+            !CanvasShapes._.isFunction(scene.is) ||
             !scene.is(CanvasShapes.SceneInterface)
         ) {
             throw new CanvasShapes.Error(1038);

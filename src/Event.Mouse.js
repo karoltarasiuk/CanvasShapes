@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.Event.Mouse = (function () {
 
@@ -37,9 +37,10 @@ CanvasShapes.Event.Mouse = (function () {
             rect = this.target.getBoundingClientRect();
 
             if (
-                !this.target || !CanvasShapes.Tools.isElement(this.target) ||
-                !_.isObject(this.event) || !_.isNumber(this.event.pageX) ||
-                !_.isNumber(this.event.pageY)
+                !this.target || !CanvasShapes._.isElement(this.target) ||
+                !CanvasShapes._.isObject(this.event) ||
+                !CanvasShapes._.isNumber(this.event.pageX) ||
+                !CanvasShapes._.isNumber(this.event.pageY)
             ) {
                 throw new CanvasShapes.Error(1041);
             }
@@ -60,14 +61,38 @@ CanvasShapes.Event.Mouse = (function () {
         CONTEXTMENU: 'contextmenu',
         DBLCLICK: 'dblclick'
     }, function () {
-        this.dom.addEventListener('click', _.bind(this.dispatch, this));
-        this.dom.addEventListener('mousedown', _.bind(this.dispatch, this));
-        this.dom.addEventListener('mouseup', _.bind(this.dispatch, this));
-        this.dom.addEventListener('mouseover', _.bind(this.dispatch, this));
-        this.dom.addEventListener('mouseout', _.bind(this.dispatch, this));
-        this.dom.addEventListener('mousemove', _.bind(this.dispatch, this));
-        this.dom.addEventListener('contextmenu', _.bind(this.dispatch, this));
-        this.dom.addEventListener('dblclick', _.bind(this.dispatch, this));
+        this.dom.addEventListener(
+            'click',
+            CanvasShapes._.bind(this.dispatch, this)
+        );
+        this.dom.addEventListener(
+            'mousedown',
+            CanvasShapes._.bind(this.dispatch, this)
+        );
+        this.dom.addEventListener(
+            'mouseup',
+            CanvasShapes._.bind(this.dispatch, this)
+        );
+        this.dom.addEventListener(
+            'mouseover',
+            CanvasShapes._.bind(this.dispatch, this)
+        );
+        this.dom.addEventListener(
+            'mouseout',
+            CanvasShapes._.bind(this.dispatch, this)
+        );
+        this.dom.addEventListener(
+            'mousemove',
+            CanvasShapes._.bind(this.dispatch, this)
+        );
+        this.dom.addEventListener(
+            'contextmenu',
+            CanvasShapes._.bind(this.dispatch, this)
+        );
+        this.dom.addEventListener(
+            'dblclick',
+            CanvasShapes._.bind(this.dispatch, this)
+        );
     });
 
     return MouseEvent;

@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.Rectangle = (function () {
 

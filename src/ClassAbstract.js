@@ -9,7 +9,10 @@ CanvasShapes.ClassAbstract = (function () {
         throw new CanvasShapes.Error(8005);
     };
 
-    _.extend(ClassAbstract.prototype, CanvasShapes.ClassInterface.prototype, {
+    CanvasShapes._.extend(
+        ClassAbstract.prototype,
+        CanvasShapes.ClassInterface.prototype,
+    {
 
         className: 'CanvasShapes.ClassAbstract',
 
@@ -18,7 +21,7 @@ CanvasShapes.ClassAbstract = (function () {
          */
         is: function (passedClass) {
 
-            if (_.isObject(passedClass)) {
+            if (CanvasShapes._.isObject(passedClass)) {
                 if (passedClass.className) {
                     passedClass = passedClass.className;
                 } else if (
@@ -29,7 +32,7 @@ CanvasShapes.ClassAbstract = (function () {
                 }
             }
 
-            if (_.isString(passedClass)) {
+            if (CanvasShapes._.isString(passedClass)) {
                 return this.classes.indexOf(passedClass) !== -1;
             } else {
                 throw new CanvasShapes.Error(1009);

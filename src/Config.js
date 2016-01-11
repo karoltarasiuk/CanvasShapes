@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.Config = (function () {
 
@@ -65,9 +65,9 @@ CanvasShapes.Config = (function () {
 
         var property;
 
-        if (_.isString(option)) {
+        if (CanvasShapes._.isString(option)) {
             options[option] = value;
-        } else if (_.isObject(option)) {
+        } else if (CanvasShapes._.isObject(option)) {
             for (property in option) {
                 set(property, option[property]);
             }

@@ -1,9 +1,7 @@
 /*global define, describe, it, expect*/
 define([
-    "lodash",
     "CanvasShapes"
 ], function(
-    _,
     CanvasShapes
 ) {
 
@@ -417,16 +415,16 @@ define([
                     sceneInterfaceHandlers = scene.getSceneInterfaceHandlers();
 
                 expect(sceneInterfaceHandlers).toBeDefined();
-                expect(_.isObject(sceneInterfaceHandlers)).toBe(true);
-                expect(_.isFunction(sceneInterfaceHandlers.newLayer))
+                expect(CanvasShapes._.isObject(sceneInterfaceHandlers)).toBe(true);
+                expect(CanvasShapes._.isFunction(sceneInterfaceHandlers.newLayer))
                     .toBe(true);
-                expect(_.isFunction(sceneInterfaceHandlers.getLayer))
+                expect(CanvasShapes._.isFunction(sceneInterfaceHandlers.getLayer))
                     .toBe(true);
-                expect(_.isFunction(sceneInterfaceHandlers.addShape))
+                expect(CanvasShapes._.isFunction(sceneInterfaceHandlers.addShape))
                     .toBe(true);
-                expect(_.isFunction(sceneInterfaceHandlers.on)).toBe(true);
-                expect(_.isFunction(sceneInterfaceHandlers.off)).toBe(true);
-                expect(_.isFunction(sceneInterfaceHandlers.dispatch))
+                expect(CanvasShapes._.isFunction(sceneInterfaceHandlers.on)).toBe(true);
+                expect(CanvasShapes._.isFunction(sceneInterfaceHandlers.off)).toBe(true);
+                expect(CanvasShapes._.isFunction(sceneInterfaceHandlers.dispatch))
                     .toBe(true);
             });
 

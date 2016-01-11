@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.Scene = (function () {
 
@@ -25,7 +25,7 @@ CanvasShapes.Scene = (function () {
             this.width = this.config.width;
             this.height = this.config.height;
 
-            if (_.isString(this.config.id)) {
+            if (CanvasShapes._.isString(this.config.id)) {
                 this.dom = document.getElementById(this.config.id);
             } else {
                 this.dom = this.config.element;
@@ -66,8 +66,10 @@ CanvasShapes.Scene = (function () {
          * @return {boolean}
          */
         validateConfig: function (config) {
-            return _.isObject(config) && _.isNumber(config.width) &&
-                _.isNumber(config.height) && (_.isString(config.id) ||
+            return CanvasShapes._.isObject(config) &&
+                CanvasShapes._.isNumber(config.width) &&
+                CanvasShapes._.isNumber(config.height) &&
+                (CanvasShapes._.isString(config.id) ||
                 CanvasShapes.Tools.isElement(config.element));
         },
 
@@ -94,7 +96,7 @@ CanvasShapes.Scene = (function () {
                         }
                     }
                 }
-            } else if (_.isObject(this.requestedRendering)) {
+            } else if (CanvasShapes._.isObject(this.requestedRendering)) {
 
                 for (i in this.requestedRendering) {
 
@@ -129,7 +131,7 @@ CanvasShapes.Scene = (function () {
 
                 // executing all the callbacks
                 for (i = 0; i < callbacks.length; i++) {
-                    if (_.isObject(callbacks[i])) {
+                    if (CanvasShapes._.isObject(callbacks[i])) {
                         for (j in callbacks[i]) {
                             callbacks[i][j].next();
                         }
@@ -152,7 +154,7 @@ CanvasShapes.Scene = (function () {
             // remove existing handler
             this.off(handler, eventType, context);
 
-            if (!_.isArray(this.handlers[eventType])) {
+            if (!CanvasShapes._.isArray(this.handlers[eventType])) {
                 this.handlers[eventType] = [];
             }
 
@@ -173,7 +175,7 @@ CanvasShapes.Scene = (function () {
                 for (j = 0; j < this.handlers[i].length; j++) {
 
                     if (
-                        _.isString(handlerOrType) &&
+                        CanvasShapes._.isString(handlerOrType) &&
                         eventTypeOrContext === undefined &&
                         context === undefined
                     ) {
@@ -184,7 +186,7 @@ CanvasShapes.Scene = (function () {
                         }
 
                     } else if (
-                        _.isFunction(handlerOrType) &&
+                        CanvasShapes._.isFunction(handlerOrType) &&
                         eventTypeOrContext === undefined &&
                         context === undefined
                     ) {
@@ -196,7 +198,7 @@ CanvasShapes.Scene = (function () {
 
                     } else if (
                         context === undefined &&
-                        _.isObject(eventTypeOrContext)
+                        CanvasShapes._.isObject(eventTypeOrContext)
                     ) {
                         // this.off('some-event-type', contextObject)
                         if (
@@ -210,7 +212,7 @@ CanvasShapes.Scene = (function () {
 
                     } else if (
                         context === undefined &&
-                        _.isString(eventTypeOrContext)
+                        CanvasShapes._.isString(eventTypeOrContext)
                     ) {
                         // this.off(someHandlerFunction, 'some-event-type')
                         if (
@@ -259,24 +261,28 @@ CanvasShapes.Scene = (function () {
 
             // getting handlers array by event type
             if (
-                _.isObject(event) && _.isFunction(event.is) &&
+                CanvasShapes._.isObject(event) &&
+                CanvasShapes._.isFunction(event.is) &&
                 event.is(CanvasShapes.Event)
             ) {
                 // already prepared event instance
-                if (_.isArray(this.handlers[event.getType()])) {
+                if (CanvasShapes._.isArray(this.handlers[event.getType()])) {
                     handlers = this.handlers[event.getType()];
                 }
 
                 e = event;
             } else {
                 // traditional event or eventType string
-                if (_.isObject(event) && _.isString(event.type)) {
+                if (
+                    CanvasShapes._.isObject(event) &&
+                    CanvasShapes._.isString(event.type)
+                ) {
                     type = event.type;
-                } else if (_.isString(event)) {
+                } else if (CanvasShapes._.isString(event)) {
                     type = event;
                 }
 
-                if (_.isArray(this.handlers[type])) {
+                if (CanvasShapes._.isArray(this.handlers[type])) {
                     handlers = this.handlers[type];
                 }
             }

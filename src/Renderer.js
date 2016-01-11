@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 /**
  * The main class of a library. Everything starts from here, and it should be

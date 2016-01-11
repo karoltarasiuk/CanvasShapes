@@ -1,9 +1,7 @@
 /*global define, describe, it, expect*/
 define([
-    "lodash",
     "CanvasShapes"
 ], function(
-    _,
     CanvasShapes
 ) {
 

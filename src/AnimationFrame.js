@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.AnimationFrame = (function () {
 
@@ -40,13 +40,15 @@ CanvasShapes.AnimationFrame = (function () {
         var i;
 
         if (
-            !_.isObject(shape) || !_.isFunction(shape.is) ||
+            !CanvasShapes._.isObject(shape) ||
+            !CanvasShapes._.isFunction(shape.is) ||
             !shape.is(CanvasShapes.RenderingInterface) ||
-            !_.isNumber(totalAnimationTime) ||
-            !_.isFunction(stepCallback) ||
-            (callback && !_.isFunction(callback)) ||
-            (variables && (!_.isObject(variables) || _.isArray(variables))) ||
-            (type && !_.isString(type))
+            !CanvasShapes._.isNumber(totalAnimationTime) ||
+            !CanvasShapes._.isFunction(stepCallback) ||
+            (callback && !CanvasShapes._.isFunction(callback)) ||
+            (variables && (!CanvasShapes._.isObject(variables) ||
+            CanvasShapes._.isArray(variables))) ||
+            (type && !CanvasShapes._.isString(type))
         ) {
             throw new CanvasShapes.Error(1043);
         }

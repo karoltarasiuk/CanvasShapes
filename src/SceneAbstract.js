@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.SceneAbstract = (function () {
 
@@ -164,7 +164,7 @@ CanvasShapes.SceneAbstract = (function () {
 
             var layer;
 
-            if (!_.isObject(this.layers)) {
+            if (!CanvasShapes._.isObject(this.layers)) {
                 this.layers = {};
                 layer = new CanvasShapes.SceneLayer(
                     this,
@@ -251,7 +251,7 @@ CanvasShapes.SceneAbstract = (function () {
             var i, j, layer, layerObject, requestedLayer, found, originalShape,
                 uuid;
 
-            if (!_.isObject(this.requestedRendering)) {
+            if (!CanvasShapes._.isObject(this.requestedRendering)) {
                 this.requestedRendering = {};
             }
 
@@ -403,7 +403,7 @@ CanvasShapes.SceneAbstract = (function () {
 
             // finding by shape
             } else if (
-                _.isObject(shape) && shape.is &&
+                CanvasShapes._.isObject(shape) && shape.is &&
                 shape.is(CanvasShapes.ShapeInterface)
             ) {
                 for (i in this.layers) {
@@ -429,13 +429,14 @@ CanvasShapes.SceneAbstract = (function () {
 
             if (!this.sceneInterfaceHandlers) {
                 this.sceneInterfaceHandlers = {
-                    newLayer: _.bind(this.newLayer, this),
-                    getLayer: _.bind(this.getLayer, this),
-                    addShape: _.bind(this.addShape, this),
-                    requestRendering: _.bind(this.requestRendering, this),
-                    on: _.bind(this.on, this),
-                    off: _.bind(this.off, this),
-                    dispatch: _.bind(this.dispatch, this)
+                    newLayer: CanvasShapes._.bind(this.newLayer, this),
+                    getLayer: CanvasShapes._.bind(this.getLayer, this),
+                    addShape: CanvasShapes._.bind(this.addShape, this),
+                    requestRendering: CanvasShapes._
+                        .bind(this.requestRendering, this),
+                    on: CanvasShapes._.bind(this.on, this),
+                    off: CanvasShapes._.bind(this.off, this),
+                    dispatch: CanvasShapes._.bind(this.dispatch, this)
                 };
             }
 

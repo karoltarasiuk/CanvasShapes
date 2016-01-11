@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.Arc = (function () {
 
@@ -38,7 +38,7 @@ CanvasShapes.Arc = (function () {
         this.MAX_COORDINATES = MAX_COORDINATES;
 
         if (
-            !_.isArray(coordinates) ||
+            !CanvasShapes._.isArray(coordinates) ||
             (coordinates.length !== 1 && coordinates.length !== 3)
         ) {
             throw new CanvasShapes.Error(1024);
@@ -143,7 +143,8 @@ CanvasShapes.Arc = (function () {
                 radius = this.radius;
 
             if (
-                _.isObject(layer) && _.isFunction(layer.is) &&
+                CanvasShapes._.isObject(layer) &&
+                CanvasShapes._.isFunction(layer.is) &&
                 layer.is(CanvasShapes.SceneLayerInterface) &&
                 this.is(CanvasShapes.RenderingInterface) &&
                 this.getRelativeRendering()

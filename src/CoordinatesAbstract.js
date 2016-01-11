@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.CoordinatesAbstract = (function () {
 
@@ -25,8 +25,10 @@ CanvasShapes.CoordinatesAbstract = (function () {
                 ret = [];
 
             if (
-                (_.isArray(coordinates) && coordinates.length > 0) &&
-                (_.isArray(coordinates[0]) || _.isObject(coordinates[0]))
+                (CanvasShapes._.isArray(coordinates) &&
+                    coordinates.length > 0) &&
+                (CanvasShapes._.isArray(coordinates[0]) ||
+                    CanvasShapes._.isObject(coordinates[0]))
             ) {
                 multiple = true;
             } else {
@@ -34,10 +36,10 @@ CanvasShapes.CoordinatesAbstract = (function () {
             }
 
             for (i = 0; i < coordinates.length; i++) {
-                if (_.isArray(coordinates[i])) {
+                if (CanvasShapes._.isArray(coordinates[i])) {
                     ret.push(coordinates[i].slice(0));
                 } else if (
-                    _.isObject(coordinates[i]) &&
+                    CanvasShapes._.isObject(coordinates[i]) &&
                     coordinates[i].is(CanvasShapes.CoordinatesInterface)
                 ) {
                     ret.push(coordinates[i].getCentreCoordinates().slice(0));
@@ -45,7 +47,8 @@ CanvasShapes.CoordinatesAbstract = (function () {
             }
 
             if (
-                _.isObject(layer) && _.isFunction(layer.is) &&
+                CanvasShapes._.isObject(layer) &&
+                CanvasShapes._.isFunction(layer.is) &&
                 layer.is(CanvasShapes.SceneLayerInterface) &&
                 this.is(CanvasShapes.RenderingInterface) &&
                 this.getRelativeRendering()
@@ -72,21 +75,22 @@ CanvasShapes.CoordinatesAbstract = (function () {
             var i,
                 valid = false;
 
-            if (_.isArray(coordinates)) {
+            if (CanvasShapes._.isArray(coordinates)) {
                 if (coordinates.length > 1) {
 
                     valid = true;
 
                     // checking each element in an array whether it's a number
                     for (i = 0; i < coordinates.length; i++) {
-                        if (!_.isNumber(coordinates[i])) {
+                        if (!CanvasShapes._.isNumber(coordinates[i])) {
                             valid = false;
                             break;
                         }
                     }
                 }
             } else if (
-                _.isObject(coordinates) && _.isFunction(coordinates.is) &&
+                CanvasShapes._.isObject(coordinates) &&
+                CanvasShapes._.isFunction(coordinates.is) &&
                 coordinates.is(CanvasShapes.CoordinatesInterface)
             ) {
                 valid = true;
@@ -108,7 +112,10 @@ CanvasShapes.CoordinatesAbstract = (function () {
                 ret = [],
                 dictionary = ['x', 'y', 'z'];
 
-            if (!_.isObject(offset) || _.isArray(offset)) {
+            if (
+                !CanvasShapes._.isObject(offset) ||
+                CanvasShapes._.isArray(offset)
+            ) {
                 throw new CanvasShapes.Error(1047);
             }
 
@@ -136,7 +143,7 @@ CanvasShapes.CoordinatesAbstract = (function () {
 
             if (!multiplier) {
                 multiplier = 1;
-            } else if (!_.isNumber(multiplier)) {
+            } else if (!CanvasShapes._.isNumber(multiplier)) {
                 throw new CanvasShapes.Error(1049);
             }
 
@@ -163,7 +170,7 @@ CanvasShapes.CoordinatesAbstract = (function () {
             var i,
                 valid = true;
 
-            if (!_.isArray(coordinates)) {
+            if (!CanvasShapes._.isArray(coordinates)) {
 
                 valid = false;
 
@@ -176,14 +183,14 @@ CanvasShapes.CoordinatesAbstract = (function () {
                 }
 
                 if (
-                    _.isNumber(minimumCoordinatesNumber) &&
+                    CanvasShapes._.isNumber(minimumCoordinatesNumber) &&
                     coordinates.length < minimumCoordinatesNumber
                 ) {
                     valid = false;
                 }
 
                 if (
-                    _.isNumber(maximumCoordinatesNumber) &&
+                    CanvasShapes._.isNumber(maximumCoordinatesNumber) &&
                     coordinates.length > maximumCoordinatesNumber
                 ) {
                     valid = false;
@@ -214,8 +221,9 @@ CanvasShapes.CoordinatesAbstract = (function () {
                 z = 0;
 
             if (
-                _.isArray(coordinates) && coordinates.length > 0 &&
-                !_.isArray(coordinates[0]) && !_.isObject(coordinates[0])
+                CanvasShapes._.isArray(coordinates) && coordinates.length > 0 &&
+                !CanvasShapes._.isArray(coordinates[0]) &&
+                !CanvasShapes._.isObject(coordinates[0])
             ) {
                 coordinates = [coordinates];
             }

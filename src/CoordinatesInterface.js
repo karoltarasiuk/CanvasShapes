@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.CoordinatesInterface = (function () {
 
@@ -105,10 +105,10 @@ CanvasShapes.CoordinatesInterface = (function () {
         },
 
         /**
-         * Translates coordinates by a given offset and multiplier, returning a new
-         * set of coordinates. It assumes that coordinates are passed as an array
-         * of coordinates. Passing single array of numbers will cause the function
-         * to throw an exception. Offset object is defined as follows:
+         * Translates coordinates by a given offset and multiplier, returning a
+         * new set of coordinates. It assumes that coordinates are passed as an
+         * array of coordinates. Passing single array of numbers will cause the
+         * function to throw an exception. Offset object is defined as follows:
          * ```
          * {
          *     x: {float},

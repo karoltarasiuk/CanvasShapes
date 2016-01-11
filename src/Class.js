@@ -14,7 +14,7 @@ CanvasShapes.Class = (function () {
     var Class = function (className) {
         this.setUUID();
 
-        if (_.isString(className)) {
+        if (CanvasShapes._.isString(className)) {
             this.classes = [className];
             Array.prototype.push.apply(this.classes, defaultClasses);
         } else {
@@ -52,25 +52,28 @@ CanvasShapes.Class = (function () {
         args.splice(1, 0, Class.prototype);
 
         // underscore extend
-        obj = _.extend.apply(_, args);
+        obj = CanvasShapes._.extend.apply(CanvasShapes._, args);
 
-        _.each(args, function (argument) {
+        CanvasShapes._.each(args, function (argument) {
 
-            if (_.isArray(argument.classes)) {
+            if (CanvasShapes._.isArray(argument.classes)) {
                 for (i = 0; i < argument.classes.length; i++) {
                     classes.push(argument.classes[i]);
                 }
             }
 
-            if (_.isString(argument.className)) {
+            if (CanvasShapes._.isString(argument.className)) {
                 classes.push(argument.className);
             }
         });
 
-        obj.classes = _.uniq(classes);
+        obj.classes = CanvasShapes._.uniq(classes);
     };
 
-    _.extend(Class.prototype, CanvasShapes.ClassAbstract.prototype, {
+    CanvasShapes._.extend(
+        Class.prototype,
+        CanvasShapes.ClassAbstract.prototype,
+    {
 
         className: 'CanvasShapes.Class'
     });
@@ -124,7 +127,7 @@ CanvasShapes.Class = (function () {
         var i,
             old = null;
 
-        if (!Class.isUUID(UUID) || !_.isObject(obj)) {
+        if (!Class.isUUID(UUID) || !CanvasShapes._.isObject(obj)) {
             throw new CanvasShapes.Error(1062);
         }
 
@@ -230,7 +233,7 @@ CanvasShapes.Class = (function () {
         var i, classNameParts,
             classObject = CanvasShapes;
 
-        if (!_.isString(className)) {
+        if (!CanvasShapes._.isString(className)) {
             throw new CanvasShapes.Error(1066);
         }
 
@@ -244,7 +247,7 @@ CanvasShapes.Class = (function () {
         }
 
         for (i = 1; i < classNameParts.length; i++) {
-            if (!_.isObject(classObject[classNameParts[i]])) {
+            if (!CanvasShapes._.isObject(classObject[classNameParts[i]])) {
                 return null;
             }
             classObject = classObject[classNameParts[i]];

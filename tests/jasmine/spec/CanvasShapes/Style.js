@@ -1,9 +1,7 @@
 /*global define, describe, it, expect*/
 define([
-    "lodash",
     "CanvasShapes"
 ], function(
-    _,
     CanvasShapes
 ) {
 
@@ -67,7 +65,7 @@ define([
 
                 var style = new CanvasShapes.Style();
 
-                expect(_.isFunction(style.definitions['default'])).toBe(true);
+                expect(CanvasShapes._.isFunction(style.definitions['default'])).toBe(true);
             });
 
             it('setting and getting definitions', function () {
@@ -79,13 +77,13 @@ define([
                     obj = {};
 
                 style.setDefinition(some, 'some');
-                expect(_.isFunction(style.definitions.some)).toBe(true);
+                expect(CanvasShapes._.isFunction(style.definitions.some)).toBe(true);
                 style.setHoverDefinition(hover);
-                expect(_.isFunction(style.definitions.hover)).toBe(true);
+                expect(CanvasShapes._.isFunction(style.definitions.hover)).toBe(true);
                 style.setActiveDefinition(active);
-                expect(_.isFunction(style.definitions.active)).toBe(true);
+                expect(CanvasShapes._.isFunction(style.definitions.active)).toBe(true);
                 style.setDefinition(obj, 'obj');
-                expect(_.isObject(style.definitions.obj)).toBe(true);
+                expect(CanvasShapes._.isObject(style.definitions.obj)).toBe(true);
 
                 expect(style.getDefinition('some')).toBe(some);
                 expect(style.getHoverDefinition()).toBe(hover);

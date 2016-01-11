@@ -1,9 +1,7 @@
 /*global define, describe, it, expect*/
 define([
-    "lodash",
     "CanvasShapes"
 ], function(
-    _,
     CanvasShapes
 ) {
 
@@ -204,7 +202,7 @@ define([
                 layer = scene.newLayer(shape2);
 
                 shape1Class = function () {};
-                _.extend(
+                CanvasShapes._.extend(
                     shape1Class.prototype,
                     CanvasShapes.InteractionAbstract.prototype
                 );

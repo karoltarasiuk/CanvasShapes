@@ -1,9 +1,7 @@
 /*global define, describe, it, expect*/
 define([
-    "lodash",
     "CanvasShapes"
 ], function(
-    _,
     CanvasShapes
 ) {
 
@@ -52,11 +50,11 @@ define([
 
                 for (i in sceneInterfaceHandlers) {
                     expect(rendering.sceneInterfaceHandlers[i]).toBeDefined();
-                    expect(_.isFunction(rendering.sceneInterfaceHandlers[i]))
+                    expect(CanvasShapes._.isFunction(rendering.sceneInterfaceHandlers[i]))
                         .toBe(true);
                     expect(rendering.sceneInterfaceHandlers[0][i])
                         .toBeDefined();
-                    expect(_.isFunction(rendering.sceneInterfaceHandlers[0][i]))
+                    expect(CanvasShapes._.isFunction(rendering.sceneInterfaceHandlers[0][i]))
                         .toBe(true);
                 }
             });

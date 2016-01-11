@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.AnimationAbstract = (function () {
 
@@ -21,8 +21,8 @@ CanvasShapes.AnimationAbstract = (function () {
         animate: function (animationFrame) {
 
             if (
-                !_.isObject(animationFrame) ||
-                !_.isFunction(animationFrame.is) ||
+                !CanvasShapes._.isObject(animationFrame) ||
+                !CanvasShapes._.isFunction(animationFrame.is) ||
                 !animationFrame.is(CanvasShapes.AnimationFrame)
             ) {
                 throw new CanvasShapes.Error(1045);

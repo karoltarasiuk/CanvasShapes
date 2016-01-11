@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.GeometryTools = (function () {
 
@@ -124,8 +124,8 @@ CanvasShapes.GeometryTools = (function () {
             return isInside(polygonCoordinates);
         } else {
             for (k = 0; k < 4; k++) {
-                // changing coordinates of a polygon to make it a little bit bigger
-                // to accommodate allowed error
+                // changing coordinates of a polygon to make it a little bit
+                // bigger to accommodate allowed error
                 switch (k) {
                     case 0:
                         xShift = allowedError;

@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.Error = (function () {
 
@@ -13,7 +13,7 @@ CanvasShapes.Error = (function () {
         1006: 'CanvasShapes.Scene - nothing to render - no arguments passed',
         1007: "CanvasShapes.SceneLayer - in `constructor`: passed `dom` doesn't exist",
         1008: "CanvasShapes.Point - in `setFace()`: provided face doesn't exist",
-        1009: "CanvasShapes.ClassAbstract - in `is()`: `passedClass` is not a string and doesn't have `className` property",
+        1009: "CanvasShapes.Class - in `is()`: `passedClass` is not a string and doesn't have `className` property",
         1010: "CanvasShapes.GroupAbstract - in `add()`: all shapes must implement CanvasShapes.ShapeInterface",
         1011: "CanvasShapes.CoordinatesAbstract - in `validateCoordinates()` or `validateCoordinatesArray()`: passed coordinates are not valid",
         1012: "CanvasShapes.Scene - this object doesn't implement CanvasShapes.RenderingInterface and can't be rendered",
@@ -71,12 +71,13 @@ CanvasShapes.Error = (function () {
         1064: "CanvasShapes.Class - in `swapUUID()`: passed parameters are not valid",
         1065: "CanvasShapes.Class - in `removeObject()`: passed parameters are not valid",
         1066: "CanvasShapes.Class - in `getClass()`: passed `className` is not a string",
+        1067: "CanvasShapes.Class - in `extend()`: passed arguments are invalid",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
         8003: "CanvasShapes.ShapeAbstract - can't instantiate abstract",
         8004: "CanvasShapes.CoordinatesAbstract - can't instantiate abstract",
-        8005: "CanvasShapes.ClassAbstract - can't instantiate abstract",
+        8005: "",
         8006: "CanvasShapes.GroupAbstract - can't instantiate abstract",
         8007: "CanvasShapes.SceneAbstract - can't instantiate abstract",
         8008: "CanvasShapes.SceneInterface - can't instantiate interface",
@@ -84,7 +85,7 @@ CanvasShapes.Error = (function () {
         8010: "CanvasShapes.InteractionInterface - can't instantiate interface",
         8011: "CanvasShapes.GroupInterface - can't instantiate interface",
         8012: "CanvasShapes.CoordinatesInterface - can't instantiate interface",
-        8013: "CanvasShapes.ClassInterface - can't instantiate interface",
+        8013: "",
         8014: "CanvasShapes.StyleInterface - can't instantiate interface",
         8015: "CanvasShapes.ShapeInterface - can't instantiate interface",
         8016: "CanvasShapes.SceneLayerInterface - can't instantiate interface",
@@ -104,7 +105,7 @@ CanvasShapes.Error = (function () {
         9006: 'CanvasShapes.StyleInterface - `set()` is not implemented',
         9007: 'CanvasShapes.CoordinatesInterface - `getCoordinates()` is not implemented',
         9008: 'CanvasShapes.CoordinatesInterface - `processCoordinates()` is not implemented',
-        9009: 'CanvasShapes.ClassInterface - `is()` is not implemented',
+        9009: '',
         9010: 'CanvasShapes.GroupInterface - `addShapes()` is not implemented',
         9011: 'CanvasShapes.GroupInterface - `eachShape()` is not implemented',
         9012: 'CanvasShapes.GroupInterface - `removeShapes()` is not implemented',
@@ -142,8 +143,8 @@ CanvasShapes.Error = (function () {
         9047: "CanvasShapes.AnimationInterface - `animate()` is not implemented",
         9048: "CanvasShapes.SceneInterface - `requestRendering()` is not implemented",
         9049: "CanvasShapes.CoordinatesInterface - `setCoordinates()` is not implemented",
-        9050: "CanvasShapes.ClassInterface - `setUUID()` is not implemented",
-        9051: "CanvasShapes.ClassInterface - `getUUID()` is not implemented",
+        9050: "",
+        9051: "",
         9052: "CanvasShapes.AnimationFrameInterface - `next()` is not implemented",
         9053: "CanvasShapes.AnimationFrameInterface - `reset()` is not implemented",
         9054: "CanvasShapes.ShapeInterface - `setParent()` is not implemented",
@@ -169,10 +170,10 @@ CanvasShapes.Error = (function () {
      */
     ErrorClass = function (error) {
 
-        if (_.isNumber(error)) {
+        if (CanvasShapes._.isNumber(error)) {
             this.code = error;
             this.message = this.getMessageByCode(this.code);
-        } else if (_.isString(error)) {
+        } else if (CanvasShapes._.isString(error)) {
             this.message = error;
         }
     };
@@ -196,7 +197,7 @@ CanvasShapes.Error = (function () {
          */
         getMessageByCode: function (code) {
 
-            if (_.isString(errors[code])) {
+            if (CanvasShapes._.isString(errors[code])) {
                 return errors[code];
             }
 

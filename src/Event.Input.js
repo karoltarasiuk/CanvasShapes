@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.Event.Input = (function () {
 
@@ -34,9 +34,18 @@ CanvasShapes.Event.Input = (function () {
         // as there can be multiple scenes, and events must work for all of
         // them within one `Renderer`.
         document.body.tabIndex = 1;
-        document.body.addEventListener('keydown', _.bind(this.dispatch, this));
-        document.body.addEventListener('keyup', _.bind(this.dispatch, this));
-        document.body.addEventListener('keypress', _.bind(this.dispatch, this));
+        document.body.addEventListener(
+            'keydown',
+            CanvasShapes._.bind(this.dispatch, this)
+        );
+        document.body.addEventListener(
+            'keyup',
+            CanvasShapes._.bind(this.dispatch, this)
+        );
+        document.body.addEventListener(
+            'keypress',
+            CanvasShapes._.bind(this.dispatch, this)
+        );
     });
 
     return InputEvent;

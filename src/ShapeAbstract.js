@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.ShapeAbstract = (function () {
 
@@ -17,7 +17,8 @@ CanvasShapes.ShapeAbstract = (function () {
          */
         setParent: function (group) {
             if (
-                !_.isObject(group) || !_.isFunction(group.is) ||
+                !CanvasShapes._.isObject(group) ||
+                !CanvasShapes._.isFunction(group.is) ||
                 !group.is(CanvasShapes.GroupInterface)
             ) {
                 throw new CanvasShapes.Error(1046);

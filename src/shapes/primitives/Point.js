@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.Point = (function () {
 
@@ -103,21 +103,24 @@ CanvasShapes.Point = (function () {
                 size = Point.DEFAULTS.SIZE;
             }
 
-            if (_.isString(face)) {
-                if (_.contains(Point.FACES, face)) {
+            if (CanvasShapes._.isString(face)) {
+                if (CanvasShapes._.contains(Point.FACES, face)) {
                     switch (face) {
                         case Point.FACES.CIRCLE:
                             this.face = new CanvasShapes.Circle(this, size);
-                            this.face.setStyle(new CanvasShapes.Style(function (context) {
-                                context.fill();
-                            }));
+                            this.face.setStyle(
+                                new CanvasShapes.Style(function (context) {
+                                    context.fill();
+                                })
+                            );
                             break;
                     }
                 } else {
                     throw new CanvasShapes.Error(1008);
                 }
             } else if (
-                _.isObject(face) && _.isFunction(face.is) &&
+                CanvasShapes._.isObject(face) &&
+                CanvasShapes._.isFunction(face.is) &&
                 face.is(CanvasShapes.RenderingInterface)
             ) {
                 this.face = face;

@@ -1,9 +1,7 @@
 /*global define, describe, it, expect*/
 define([
-    "lodash",
     "CanvasShapes"
 ], function(
-    _,
     CanvasShapes
 ) {
 
@@ -119,17 +117,17 @@ define([
                 expect(point2.sceneInterfaceHandlers[0][i]).toBeDefined();
                 expect(point2.face.sceneInterfaceHandlers[0][i]).toBeDefined();
 
-                expect(_.isFunction(point1.sceneInterfaceHandlers[i]))
+                expect(CanvasShapes._.isFunction(point1.sceneInterfaceHandlers[i]))
                     .toBe(true);
-                expect(_.isFunction(point2.sceneInterfaceHandlers[i]))
+                expect(CanvasShapes._.isFunction(point2.sceneInterfaceHandlers[i]))
                     .toBe(true);
-                expect(_.isFunction(point2.face.sceneInterfaceHandlers[i]))
+                expect(CanvasShapes._.isFunction(point2.face.sceneInterfaceHandlers[i]))
                     .toBe(true);
-                expect(_.isFunction(point1.sceneInterfaceHandlers[0][i]))
+                expect(CanvasShapes._.isFunction(point1.sceneInterfaceHandlers[0][i]))
                     .toBe(true);
-                expect(_.isFunction(point2.sceneInterfaceHandlers[0][i]))
+                expect(CanvasShapes._.isFunction(point2.sceneInterfaceHandlers[0][i]))
                     .toBe(true);
-                expect(_.isFunction(point2.face.sceneInterfaceHandlers[0][i]))
+                expect(CanvasShapes._.isFunction(point2.face.sceneInterfaceHandlers[0][i]))
                     .toBe(true);
             }
         });

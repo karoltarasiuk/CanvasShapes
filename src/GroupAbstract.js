@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.GroupAbstract = (function () {
 
@@ -60,7 +60,7 @@ CanvasShapes.GroupAbstract = (function () {
 
             var i = 0;
 
-            if (!_.isArray(shapes)) {
+            if (!CanvasShapes._.isArray(shapes)) {
                 shapes = [shapes];
             }
 

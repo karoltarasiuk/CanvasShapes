@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.Shape = (function () {
 
@@ -12,7 +12,7 @@ CanvasShapes.Shape = (function () {
 
         if (coordinates) {
             if (
-                _.isArray(coordinates) && (
+                CanvasShapes._.isArray(coordinates) && (
                     this.validateCoordinates(coordinates) ||
                     this.validateCoordinatesArray(coordinates)
                 )
@@ -48,7 +48,7 @@ CanvasShapes.Shape = (function () {
          */
         setIsCollidingRatio: function (isCollidingRatio) {
 
-            if (!_.isNumber(isCollidingRatio)) {
+            if (!CanvasShapes._.isNumber(isCollidingRatio)) {
                 throw new CanvasShapes.Error(1057);
             }
 
@@ -70,7 +70,7 @@ CanvasShapes.Shape = (function () {
 
             var isCollidingRatio = this._isCollidingRatio ||
                     CanvasShapes.Config.get('IS_COLLIDING_RATIO'),
-                allowedError = _.max([
+                allowedError = CanvasShapes._.max([
                     layer.getWidth(),
                     layer.getHeight()]
                 ) * isCollidingRatio;
@@ -90,11 +90,11 @@ CanvasShapes.Shape = (function () {
             var layer, allowedError, coordinates;
 
             if (
-                !_.isObject(mouseCoordinates) ||
-                !_.isNumber(mouseCoordinates.x) ||
-                !_.isNumber(mouseCoordinates.y) ||
-                !_.isObject(mouseCoordinates.scene) ||
-                !_.isFunction(mouseCoordinates.scene.is) ||
+                !CanvasShapes._.isObject(mouseCoordinates) ||
+                !CanvasShapes._.isNumber(mouseCoordinates.x) ||
+                !CanvasShapes._.isNumber(mouseCoordinates.y) ||
+                !CanvasShapes._.isObject(mouseCoordinates.scene) ||
+                !CanvasShapes._.isFunction(mouseCoordinates.scene.is) ||
                 !mouseCoordinates.scene.is(CanvasShapes.SceneInterface)
             ) {
                 throw new CanvasShapes.Error(1037);
@@ -122,7 +122,7 @@ CanvasShapes.Shape = (function () {
          */
         isOnScene: function () {
 
-            if (_.isObject(this.sceneInterfaceHandlers)) {
+            if (CanvasShapes._.isObject(this.sceneInterfaceHandlers)) {
                 return true;
             }
 
@@ -160,7 +160,7 @@ CanvasShapes.Shape = (function () {
                 newHandler = (function () {
 
                     var inOrOut,
-                        newHandler = _.bind(function (e) {
+                        newHandler = CanvasShapes._.bind(function (e) {
 
                             var isColliding = that.isColliding(e);
 
@@ -193,7 +193,7 @@ CanvasShapes.Shape = (function () {
 
             } else if (eventsUsingIsColliding.indexOf(eventType) !== -1) {
                 // checking whether the event is colliding with a shape
-                newHandler = _.bind(function (e) {
+                newHandler = CanvasShapes._.bind(function (e) {
                     if (that.isColliding(e)) {
                         handler.apply(this, arguments);
                     }
@@ -215,7 +215,7 @@ CanvasShapes.Shape = (function () {
             }
 
             if (
-                _.isString(handlerOrType) &&
+                CanvasShapes._.isString(handlerOrType) &&
                 eventTypeOrContext === undefined &&
                 context === undefined
             ) {
@@ -224,7 +224,7 @@ CanvasShapes.Shape = (function () {
 
             } else if (
                 context === undefined &&
-                _.isObject(eventTypeOrContext)
+                CanvasShapes._.isObject(eventTypeOrContext)
             ) {
                 // this.off('some-event-type', contextObject)
                 this.sceneInterfaceHandlers.off(
@@ -234,7 +234,7 @@ CanvasShapes.Shape = (function () {
 
             } else if (
                 context === undefined &&
-                _.isString(eventTypeOrContext)
+                CanvasShapes._.isString(eventTypeOrContext)
             ) {
                 // this.off(someHandlerFunction, 'some-event-type')
                 this.sceneInterfaceHandlers.off(
@@ -280,7 +280,7 @@ CanvasShapes.Shape = (function () {
                     this.getCoordinates()
                 );
 
-            if (_.isArray(coordinates)) {
+            if (CanvasShapes._.isArray(coordinates)) {
                 if (
                     (this.MIN_COORDINATES === undefined && this.MAX_COORDINATES === undefined) ||
                     (this.MIN_COORDINATES === 1 && this.MAX_COORDINATES === 1)
@@ -289,9 +289,9 @@ CanvasShapes.Shape = (function () {
                 } else {
                     this.validateCoordinatesArray(coordinates, true, this.MIN_COORDINATES, this.MAX_COORDINATES);
                 }
-            } else if (_.isFunction(coordinates)) {
+            } else if (CanvasShapes._.isFunction(coordinates)) {
                 // do absolutely nothing
-            } else if (_.isObject(coordinates)) {
+            } else if (CanvasShapes._.isObject(coordinates)) {
                 // translating offset object to array
                 tempCoordinates =
                     this.translateOffsetToCoordinates(coordinates);
@@ -301,9 +301,9 @@ CanvasShapes.Shape = (function () {
                 // setting `this.coordinates` as
                 // `this.startingCoordinates` plus offset
                 for (i = 0; i < startingCoordinates.length; i++) {
-                    if (_.isArray(startingCoordinates[i])) {
+                    if (CanvasShapes._.isArray(startingCoordinates[i])) {
                         for (j = 0; j < startingCoordinates[i].length; j++) {
-                            if (!_.isArray(coordinates[i])) {
+                            if (!CanvasShapes._.isArray(coordinates[i])) {
                                 coordinates[i] = [];
                             }
                             coordinates[i][j] =
@@ -325,11 +325,11 @@ CanvasShapes.Shape = (function () {
                         newCoordinates = [],
                         ratio = currentTime / this.totalAnimationTime;
 
-                    if (_.isNaN(ratio) || ratio > 1) {
+                    if (CanvasShapes._.isNaN(ratio) || ratio > 1) {
                         ratio = 1;
                     }
 
-                    if (_.isFunction(this.variables.coordinates)) {
+                    if (CanvasShapes._.isFunction(this.variables.coordinates)) {
                         newCoordinates = this.variables.coordinates(
                             this.variables.startingCoordinates,
                             this.totalAnimationTime,
@@ -338,8 +338,8 @@ CanvasShapes.Shape = (function () {
                     } else {
 
                         for (i = 0; i < this.variables.coordinates.length; i++) {
-                            if (_.isArray(this.variables.coordinates[i])) {
-                                if (!_.isArray(newCoordinates[i])) {
+                            if (CanvasShapes._.isArray(this.variables.coordinates[i])) {
+                                if (!CanvasShapes._.isArray(newCoordinates[i])) {
                                     newCoordinates[i] = [];
                                 }
                                 for (j = 0; j < this.variables.coordinates[i].length; j++) {

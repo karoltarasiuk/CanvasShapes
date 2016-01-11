@@ -9,7 +9,7 @@ CanvasShapes.ClassInterface = (function () {
         throw new CanvasShapes.Error(8013);
     };
 
-    _.extend(ClassInterface.prototype, {
+    CanvasShapes._.extend(ClassInterface.prototype, {
 
         className: 'CanvasShapes.ClassInterface',
 

@@ -1,9 +1,7 @@
 /*global define, describe, it, expect*/
 define([
-    "lodash",
     "CanvasShapes"
 ], function(
-    _,
     CanvasShapes
 ) {
 
@@ -39,24 +37,6 @@ define([
         });
 
         describe('instantiating', function () {
-
-            it('cannot instantiate an interface', function () {
-
-                expect(
-                    function () {
-                        new CanvasShapes.ClassInterface();
-                    }
-                ).toThrow(new CanvasShapes.Error(8013));
-            });
-
-            it('cannot instantiate an abstract', function () {
-
-                expect(
-                    function () {
-                        new CanvasShapes.ClassAbstract();
-                    }
-                ).toThrow(new CanvasShapes.Error(8005));
-            });
 
             it('can instantiate normal class', function () {
 

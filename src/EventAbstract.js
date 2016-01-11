@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.EventAbstract = (function () {
 
@@ -40,18 +40,22 @@ CanvasShapes.EventAbstract = (function () {
          */
         initialise: function (event, scene, target) {
 
-            if (_.isString(event)) {
+            if (CanvasShapes._.isString(event)) {
                 event = {
                     type: event
                 };
             }
 
-            if (!_.isObject(event) || !_.isString(event.type)) {
+            if (
+                !CanvasShapes._.isObject(event) ||
+                !CanvasShapes._.isString(event.type)
+            ) {
                 throw new CanvasShapes.Error(1035);
             }
 
             if (
-                !_.isObject(scene) || !_.isFunction(scene.is) ||
+                !CanvasShapes._.isObject(scene) ||
+                !CanvasShapes._.isFunction(scene.is) ||
                 !scene.is(CanvasShapes.SceneInterface)
             ) {
                 throw new CanvasShapes.Error(1056);

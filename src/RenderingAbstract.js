@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.RenderingAbstract = (function () {
 
@@ -46,27 +46,31 @@ CanvasShapes.RenderingAbstract = (function () {
 
             var sceneInterfaceHandler;
 
-            if (!_.isArray(this.sceneInterfaceHandlers)) {
+            if (!CanvasShapes._.isArray(this.sceneInterfaceHandlers)) {
                 this.sceneInterfaceHandlers = [];
             }
 
-            _.each(sceneInterfaceHandlers, function (
+            CanvasShapes._.each(sceneInterfaceHandlers, function (
                 sceneInterfaceHandler,
                 handlerName
             ) {
-                if (!_.isFunction(this.sceneInterfaceHandlers[handlerName])) {
-                    this.sceneInterfaceHandlers[handlerName] = _.bind(
-                        function () {
-                            var i,
-                                length = this.sceneInterfaceHandlers.length;
+                if (
+                    !CanvasShapes._
+                        .isFunction(this.sceneInterfaceHandlers[handlerName])
+                ) {
+                    this.sceneInterfaceHandlers[handlerName] =
+                        CanvasShapes._.bind(
+                            function () {
+                                var i,
+                                    length = this.sceneInterfaceHandlers.length;
 
-                            for (i = 0; i < length; i++) {
-                                this.sceneInterfaceHandlers[i][handlerName]
-                                    .apply(this, arguments);
-                            }
-                        },
-                        this
-                    );
+                                for (i = 0; i < length; i++) {
+                                    this.sceneInterfaceHandlers[i][handlerName]
+                                        .apply(this, arguments);
+                                }
+                            },
+                            this
+                        );
                 }
             }, this);
 
@@ -95,7 +99,7 @@ CanvasShapes.RenderingAbstract = (function () {
          */
         setRelativeRendering: function (relativeRendering) {
 
-            if (_.isBoolean(relativeRendering)) {
+            if (CanvasShapes._.isBoolean(relativeRendering)) {
                 this.relativeRendering = relativeRendering;
                 return true;
             }

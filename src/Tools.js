@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.Tools = (function () {
 
@@ -11,7 +11,7 @@ CanvasShapes.Tools = (function () {
      * @return {array}
      */
     function removeByIndex(array, index) {
-        if (_.isArray(array) && array.splice) {
+        if (CanvasShapes._.isArray(array) && array.splice) {
             array.splice(index, 1);
         }
         return array;
@@ -62,7 +62,10 @@ CanvasShapes.Tools = (function () {
      */
     function hexToRGB(hex, convertToArray) {
 
-        if (!_.isString(hex) || (hex.length !== 7 && hex.length !== 4)) {
+        if (
+            !CanvasShapes._.isString(hex) ||
+            (hex.length !== 7 && hex.length !== 4)
+        ) {
             return null;
         }
 
@@ -103,8 +106,8 @@ CanvasShapes.Tools = (function () {
     function arrayToHex(arr) {
 
         if (
-            !_.isArray(arr) || !_.isNumber(arr[0]) ||
-            !_.isNumber(arr[1]) || !_.isNumber(arr[2])
+            !CanvasShapes._.isArray(arr) || !CanvasShapes._.isNumber(arr[0]) ||
+            !CanvasShapes._.isNumber(arr[1]) || !CanvasShapes._.isNumber(arr[2])
         ) {
             return null;
         }
@@ -121,8 +124,8 @@ CanvasShapes.Tools = (function () {
     function objectToHex(obj) {
 
         if (
-            !_.isObject(obj) || !_.isNumber(obj.r) ||
-            !_.isNumber(obj.g) || !_.isNumber(obj.b)
+            !CanvasShapes._.isObject(obj) || !CanvasShapes._.isNumber(obj.r) ||
+            !CanvasShapes._.isNumber(obj.g) || !CanvasShapes._.isNumber(obj.b)
         ) {
             return null;
         }
@@ -141,7 +144,11 @@ CanvasShapes.Tools = (function () {
      */
     function rgbToHex(r, g, b) {
 
-        if (!_.isNumber(r) || !_.isNumber(g) || !_.isNumber(b)) {
+        if (
+            !CanvasShapes._.isNumber(r) ||
+            !CanvasShapes._.isNumber(g) ||
+            !CanvasShapes._.isNumber(b)
+        ) {
             return null;
         }
 
@@ -152,7 +159,7 @@ CanvasShapes.Tools = (function () {
 
     function colorToHex(color) {
 
-        if (!_.isString(PREDEFINED_COLORS[color])) {
+        if (!CanvasShapes._.isString(PREDEFINED_COLORS[color])) {
             return null;
         }
 
@@ -179,9 +186,9 @@ CanvasShapes.Tools = (function () {
         var temp;
 
         if (
-            !_.isNumber(value) ||
-            !_.isNumber(intervalMin) ||
-            !_.isNumber(intervalMax)
+            !CanvasShapes._.isNumber(value) ||
+            !CanvasShapes._.isNumber(intervalMin) ||
+            !CanvasShapes._.isNumber(intervalMax)
         ) {
             return false;
         }
@@ -208,7 +215,7 @@ CanvasShapes.Tools = (function () {
      */
     function isuuid(uuid) {
         var regexp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-        return _.isString(uuid) && !!regexp.exec(uuid);
+        return CanvasShapes._.isString(uuid) && !!regexp.exec(uuid);
     }
 
     /**

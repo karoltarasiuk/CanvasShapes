@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.SceneLayer = (function () {
 
@@ -50,13 +50,15 @@ CanvasShapes.SceneLayer = (function () {
         initialise: function (scene, width, height, left, top, offScreen) {
 
             if (
-                !_.isObject(scene) || !_.isFunction(scene.is) ||
+                !CanvasShapes._.isObject(scene) ||
+                !CanvasShapes._.isFunction(scene.is) ||
                 !scene.is(CanvasShapes.SceneInterface) ||
-                (width !== undefined && !_.isNumber(width)) ||
-                (height !== undefined && !_.isNumber(height)) ||
-                (left !== undefined && !_.isNumber(left)) ||
-                (top !== undefined && !_.isNumber(top)) ||
-                (offScreen !== undefined && !_.isBoolean(offScreen))
+                (width !== undefined && !CanvasShapes._.isNumber(width)) ||
+                (height !== undefined && !CanvasShapes._.isNumber(height)) ||
+                (left !== undefined && !CanvasShapes._.isNumber(left)) ||
+                (top !== undefined && !CanvasShapes._.isNumber(top)) ||
+                (offScreen !== undefined &&
+                    !CanvasShapes._.isBoolean(offScreen))
             ) {
                 throw new CanvasShapes.Error(1055);
             }

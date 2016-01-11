@@ -1,9 +1,7 @@
 /*global define, describe, it, expect*/
 define([
-    "lodash",
     "CanvasShapes"
 ], function(
-    _,
     CanvasShapes
 ) {
 
@@ -18,8 +16,8 @@ define([
                 "CanvasShapes.Rectangle or CanvasShapes.Square - passed " +
                 "coordinates are not creating 90 degrees angle"
             );
-            expect(error.getMessageByCode(8013)).toBe(
-                "CanvasShapes.ClassInterface - can't instantiate interface"
+            expect(error.getMessageByCode(8011)).toBe(
+                "CanvasShapes.GroupInterface - can't instantiate interface"
             );
             expect(error.getMessageByCode(9013)).toBe(
                 'CanvasShapes.CoordinatesInterface - `validateCoordinates()` ' +

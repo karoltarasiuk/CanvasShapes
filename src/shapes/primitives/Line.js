@@ -1,4 +1,4 @@
-/*global _, CanvasShapes*/
+/*global CanvasShapes*/
 
 CanvasShapes.Line = (function () {
 
@@ -70,11 +70,11 @@ CanvasShapes.Line = (function () {
             var layer, processedCoordinates, allowedError;
 
             if (
-                !_.isObject(mouseCoordinates) ||
-                !_.isNumber(mouseCoordinates.x) ||
-                !_.isNumber(mouseCoordinates.y) ||
-                !_.isObject(mouseCoordinates.scene) ||
-                !_.isFunction(mouseCoordinates.scene.is) ||
+                !CanvasShapes._.isObject(mouseCoordinates) ||
+                !CanvasShapes._.isNumber(mouseCoordinates.x) ||
+                !CanvasShapes._.isNumber(mouseCoordinates.y) ||
+                !CanvasShapes._.isObject(mouseCoordinates.scene) ||
+                !CanvasShapes._.isFunction(mouseCoordinates.scene.is) ||
                 !mouseCoordinates.scene.is(CanvasShapes.SceneInterface)
             ) {
                 throw new CanvasShapes.Error(1059);
