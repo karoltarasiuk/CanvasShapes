@@ -1,17 +1,12 @@
 require.config({
     paths: {
-        lodash: '../lib/lodash.min',
-        JSONChecker: '../lib/JSONChecker',
-        uuid: '../lib/uuid',
         CanvasShapes: '../build/CanvasShapes'
     }
 });
 
 require([
-    'lodash',
     'CanvasShapes'
 ], function (
-    _,
     CanvasShapes
 ) {
     var Showcase = (function () {
