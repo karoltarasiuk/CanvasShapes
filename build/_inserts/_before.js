@@ -1,8 +1,4 @@
 /*global define*/
 
-define([
-    'uuid'
-], function (
-    uuid
-) {
+define(function () {
     'use strict';

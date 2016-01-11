@@ -1,3 +1,5 @@
+/*global CanvasShapes*/
+
 //     uuid.js
 //
 //     Copyright (c) 2010-2012 Robert Kieffer
@@ -226,24 +228,7 @@
   uuid.unparse = unparse;
   uuid.BufferClass = BufferClass;
 
-  if (typeof(module) != 'undefined' && module.exports) {
-    // Publish as node.js module
-    module.exports = uuid;
-  } else  if (typeof define === 'function' && define.amd) {
-    // Publish as AMD module
-    define(function() {return uuid;});
+  // Publish in CanvasShapes scope
+  this.uuid = uuid;
 
-
-  } else {
-    // Publish as global (in browsers)
-    var _previousRoot = _global.uuid;
-
-    // **`noConflict()` - (browser only) to reset global 'uuid' var**
-    uuid.noConflict = function() {
-      _global.uuid = _previousRoot;
-      return uuid;
-    };
-
-    _global.uuid = uuid;
-  }
-}).call(this);
+}).call(CanvasShapes);

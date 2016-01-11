@@ -4,7 +4,6 @@ require.config({
         jasminehtml: 'lib/jasmine-2.0.0/jasmine-html',
         boot: 'lib/jasmine-2.0.0/boot',
         JSONChecker: 'lib/JSONChecker',
-        uuid: 'lib/uuid',
         CanvasShapes: 'src/CanvasShapes',
     },
     shim: {

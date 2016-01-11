@@ -227,7 +227,7 @@ CanvasShapes.Tools = (function () {
         removeByIndex: removeByIndex,
         isNode: isNode,
         isElement: isElement,
-        uuid: uuid,
+        uuid: CanvasShapes.uuid,
         hexToRGB: hexToRGB,
         arrayToHex: arrayToHex,
         objectToHex: objectToHex,
