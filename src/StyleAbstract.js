@@ -13,7 +13,7 @@ CanvasShapes.StyleAbstract = (function () {
         StyleAbstract.prototype,
         CanvasShapes.StyleInterface.prototype,
     {
-        className: 'CanvasShapes.StyleAbstract',
+        _className: 'CanvasShapes.StyleAbstract',
 
         definitions: null,
 
@@ -30,10 +30,20 @@ CanvasShapes.StyleAbstract = (function () {
          *     context.stroke();
          * }
          * ```
+         * or it's an object with definition properties, e.g.:
+         * ```
+         * {
+         *     strokeStyle: 'black',
+         *     fillStyle: 'white'
+         * }
+         * ```
          *
-         * @param {function} definition
+         * [WARNING] Definition object is not as flexible, but colors specified
+         * there can be animated.
+         *
+         * @param {[function, object]} definition
          */
-        initialise: function (definition) {
+        _initialise: function (definition) {
 
             this.shapes = [];
             this.definitions = [];
@@ -84,6 +94,8 @@ CanvasShapes.StyleAbstract = (function () {
          *
          * @see https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Applying_styles_and_colors
          *
+         * @throws {CanvasShapes.Error} 1048
+         *
          * @param {function} definition
          * @param {string}   which
          */
@@ -127,6 +139,8 @@ CanvasShapes.StyleAbstract = (function () {
 
         /**
          * Fetches the existing definition.
+         *
+         * @throws {CanvasShapes.Error} 1051
          *
          * @param  {string}            which [OPTIONAL]
          * @return {[object,function]}
@@ -180,6 +194,8 @@ CanvasShapes.StyleAbstract = (function () {
 
         /**
          * @implements {CanvasShapes.StyleInterface}
+         *
+         * @throws {CanvasShapes.Error} 1052
          */
         addToShapes: function (shapes, deep) {
 
@@ -209,6 +225,8 @@ CanvasShapes.StyleAbstract = (function () {
 
         /**
          * @implements {CanvasShapes.StyleInterface}
+         *
+         * @throws {CanvasShapes.Error} 1050
          */
         animate: function (
             totalAnimationTime,

@@ -186,28 +186,28 @@ define([
                 group.addShapes([shape1, shape2]);
                 group.setSceneInterfaceHandlers(sceneInterfaceHandlers);
 
-                expect(group.sceneInterfaceHandlers[0])
+                expect(group._sceneInterfaceHandlers[0])
                     .toBe(sceneInterfaceHandlers);
 
                 for (i in sceneInterfaceHandlers) {
-                    expect(group.sceneInterfaceHandlers[0][i]).toBeDefined();
-                    expect(CanvasShapes._.isFunction(group.sceneInterfaceHandlers[0][i]))
+                    expect(group._sceneInterfaceHandlers[0][i]).toBeDefined();
+                    expect(CanvasShapes._.isFunction(group._sceneInterfaceHandlers[0][i]))
                         .toBe(true);
-                    expect(group.sceneInterfaceHandlers[i]).toBeDefined();
-                    expect(CanvasShapes._.isFunction(group.sceneInterfaceHandlers[i]))
+                    expect(group._sceneInterfaceHandlers[i]).toBeDefined();
+                    expect(CanvasShapes._.isFunction(group._sceneInterfaceHandlers[i]))
                         .toBe(true);
                 }
 
                 group.eachShape(function () {
-                    expect(this.sceneInterfaceHandlers[0])
+                    expect(this._sceneInterfaceHandlers[0])
                         .toBe(sceneInterfaceHandlers);
 
                     for (i in sceneInterfaceHandlers) {
-                        expect(this.sceneInterfaceHandlers[0][i]).toBeDefined();
-                        expect(CanvasShapes._.isFunction(this.sceneInterfaceHandlers[0][i]))
+                        expect(this._sceneInterfaceHandlers[0][i]).toBeDefined();
+                        expect(CanvasShapes._.isFunction(this._sceneInterfaceHandlers[0][i]))
                             .toBe(true);
-                        expect(this.sceneInterfaceHandlers[i]).toBeDefined();
-                        expect(CanvasShapes._.isFunction(this.sceneInterfaceHandlers[i]))
+                        expect(this._sceneInterfaceHandlers[i]).toBeDefined();
+                        expect(CanvasShapes._.isFunction(this._sceneInterfaceHandlers[i]))
                             .toBe(true);
                     }
                 });

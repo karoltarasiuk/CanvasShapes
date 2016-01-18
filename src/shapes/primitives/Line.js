@@ -14,14 +14,19 @@ CanvasShapes.Line = (function () {
         this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
-        this.initialise(coordinates);
+        this._initialise(coordinates);
     };
 
     CanvasShapes.Class.extend(Line.prototype, CanvasShapes.Shape.prototype, {
 
-        className: 'CanvasShapes.Line',
+        _className: 'CanvasShapes.Line',
 
-        initialise: function (coordinates) {
+        /**
+         * Line initialisation function. It also validates passed arguments.
+         *
+         * @param {array} coordinates
+         */
+        _initialise: function (coordinates) {
 
             var i;
 
@@ -64,6 +69,8 @@ CanvasShapes.Line = (function () {
 
         /**
          * @implements {CanvasShapes.InteractionInterface}
+         *
+         * @throws {CanvasShapes.Error} 1059
          */
         isColliding: function (mouseCoordinates) {
 

@@ -5,6 +5,15 @@ CanvasShapes.Shape = (function () {
     var MIN_COORDINATES = undefined,
         MAX_COORDINATES = undefined;
 
+    /**
+     * A base class for a non-renderable shape. All dedicated shapes inherit
+     * from this class which provides some useful methods. Use dedicated shape
+     * classes instead.
+     *
+     * @throws {CanvasShapes.Error} 1036
+     *
+     * @param {array} coordinates
+     */
     var Shape = function (coordinates) {
         this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
@@ -32,7 +41,7 @@ CanvasShapes.Shape = (function () {
         CanvasShapes.InteractionAbstract.prototype,
         CanvasShapes.AnimationAbstract.prototype,
     {
-        className: 'CanvasShapes.Shape',
+        _className: 'CanvasShapes.Shape',
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
@@ -42,48 +51,9 @@ CanvasShapes.Shape = (function () {
         },
 
         /**
-         * Allows you to overwrite global IS_COLLIDING_RATIO config value.
-         *
-         * @param {boolean} isCollidingRatio
-         */
-        setIsCollidingRatio: function (isCollidingRatio) {
-
-            if (!CanvasShapes._.isNumber(isCollidingRatio)) {
-                throw new CanvasShapes.Error(1057);
-            }
-
-            this._isCollidingRatio = isCollidingRatio;
-        },
-
-        /**
-         * Calculates allowed error parameter used in `isColliding` method. It's
-         * never less than 1. Also internal `_isCollidingRatio` property set in
-         * `setIsCollidingRatio()` takes precedence over global
-         * `IS_COLLIDING_RATIO` config value. The calculation is relative to the
-         * size of a layer, which means, since one shape can sit on
-         * multiple layers, that layer must be passed as an argument.
-         *
-         * @param  {CanvasShapes.SceneLayerInterface} layer
-         * @return {float}
-         */
-        calculateAllowedError: function (layer) {
-
-            var isCollidingRatio = this._isCollidingRatio ||
-                    CanvasShapes.Config.get('IS_COLLIDING_RATIO'),
-                allowedError = CanvasShapes._.max([
-                    layer.getWidth(),
-                    layer.getHeight()]
-                ) * isCollidingRatio;
-
-            if (allowedError < 1) {
-                allowedError = 1;
-            }
-
-            return allowedError;
-        },
-
-        /**
          * @implements {CanvasShapes.InteractionInterface}
+         *
+         * @throws {CanvasShapes.Error} 1037
          */
         isColliding: function (mouseCoordinates) {
 
@@ -116,21 +86,9 @@ CanvasShapes.Shape = (function () {
         },
 
         /**
-         * Checks whether shape was added to a scene.
-         *
-         * @return {boolean}
-         */
-        isOnScene: function () {
-
-            if (CanvasShapes._.isObject(this.sceneInterfaceHandlers)) {
-                return true;
-            }
-
-            return false;
-        },
-
-        /**
          * @implements {CanvasShapes.InteractionInterface}
+         *
+         * @throws {CanvasShapes.Error} 1042
          */
         on: function (eventType, handler, context) {
 
@@ -202,11 +160,13 @@ CanvasShapes.Shape = (function () {
                 newHandler = handler;
             }
 
-            this.sceneInterfaceHandlers.on(eventType, newHandler, context);
+            this.getSceneInterfaceHandlers().on(eventType, newHandler, context);
         },
 
         /**
          * @implements {CanvasShapes.InteractionInterface}
+         *
+         * @throws {CanvasShapes.Error} 1042
          */
         off: function (handlerOrType, eventTypeOrContext, context) {
 
@@ -220,14 +180,14 @@ CanvasShapes.Shape = (function () {
                 context === undefined
             ) {
                 // this.off('some-event-type')
-                this.sceneInterfaceHandlers.off(handlerOrType, this);
+                this.getSceneInterfaceHandlers().off(handlerOrType, this);
 
             } else if (
                 context === undefined &&
                 CanvasShapes._.isObject(eventTypeOrContext)
             ) {
                 // this.off('some-event-type', contextObject)
-                this.sceneInterfaceHandlers.off(
+                this.getSceneInterfaceHandlers().off(
                     handlerOrType,
                     eventTypeOrContext
                 );
@@ -237,7 +197,7 @@ CanvasShapes.Shape = (function () {
                 CanvasShapes._.isString(eventTypeOrContext)
             ) {
                 // this.off(someHandlerFunction, 'some-event-type')
-                this.sceneInterfaceHandlers.off(
+                this.getSceneInterfaceHandlers().off(
                     handlerOrType,
                     eventTypeOrContext,
                     this
@@ -246,7 +206,7 @@ CanvasShapes.Shape = (function () {
             } else {
                 // this.off(someHandlerFunction, 'some-event-type',
                 // contextObject)
-                this.sceneInterfaceHandlers.off(
+                this.getSceneInterfaceHandlers().off(
                     handlerOrType,
                     eventTypeOrContext,
                     context
@@ -256,6 +216,8 @@ CanvasShapes.Shape = (function () {
 
         /**
          * @implements {CanvasShapes.InteractionInterface}
+         *
+         * @throws {CanvasShapes.Error} 1042
          */
         dispatch: function (event, context) {
 
@@ -267,7 +229,7 @@ CanvasShapes.Shape = (function () {
                 context = this;
             }
 
-            this.sceneInterfaceHandlers.dispatch(event, context);
+            this.getSceneInterfaceHandlers().dispatch(event, context);
         },
 
         /**
@@ -298,7 +260,7 @@ CanvasShapes.Shape = (function () {
 
                 coordinates = [];
 
-                // setting `this.coordinates` as
+                // setting `this._coordinates` as
                 // `this.startingCoordinates` plus offset
                 for (i = 0; i < startingCoordinates.length; i++) {
                     if (CanvasShapes._.isArray(startingCoordinates[i])) {

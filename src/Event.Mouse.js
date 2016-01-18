@@ -13,23 +13,25 @@ CanvasShapes.Event.Mouse = (function () {
      * @param {object}          target [OPTIONAL]
      */
     var MouseEvent = function (event, scene, target) {
-        this.initialise(event, scene, target);
+        this._initialise(event, scene, target);
     };
 
     CanvasShapes.Class.extend(
         MouseEvent.prototype,
         CanvasShapes.EventAbstract.prototype,
     {
-        className: 'CanvasShapes.Event',
+        _className: 'CanvasShapes.MouseEvent',
 
         /**
          * @overrides {CanvasShapes.EventAbstract}
+         *
+         * @throws {CanvasShapes.Error} 1041
          */
-        initialise: function (event, scene, target) {
+        _initialise: function (event, scene, target) {
 
             var rect;
 
-            CanvasShapes.EventAbstract.prototype.initialise.apply(
+            CanvasShapes.EventAbstract.prototype._initialise.apply(
                 this,
                 arguments
             );
@@ -61,35 +63,42 @@ CanvasShapes.Event.Mouse = (function () {
         CONTEXTMENU: 'contextmenu',
         DBLCLICK: 'dblclick'
     }, function () {
-        this.dom.addEventListener(
+
+        var dom = this.getDom();
+
+        if (!dom) {
+            throw new CanvasShapes.Error(1068);
+        }
+
+        dom.addEventListener(
             'click',
             CanvasShapes._.bind(this.dispatch, this)
         );
-        this.dom.addEventListener(
+        dom.addEventListener(
             'mousedown',
             CanvasShapes._.bind(this.dispatch, this)
         );
-        this.dom.addEventListener(
+        dom.addEventListener(
             'mouseup',
             CanvasShapes._.bind(this.dispatch, this)
         );
-        this.dom.addEventListener(
+        dom.addEventListener(
             'mouseover',
             CanvasShapes._.bind(this.dispatch, this)
         );
-        this.dom.addEventListener(
+        dom.addEventListener(
             'mouseout',
             CanvasShapes._.bind(this.dispatch, this)
         );
-        this.dom.addEventListener(
+        dom.addEventListener(
             'mousemove',
             CanvasShapes._.bind(this.dispatch, this)
         );
-        this.dom.addEventListener(
+        dom.addEventListener(
             'contextmenu',
             CanvasShapes._.bind(this.dispatch, this)
         );
-        this.dom.addEventListener(
+        dom.addEventListener(
             'dblclick',
             CanvasShapes._.bind(this.dispatch, this)
         );

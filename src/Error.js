@@ -72,12 +72,13 @@ CanvasShapes.Error = (function () {
         1065: "CanvasShapes.Class - in `removeObject()`: passed parameters are not valid",
         1066: "CanvasShapes.Class - in `getClass()`: passed `className` is not a string",
         1067: "CanvasShapes.Class - in `extend()`: passed arguments are invalid",
+        1068: "CanvasShapes.Event.Mouse - dom is not ready while registering category",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
         8003: "CanvasShapes.ShapeAbstract - can't instantiate abstract",
         8004: "CanvasShapes.CoordinatesAbstract - can't instantiate abstract",
-        8005: "",
+        8005: "CanvasShapes.ClassAbstract - can't instantiate abstract",
         8006: "CanvasShapes.GroupAbstract - can't instantiate abstract",
         8007: "CanvasShapes.SceneAbstract - can't instantiate abstract",
         8008: "CanvasShapes.SceneInterface - can't instantiate interface",
@@ -85,7 +86,7 @@ CanvasShapes.Error = (function () {
         8010: "CanvasShapes.InteractionInterface - can't instantiate interface",
         8011: "CanvasShapes.GroupInterface - can't instantiate interface",
         8012: "CanvasShapes.CoordinatesInterface - can't instantiate interface",
-        8013: "",
+        8013: "CanvasShapes.ClassInterface - can't instantiate interface",
         8014: "CanvasShapes.StyleInterface - can't instantiate interface",
         8015: "CanvasShapes.ShapeInterface - can't instantiate interface",
         8016: "CanvasShapes.SceneLayerInterface - can't instantiate interface",
@@ -105,7 +106,7 @@ CanvasShapes.Error = (function () {
         9006: 'CanvasShapes.StyleInterface - `set()` is not implemented',
         9007: 'CanvasShapes.CoordinatesInterface - `getCoordinates()` is not implemented',
         9008: 'CanvasShapes.CoordinatesInterface - `processCoordinates()` is not implemented',
-        9009: '',
+        9009: 'CanvasShapes.ClassInterface - `is()` is not implemented',
         9010: 'CanvasShapes.GroupInterface - `addShapes()` is not implemented',
         9011: 'CanvasShapes.GroupInterface - `eachShape()` is not implemented',
         9012: 'CanvasShapes.GroupInterface - `removeShapes()` is not implemented',
@@ -143,8 +144,8 @@ CanvasShapes.Error = (function () {
         9047: "CanvasShapes.AnimationInterface - `animate()` is not implemented",
         9048: "CanvasShapes.SceneInterface - `requestRendering()` is not implemented",
         9049: "CanvasShapes.CoordinatesInterface - `setCoordinates()` is not implemented",
-        9050: "",
-        9051: "",
+        9050: "CanvasShapes.ClassInterface - 'setUUID()` is not implemented",
+        9051: "CanvasShapes.ClassInterface - 'getUUID()` is not implemented",
         9052: "CanvasShapes.AnimationFrameInterface - `next()` is not implemented",
         9053: "CanvasShapes.AnimationFrameInterface - `reset()` is not implemented",
         9054: "CanvasShapes.ShapeInterface - `setParent()` is not implemented",
@@ -159,6 +160,14 @@ CanvasShapes.Error = (function () {
         9063: "CanvasShapes.SceneLayerInterface - `getCanvas()` is not implemented",
         9064: "CanvasShapes.SceneLayerInterface - `getTop()` is not implemented",
         9065: "CanvasShapes.SceneLayerInterface - `getLeft()` is not implemented",
+        9066: "CanvasShapes.ClassInterface - 'getClassName()` is not implemented",
+        9067: 'CanvasShapes.CoordinatesInterface - `getCentreCoordinates()` is not implemented',
+        9068: 'CanvasShapes.SceneInterface - `addShape()` is not implemented',
+        9069: 'CanvasShapes.SceneLayerInterface - `clear()` is not implemented',
+        9070: 'CanvasShapes.ShapeInterface - `isOnScene()` is not implemented',
+        9071: 'CanvasShapes.ShapeInterface - `setIsCollidingRatio()` is not implemented',
+        9072: 'CanvasShapes.ShapeInterface - `calculateAllowedError()` is not implemented',
+        9073: 'CanvasShapes.RenderingInterface - `getSceneInterfaceHandlers()` is not implemented',
     };
 
     /**
@@ -180,10 +189,11 @@ CanvasShapes.Error = (function () {
 
     CanvasShapes.Class.extend(ErrorClass.prototype, Error.prototype, {
 
-        className: 'CanvasShapes.Error',
+        _className: 'CanvasShapes.Error',
 
         /**
          * Error internal identifier within CanvasShapes library.
+         *
          * @type {integer}
          */
         code: 0,
@@ -215,7 +225,7 @@ CanvasShapes.Error = (function () {
         toString: function() {
 
             var obj = Object(this),
-                name = this.className;
+                name = this.getClassName();
 
             if (obj !== this) {
                 throw new TypeError();

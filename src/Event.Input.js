@@ -13,14 +13,14 @@ CanvasShapes.Event.Input = (function () {
      * @param {object}          target [OPTIONAL]
      */
     var InputEvent = function (event, scene, target) {
-        this.initialise(event, scene, target);
+        this._initialise(event, scene, target);
     };
 
     CanvasShapes.Class.extend(
         InputEvent.prototype,
         CanvasShapes.EventAbstract.prototype,
     {
-        className: 'CanvasShapes.Event'
+        _className: 'CanvasShapes.InputEvent'
     });
 
     // register this category

@@ -5,9 +5,16 @@ CanvasShapes.SceneLayer = (function () {
     /**
      * SceneLayer constructor.
      *
+     * `scene` is a scene to place the layer on. `width` and `height` define the
+     * size of the layer. `top` and `left` its position relatively to the scene.
+     *
      * When `offScreen` parameter is passed, layer CSS position is `fixed` and
      * `margin-top` and `margin-left` are set to negative `height` and `top`
      * respectively.
+     *
+     * [WARNING] `offScreen` is a private read only parameter usually set by a
+     * scene which manages off-screen environment. Setting it only for a layer
+     * won't do anything.
      *
      * @param {CanvasShapes.SceneInterface} scene
      * @param {float}                       width [OPTIONAL]
@@ -18,27 +25,20 @@ CanvasShapes.SceneLayer = (function () {
      */
     var SceneLayer = function (scene, width, height, left, top, offScreen) {
         this.setUUID();
-        this.initialise(scene, width, height, left, top, offScreen);
+        this._initialise(scene, width, height, left, top, offScreen);
     };
 
     CanvasShapes.Class.extend(
         SceneLayer.prototype,
         CanvasShapes.SceneLayerAbstract.prototype,
     {
-        className: 'CanvasShapes.SceneLayer',
-
-        canvas: null,
-
-        left: null,
-
-        top: null,
+        _className: 'CanvasShapes.SceneLayer',
 
         /**
-         * SceneLayer initialisation method.
+         * For detailed info check the doc comments of a class.
          *
-         * When `offScreen` parameter is passed, layer CSS position is `fixed`
-         * and `margin-top` and `margin-left` are set to negative `height` and
-         * `top` respectively.
+         * @throws {CanvasShapes.Error} 1055
+         * @throws {CanvasShapes.Error} 1004
          *
          * @param {CanvasShapes.SceneInterface} scene
          * @param {float}                       width [OPTIONAL]
@@ -47,7 +47,7 @@ CanvasShapes.SceneLayer = (function () {
          * @param {float}                       top [OPTIONAL]
          * @param {boolean}                     offScreen [OPTIONAL]
          */
-        initialise: function (scene, width, height, left, top, offScreen) {
+        _initialise: function (scene, width, height, left, top, offScreen) {
 
             if (
                 !CanvasShapes._.isObject(scene) ||
@@ -91,7 +91,7 @@ CanvasShapes.SceneLayer = (function () {
                 this.offScreen = true;
             }
 
-            this.initialiseCanvas();
+            this._initialiseCanvas();
 
             if (!this.canvas.getContext) {
                 throw new CanvasShapes.Error(1004);
@@ -100,7 +100,12 @@ CanvasShapes.SceneLayer = (function () {
             this.context = this.canvas.getContext('2d');
         },
 
-        initialiseCanvas: function () {
+        /**
+         * Method initialising canvas within scene's DOM element.
+         *
+         * @throws {CanvasShapes.Error} 1007
+         */
+        _initialiseCanvas: function () {
 
             var dom = this.scene.getDom(),
                 sceneWidth = this.scene.getWidth(),
@@ -137,14 +142,17 @@ CanvasShapes.SceneLayer = (function () {
             this.canvas.innerHTML = '<span>Canvas 2D context is not supported' +
                 ' in your browser</span>';
             this.canvas.style.position = 'absolute';
-            this.canvas.style.top = this.top + 'px';
-            this.canvas.style.left = this.left + 'px';
 
             if (this.offScreen) {
                 this.canvas.className = 'offScreen';
                 this.canvas.style.position = 'fixed';
                 this.canvas.style.marginTop = -this.height + 'px';
                 this.canvas.style.marginLeft = -this.width + 'px';
+                this.canvas.style.top = '0px';
+                this.canvas.style.left = '0px';
+            } else {
+                this.canvas.style.top = this.top + 'px';
+                this.canvas.style.left = this.left + 'px';
             }
 
             dom.appendChild(this.canvas);

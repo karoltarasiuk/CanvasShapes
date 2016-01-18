@@ -45,16 +45,16 @@ define([
                     };
 
                 rendering.setSceneInterfaceHandlers(sceneInterfaceHandlers);
-                expect(rendering.sceneInterfaceHandlers[0])
+                expect(rendering._sceneInterfaceHandlers[0])
                     .toBe(sceneInterfaceHandlers);
 
                 for (i in sceneInterfaceHandlers) {
-                    expect(rendering.sceneInterfaceHandlers[i]).toBeDefined();
-                    expect(CanvasShapes._.isFunction(rendering.sceneInterfaceHandlers[i]))
+                    expect(rendering._sceneInterfaceHandlers[i]).toBeDefined();
+                    expect(CanvasShapes._.isFunction(rendering._sceneInterfaceHandlers[i]))
                         .toBe(true);
-                    expect(rendering.sceneInterfaceHandlers[0][i])
+                    expect(rendering._sceneInterfaceHandlers[0][i])
                         .toBeDefined();
-                    expect(CanvasShapes._.isFunction(rendering.sceneInterfaceHandlers[0][i]))
+                    expect(CanvasShapes._.isFunction(rendering._sceneInterfaceHandlers[0][i]))
                         .toBe(true);
                 }
             });
@@ -67,7 +67,7 @@ define([
                     });
 
                 style.addToShapes(rendering);
-                expect(rendering.style).toBe(style);
+                expect(rendering._style).toBe(style);
                 expect(rendering.getStyle()).toBe(style);
             });
 
@@ -75,7 +75,7 @@ define([
 
                 var rendering = new CanvasShapes.Shape();
 
-                expect(rendering.getRelativeRendering()).toBe(false);
+                expect(rendering.getRelativeRendering()).toBe(undefined);
                 rendering.setRelativeRendering(true);
                 expect(rendering.getRelativeRendering()).toBe(true);
                 rendering.setRelativeRendering(false);

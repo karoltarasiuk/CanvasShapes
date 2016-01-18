@@ -3,8 +3,10 @@
 CanvasShapes.CoordinatesAbstract = (function () {
 
     /**
-     * Abstract for shapes which has coordinates, i.e.
-     * can be positioned on a board
+     * Abstract for shapes which has coordinates, i.e. can be positioned on a
+     * board.
+     *
+     * @throws {CanvasShapes.Error} 8004
      */
     var CoordinatesAbstract = function () {
         throw new CanvasShapes.Error(8004);
@@ -14,7 +16,7 @@ CanvasShapes.CoordinatesAbstract = (function () {
         CoordinatesAbstract.prototype,
         CanvasShapes.CoordinatesInterface.prototype,
     {
-        className: 'CanvasShapes.CoordinatesAbstract',
+        _className: 'CanvasShapes.CoordinatesAbstract',
 
         /**
          * @implements {CanvasShapes.CoordinatesInterface}
@@ -69,6 +71,8 @@ CanvasShapes.CoordinatesAbstract = (function () {
 
         /**
          * @implements {CanvasShapes.CoordinatesInterface}
+         *
+         * @throws {CanvasShapes.Error} 1011
          */
         validateCoordinates: function (coordinates, throwException) {
 
@@ -105,6 +109,8 @@ CanvasShapes.CoordinatesAbstract = (function () {
 
         /**
          * @implements {CanvasShapes.CoordinatesInterface}
+         *
+         * @throws {CanvasShapes.Error} 1047
          */
         translateOffsetToCoordinates: function (offset) {
 
@@ -132,6 +138,8 @@ CanvasShapes.CoordinatesAbstract = (function () {
 
         /**
          * @implements {CanvasShapes.CoordinatesInterface}
+         *
+         * @throws {CanvasShapes.Error} 1049
          */
         translateCoordinates: function (coordinates, offset, multiplier) {
 
@@ -160,6 +168,8 @@ CanvasShapes.CoordinatesAbstract = (function () {
 
         /**
          * @implements {CanvasShapes.CoordinatesInterface}
+         *
+         * @throws {CanvasShapes.Error} 1011
          */
         validateCoordinatesArray: function (
             coordinates,
@@ -214,7 +224,7 @@ CanvasShapes.CoordinatesAbstract = (function () {
         getCentreCoordinates: function () {
 
             var i,
-                coordinates = this.coordinates,
+                coordinates = this.getCoordinates(),
                 j = 0,
                 x = 0,
                 y = 0,
@@ -250,14 +260,14 @@ CanvasShapes.CoordinatesAbstract = (function () {
          * @implements {CanvasShapes.CoordinatesInterface}
          */
         getCoordinates: function () {
-            return this.coordinates;
+            return this._coordinates;
         },
 
         /**
          * @implements {CanvasShapes.CoordinatesInterface}
          */
         setCoordinates: function (coordinates) {
-            this.coordinates = coordinates;
+            this._coordinates = coordinates;
         }
     });
 

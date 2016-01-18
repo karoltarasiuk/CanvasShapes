@@ -2,6 +2,11 @@
 
 CanvasShapes.SceneAbstract = (function () {
 
+    /**
+     * A scene abstract class.
+     *
+     * @throws {CanvasShapes.Error} 8007
+     */
     var SceneAbstract = function () {
         throw new CanvasShapes.Error(8007);
     };
@@ -10,28 +15,7 @@ CanvasShapes.SceneAbstract = (function () {
         SceneAbstract.prototype,
         CanvasShapes.SceneInterface.prototype,
     {
-        className: 'CanvasShapes.SceneAbstract',
-
-        /**
-         * DOM element containing whole scene. Must be set on initialisation.
-         *
-         * @type {object}
-         */
-        dom: null,
-
-        /**
-         * Width of the scene. Must be set on initialisation.
-         *
-         * @type {integer}
-         */
-        width: null,
-
-        /**
-         * Height of the scene. Must be set on initialisation.
-         *
-         * @type {integer}
-         */
-        height: null,
+        _className: 'CanvasShapes.SceneAbstract',
 
         /**
          * Layers available within a scene. It's an array of objects in
@@ -48,7 +32,7 @@ CanvasShapes.SceneAbstract = (function () {
          *
          * @type {array}
          */
-        layers: null,
+        _layers: null,
 
         /**
          * All the attached event handlers divided by event type in the
@@ -67,7 +51,7 @@ CanvasShapes.SceneAbstract = (function () {
          *
          * @type {object}
          */
-        handlers: null,
+        _handlers: null,
 
         /**
          * List of events currently ignored by the given objects in the
@@ -84,7 +68,7 @@ CanvasShapes.SceneAbstract = (function () {
          *
          * @type {object}
          */
-        ignoredEvents: null,
+        _ignoredEvents: null,
 
         /**
          * Array of shapes which needs to be rendered when the next animation
@@ -107,18 +91,22 @@ CanvasShapes.SceneAbstract = (function () {
          *
          * @type {array}
          */
-        requestedRendering: null,
+        _requestedRendering: null,
 
         /**
+         * Call ONLY when `this._dom` is ready!
+         *
          * @implements {CanvasShapes.SceneInterface}
+         *
+         * @throws {CanvasShapes.Error} 1027
          */
         initialiseListeners: function () {
-            if (!this.dom || !this.dom.addEventListener) {
+            if (!this._dom || !this._dom.addEventListener) {
                 throw new CanvasShapes.Error(1027);
             }
 
-            this.handlers = {};
-            this.ignoredEvents = {};
+            this._handlers = {};
+            this._ignoredEvents = {};
             CanvasShapes.Event.initialiseListeners(this);
         },
 
@@ -131,6 +119,8 @@ CanvasShapes.SceneAbstract = (function () {
 
         /**
          * @implements {CanvasShapes.SceneInterface}
+         *
+         * @throws {CanvasShapes.Error} 1019
          */
         newLayer: function (shape, width, height, left, top) {
 
@@ -164,8 +154,8 @@ CanvasShapes.SceneAbstract = (function () {
 
             var layer;
 
-            if (!CanvasShapes._.isObject(this.layers)) {
-                this.layers = {};
+            if (!CanvasShapes._.isObject(this._layers)) {
+                this._layers = {};
                 layer = new CanvasShapes.SceneLayer(
                     this,
                     undefined,
@@ -174,7 +164,7 @@ CanvasShapes.SceneAbstract = (function () {
                     undefined,
                     this.shouldRenderOffScreen()
                 );
-                this.layers[layer.getUUID()] = {
+                this._layers[layer.getUUID()] = {
                     layer: layer,
                     shapes: {}
                 };
@@ -183,6 +173,9 @@ CanvasShapes.SceneAbstract = (function () {
 
         /**
          * @implements {CanvasShapes.SceneInterface}
+         *
+         * @throws {CanvasShapes.Error} 1022
+         * @throws {CanvasShapes.Error} 1020
          */
         addShape: function (shape, layer) {
 
@@ -203,14 +196,14 @@ CanvasShapes.SceneAbstract = (function () {
                             // removing shape from this layer object
                             delete layerObject.shapes[shape.getUUID()];
                             // we need to add shape to a new layer object
-                            if (!this.layers[layer.getUUID()]) {
-                                this.layers[layer.getUUID()] = {
+                            if (!this._layers[layer.getUUID()]) {
+                                this._layers[layer.getUUID()] = {
                                     layer: layer,
                                     shapes: {}
                                 };
                             }
 
-                            this.layers[layer.getUUID()]
+                            this._layers[layer.getUUID()]
                                 .shapes[shape.getUUID()] = shape;
                         }
                     } else {
@@ -223,14 +216,14 @@ CanvasShapes.SceneAbstract = (function () {
                         layer = this.getLayer();
                     }
 
-                    if (!this.layers[layer.getUUID()]) {
-                        this.layers[layer.getUUID()] = {
+                    if (!this._layers[layer.getUUID()]) {
+                        this._layers[layer.getUUID()] = {
                             layer: layer,
                             shapes: {}
                         };
                     }
 
-                    this.layers[layer.getUUID()]
+                    this._layers[layer.getUUID()]
                         .shapes[shape.getUUID()] = shape;
                 }
             } else {
@@ -245,22 +238,24 @@ CanvasShapes.SceneAbstract = (function () {
 
         /**
          * @implements {CanvasShapes.SceneInterface}
+         *
+         * @throws {CanvasShapes.Error} 1044
          */
         requestRendering: function (shape, animationFrame) {
 
             var i, j, layer, layerObject, requestedLayer, found, originalShape,
                 uuid;
 
-            if (!CanvasShapes._.isObject(this.requestedRendering)) {
-                this.requestedRendering = {};
+            if (!CanvasShapes._.isObject(this._requestedRendering)) {
+                this._requestedRendering = {};
             }
 
             // shape may be a part of a group
             originalShape = shape = shape.getRenderingShape();
 
             // looking for layer
-            for (i in this.layers) {
-                layerObject = this.layers[i];
+            for (i in this._layers) {
+                layerObject = this._layers[i];
                 for (j in layerObject.shapes) {
                     if (shape === layerObject.shapes[j]) {
                         layer = layerObject.layer;
@@ -279,21 +274,21 @@ CanvasShapes.SceneAbstract = (function () {
             }
 
             // checking if shape changed the layer
-            for (i in this.requestedRendering) {
-                for (j in this.requestedRendering[i].shapes) {
+            for (i in this._requestedRendering) {
+                for (j in this._requestedRendering[i].shapes) {
                     // found a shape
                     if (j === shape.getUUID()) {
                         // checking if layers are the same
                         if (i === layer.getUUID()) {
                             // adding new animation frame
-                            this.requestedRendering[i].shapes[j]
+                            this._requestedRendering[i].shapes[j]
                                 .animationFrames[animationFrame.getType()] =
                                     animationFrame;
                             return;
                         } else {
                             // we remove the shape as layer has changed, and
                             // shape must be added to a new one
-                            delete this.requestedRendering[i].shapes[j];
+                            delete this._requestedRendering[i].shapes[j];
                         }
                     }
                 }
@@ -301,13 +296,13 @@ CanvasShapes.SceneAbstract = (function () {
 
             // in case of this is a new shape, we fetch the layer object
             // or create a new one
-            if (!this.requestedRendering[layer.getUUID()]) {
+            if (!this._requestedRendering[layer.getUUID()]) {
 
-                this.requestedRendering[layer.getUUID()] = {
+                this._requestedRendering[layer.getUUID()] = {
                     layer: layer,
                     shapes: {}
                 };
-                requestedLayer = this.requestedRendering[layer.getUUID()];
+                requestedLayer = this._requestedRendering[layer.getUUID()];
 
                 // we should add all the shapes as this layer will be cleared
                 for (j in layerObject.shapes) {
@@ -331,7 +326,7 @@ CanvasShapes.SceneAbstract = (function () {
                 }
 
             } else {
-                requestedLayer = this.requestedRendering[layer.getUUID()];
+                requestedLayer = this._requestedRendering[layer.getUUID()];
                 uuid = shape.getUUID();
 
                 if (!requestedLayer.shapes[uuid]) {
@@ -371,14 +366,20 @@ CanvasShapes.SceneAbstract = (function () {
          * getLayer called without any arguments should ALWAYS return a
          * layerObject.
          *
-         * @param {[CanvasShapes.ShapeInterface]} shape [OPTIONAL]
-         * @return {[null,object]} format:
+         * Format or returned object:
+         * ```
          * {
          *     layer: CanvasShapes.SceneLayerInterface
          *     shapes: {
          *         UUID: CanvasShapes.ShapeInterface
          *     }
          * }
+         * ```
+         *
+         * @throws {CanvasShapes.Error} 1021
+         *
+         * @param {[CanvasShapes.ShapeInterface]} shape [OPTIONAL]
+         * @return {[null,object]}
          */
         getLayerObject: function (shape) {
 
@@ -391,13 +392,13 @@ CanvasShapes.SceneAbstract = (function () {
 
                 tempCount = -1;
 
-                for (i in this.layers) {
+                for (i in this._layers) {
                     count = 0;
-                    for (j in this.layers[i].shapes) {
+                    for (j in this._layers[i].shapes) {
                         count++;
                     }
                     if (count > tempCount) {
-                        layerObject = this.layers[i];
+                        layerObject = this._layers[i];
                     }
                 }
 
@@ -406,9 +407,9 @@ CanvasShapes.SceneAbstract = (function () {
                 CanvasShapes._.isObject(shape) && shape.is &&
                 shape.is(CanvasShapes.ShapeInterface)
             ) {
-                for (i in this.layers) {
-                    if (this.layers[i].shapes[shape.getUUID()]) {
-                        layerObject = this.layers[i];
+                for (i in this._layers) {
+                    if (this._layers[i].shapes[shape.getUUID()]) {
+                        layerObject = this._layers[i];
                     }
                 }
             } else {
@@ -427,8 +428,8 @@ CanvasShapes.SceneAbstract = (function () {
          */
         getSceneInterfaceHandlers: function () {
 
-            if (!this.sceneInterfaceHandlers) {
-                this.sceneInterfaceHandlers = {
+            if (!this._sceneInterfaceHandlers) {
+                this._sceneInterfaceHandlers = {
                     newLayer: CanvasShapes._.bind(this.newLayer, this),
                     getLayer: CanvasShapes._.bind(this.getLayer, this),
                     addShape: CanvasShapes._.bind(this.addShape, this),
@@ -440,28 +441,28 @@ CanvasShapes.SceneAbstract = (function () {
                 };
             }
 
-            return this.sceneInterfaceHandlers;
+            return this._sceneInterfaceHandlers;
         },
 
         /**
          * @implements {CanvasShapes.SceneInterface}
          */
         getWidth: function () {
-            return this.width;
+            return this._width;
         },
 
         /**
          * @implements {CanvasShapes.SceneInterface}
          */
         getHeight: function () {
-            return this.height;
+            return this._height;
         },
 
         /**
          * @implements {CanvasShapes.SceneInterface}
          */
         getDom: function () {
-            return this.dom;
+            return this._dom;
         }
     });
 

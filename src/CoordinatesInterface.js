@@ -5,6 +5,8 @@ CanvasShapes.CoordinatesInterface = (function () {
     /**
      * Defines an interface for shapes which has coordinates, i.e.
      * can be positioned on a board.
+     *
+     * @throws {CanvasShapes.Error} 8012
      */
     var CoordinatesInterface = function () {
         throw new CanvasShapes.Error(8012);
@@ -12,7 +14,7 @@ CanvasShapes.CoordinatesInterface = (function () {
 
     CanvasShapes.Class.extend(CoordinatesInterface.prototype, {
 
-        className: 'CanvasShapes.CoordinatesInterface',
+        _className: 'CanvasShapes.CoordinatesInterface',
 
         /**
          * Normalizes coordinates and returns shallow copy of any coordinates
@@ -30,6 +32,8 @@ CanvasShapes.CoordinatesInterface = (function () {
          *
          * Array format is: [x, y, z], `z` is OPTIONAL.
          *
+         * @throws {CanvasShapes.Error} 9008
+         *
          * @param {[array,CanvasShapes.CoordinatesInterface]} coordinates
          * @param {CanvasShapes.SceneLayerInterface} layer [OPTIONAL]
          *
@@ -42,14 +46,18 @@ CanvasShapes.CoordinatesInterface = (function () {
         /**
          * Returns coordinates of the centre of theshape.
          *
+         * @throws {CanvasShapes.Error} 9067
+         *
          * @return {[array,CanvasShapes.CoordinatesInterface]}
          */
         getCentreCoordinates: function () {
-            throw new CanvasShapes.Error(9007);
+            throw new CanvasShapes.Error(9067);
         },
 
         /**
          * Returns coordinates of the shape.
+         *
+         * @throws {CanvasShapes.Error} 9007
          *
          * @return {[array,CanvasShapes.CoordinatesInterface]}
          */
@@ -64,6 +72,8 @@ CanvasShapes.CoordinatesInterface = (function () {
          * [WARNING] It doesn't do any type or format checking due to
          * performance reasons.
          *
+         * @throws {CanvasShapes.Error} 9049
+         *
          * @param {array} coordinates
          */
         setCoordinates: function (coordinates) {
@@ -77,8 +87,10 @@ CanvasShapes.CoordinatesInterface = (function () {
          *
          * Example `coordinates` parameter value: [0, 0].
          *
+         * @throws {CanvasShapes.Error} 9013
+         *
          * @param {[array,CanvasShapes.CoordinatesInterface]} coordinates
-         * @param {boolean} throwException [OPTIONAL]
+         * @param {boolean}                                   throwException [OPTIONAL]
          *
          * @return {boolean}
          */
@@ -96,6 +108,8 @@ CanvasShapes.CoordinatesInterface = (function () {
          *     z: {float} [OPTIONAL]
          * }
          * ```
+         *
+         * @throws {CanvasShapes.Error} 9057
          *
          * @param  {object} offset
          * @return {array}
@@ -119,9 +133,11 @@ CanvasShapes.CoordinatesInterface = (function () {
          * Also important thing to notice is that offset is applied after
          * multiplier.
          *
-         * @param  {array}  coordinates
-         * @param  {object} offset
-         * @param  {float} multipler
+         * @throws {CanvasShapes.Error} 9058
+         *
+         * @param {array}  coordinates
+         * @param {object} offset
+         * @param {float}  multipler
          *
          * @return {[type]}           [description]
          */
@@ -135,9 +151,11 @@ CanvasShapes.CoordinatesInterface = (function () {
          * coordinates are not valid, instead of returning `false`.
          * You can also specify how many coordinates should the array contain.
          *
-         * Example `coordinates` parameter value: [[0, 0], [1, 1]]
+         * Example `coordinates` parameter value: [[0, 0], [1, 1]].
          *
-         * @param {array} coordinates
+         * @throws {CanvasShapes.Error} 9014
+         *
+         * @param {array}   coordinates
          * @param {boolean} throwException [OPTIONAL]
          * @param {integer} minimumCoordinatesNumber [OPTIONAL]
          * @param {integer} maximumCoordinatesNumber [OPTIONAL]

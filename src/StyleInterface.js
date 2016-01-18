@@ -4,6 +4,8 @@ CanvasShapes.StyleInterface = (function () {
 
     /**
      * Interface for styling objects.
+     *
+     * @throws {CanvasShapes.Error} 8014
      */
     var StyleInterface = function () {
         throw new CanvasShapes.Error(8014);
@@ -11,7 +13,7 @@ CanvasShapes.StyleInterface = (function () {
 
     CanvasShapes.Class.extend(StyleInterface.prototype, {
 
-        className: 'CanvasShapes.StyleInterface',
+        _className: 'CanvasShapes.StyleInterface',
 
         /**
          * Sets the style on the given layer depending on `which` param.
@@ -20,6 +22,8 @@ CanvasShapes.StyleInterface = (function () {
          *
          * WARNING: this method due to performance reasons doesn't perform any
          * type checking on arguments.
+         *
+         * @throws {CanvasShapes.Error} 9006
          *
          * @param {CanvasShapes.SceneLayer} layer
          * @param {integer} which [OPTIONAL]
@@ -30,6 +34,8 @@ CanvasShapes.StyleInterface = (function () {
 
         /**
          * Adds a style object to specified shape(s).
+         *
+         * @throws {CanvasShapes.Error} 9060
          *
          * @param {[array,CanvasShapes.RenderingInterface]}   shapes
          * @param {boolean}                                   deep
@@ -53,10 +59,12 @@ CanvasShapes.StyleInterface = (function () {
          * `which` parameter must specify existing
          * base definition (or left empty to change a default one).
          *
-         * @param  {function} callback
-         * @param  {integer}  totalAnimationTime
-         * @param  {object}   definitionObject
-         * @param  {string}   which [OPTIONAL]
+         * @throws {CanvasShapes.Error} 9059
+         *
+         * @param {function} callback
+         * @param {integer}  totalAnimationTime
+         * @param {object}   definitionObject
+         * @param {string}   which [OPTIONAL]
          *
          * @return {CanvasShapes.AnimationInterface}
          */

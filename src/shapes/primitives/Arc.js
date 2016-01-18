@@ -20,10 +20,13 @@ CanvasShapes.Arc = (function () {
      * Start and end angles must be passed in radians. You can use
      * CanvasShapes.GeometryTools to convert degrees to radians.
      *
-     * @param {array} coordinates
-     * @param {float} radius
-     * @param {float} startAngle [OPTIONAL]
-     * @param {float} endAngle [OPTIONAL]
+     * @throws {CanvasShapes.Error} 1024
+     * @throws {CanvasShapes.Error} 1025
+     *
+     * @param {array}   coordinates
+     * @param {float}   radius
+     * @param {float}   startAngle [OPTIONAL]
+     * @param {float}   endAngle [OPTIONAL]
      * @param {boolean} anticlockwise [OPTIONAL]
      */
     var Arc = function (
@@ -61,9 +64,9 @@ CanvasShapes.Arc = (function () {
         }
 
         if (coordinates.length === 1) {
-            this.mode = Arc.MODES.CIRCLE;
+            this._mode = Arc.MODES.CIRCLE;
         } else {
-            this.mode = Arc.MODES.POINTTOPPOINT;
+            this._mode = Arc.MODES.POINTTOPPOINT;
         }
 
         // checking if passed coordinates are in a correct format
@@ -74,15 +77,16 @@ CanvasShapes.Arc = (function () {
             this.MAX_COORDINATES
         );
 
-        this.coordinates = coordinates;
-        this.radius = radius;
-        this.startAngle = startAngle;
-        this.endAngle = endAngle;
-        this.anticlockwise = anticlockwise;
+        this.setCoordinates(coordinates);
+        this._radius = radius;
+        this._startAngle = startAngle;
+        this._endAngle = endAngle;
+        this._anticlockwise = anticlockwise;
     };
 
     /**
      * Modes in which CanvasShapes.Arc operates
+     *
      * @type {object}
      */
     Arc.MODES = {
@@ -92,43 +96,7 @@ CanvasShapes.Arc = (function () {
 
     CanvasShapes.Class.extend(Arc.prototype, CanvasShapes.Shape.prototype, {
 
-        className: 'CanvasShapes.Arc',
-
-        /**
-         * See Arc.MODES
-         * @type {string}
-         */
-        mode: null,
-
-        /**
-         * Coordinates of either 1 or 3 points, depending on mode
-         * @type {array}
-         */
-        coordinates: null,
-
-        /**
-         * Radius af an arc to draw
-         * @type {float}
-         */
-        radius: null,
-
-        /**
-         * In case of an arc(), starting angle in radians
-         * @type {float}
-         */
-        startAngle: null,
-
-        /**
-         * In case of an arc(), ending angle in radians
-         * @type {float}
-         */
-        endAngle: null,
-
-        /**
-         * In case of an arc(), whether to draw an arc in anticlockwise manner
-         * @type {boolean}
-         */
-        anticlockwise: false,
+        _className: 'CanvasShapes.Arc',
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
@@ -138,9 +106,9 @@ CanvasShapes.Arc = (function () {
             var style = this.getStyle(),
                 context = layer.getContext(),
                 coordinates = this.processCoordinates(
-                    this.coordinates, layer
+                    this.getCoordinates(), layer
                 ),
-                radius = this.radius;
+                radius = this._radius;
 
             if (
                 CanvasShapes._.isObject(layer) &&
@@ -155,14 +123,14 @@ CanvasShapes.Arc = (function () {
 
             context.beginPath();
 
-            if (this.mode === Arc.MODES.CIRCLE) {
+            if (this._mode === Arc.MODES.CIRCLE) {
                 context.arc(
                     coordinates[0][0],
                     coordinates[0][1],
                     radius,
-                    this.startAngle,
-                    this.endAngle,
-                    this.anticlockwise
+                    this._startAngle,
+                    this._endAngle,
+                    this._anticlockwise
                 );
 
                 context.closePath();
@@ -198,8 +166,8 @@ CanvasShapes.Arc = (function () {
         getCentreCoordinates: function () {
 
             // returns center point of a circle
-            if (this.mode === Arc.MODES.CIRCLE) {
-                return this.coordinates[0];
+            if (this._mode === Arc.MODES.CIRCLE) {
+                return this.getCoordinates()[0];
             }
 
             return CanvasShapes.Shape.prototype.getCentreCoordinates.call(this);

@@ -4,6 +4,8 @@ CanvasShapes.ClassInterface = (function () {
 
     /**
      * Interface for any class within CanvasShapes library.
+     *
+     * @throws {CanvasShapes.Error} 8013
      */
     var ClassInterface = function () {
         throw new CanvasShapes.Error(8013);
@@ -11,7 +13,7 @@ CanvasShapes.ClassInterface = (function () {
 
     CanvasShapes._.extend(ClassInterface.prototype, {
 
-        className: 'CanvasShapes.ClassInterface',
+        _className: 'CanvasShapes.ClassInterface',
 
         /**
          * Checks whether this object is an instance of a passed class. It
@@ -19,6 +21,8 @@ CanvasShapes.ClassInterface = (function () {
          * - passed string,
          * - to `passedClass.prototype.className` of a passed class,
          * - to `passedClass.className` property of an object.
+         *
+         * @throws {CanvasShapes.Error} 9009
          *
          * @param  {[string,object]} passedClass
          * @return {boolean}
@@ -37,6 +41,8 @@ CanvasShapes.ClassInterface = (function () {
          * general recommendation is to avoid using this feature unless some
          * kind of deserialisation is needed.
          *
+         * @throws {CanvasShapes.Error} 9050
+         *
          * @param  {string} UUID [OPTIONAL]
          * @return {string}
          */
@@ -47,10 +53,23 @@ CanvasShapes.ClassInterface = (function () {
         /**
          * Gets current UUID of the object.
          *
+         * @throws {CanvasShapes.Error} 9051
+         *
          * @return {string}
          */
         getUUID: function () {
-            throw new CanvasShapes.Error(9050);
+            throw new CanvasShapes.Error(9051);
+        },
+
+        /**
+         * Gets class name of this object.
+         *
+         * @throws {CanvasShapes.Error} 9066
+         *
+         * @return {string}
+         */
+        getClassName: function () {
+            throw new CanvasShapes.Error(9066);
         }
     });
 

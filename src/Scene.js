@@ -4,7 +4,7 @@ CanvasShapes.Scene = (function () {
 
     var Scene = function (config) {
         this.setUUID();
-        this.initialise(config);
+        this._initialise(config);
     };
 
     CanvasShapes.Class.extend(
@@ -13,34 +13,42 @@ CanvasShapes.Scene = (function () {
         CanvasShapes.InteractionAbstract.prototype,
     {
 
-        className: 'CanvasShapes.Scene',
+        _className: 'CanvasShapes.Scene',
 
-        initialise: function (config) {
+        /**
+         * Scene initialisation method. It accepts the config and validates it.
+         *
+         * @throws {CanvasShapes.Error} 1001
+         * @throws {CanvasShapes.Error} 1005
+         *
+         * @param {object} config
+         */
+        _initialise: function (config) {
 
-            if (!this.validateConfig(config)) {
+            if (!this._validateConfig(config)) {
                 throw new CanvasShapes.Error(1001);
             }
 
             this.config = config;
-            this.width = this.config.width;
-            this.height = this.config.height;
+            this._width = this.config.width;
+            this._height = this.config.height;
 
             if (CanvasShapes._.isString(this.config.id)) {
-                this.dom = document.getElementById(this.config.id);
+                this._dom = document.getElementById(this.config.id);
             } else {
-                this.dom = this.config.element;
+                this._dom = this.config.element;
             }
 
-            if (!CanvasShapes.Tools.isElement(this.dom)) {
+            if (!CanvasShapes.Tools.isElement(this._dom)) {
                 throw new CanvasShapes.Error(1005);
             }
 
             // canvas elements inside dom are positioned absolutely
             if (
-                this.dom.style.position === '' ||
-                this.dom.style.position === 'static'
+                this._dom.style.position === '' ||
+                this._dom.style.position === 'static'
             ) {
-                this.dom.style.position = 'relative';
+                this._dom.style.position = 'relative';
             }
 
             this.initialiseListeners();
@@ -65,7 +73,7 @@ CanvasShapes.Scene = (function () {
          * @param  {object}  config
          * @return {boolean}
          */
-        validateConfig: function (config) {
+        _validateConfig: function (config) {
             return CanvasShapes._.isObject(config) &&
                 CanvasShapes._.isNumber(config.width) &&
                 CanvasShapes._.isNumber(config.height) &&
@@ -84,8 +92,8 @@ CanvasShapes.Scene = (function () {
             this.initialiseLayers();
 
             if (shape) {
-                for (i in this.layers) {
-                    layerObject = this.layers[i];
+                for (i in this._layers) {
+                    layerObject = this._layers[i];
                     for (j in layerObject.shapes) {
                         if (shape === layerObject.shapes[j]) {
                             layerObject.layer.clear();
@@ -96,36 +104,40 @@ CanvasShapes.Scene = (function () {
                         }
                     }
                 }
-            } else if (CanvasShapes._.isObject(this.requestedRendering)) {
+            } else if (CanvasShapes._.isObject(this._requestedRendering)) {
 
-                for (i in this.requestedRendering) {
+                for (i in this._requestedRendering) {
 
-                    layerObject = this.requestedRendering[i];
+                    layerObject = this._requestedRendering[i];
                     layer = layerObject.layer;
                     layer.clear();
 
                     for (j in layerObject.shapes) {
 
-                        shapeObject = this.requestedRendering[i].shapes[j];
+                        shapeObject = this._requestedRendering[i].shapes[j];
                         shape = shapeObject.shape;
                         shape.render(layer);
 
                         // callbacks get executed after clearing all
-                        // the shapes from `this.requestedRendering`
+                        // the shapes from `this._requestedRendering`
                         callbacks.push(shapeObject.animationFrames);
                     }
                 }
 
                 // all shapes were rendered so we can clear this list
-                this.requestedRendering = {};
+                this._requestedRendering = {};
 
                 // if shapes were rendered off screen we need to copy them to
                 // the main canvas
                 if (this.shouldRenderOffScreen()) {
                     this.mainLayer.clear();
-                    for (i in this.layers) {
+                    for (i in this._layers) {
                         this.mainLayerContext
-                            .drawImage(this.layers[i].layer.getCanvas(), 0, 0);
+                            .drawImage(
+                                this._layers[i].layer.getCanvas(),
+                                this._layers[i].layer.getLeft(),
+                                this._layers[i].layer.getTop()
+                            );
                     }
                 }
 
@@ -154,11 +166,11 @@ CanvasShapes.Scene = (function () {
             // remove existing handler
             this.off(handler, eventType, context);
 
-            if (!CanvasShapes._.isArray(this.handlers[eventType])) {
-                this.handlers[eventType] = [];
+            if (!CanvasShapes._.isArray(this._handlers[eventType])) {
+                this._handlers[eventType] = [];
             }
 
-            this.handlers[eventType].push({
+            this._handlers[eventType].push({
                 handler: handler,
                 context: context === undefined ? this : context
             });
@@ -171,8 +183,8 @@ CanvasShapes.Scene = (function () {
 
             var i, j, tempArray;
 
-            for (i in this.handlers) {
-                for (j = 0; j < this.handlers[i].length; j++) {
+            for (i in this._handlers) {
+                for (j = 0; j < this._handlers[i].length; j++) {
 
                     if (
                         CanvasShapes._.isString(handlerOrType) &&
@@ -182,7 +194,7 @@ CanvasShapes.Scene = (function () {
                         // this.off('some-event-type')
                         if (i === handlerOrType) {
                             // removing all handlers of this type
-                            this.handlers[i] = [];
+                            this._handlers[i] = [];
                         }
 
                     } else if (
@@ -191,9 +203,9 @@ CanvasShapes.Scene = (function () {
                         context === undefined
                     ) {
                         // this.off(someHandlerFunction)
-                        if (this.handlers[i][j].handler === handlerOrType) {
+                        if (this._handlers[i][j].handler === handlerOrType) {
                             // removing all handlers by matching handler
-                            this.handlers[i][j] = null;
+                            this._handlers[i][j] = null;
                         }
 
                     } else if (
@@ -203,11 +215,11 @@ CanvasShapes.Scene = (function () {
                         // this.off('some-event-type', contextObject)
                         if (
                             i === handlerOrType &&
-                            this.handlers[i][j].context === eventTypeOrContext
+                            this._handlers[i][j].context === eventTypeOrContext
                         ) {
                             // removing all handlers by matching type and
                             // context
-                            this.handlers[i][j] = null;
+                            this._handlers[i][j] = null;
                         }
 
                     } else if (
@@ -217,11 +229,11 @@ CanvasShapes.Scene = (function () {
                         // this.off(someHandlerFunction, 'some-event-type')
                         if (
                             i === eventTypeOrContext &&
-                            this.handlers[i][j].handler === handlerOrType
+                            this._handlers[i][j].handler === handlerOrType
                         ) {
                             // removing all handlers by matching handler and
                             // type
-                            this.handlers[i][j] = null;
+                            this._handlers[i][j] = null;
                         }
 
                     } else {
@@ -229,26 +241,26 @@ CanvasShapes.Scene = (function () {
                         // contextObject)
                         if (
                             i === eventTypeOrContext &&
-                            this.handlers[i][j].handler === handlerOrType &&
-                            this.handlers[i][j].context === context
+                            this._handlers[i][j].handler === handlerOrType &&
+                            this._handlers[i][j].context === context
                         ) {
                             // removing all handlers by matching handler, type
                             // and context
-                            this.handlers[i][j] = null;
+                            this._handlers[i][j] = null;
                         }
                     }
                 }
             }
 
             // cleaning up arrays to remove null elements
-            for (i in this.handlers) {
+            for (i in this._handlers) {
                 tempArray = [];
-                for (j = 0; j < this.handlers[i].length; j++) {
-                    if (this.handlers[i][j] !== null) {
-                        tempArray.push(this.handlers[i][j]);
+                for (j = 0; j < this._handlers[i].length; j++) {
+                    if (this._handlers[i][j] !== null) {
+                        tempArray.push(this._handlers[i][j]);
                     }
                 }
-                this.handlers[i] = tempArray;
+                this._handlers[i] = tempArray;
             }
         },
 
@@ -266,8 +278,8 @@ CanvasShapes.Scene = (function () {
                 event.is(CanvasShapes.Event)
             ) {
                 // already prepared event instance
-                if (CanvasShapes._.isArray(this.handlers[event.getType()])) {
-                    handlers = this.handlers[event.getType()];
+                if (CanvasShapes._.isArray(this._handlers[event.getType()])) {
+                    handlers = this._handlers[event.getType()];
                 }
 
                 e = event;
@@ -282,8 +294,8 @@ CanvasShapes.Scene = (function () {
                     type = event;
                 }
 
-                if (CanvasShapes._.isArray(this.handlers[type])) {
-                    handlers = this.handlers[type];
+                if (CanvasShapes._.isArray(this._handlers[type])) {
+                    handlers = this._handlers[type];
                 }
             }
 

@@ -14,14 +14,14 @@ CanvasShapes.Triangle = (function () {
         this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
-        this.initialise(coordinates);
+        this._initialise(coordinates);
     };
 
     CanvasShapes.Class.extend(
         Triangle.prototype,
         CanvasShapes.Polygon.prototype,
     {
-        className: 'CanvasShapes.Triangle'
+        _className: 'CanvasShapes.Triangle'
     });
 
     return Triangle;

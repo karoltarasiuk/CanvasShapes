@@ -15,14 +15,19 @@ CanvasShapes.Polygon = (function () {
         this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
-        this.initialise(coordinates);
+        this._initialise(coordinates);
     };
 
     CanvasShapes.Class.extend(Polygon.prototype, CanvasShapes.Shape.prototype, {
 
-        className: 'CanvasShapes.Polygon',
+        _className: 'CanvasShapes.Polygon',
 
-        initialise: function (coordinates) {
+        /**
+         * Polygon initialisation method. It also validates arguments.
+         *
+         * @param {array} coordinates
+         */
+        _initialise: function (coordinates) {
 
             this.validateCoordinatesArray(
                 coordinates,
@@ -75,6 +80,8 @@ CanvasShapes.Polygon = (function () {
          * Due to the complexity of calculations allowedError in
          * CanvasShapes.Polygon applies to the position of a point, and not to
          * the distance to its edge.
+         *
+         * @throws {CanvasShapes.Error} 1058
          *
          * @implements {CanvasShapes.InteractionInterface}
          */

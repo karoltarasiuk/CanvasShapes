@@ -2,6 +2,11 @@
 
 CanvasShapes.SceneLayerAbstract = (function () {
 
+    /**
+     * Abstract class for layer objects.
+     *
+     * @throws {CanvasShapes.Error} 8017
+     */
     var SceneLayerAbstract = function () {
         throw new CanvasShapes.Error(8017);
     };
@@ -10,45 +15,12 @@ CanvasShapes.SceneLayerAbstract = (function () {
         SceneLayerAbstract.prototype,
         CanvasShapes.SceneLayerInterface.prototype,
     {
-        className: 'CanvasShapes.SceneLayerAbstract',
-
-        /**
-         * Scene the layer is on. Must be set on initialisation.
-         *
-         * @type {CanvasShapes.SceneInterface}
-         */
-        scene: null,
-
-        /**
-         * HTML Canvas element associated with this layer.
-         *
-         * @type {HTMLCanvasElement}
-         */
-        canvas: null,
-
-        /**
-         * 2D context of the layer. Must be set on initialisation.
-         *
-         * @type {CanvasRenderingContext2D}
-         */
-        context: null,
-
-        /**
-         * Width of the layer. Must be set on initialisation.
-         *
-         * @type {integer}
-         */
-        width: null,
-
-        /**
-         * Height of the layer. Must be set on initialisation.
-         *
-         * @type {integer}
-         */
-        height: null,
+        _className: 'CanvasShapes.SceneLayerAbstract',
 
         /**
          * @implements {CanvasShapes.SceneLayerInterface}
+         *
+         * @throws {CanvasShapes.Error} 1017
          */
         getScene: function () {
 
@@ -61,6 +33,8 @@ CanvasShapes.SceneLayerAbstract = (function () {
 
         /**
          * @implements {CanvasShapes.SceneLayerInterface}
+         *
+         * @throws {CanvasShapes.Error} 1054
          */
         getCanvas: function () {
 
@@ -73,6 +47,8 @@ CanvasShapes.SceneLayerAbstract = (function () {
 
         /**
          * @implements {CanvasShapes.SceneLayerInterface}
+         *
+         * @throws {CanvasShapes.Error} 1016
          */
         getContext: function () {
 
@@ -101,6 +77,9 @@ CanvasShapes.SceneLayerAbstract = (function () {
          * @implements {CanvasShapes.SceneLayerInterface}
          */
         getTop: function () {
+            if (this.top === undefined || this.top === null) {
+                return 0;
+            }
             return this.top;
         },
 
@@ -108,6 +87,9 @@ CanvasShapes.SceneLayerAbstract = (function () {
          * @implements {CanvasShapes.SceneLayerInterface}
          */
         getLeft: function () {
+            if (this.left === undefined || this.left === null) {
+                return 0;
+            }
             return this.left;
         },
 

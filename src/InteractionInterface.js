@@ -6,6 +6,8 @@ CanvasShapes.InteractionInterface = (function () {
      * An interface for any shape providing interaction options, i.e. reacting
      * on mouse and keyboard input. It's also used by a scene which is actually
      * a hub for all the events.
+     *
+     * @throws {CanvasShapes.Error} 8010
      */
     var InteractionInterface = function () {
         throw new CanvasShapes.Error(8010);
@@ -13,13 +15,15 @@ CanvasShapes.InteractionInterface = (function () {
 
     CanvasShapes.Class.extend(InteractionInterface.prototype, {
 
-        className: 'CanvasShapes.InteractionInterface',
+        _className: 'CanvasShapes.InteractionInterface',
 
         /**
          * Collision detection for shapes. Returns `true` when collision is
          * detected.
          *
          * `mouseCoordinates` object must simply contain `x` and `y` properties.
+         *
+         * @throws {CanvasShapes.Error} 9042
          *
          * @param  {object} mouseCoordinates
          * @return {boolean}
@@ -38,9 +42,11 @@ CanvasShapes.InteractionInterface = (function () {
          *
          * Returns boolean with the result of attaching.
          *
-         * @param  {string}   eventType
-         * @param  {function} handler
-         * @param  {object}   context
+         * @throws {CanvasShapes.Error} 9038
+         *
+         * @param {string}   eventType
+         * @param {function} handler
+         * @param {object}   context
          */
         on: function (eventType, handler, context) {
             throw new CanvasShapes.Error(9038);
@@ -66,6 +72,8 @@ CanvasShapes.InteractionInterface = (function () {
          * `instance.off(someHandlerFunction, 'some-event-type')`
          * `instance.off(someHandlerFunction, 'some-event-type', contextObject)`
          *
+         * @throws {CanvasShapes.Error} 9039
+         *
          * @param {[string,function]} handlerOrType
          * @param {string}            eventTypeOrContext [OPTIONAL]
          * @param {context}           context [OPTIONAL]
@@ -85,6 +93,8 @@ CanvasShapes.InteractionInterface = (function () {
          *
          * If the `context` is passed the event will be dispatched only for the
          * matching context object.
+         *
+         * @throws {CanvasShapes.Error} 9040
          *
          * @param {[Event,object,string,CanvasShapes.EventAbstract]}  event
          * @param {object}                                            context

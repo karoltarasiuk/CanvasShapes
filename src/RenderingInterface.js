@@ -2,16 +2,23 @@
 
 CanvasShapes.RenderingInterface = (function () {
 
+    /**
+     * An interface for all able to be renderered objects.
+     *
+     * @throws {CanvasShapes.Error} 8009
+     */
     var RenderingInterface = function () {
         throw new CanvasShapes.Error(8009);
     };
 
     CanvasShapes.Class.extend(RenderingInterface.prototype, {
 
-        className: 'CanvasShapes.RenderingInterface',
+        _className: 'CanvasShapes.RenderingInterface',
 
         /**
          * Allows parent to run rendering of a shape on passed layer.
+         *
+         * @throws {CanvasShapes.Error} 9001
          *
          * @param {CanvasShapes.SceneLayerInterface} layer
          */
@@ -27,10 +34,35 @@ CanvasShapes.RenderingInterface = (function () {
          * must take care of multiple scenes calling this method. All handlers
          * should be saved and used when needed.
          *
+         * @throws {CanvasShapes.Error} 9003
+         *
          * @param {object} sceneInterfaceHandlers
          */
         setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {
             throw new CanvasShapes.Error(9003);
+        },
+
+        /**
+         * Gets handlers associated with this rendering object (context is set),
+         * which allows to execute some functionality on a scene.
+         *
+         * This method should return an array with all available scene methods:
+         * - newLayer
+         * - getLayer
+         * - addShape
+         * - requestRendering
+         * - on
+         * - off
+         * - dispatch
+         *
+         * Since one rendering object (or shape) can belong to many scenes,
+         * returned methods must actually be wrappers, and run the same methods
+         * on each scene.
+         *
+         * @return {[array]}
+         */
+        getSceneInterfaceHandlers: function () {
+            throw new CanvasShapes.Error(9073);
         },
 
         /**
@@ -41,6 +73,8 @@ CanvasShapes.RenderingInterface = (function () {
          * exactly what you are doing. To add a style to a shape please use
          * `addToShape` from `CanvasShapes.StyleInterface`.
          *
+         * @throws {CanvasShapes.Error} 9029
+         *
          * @param {CanvasShapes.StyleInterface} style
          * @param {boolean}                     deep
          */
@@ -50,6 +84,8 @@ CanvasShapes.RenderingInterface = (function () {
 
         /**
          * Returns currently assigned style object.
+         *
+         * @throws {CanvasShapes.Error} 9030
          *
          * @return {[null, CanvasShapes.StyleInterface]}
          */
@@ -63,6 +99,8 @@ CanvasShapes.RenderingInterface = (function () {
          * percents. It will return `true` if the value was successfully set, or
          * `false` otherwise.
          *
+         * @throws {CanvasShapes.Error} 9035
+         *
          * @param {boolean} relativeRendering
          * @return {boolean}
          */
@@ -73,6 +111,8 @@ CanvasShapes.RenderingInterface = (function () {
         /**
          * Returns current value for relative rendering of this rendering
          * object.
+         *
+         * @throws {CanvasShapes.Error} 9036
          *
          * @return {boolean}
          */

@@ -157,20 +157,20 @@ define([
                 expect(canvas1.style.marginLeft).toBe('');
                 expect(canvas1.style.marginTop).toBe('');
                 expect(canvas1.style.position).toBe('absolute');
-                expect(canvas1.style.top).toBe('0px');
-                expect(canvas1.style.left).toBe('0px');
+                expect(canvas1.style.top).toBe('');
+                expect(canvas1.style.left).toBe('');
 
                 expect(canvas2.style.marginLeft).toBe(-layer2.getWidth() + 'px');
                 expect(canvas2.style.marginTop).toBe(-layer2.getHeight() + 'px');
                 expect(canvas2.style.position).toBe('fixed');
-                expect(canvas2.style.top).toBe('10px');
-                expect(canvas2.style.left).toBe('20px');
+                expect(canvas2.style.top).toBe('0px');
+                expect(canvas2.style.left).toBe('0px');
 
                 expect(canvas3.style.marginLeft).toBe('');
                 expect(canvas3.style.marginTop).toBe('');
                 expect(canvas3.style.position).toBe('absolute');
-                expect(canvas3.style.top).toBe('0px');
-                expect(canvas3.style.left).toBe('0px');
+                expect(canvas3.style.top).toBe('');
+                expect(canvas3.style.left).toBe('');
             });
 
             it('initialising layers', function () {
@@ -187,19 +187,19 @@ define([
                     layer = scene.initialiseLayers();
                 }).not.toThrow();
 
-                expect(scene.layers).not.toBe(undefined);
-                expect(scene.layers).not.toEqual({});
+                expect(scene._layers).not.toBe(undefined);
+                expect(scene._layers).not.toEqual({});
 
-                for (i in scene.layers) {
+                for (i in scene._layers) {
                     count++;
                     UUID = i;
                 }
 
                 expect(count).toBe(1);
-                expect(scene.layers[UUID].layer).not.toBe(undefined);
-                expect(scene.layers[UUID].layer.is('CanvasShapes.SceneLayer'))
+                expect(scene._layers[UUID].layer).not.toBe(undefined);
+                expect(scene._layers[UUID].layer.is('CanvasShapes.SceneLayer'))
                     .toBe(true);
-                expect(scene.layers[UUID].shapes).toEqual({});
+                expect(scene._layers[UUID].shapes).toEqual({});
             });
 
             it('returning whether should render off screen', function () {
@@ -239,65 +239,65 @@ define([
                     layer1 = scene.addShape(shape1);
                 }).not.toThrow();
 
-                for (i in scene.layers) {
+                for (i in scene._layers) {
                     UUID = i;
                     count++;
                 }
 
-                expect(scene.layers[UUID].shapes).not.toEqual({});
+                expect(scene._layers[UUID].shapes).not.toEqual({});
 
-                for (i in scene.layers[UUID].shapes) {
+                for (i in scene._layers[UUID].shapes) {
                     UUID2 = i;
                     count2++;
                 }
 
                 expect(count2).toBe(1);
-                expect(scene.layers[UUID].shapes[UUID2]).toBe(shape1);
+                expect(scene._layers[UUID].shapes[UUID2]).toBe(shape1);
 
                 expect(function () {
                     scene.addShape(shape2, layer2);
                 }).not.toThrow();
 
                 count = 0;
-                for (i in scene.layers) {
+                for (i in scene._layers) {
                     UUID = i;
                     count++;
                 }
                 count2 = 0;
-                for (i in scene.layers[UUID].shapes) {
+                for (i in scene._layers[UUID].shapes) {
                     UUID2 = i;
                     count2++;
                 }
 
                 expect(count).toBe(2);
-                expect(scene.layers[UUID].layer).not.toBe(undefined);
-                expect(scene.layers[UUID].layer.is('CanvasShapes.SceneLayer'))
+                expect(scene._layers[UUID].layer).not.toBe(undefined);
+                expect(scene._layers[UUID].layer.is('CanvasShapes.SceneLayer'))
                     .toBe(true);
-                expect(scene.layers[UUID].shapes).not.toEqual({});
+                expect(scene._layers[UUID].shapes).not.toEqual({});
                 expect(count2).toBe(1);
-                expect(scene.layers[UUID].shapes[UUID2]).toBe(shape2);
+                expect(scene._layers[UUID].shapes[UUID2]).toBe(shape2);
 
                 expect(function () {
                     scene.addShape(shape3, layer1);
                 }).not.toThrow();
 
                 count = 0;
-                for (i in scene.layers) {
+                for (i in scene._layers) {
                     count++;
                 }
-                for (i in scene.layers) {
+                for (i in scene._layers) {
                     UUID = i;
                     break;
                 }
                 count2 = 0;
-                for (i in scene.layers[UUID].shapes) {
+                for (i in scene._layers[UUID].shapes) {
                     UUID2 = i;
                     count2++;
                 }
 
                 expect(count).toBe(2);
                 expect(count2).toBe(2);
-                expect(scene.layers[UUID].shapes[UUID2]).toBe(shape3);
+                expect(scene._layers[UUID].shapes[UUID2]).toBe(shape3);
             });
 
             it('getting layer', function () {
@@ -468,7 +468,7 @@ define([
                         height: 100
                     });
                 }).not.toThrow();
-                expect(scene1.handlers).toEqual({});
+                expect(scene1._handlers).toEqual({});
             });
 
             it('events manipulation', function () {
@@ -555,15 +555,15 @@ define([
                     },
                     config9 = { id: 'existing-element-id', width: 100 };
 
-                expect(scene.validateConfig(config1)).toBe(false);
-                expect(scene.validateConfig(config2)).toBe(false);
-                expect(scene.validateConfig(config3)).toBe(false);
-                expect(scene.validateConfig(config4)).toBe(true);
-                expect(scene.validateConfig(config5)).toBe(true);
-                expect(scene.validateConfig(config6)).toBe(false);
-                expect(scene.validateConfig(config7)).toBe(false);
-                expect(scene.validateConfig(config8)).toBe(false);
-                expect(scene.validateConfig(config9)).toBe(false);
+                expect(scene._validateConfig(config1)).toBe(false);
+                expect(scene._validateConfig(config2)).toBe(false);
+                expect(scene._validateConfig(config3)).toBe(false);
+                expect(scene._validateConfig(config4)).toBe(true);
+                expect(scene._validateConfig(config5)).toBe(true);
+                expect(scene._validateConfig(config6)).toBe(false);
+                expect(scene._validateConfig(config7)).toBe(false);
+                expect(scene._validateConfig(config8)).toBe(false);
+                expect(scene._validateConfig(config9)).toBe(false);
             });
 
             it('rendering', function () {

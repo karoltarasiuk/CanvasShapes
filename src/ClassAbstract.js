@@ -4,6 +4,8 @@ CanvasShapes.ClassAbstract = (function () {
 
     /**
      * Abstract for any class within CanvasShapes library.
+     *
+     * @throws {CanvasShapes.Error} 8005
      */
     var ClassAbstract = function () {
         throw new CanvasShapes.Error(8005);
@@ -14,33 +16,37 @@ CanvasShapes.ClassAbstract = (function () {
         CanvasShapes.ClassInterface.prototype,
     {
 
-        className: 'CanvasShapes.ClassAbstract',
+        _className: 'CanvasShapes.ClassAbstract',
 
         /**
          * @implements {CanvasShapes.ClassInterface}
+         *
+         * @throws {CanvasShapes.Error} 1009
          */
         is: function (passedClass) {
 
             if (CanvasShapes._.isObject(passedClass)) {
-                if (passedClass.className) {
-                    passedClass = passedClass.className;
+                if (CanvasShapes._.isString(passedClass._className)) {
+                    passedClass = passedClass._className;
                 } else if (
-                    passedClass.prototype &&
-                    passedClass.prototype.className
+                    CanvasShapes._.isObject(passedClass.prototype) &&
+                    CanvasShapes._.isString(passedClass.prototype._className)
                 ) {
-                    passedClass = passedClass.prototype.className;
+                    passedClass = passedClass.prototype._className;
                 }
             }
 
-            if (CanvasShapes._.isString(passedClass)) {
-                return this.classes.indexOf(passedClass) !== -1;
-            } else {
+            if (!CanvasShapes._.isString(passedClass)) {
                 throw new CanvasShapes.Error(1009);
             }
+
+            return this.classes.indexOf(passedClass) !== -1;
         },
 
         /**
          * @implements {CanvasShapes.ClassInterface}
+         *
+         * @throws {CanvasShapes.Error} 1061
          */
         setUUID: function (UUID) {
 
@@ -75,6 +81,13 @@ CanvasShapes.ClassAbstract = (function () {
          */
         getUUID: function () {
             return this.UUID;
+        },
+
+        /**
+         * @implements {CanvasShapes.ClassInterface}
+         */
+        getClassName: function () {
+            return this._className;
         }
     });
 

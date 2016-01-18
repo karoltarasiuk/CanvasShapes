@@ -101,9 +101,9 @@ define([
                     renderer.addShapes([shape1, shape2], 'new');
                 }).not.toThrow();
 
-                for (i = 0; i < renderer.scenes.length; i++) {
+                for (i = 0; i < renderer._scenes.length; i++) {
                     count = 0;
-                    for (j in renderer.scenes[i].layers) {
+                    for (j in renderer._scenes[i]._layers) {
                         count++;
                     }
                     expect(count).toBe(2);
@@ -113,9 +113,9 @@ define([
                     renderer.addShapes([shape2], 'new');
                 }).not.toThrow();
 
-                for (i = 0; i < renderer.scenes.length; i++) {
+                for (i = 0; i < renderer._scenes.length; i++) {
                     count = 0;
-                    for (j in renderer.scenes[i].layers) {
+                    for (j in renderer._scenes[i]._layers) {
                         count++;
                     }
                     expect(count).toBe(3);

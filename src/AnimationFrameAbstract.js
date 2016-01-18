@@ -3,7 +3,9 @@
 CanvasShapes.AnimationFrameAbstract = (function () {
 
     /**
-     * Interface for animation helper
+     * Interface for animation helper.
+     *
+     * @throws {CanvasShapes.Error} 8024
      */
     var AnimationFrameAbstract = function () {
         throw new CanvasShapes.Error(8024);
@@ -13,7 +15,7 @@ CanvasShapes.AnimationFrameAbstract = (function () {
         AnimationFrameAbstract.prototype,
         CanvasShapes.AnimationFrameInterface.prototype,
     {
-        className: 'CanvasShapes.AnimationFrameAbstract',
+        _className: 'CanvasShapes.AnimationFrameAbstract',
 
         /**
          * @implements {CanvasShapes.SceneInterface}
@@ -31,7 +33,7 @@ CanvasShapes.AnimationFrameAbstract = (function () {
 
             if (currentTime < this.startTime + this.totalAnimationTime) {
                 // request next frame from the browser
-                this.shape.sceneInterfaceHandlers.requestRendering(
+                this.shape._sceneInterfaceHandlers.requestRendering(
                     this.shape,
                     this
                 );

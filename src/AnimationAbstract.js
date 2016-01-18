@@ -4,6 +4,8 @@ CanvasShapes.AnimationAbstract = (function () {
 
     /**
      * Abstract implementation for any object able to animate.
+     *
+     * @throws {CanvasShapes.Error} 8022
      */
     var AnimationAbstract = function () {
         throw new CanvasShapes.Error(8022);
@@ -13,10 +15,12 @@ CanvasShapes.AnimationAbstract = (function () {
         AnimationAbstract.prototype,
         CanvasShapes.AnimationInterface.prototype,
     {
-        className: 'CanvasShapes.AnimationAbstract',
+        _className: 'CanvasShapes.AnimationAbstract',
 
         /**
          * @implements {CanvasShapes.AnimationInterface}
+         *
+         * @throws {CanvasShapes.Error} 1045
          */
         animate: function (animationFrame) {
 
@@ -28,7 +32,7 @@ CanvasShapes.AnimationAbstract = (function () {
                 throw new CanvasShapes.Error(1045);
             }
 
-            this.sceneInterfaceHandlers.requestRendering(
+            this.getSceneInterfaceHandlers().requestRendering(
                 this,
                 animationFrame
             );

@@ -2,17 +2,24 @@
 
 CanvasShapes.ShapeInterface = (function () {
 
+    /**
+     * An interface for shapes.
+     *
+     * @throws {CanvasShapes.Error} 8015
+     */
     var ShapeInterface = function () {
         throw new CanvasShapes.Error(8015);
     };
 
     CanvasShapes.Class.extend(ShapeInterface.prototype, {
 
-        className: 'CanvasShapes.ShapeInterface',
+        _className: 'CanvasShapes.ShapeInterface',
 
         /**
          * If shape is being part of a group, we need to set its parent, so it
          * knows how to render itself.
+         *
+         * @throws {CanvasShapes.Error} 9054
          *
          * @param {CanvasShapes.GroupInterface} group
          */
@@ -23,6 +30,8 @@ CanvasShapes.ShapeInterface = (function () {
         /**
          * Allows you to get the parent of a shape. It will return 'undefined'
          * if shape doesn't have a parent.
+         *
+         * @throws {CanvasShapes.Error} 9055
          *
          * @return {CanvasShapes.GroupInterface}
          */
@@ -37,10 +46,47 @@ CanvasShapes.ShapeInterface = (function () {
          * then it will look for the top-most shape/group associated with a
          * layer.
          *
+         * @throws {CanvasShapes.Error} 9056
+         *
          * @return {CanvasShapes.RenderingInterface}
          */
         getRenderingShape: function () {
             throw new CanvasShapes.Error(9056);
+        },
+
+        /**
+         * Checks whether shape was added to a scene.
+         *
+         * @return {boolean}
+         */
+        isOnScene: function () {
+            throw new CanvasShapes.Error(9070);
+        },
+
+        /**
+         * Allows you to overwrite global IS_COLLIDING_RATIO config value.
+         *
+         * @throws {CanvasShapes.Error} 1057
+         *
+         * @param {boolean} isCollidingRatio
+         */
+        setIsCollidingRatio: function (isCollidingRatio) {
+            throw new CanvasShapes.Error(9071);
+        },
+
+        /**
+         * Calculates allowed error parameter used in `isColliding` method. It's
+         * never less than 1. Also internal `_isCollidingRatio` property set in
+         * `setIsCollidingRatio()` takes precedence over global
+         * `IS_COLLIDING_RATIO` config value. The calculation is relative to the
+         * size of a layer, which means, since one shape can sit on
+         * multiple layers, that layer must be passed as an argument.
+         *
+         * @param  {CanvasShapes.SceneLayerInterface} layer
+         * @return {float}
+         */
+        calculateAllowedError: function (layer) {
+            throw new CanvasShapes.Error(9072);
         }
     });
 

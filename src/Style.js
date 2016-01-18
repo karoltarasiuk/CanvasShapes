@@ -3,7 +3,26 @@
 CanvasShapes.Style = (function () {
 
     /**
-     * Styling object.
+     * Initialises the style with default definition.
+     *
+     * The `definition` is a function accepting a `context` of a layer, e.g:
+     * ```
+     * function (context) {
+     *     context.stroke();
+     * }
+     * ```
+     * or it's an object with definition properties, e.g.:
+     * ```
+     * {
+     *     strokeStyle: 'black',
+     *     fillStyle: 'white'
+     * }
+     * ```
+     *
+     * [WARNING] Definition object is not as flexible, but colors specified
+     * there can be animated.
+     *
+     * @param {[function, object]} definition
      */
     var Style = function (definition) {
 
@@ -11,14 +30,14 @@ CanvasShapes.Style = (function () {
             definition = function () {};
         }
 
-        this.initialise(definition);
+        this._initialise(definition);
     };
 
     CanvasShapes.Class.extend(
         Style.prototype,
         CanvasShapes.StyleAbstract.prototype,
     {
-        className: 'CanvasShapes.Style'
+        _className: 'CanvasShapes.Style'
     });
 
     return Style;

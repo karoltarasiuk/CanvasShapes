@@ -5,8 +5,8 @@ CanvasShapes.Tools = (function () {
     /**
      * Wrapper for `Array.prototype.slice` method.
      *
-     * @param  {array}   array
-     * @param  {integer} index
+     * @param {array}   array
+     * @param {integer} index
      *
      * @return {array}
      */
@@ -55,8 +55,8 @@ CanvasShapes.Tools = (function () {
      * Converts hex notation to object, or optionally to array if
      * `convertToArray` is passed as a truthy value.
      *
-     * @param  {string}  hex
-     * @param  {boolean} convertToArray [OPTIONAL]
+     * @param {string}  hex
+     * @param {boolean} convertToArray [OPTIONAL]
      *
      * @return {[object,array]}
      */
@@ -136,9 +136,9 @@ CanvasShapes.Tools = (function () {
     /**
      * Convert 3 integers (arguments) to hex notation in lowercase.
      *
-     * @param  {integer} r
-     * @param  {integer} g
-     * @param  {integer} b
+     * @param {integer} r
+     * @param {integer} g
+     * @param {integer} b
      *
      * @return {string}
      */
@@ -170,10 +170,10 @@ CanvasShapes.Tools = (function () {
      * Checks whether passed value is within a given interval.
      * `excludingEndpoints` defaults to false.
      *
-     * @param  {float}   value
-     * @param  {float}   intervalMin
-     * @param  {float}   intervalMax
-     * @param  {boolean} excludingEndpoints [OPTIONAL]
+     * @param {float}   value
+     * @param {float}   intervalMin
+     * @param {float}   intervalMax
+     * @param {boolean} excludingEndpoints [OPTIONAL]
      *
      * @return {boolean}
      */
@@ -240,7 +240,8 @@ CanvasShapes.Tools = (function () {
     /**
      * Color pre-defined strings, and their hex values.
      *
-     * @see  https://developer.mozilla.org/en/docs/Web/CSS/color_value
+     * @see https://developer.mozilla.org/en/docs/Web/CSS/color_value
+     *
      * @type {object}
      */
     var PREDEFINED_COLORS = {

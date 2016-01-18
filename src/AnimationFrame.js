@@ -22,6 +22,8 @@ CanvasShapes.AnimationFrame = (function () {
      * context, and if unbound, they have access to `this` object. But it also
      * may be useful to bind them to desired context before passing here.
      *
+     * @throws {CanvasShapes.Error} 1043
+     *
      * @param {CanvasShapes.RenderingInterface}   shape
      * @param {integer}                           totalAnimationTime
      * @param {function}                          stepCallback
@@ -78,7 +80,7 @@ CanvasShapes.AnimationFrame = (function () {
         AnimationFrame.prototype,
         CanvasShapes.AnimationFrameAbstract.prototype,
     {
-        className: 'CanvasShapes.AnimationFrame'
+        _className: 'CanvasShapes.AnimationFrame'
     });
 
     return AnimationFrame;

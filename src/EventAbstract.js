@@ -8,6 +8,8 @@ CanvasShapes.EventAbstract = (function () {
      *
      * This class doesn't have an `Abstract` suffix in its name as its static
      * methods and fields can be used pretty often, so it saves you on typing.
+     *
+     * @throws {CanvasShapes.Error} 8019
      */
     var EventAbstract = function () {
         throw new CanvasShapes.Error(8019);
@@ -17,7 +19,7 @@ CanvasShapes.EventAbstract = (function () {
         EventAbstract.prototype,
         CanvasShapes.EventInterface.prototype,
     {
-        className: 'CanvasShapes.EventAbstract',
+        _className: 'CanvasShapes.EventAbstract',
 
         /**
          * Initialisation method of the new Event object. It accepts native DOM
@@ -32,13 +34,17 @@ CanvasShapes.EventAbstract = (function () {
          * `target` argument is optional, and is used to overwrite the target
          * from the native DOM event object, or set the target for custom event.
          * If `target` is not passed explicitly, it falls back to `event.target`
-         * and then to `scene.dom`.
+         * and then to `scene.getDom()`.
+         *
+         * @throws {CanvasShapes.Error} 1035
+         * @throws {CanvasShapes.Error} 1056
+         * @throws {CanvasShapes.Error} 1039
          *
          * @param {[object,string]}             event
          * @param {CanvasShapes.SceneInterface} scene
          * @param {object}                      target [OPTIONAL]
          */
-        initialise: function (event, scene, target) {
+        _initialise: function (event, scene, target) {
 
             if (CanvasShapes._.isString(event)) {
                 event = {
@@ -62,7 +68,7 @@ CanvasShapes.EventAbstract = (function () {
             }
 
             if (!target) {
-                target = scene.dom;
+                target = scene.getDom();
             }
 
             if (!CanvasShapes.Tools.isElement(target)) {

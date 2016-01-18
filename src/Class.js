@@ -22,6 +22,25 @@ CanvasShapes.Class = (function () {
         }
     };
 
+    CanvasShapes._.extend(
+        Class.prototype,
+        CanvasShapes.ClassAbstract.prototype,
+    {
+        _className: 'CanvasShapes.Class'
+    });
+
+    /**
+     * Map of all objects which has an UUID generate using `getUUID()` method.
+     *
+     * {
+     *     UUID: object,
+     *     ...
+     * }
+     *
+     * @type {object}
+     */
+    var OBJECTS = {};
+
     /**
      * Class.extend(destination, *sources)
      *
@@ -33,8 +52,9 @@ CanvasShapes.Class = (function () {
      * It also populates `classes` array with all class names destination
      * inherits from.
      *
-     * @param  {object} destination [description]
-     * @param  {object} sources
+     * @param {object} destination [description]
+     * @param {object} sources
+     *
      * @return {object}
      */
     Class.extend = function() {
@@ -62,36 +82,18 @@ CanvasShapes.Class = (function () {
                 }
             }
 
-            if (CanvasShapes._.isString(argument.className)) {
-                classes.push(argument.className);
+            if (CanvasShapes._.isString(argument._className)) {
+                classes.push(argument._className);
             }
         });
 
         obj.classes = CanvasShapes._.uniq(classes);
     };
 
-    CanvasShapes._.extend(
-        Class.prototype,
-        CanvasShapes.ClassAbstract.prototype,
-    {
-
-        className: 'CanvasShapes.Class'
-    });
-
-    /**
-     * Map of all objects which has an UUID generate using `getUUID()` method.
-     *
-     * {
-     *     UUID: object,
-     *     ...
-     * }
-     *
-     * @type {object}
-     */
-    var OBJECTS = {};
-
     /**
      * Gets the object from registry by its UUID.
+     *
+     * @throws {CanvasShapes.Error} 1063
      *
      * @param  {string} UUID
      * @return {[null,object]}
@@ -116,6 +118,8 @@ CanvasShapes.Class = (function () {
      *
      * Function will return old object (under passed `UUID`) or `true`
      * otherwise.
+     *
+     * @throws {CanvasShapes.Error} 1062
      *
      * @param {string} UUID
      * @param {object} obj
@@ -154,8 +158,10 @@ CanvasShapes.Class = (function () {
      * object under the `oldUUID` doesn't exist it returns `false`. It only
      * swaps it within registry - it doesn't touch an object itself.
      *
-     * @param  {string} oldUUID
-     * @param  {string} newUUID
+     * @throws {CanvasShapes.Error} 1064
+     *
+     * @param {string} oldUUID
+     * @param {string} newUUID
      *
      * @return {boolean}
      */
@@ -179,6 +185,8 @@ CanvasShapes.Class = (function () {
     /**
      * Removes object from a registry specified by its UUID. Function returns
      * either removed object or `null` if nothing was removed.
+     *
+     * @throws {CanvasShapes.Error} 1065
      *
      * @param  {string}        UUID
      * @return {[null,object]}
@@ -224,6 +232,8 @@ CanvasShapes.Class = (function () {
      * Gets class object from comma separated object notation string. It looks
      * for it only within CanvasShapes namespace, so if your object is not
      * there, `null` will be returned.
+     *
+     * @throws {CanvasShapes.Error} 1066
      *
      * @param  {string}      className
      * @return {null,object}

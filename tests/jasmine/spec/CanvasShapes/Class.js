@@ -13,23 +13,23 @@ define([
             Temp = function () {};
 
         CanvasShapes.Class.extend(Temp.prototype, {
-            className: 'Temp',
+            _className: 'Temp',
             temp: function () { return 'temp'; }
         });
 
         CanvasShapes.Class.extend(A.prototype, {
-            className: 'A',
+            _className: 'A',
             a: function () { return 'a'; }
         });
 
         CanvasShapes.Class.extend(B.prototype, Temp.prototype, {
-            className: 'B',
+            _className: 'B',
             b: function () { return 'b'; },
             temp: function () { return 'b'; }
         });
 
         CanvasShapes.Class.extend(C.prototype, B.prototype, A.prototype, {
-            className: 'C',
+            _className: 'C',
             a: function () { return 'c'; },
             b: function () { return 'c'; },
             c: function () { return 'c'; },
@@ -58,10 +58,10 @@ define([
                     c = new C();
 
                 // methods
-                expect(temp.className).toBe('Temp');
-                expect(a.className).toBe('A');
-                expect(b.className).toBe('B');
-                expect(c.className).toBe('C');
+                expect(temp._className).toBe('Temp');
+                expect(a._className).toBe('A');
+                expect(b._className).toBe('B');
+                expect(c._className).toBe('C');
             });
 
             it('copies methods correctly', function () {

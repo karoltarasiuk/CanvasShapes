@@ -198,7 +198,7 @@ define([
                     event = new EventClass('custom', scene, dom);
                     expect(event.target).toBe(dom);
                     event = new EventClass('custom', scene);
-                    expect(event.target).toBe(scene.dom);
+                    expect(event.target).toBe(scene._dom);
                     event = new EventClass(
                         { type: 'custom', target: span },
                         scene

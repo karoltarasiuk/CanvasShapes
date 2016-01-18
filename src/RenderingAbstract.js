@@ -2,6 +2,11 @@
 
 CanvasShapes.RenderingAbstract = (function () {
 
+    /**
+     * An abstract for all able to be renderered objects.
+     *
+     * @throws {CanvasShapes.Error} 8001
+     */
     var RenderingAbstract = function () {
         throw new CanvasShapes.Error(8001);
     };
@@ -10,88 +15,75 @@ CanvasShapes.RenderingAbstract = (function () {
         RenderingAbstract.prototype,
         CanvasShapes.RenderingInterface.prototype,
     {
-        className: 'CanvasShapes.RenderingAbstract',
-
-        /**
-         * Handlers allowing a shape to any info it needs from a scene. It's an
-         * array to store handlers for each scene shape is on.
-         * @type {object}
-         */
-        sceneInterfaceHandlers: null,
-
-        /**
-         * Layer to render the shape on.
-         * @type {CanvasShapes.SceneLayer}
-         */
-        layer: null,
-
-        /**
-         * Style object.
-         * @type {CanvasObject.StyleInterface}
-         */
-        style: null,
-
-        /**
-         * Allows you to specify whether this rendering object coordinates
-         * must be rendered relatively or not.
-         *
-         * @type {boolean}
-         */
-        relativeRendering: false,
+        _className: 'CanvasShapes.RenderingAbstract',
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
         setSceneInterfaceHandlers: function (sceneInterfaceHandlers) {
 
-            var sceneInterfaceHandler;
+            // this will initialise handlers if needed
+            var handlers = this.getSceneInterfaceHandlers();
+            // and this will push handlers to the array so handlers can be used
+            this._sceneInterfaceHandlers.push(sceneInterfaceHandlers);
+        },
 
-            if (!CanvasShapes._.isArray(this.sceneInterfaceHandlers)) {
-                this.sceneInterfaceHandlers = [];
-            }
+        /**
+         * @implements {CanvasShapes.RenderingInterface}
+         */
+        getSceneInterfaceHandlers: function () {
 
-            CanvasShapes._.each(sceneInterfaceHandlers, function (
-                sceneInterfaceHandler,
-                handlerName
-            ) {
-                if (
-                    !CanvasShapes._
-                        .isFunction(this.sceneInterfaceHandlers[handlerName])
-                ) {
-                    this.sceneInterfaceHandlers[handlerName] =
+            var i, availableHandlers;
+
+            if (!CanvasShapes._.isArray(this._sceneInterfaceHandlers)) {
+
+                availableHandlers = [
+                    'newLayer',
+                    'getLayer',
+                    'addShape',
+                    'requestRendering',
+                    'on',
+                    'off',
+                    'dispatch'
+                ];
+
+                this._sceneInterfaceHandlers = [];
+
+                CanvasShapes._.each(availableHandlers, function (handlerName) {
+                    this._sceneInterfaceHandlers[handlerName] =
                         CanvasShapes._.bind(
                             function () {
                                 var i,
-                                    length = this.sceneInterfaceHandlers.length;
+                                    length = this._sceneInterfaceHandlers.length;
 
                                 for (i = 0; i < length; i++) {
-                                    this.sceneInterfaceHandlers[i][handlerName]
+                                    this._sceneInterfaceHandlers[i][handlerName]
                                         .apply(this, arguments);
                                 }
                             },
                             this
                         );
-                }
-            }, this);
+                }, this);
+            }
 
-            this.sceneInterfaceHandlers.push(sceneInterfaceHandlers);
+            return this._sceneInterfaceHandlers;
         },
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
         setStyle: function (style, deep) {
-            this.style = style;
+            this._style = style;
         },
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
         getStyle: function () {
-            if (!this.style) {
-                this.style = new CanvasShapes.Style();
+            if (!this._style) {
+                this._style = new CanvasShapes.Style();
             }
-            return this.style;
+            return this._style;
         },
 
         /**
@@ -100,7 +92,7 @@ CanvasShapes.RenderingAbstract = (function () {
         setRelativeRendering: function (relativeRendering) {
 
             if (CanvasShapes._.isBoolean(relativeRendering)) {
-                this.relativeRendering = relativeRendering;
+                this._relativeRendering = relativeRendering;
                 return true;
             }
 
@@ -111,7 +103,7 @@ CanvasShapes.RenderingAbstract = (function () {
          * @implements {CanvasShapes.RenderingInterface}
          */
         getRelativeRendering: function () {
-            return this.relativeRendering;
+            return this._relativeRendering;
         }
     });
 

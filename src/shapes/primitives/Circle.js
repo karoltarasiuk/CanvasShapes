@@ -21,23 +21,23 @@ CanvasShapes.Circle = (function () {
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
 
-        this.mode = CanvasShapes.Arc.MODES.CIRCLE;
+        this._mode = CanvasShapes.Arc.MODES.CIRCLE;
 
         this.validateCoordinates(coordinates, true);
-        this.coordinates = [coordinates];
+        this.setCoordinates([coordinates]);
 
         // I have translated the original coordinates array to the one supported
         // by CanvasShapes.Arc, which means I need to adjust MAX_COORDINATES too
         this.MAX_COORDINATES = 3;
 
-        this.radius = radius;
-        this.startAngle = 0;
-        this.endAngle = 2 * Math.PI;
+        this._radius = radius;
+        this._startAngle = 0;
+        this._endAngle = 2 * Math.PI;
     };
 
     CanvasShapes.Class.extend(Circle.prototype, CanvasShapes.Arc.prototype, {
 
-        className: 'CanvasShapes.Circle',
+        _className: 'CanvasShapes.Circle',
 
         /**
          * Coordinates are being translated to the array of coordinates to fit

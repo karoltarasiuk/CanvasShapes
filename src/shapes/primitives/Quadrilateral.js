@@ -14,14 +14,14 @@ CanvasShapes.Quadrilateral = (function () {
         this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
-        this.initialise(coordinates);
+        this._initialise(coordinates);
     };
 
     CanvasShapes.Class.extend(
         Quadrilateral.prototype,
         CanvasShapes.Polygon.prototype,
     {
-        className: 'CanvasShapes.Quadrilateral'
+        _className: 'CanvasShapes.Quadrilateral'
     });
 
     return Quadrilateral;

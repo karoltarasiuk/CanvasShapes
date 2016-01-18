@@ -73,7 +73,7 @@ require([
                         fillStyle: '#FFCDCD'
                     });
                 }
-                this.sceneInterfaceHandlers.requestRendering(this);
+                this.getSceneInterfaceHandlers().requestRendering(this);
                 that.renderer.render();
             });
 
@@ -84,7 +84,7 @@ require([
                         fillStyle: 'lightBlue'
                     });
                 }
-                this.sceneInterfaceHandlers.requestRendering(this);
+                this.getSceneInterfaceHandlers().requestRendering(this);
                 that.renderer.render();
             });
         };

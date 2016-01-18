@@ -16,16 +16,23 @@ CanvasShapes.Rectangle = (function () {
         this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
-        this.initialise(coordinates);
+        this._initialise(coordinates);
     };
 
     CanvasShapes.Class.extend(
         Rectangle.prototype,
         CanvasShapes.Quadrilateral.prototype,
     {
-        className: 'CanvasShapes.Rectangle',
+        _className: 'CanvasShapes.Rectangle',
 
-        initialise: function (coordinates) {
+        /**
+         * Recangle initialisation method. It also validates arguments.
+         *
+         * @throws {CanvasShapes.Error} 1013
+         *
+         * @param {array} coordinates
+         */
+        _initialise: function (coordinates) {
 
             var angle, processedCoordinates,
                 point = [];
@@ -63,7 +70,7 @@ CanvasShapes.Rectangle = (function () {
             // validate them again.
             this.MAX_COORDINATES++;
             this.MIN_COORDINATES++;
-            CanvasShapes.Polygon.prototype.initialise.call(this, coordinates);
+            CanvasShapes.Polygon.prototype._initialise.call(this, coordinates);
         }
     });
 

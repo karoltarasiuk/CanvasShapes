@@ -4,6 +4,8 @@ CanvasShapes.AnimationInterface = (function () {
 
     /**
      * Interface for any object able to animate.
+     *
+     * @throws {CanvasShapes.Error} 8021
      */
     var AnimationInterface = function () {
         throw new CanvasShapes.Error(8021);
@@ -11,11 +13,13 @@ CanvasShapes.AnimationInterface = (function () {
 
     CanvasShapes.Class.extend(AnimationInterface.prototype, {
 
-        className: 'CanvasShapes.AnimationInterface',
+        _className: 'CanvasShapes.AnimationInterface',
 
         /**
          * Performs the animation on a shape using an animation frame object,
          * which encapsulates all the needed properties and arguments.
+         *
+         * @throws {CanvasShapes.Error} 9047
          *
          * @param {CanvasShapes.AnimationFrame}  animationFrame
          */
@@ -65,9 +69,11 @@ CanvasShapes.AnimationInterface = (function () {
          * [WARNING] This function won't perform any type or value checking for
          * performance reasons.
          *
-         * @param {integer}                        totalAnimationTime
+         * @throws {CanvasShapes.Error} 9046
+         *
+         * @param {integer}                 totalAnimationTime
          * @param {[array,function,object]} coordinates
-         * @param {function}                       callback [OPTIONAL]
+         * @param {function}                callback [OPTIONAL]
          */
         move: function (totalAnimationTime, coordinates, callback) {
             throw new CanvasShapes.Error(9046);

@@ -5,7 +5,7 @@ define([
     CanvasShapes
 ) {
 
-    describe('CanvasShapes.Shape', function () {
+    describe('CanvasShapes.Coordinates', function () {
 
         describe('instantiating', function () {
 

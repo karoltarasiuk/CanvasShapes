@@ -2,16 +2,23 @@
 
 CanvasShapes.SceneInterface = (function () {
 
+    /**
+     * A scene interface class.
+     *
+     * @throws {CanvasShapes.Error} 8008
+     */
     var SceneInterface = function () {
         throw new CanvasShapes.Error(8008);
     };
 
     CanvasShapes.Class.extend(SceneInterface.prototype, {
 
-        className: 'CanvasShapes.SceneInterface',
+        _className: 'CanvasShapes.SceneInterface',
 
         /**
-         * Initialises event listeners. Call ONLY when `this.dom` is ready!
+         * Initialises event listeners.
+         *
+         * @throws {CanvasShapes.Error} 9041
          */
         initialiseListeners: function () {
             throw new CanvasShapes.Error(9041);
@@ -22,6 +29,8 @@ CanvasShapes.SceneInterface = (function () {
          * config value (`RENDER_OFF_SCREEN`) can be surpassed by internal scene
          * config value. The method itself only checks
          * `this._shouldRenderOffScreen`, which should be set on initialisation.
+         *
+         * @throws {CanvasShapes.Error} 9062
          *
          * @return {Boolean}
          */
@@ -44,6 +53,8 @@ CanvasShapes.SceneInterface = (function () {
          * type checking when trying to render. It assuems all the passed
          * arguments are of the correct type.
          *
+         * @throws {CanvasShapes.Error} 9018
+         *
          * @param {CanvasShapes.RenderingInterface} shape
          */
         render: function (shape) {
@@ -65,6 +76,8 @@ CanvasShapes.SceneInterface = (function () {
          * which will create a layer and register it on a scene, but shape will
          * not be rendered as a standalone object.
          *
+         * @throws {CanvasShapes.Error} 9019
+         *
          * @param {CanvasShapes.ShapeInterface} shape [OPTIONAL]
          * @param {integer} width   [OPTIONAL]
          * @param {integer} height  [OPTIONAL]
@@ -84,6 +97,8 @@ CanvasShapes.SceneInterface = (function () {
          * layer. By passing a layer you can establish whether the layer is
          * already a part of a scene - it will return `null` if it's not.
          *
+         * @throws {CanvasShapes.Error} 9032
+         *
          * @param {[
          *     CanvasShapes.ShapeInterface,
          *     CanvasShapes.SceneLayerInterface
@@ -91,7 +106,7 @@ CanvasShapes.SceneInterface = (function () {
          * @return {CanvasShapes.SceneLayerInterface}
          */
         getLayer: function (shapeOrLayer) {
-            throw new CanvasShapes.Error(9019);
+            throw new CanvasShapes.Error(9032);
         },
 
         /**
@@ -109,13 +124,15 @@ CanvasShapes.SceneInterface = (function () {
          * twice, and in some cases can cause infinite loop which will raise an
          * error eventually (after stack exceeds).
          *
+         * @throws {CanvasShapes.Error} 9068
+         *
          * @param {CanvasShapes.ShapeInterface} shape
          * @param {CanvasShapes.SceneLayerInterface} layer [OPTIONAL]
          *
          * @return {CanvasShapes.SceneLayerInterface}
          */
         addShape: function (shape, layer) {
-            throw new CanvasShapes.Error(9019);
+            throw new CanvasShapes.Error(9068);
         },
 
         /**
@@ -129,6 +146,8 @@ CanvasShapes.SceneInterface = (function () {
          * type checking. It assuems all the passed arguments are of the correct
          * type. It does though check whether shape is associated with a layer.
          *
+         * @throws {CanvasShapes.Error} 9048
+         *
          * @param {CanvasShapes.Shape}               shape
          * @param {CanvasShapes.AnimationFrame}      animationFrame [OPTIONAL]
          */
@@ -139,7 +158,6 @@ CanvasShapes.SceneInterface = (function () {
         /**
          * Gets handlers which can allow a shape to obtain some functionality
          * from a scene. Current implementation includes following handlers:
-         *
          * - newLayer
          * - getLayer
          * - addShape
@@ -147,6 +165,8 @@ CanvasShapes.SceneInterface = (function () {
          * - on
          * - off
          * - dispatch
+         *
+         * @throws {CanvasShapes.Error} 9034
          *
          * @return {object}
          */
@@ -157,6 +177,8 @@ CanvasShapes.SceneInterface = (function () {
         /**
          * Returns width of the scene.
          *
+         * @throws {CanvasShapes.Error} 9020
+         *
          * @return {integer}
          */
         getWidth: function () {
@@ -166,6 +188,8 @@ CanvasShapes.SceneInterface = (function () {
         /**
          * Returns height of the scene.
          *
+         * @throws {CanvasShapes.Error} 9021
+         *
          * @return {integer}
          */
         getHeight: function () {
@@ -174,6 +198,8 @@ CanvasShapes.SceneInterface = (function () {
 
         /**
          * Returns HTML container for this scene.
+         *
+         * @throws {CanvasShapes.Error} 9022
          *
          * @return {object}
          */
@@ -190,9 +216,11 @@ CanvasShapes.SceneInterface = (function () {
          *
          * Returns boolean with the result of attaching.
          *
-         * @param  {string}   eventType
-         * @param  {function} handler
-         * @param  {object}   context
+         * @throws {CanvasShapes.Error} 9038
+         *
+         * @param {string}   eventType
+         * @param {function} handler
+         * @param {object}   context
          *
          * @return {boolean}
          */
@@ -212,6 +240,8 @@ CanvasShapes.SceneInterface = (function () {
          *
          * It will return number of detached handlers.
          *
+         * @throws {CanvasShapes.Error} 9039
+         *
          * @param {[string,function]} handlerOrType
          * @param {string}            eventType [OPTIONAL]
          *
@@ -229,6 +259,8 @@ CanvasShapes.SceneInterface = (function () {
          * It also possible (and very handy for custom events) to pass ready to
          * use CanvasShapes.EventAbstract object. This way any event can be
          * triggered.
+         *
+         * @throws {CanvasShapes.Error} 9040
          *
          * @param {[Event,object,string,CanvasShapes.EventAbstract]}  event
          */

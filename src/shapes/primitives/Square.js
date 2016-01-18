@@ -17,16 +17,23 @@ CanvasShapes.Square = (function () {
         this.setUUID();
         this.MIN_COORDINATES = MIN_COORDINATES;
         this.MAX_COORDINATES = MAX_COORDINATES;
-        this.initialise(coordinates);
+        this._initialise(coordinates);
     };
 
     CanvasShapes.Class.extend(
         Square.prototype,
         CanvasShapes.Rectangle.prototype,
     {
-        className: 'CanvasShapes.Square',
+        _className: 'CanvasShapes.Square',
 
-        initialise: function (coordinates) {
+        /**
+         * Square initialisation method. It also validates arguments.
+         *
+         * @throws {CanvasShapes.Error} 1015
+         *
+         * @param {array} coordinates
+         */
+        _initialise: function (coordinates) {
 
             var temp1, temp2, processedCoordinates;
 
@@ -52,7 +59,7 @@ CanvasShapes.Square = (function () {
                 throw new CanvasShapes.Error(1015);
             }
 
-            CanvasShapes.Rectangle.prototype.initialise.call(this, coordinates);
+            CanvasShapes.Rectangle.prototype._initialise.call(this, coordinates);
         }
     });
 

@@ -8,7 +8,7 @@ CanvasShapes.Group = (function () {
      */
     var Group = function () {
         this.setUUID();
-        this.initialise();
+        this._initialise();
     };
 
     CanvasShapes.Class.extend(
@@ -16,7 +16,7 @@ CanvasShapes.Group = (function () {
         CanvasShapes.GroupAbstract.prototype,
         CanvasShapes.Shape.prototype,
     {
-        className: 'CanvasShapes.Group',
+        _className: 'CanvasShapes.Group',
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
@@ -115,7 +115,7 @@ CanvasShapes.Group = (function () {
 
             var i;
 
-            this.style = style;
+            this._style = style;
 
             if (deep) {
                 this.eachShape(function (style, deep) {

@@ -14,14 +14,14 @@ CanvasShapes.Event = (function () {
      * @param {object}                      target [OPTIONAL]
      */
     var Event = function (event, scene, target) {
-        this.initialise(event, scene, target);
+        this._initialise(event, scene, target);
     };
 
     CanvasShapes.Class.extend(
         Event.prototype,
         CanvasShapes.EventAbstract.prototype,
     {
-        className: 'CanvasShapes.Event'
+        _className: 'CanvasShapes.Event'
     });
 
     /**
@@ -33,6 +33,8 @@ CanvasShapes.Event = (function () {
 
     /**
      * Returns category on the event based on passed event object.
+     *
+     * @throws {CanvasShapes.Error} 1040
      *
      * @param  {[Event,string]}  event
      * @return {object}
@@ -109,10 +111,16 @@ CanvasShapes.Event = (function () {
      * object requests listeners initialisation. Scene object will also become
      * a context for this call.
      *
-     * @param  {string}   category
-     * @param  {function} baseClass
-     * @param  {object}   eventsObject [OPTIONAL]
-     * @param  {function} initialiseListeners [OPTIONAL]
+     * @throws {CanvasShapes.Error} 1030
+     * @throws {CanvasShapes.Error} 1032
+     * @throws {CanvasShapes.Error} 1031
+     * @throws {CanvasShapes.Error} 1033
+     * @throws {CanvasShapes.Error} 1034
+     *
+     * @param {string}   category
+     * @param {function} baseClass
+     * @param {object}   eventsObject [OPTIONAL]
+     * @param {function} initialiseListeners [OPTIONAL]
      *
      * @return {boolean}
      */
@@ -156,6 +164,9 @@ CanvasShapes.Event = (function () {
     /**
      * Allows you to deregister previously registered category.
      *
+     * @throws {CanvasShapes.Error} 1028
+     * @throws {CanvasShapes.Error} 1029
+     *
      * @param {string} category
      */
     Event.deregisterCategory = function (category) {
@@ -175,7 +186,9 @@ CanvasShapes.Event = (function () {
      * Initialise listeners for each registered category. `scene` is a context
      * of this call.
      *
-     * @param  {CanvasShapes.SceneInterface} scene
+     * @throws {CanvasShapes.Error} 1038
+     *
+     * @param {CanvasShapes.SceneInterface} scene
      */
     Event.initialiseListeners = function (scene) {
 

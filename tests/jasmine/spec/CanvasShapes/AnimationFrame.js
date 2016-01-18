@@ -303,7 +303,7 @@ define([
                 );
 
             scene.addShape(shape);
-            spyOn(shape.sceneInterfaceHandlers, 'requestRendering');
+            spyOn(shape._sceneInterfaceHandlers, 'requestRendering');
             spyOn(frame, 'stepCallback');
 
             pastTime = (new Date()).getTime();
@@ -312,7 +312,7 @@ define([
             expect(frame.startTime).not.toBeUndefined();
             expect(currentTime >= frame.startTime).toBe(true);
             expect(frame.startTime >= pastTime).toBe(true);
-            expect(shape.sceneInterfaceHandlers.requestRendering).toHaveBeenCalled();
+            expect(shape._sceneInterfaceHandlers.requestRendering).toHaveBeenCalled();
             expect(frame.stepCallback).toHaveBeenCalled();
 
             frame.reset();

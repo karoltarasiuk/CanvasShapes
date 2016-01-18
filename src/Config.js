@@ -61,6 +61,12 @@ CanvasShapes.Config = (function () {
         IS_COLLIDING_RATIO: 0.01,
     };
 
+    /**
+     * Adds an option to the config.
+     *
+     * @param {[object,string]} option
+     * @param {*}               value [OPTIONAL]
+     */
     function set(option, value) {
 
         var property;
@@ -74,6 +80,12 @@ CanvasShapes.Config = (function () {
         }
     }
 
+    /**
+     * Gets an option from the config.
+     *
+     * @param  {string} option
+     * @return {*}
+     */
     function get(option) {
 
         if (options[option] !== undefined) {

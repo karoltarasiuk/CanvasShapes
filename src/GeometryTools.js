@@ -8,11 +8,13 @@ CanvasShapes.GeometryTools = (function () {
      * do so simply pass `true` as fourth parameter. Coordinates of a point are
      * arrays in the following format: `[x, y]`.
      *
+     * `p2` are coordinates of an apex.
+     *
      * From law of cosines: http://en.wikipedia.org/wiki/Law_of_cosines
      *
-     * @param {array}   p1      coordinates
-     * @param {array}   p2      coordinates of apex
-     * @param {array}   p3      coordinates
+     * @param {array}   p1
+     * @param {array}   p2
+     * @param {array}   p3
      * @param {boolean} radians [OPTIONAL]
      *
      * @return {float}
@@ -57,8 +59,8 @@ CanvasShapes.GeometryTools = (function () {
      * Calculates a length of a segment defined by two points. Coordinates of a
      * point are arrays in the following format: `[x, y]`.
      *
-     * @param  {array} p1 coordinates
-     * @param  {array} p2 coordinates
+     * @param {array} p1 coordinates
+     * @param {array} p2 coordinates
      *
      * @return {float}
      */
@@ -77,9 +79,10 @@ CanvasShapes.GeometryTools = (function () {
      * @see http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
      * @source https://github.com/substack/point-in-polygon
      *
-     * @param  {[type]}  point              [description]
-     * @param  {[type]}  polygonCoordinates [description]
-     * @return {Boolean}                    [description]
+     * @param {array} point
+     * @param {array} polygonCoordinates
+     *
+     * @return {boolean}
      */
     function isInsidePolygon(point, polygonCoordinates, allowedError) {
 
@@ -159,10 +162,10 @@ CanvasShapes.GeometryTools = (function () {
      *
      * @see http://stackoverflow.com/a/6853926/571230
      *
-     * @param  {array} point
-     * @param  {array} lineCoordinates
+     * @param {array} point
+     * @param {array} lineCoordinates
      *
-     * @return {floan}
+     * @return {float}
      */
     function distanceToSegment(point, lineCoordinates) {
 
@@ -211,8 +214,8 @@ CanvasShapes.GeometryTools = (function () {
      *
      * @see https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
      *
-     * @param  {array} point
-     * @param  {array} lineCoordinates
+     * @param {array} point
+     * @param {array} lineCoordinates
      *
      * @return {float}
      */
@@ -234,9 +237,9 @@ CanvasShapes.GeometryTools = (function () {
      * specify how close point should be to the line to be considered as laying
      * on it. Default is `0`.
      *
-     * @param  {array}  point
-     * @param  {array}  lineCoordinates
-     * @param  {float}  allowedError
+     * @param {array} point
+     * @param {array} lineCoordinates
+     * @param {float} allowedError
      *
      * @return {boolean}
      */
@@ -258,9 +261,9 @@ CanvasShapes.GeometryTools = (function () {
      * specify how close point should be to the line to be considered as laying
      * on it. Default is `0`.
      *
-     * @param  {array}  point
-     * @param  {array}  lineCoordinates
-     * @param  {float}  allowedError
+     * @param {array} point
+     * @param {array} lineCoordinates
+     * @param {float} allowedError
      *
      * @return {boolean}
      */
