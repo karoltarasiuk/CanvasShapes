@@ -216,10 +216,10 @@ CanvasShapes.StyleAbstract = (function () {
                     !shapes[i].is(CanvasShapes.RenderingInterface)
                 ) {
                     throw new CanvasShapes.Error(1052);
-                } else {
-                    shapes[i].setStyle(this, deep);
-                    this.shapes.push(shapes[i]);
                 }
+
+                shapes[i].setStyle(this, deep);
+                this.shapes.push(shapes[i]);
             }
         },
 

@@ -9,7 +9,7 @@ define([
 
         it('initialises properly', function () {
 
-            expect(function () { new CanvasShapes.Shape(); }).not.toThrow();
+            expect(function () { new CanvasShapes.Point([0, 0], 'circle'); }).not.toThrow();
         });
 
         it('can\'t initialise', function () {
@@ -57,7 +57,7 @@ define([
 
             expect(function () {
                 point1.animate(new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     0, function () {}, function () {}, {}
                 ));
             }).not.toThrow();

@@ -34,9 +34,7 @@ define([
             it('can instantiate a shape', function () {
 
                 expect(function () {
-                    new CanvasShapes.Shape();
-                    new CanvasShapes.Shape([0, 0]);
-                    new CanvasShapes.Shape([[0, 0], [10, 10]]);
+                    new CanvasShapes.Point([0, 0], 'circle');
                 }).not.toThrow();
             });
         });
@@ -48,7 +46,7 @@ define([
                 var coordinates1 = [10, 10],
                     coordinates2 = [[10, 10], [20, 20]],
                     coordinates3 = [
-                        new CanvasShapes.Shape([10, 10]),
+                        new CanvasShapes.Point([10, 10]),
                         new CanvasShapes.Point([20, 20])
                     ],
                     scene = new CanvasShapes.Scene({
@@ -57,7 +55,7 @@ define([
                         height: 50
                     }),
                     layer = new CanvasShapes.SceneLayer(scene, 50, 50),
-                    shape = new CanvasShapes.Shape();
+                    shape = new CanvasShapes.Point([0, 0], 'circle');
 
                 expect(shape.processCoordinates(coordinates1))
                     .toEqual(coordinates1);
@@ -87,7 +85,7 @@ define([
                         10,
                         true
                     ],
-                    shape = new CanvasShapes.Shape(),
+                    shape = new CanvasShapes.Point([0, 0], 'circle'),
                     error = new CanvasShapes.Error(1011);
 
                 expect(shape.validateCoordinates(coordinates1)).toBe(true);
@@ -110,7 +108,7 @@ define([
 
             it('translateOffsetToCoordinates', function () {
 
-                var shape = new CanvasShapes.Shape(),
+                var shape = new CanvasShapes.Point([0, 0], 'circle'),
                     error = new CanvasShapes.Error(1047),
                     arr = [
                         [{ x: 3, y: 2, z: 1 }, [3, 2, 1]],
@@ -152,7 +150,7 @@ define([
 
             it('translates coordinates by offset and multiplier', function () {
 
-                var shape = new CanvasShapes.Shape(),
+                var shape = new CanvasShapes.Point([0, 0], 'circle'),
                     arr = [
                         [[[2, 3, 4]], {}, undefined, [[2, 3, 4]]],
                         [[[2, 3, 4]], {}, 1, [[2, 3, 4]]],
@@ -271,7 +269,7 @@ define([
                 var i,
                     coordinates1 = [[10, 10], [20, 20]],
                     coordinates2 = [
-                        new CanvasShapes.Shape([10, 10]),
+                        new CanvasShapes.Point([10, 10]),
                         new CanvasShapes.Point([20, 20])
                     ],
                     wrongCoordinates = [
@@ -282,7 +280,7 @@ define([
                         true,
                         []
                     ],
-                    shape = new CanvasShapes.Shape(),
+                    shape = new CanvasShapes.Point([0, 0], 'circle'),
                     error = new CanvasShapes.Error(1011);
 
                 expect(shape.validateCoordinatesArray(coordinates1)).toBe(true);
@@ -354,9 +352,9 @@ define([
 
                 var coordinates1 = [0, 0],
                     coordinates2 = [[0, 0], [10, 10]],
-                    shape  = new CanvasShapes.Shape();
+                    shape  = new CanvasShapes.Point([20, 20], 'circle');
 
-                expect(shape.getCoordinates()).toBeUndefined();
+                expect(shape.getCoordinates()).toEqual([20, 20]);
                 shape.setCoordinates(coordinates1);
                 expect(shape.getCoordinates()).toBe(coordinates1);
                 shape.setCoordinates(coordinates2);

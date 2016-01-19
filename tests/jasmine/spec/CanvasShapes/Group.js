@@ -51,15 +51,15 @@ define([
                 group = new CanvasShapes.Group();
                 subgroup = new CanvasShapes.Group();
                 emptygroup = new CanvasShapes.Group();
-                shape1 = new CanvasShapes.Shape();
-                shape2 = new CanvasShapes.Shape();
-                shape3 = new CanvasShapes.Shape();
-                shape4 = new CanvasShapes.Shape();
-                shape5 = new CanvasShapes.Shape();
-                shape6 = new CanvasShapes.Shape();
-                shape7 = new CanvasShapes.Shape();
-                shape8 = new CanvasShapes.Shape();
-                shape9 = new CanvasShapes.Shape();
+                shape1 = new CanvasShapes.Point([0, 0], 'circle');
+                shape2 = new CanvasShapes.Point([0, 0], 'circle');
+                shape3 = new CanvasShapes.Point([0, 0], 'circle');
+                shape4 = new CanvasShapes.Point([0, 0], 'circle');
+                shape5 = new CanvasShapes.Point([0, 0], 'circle');
+                shape6 = new CanvasShapes.Point([0, 0], 'circle');
+                shape7 = new CanvasShapes.Point([0, 0], 'circle');
+                shape8 = new CanvasShapes.Point([0, 0], 'circle');
+                shape9 = new CanvasShapes.Point([0, 0], 'circle');
                 // not implementing CanvasShapes.ShapeInterface
                 shape10 = {};
 
@@ -175,8 +175,8 @@ define([
 
                 var i,
                     group = new CanvasShapes.Group(),
-                    shape1 = new CanvasShapes.Shape(),
-                    shape2 = new CanvasShapes.Shape(),
+                    shape1 = new CanvasShapes.Point([0, 0], 'circle'),
+                    shape2 = new CanvasShapes.Point([0, 0], 'circle'),
                     sceneInterfaceHandlers = {
                         newLayer: function () {},
                         getLayer: function () {},

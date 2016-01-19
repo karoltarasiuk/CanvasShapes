@@ -231,9 +231,9 @@ define([
                         height: 100
                     }),
                     layer2 = new CanvasShapes.SceneLayer(scene),
-                    shape1 = new CanvasShapes.Shape(),
-                    shape2 = new CanvasShapes.Shape(),
-                    shape3 = new CanvasShapes.Shape();
+                    shape1 = new CanvasShapes.Point([0, 0], 'circle'),
+                    shape2 = new CanvasShapes.Point([0, 0], 'circle'),
+                    shape3 = new CanvasShapes.Point([0, 0], 'circle');
 
                 expect(function () {
                     layer1 = scene.addShape(shape1);
@@ -310,9 +310,9 @@ define([
                         height: 100
                     }),
                     layer2 = new CanvasShapes.SceneLayer(scene),
-                    shape1 = new CanvasShapes.Shape(),
-                    shape2 = new CanvasShapes.Shape(),
-                    shape3 = new CanvasShapes.Shape();
+                    shape1 = new CanvasShapes.Point([0, 0], 'circle'),
+                    shape2 = new CanvasShapes.Point([0, 0], 'circle'),
+                    shape3 = new CanvasShapes.Point([0, 0], 'circle');
 
                 expect(function () {
                     layer1 = scene.addShape(shape1);
@@ -356,9 +356,9 @@ define([
                         height: 100
                     }),
                     layer2 = new CanvasShapes.SceneLayer(scene),
-                    shape1 = new CanvasShapes.Shape(),
-                    shape2 = new CanvasShapes.Shape(),
-                    shape3 = new CanvasShapes.Shape();
+                    shape1 = new CanvasShapes.Point([0, 0], 'circle'),
+                    shape2 = new CanvasShapes.Point([0, 0], 'circle'),
+                    shape3 = new CanvasShapes.Point([0, 0], 'circle');
 
                 expect(function () {
                     layer1 = scene.addShape(shape1);

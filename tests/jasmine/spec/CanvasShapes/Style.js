@@ -379,7 +379,7 @@ define([
                 spyOn(contextStub, 'stroke');
                 callbackSpy = jasmine.createSpy('callback');
 
-                shape = new CanvasShapes.Shape();
+                shape = new CanvasShapes.Point([0, 0], 'circle');
                 style.addToShapes(shape);
                 scene.addShape(shape);
 
@@ -454,7 +454,7 @@ define([
                 callback1Spy = jasmine.createSpy('callback1');
                 callback2Spy = jasmine.createSpy('callback2');
 
-                shape = new CanvasShapes.Shape();
+                shape = new CanvasShapes.Point([0, 0], 'circle');
                 strokeStyle.addToShapes(shape);
                 // this will overwrite strokeStyle
                 fillStyle.addToShapes(shape);

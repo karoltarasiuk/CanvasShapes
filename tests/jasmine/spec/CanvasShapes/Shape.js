@@ -31,9 +31,9 @@ define([
                 ).toThrow(temp);
             });
 
-            it('cannot pass wrong format of coordinates', function () {
+            it('cannot pass wrong format of coordinates or instantiate abstract Shape class', function () {
 
-                var error = new CanvasShapes.Error(1036);
+                var error = new CanvasShapes.Error(8025);
 
                 expect(function () {
                     new CanvasShapes.Shape(true);
@@ -56,34 +56,32 @@ define([
                 expect(function () {
                     new CanvasShapes.Shape([[0], [0]]);
                 }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.Shape([0, 0]);
+                }).toThrow(error);
+                expect(function () {
+                    new CanvasShapes.Shape([[0, 0], [10, 10]]);
+                }).toThrow(error);
             });
 
             it('can instantiate normal class', function () {
 
                 expect(function () {
-                    new CanvasShapes.Shape();
-                }).not.toThrow();
-
-                expect(function () {
-                    new CanvasShapes.Shape([0, 0]);
-                }).not.toThrow();
-
-                expect(function () {
-                    new CanvasShapes.Shape([[0, 0], [10, 10]]);
+                    new CanvasShapes.Point([0, 0], 'circle');
                 }).not.toThrow();
             });
 
             it('correctly sets min and max coordinates variables', function () {
 
-                var shape1 = new CanvasShapes.Shape([0, 0]);
+                var shape1 = new CanvasShapes.Point([0, 0]);
 
-                expect(shape1.MAX_COORDINATES).toBeUndefined();
-                expect(shape1.MIN_COORDINATES).toBeUndefined();
+                expect(shape1.MAX_COORDINATES).toBe(1);
+                expect(shape1.MIN_COORDINATES).toBe(1);
             });
 
             it('correctly sets UUID', function () {
 
-                var shape1 = new CanvasShapes.Shape([0, 0]),
+                var shape1 = new CanvasShapes.Point([0, 0]),
                     regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
                 expect(regex.test(shape1.getUUID())).toBe(true);
             });
@@ -93,8 +91,8 @@ define([
 
             it('sets and gets parent correctly', function () {
 
-                var shape1 = new CanvasShapes.Shape(),
-                    shape2 = new CanvasShapes.Shape(),
+                var shape1 = new CanvasShapes.Point([0, 0], 'circle'),
+                    shape2 = new CanvasShapes.Point([0, 0], 'circle'),
                     group = new CanvasShapes.Group(),
                     error = new CanvasShapes.Error(1046);
 
@@ -113,8 +111,8 @@ define([
 
             it('gets rendering parent correctly', function () {
 
-                var shape1 = new CanvasShapes.Shape(),
-                    shape2 = new CanvasShapes.Shape(),
+                var shape1 = new CanvasShapes.Point([0, 0], 'circle'),
+                    shape2 = new CanvasShapes.Point([0, 0], 'circle'),
                     group = new CanvasShapes.Group();
 
                 expect(shape1.getRenderingShape()).toBe(shape1);
@@ -133,7 +131,7 @@ define([
             it('setIsCollidingRatio method', function () {
 
                 var error = new CanvasShapes.Error(1057),
-                    shape = new CanvasShapes.Shape([10, 10]);
+                    shape = new CanvasShapes.Point([10, 10]);
 
                 expect(function () {
                     shape.setIsCollidingRatio(true);
@@ -163,7 +161,7 @@ define([
             it('calculateAllowedError method', function () {
 
                 var scene, layer,
-                    shape = new CanvasShapes.Shape([10, 10]);
+                    shape = new CanvasShapes.Point([10, 10]);
 
                 scene = new CanvasShapes.Scene({
                     element: document.createElement('div'),
@@ -192,7 +190,7 @@ define([
                 var scene, layer, shape1Class, shape1,
                     error2 = new CanvasShapes.Error(1037),
                     error3 = new CanvasShapes.Error(9042),
-                    shape2 = new CanvasShapes.Shape([10, 10]);
+                    shape2 = new CanvasShapes.Point([10, 10]);
 
                 scene = new CanvasShapes.Scene({
                     element: document.createElement('div'),
@@ -283,8 +281,8 @@ define([
 
                 var i = 0,
                     error1 = new CanvasShapes.Error(1042),
-                    shape1 = new CanvasShapes.Shape(),
-                    shape2 = new CanvasShapes.Shape([0, 0]),
+                    shape1 = new CanvasShapes.Point([0, 0], 'circle'),
+                    shape2 = new CanvasShapes.Point([0, 0]),
                     scene = new CanvasShapes.Scene({
                         element: document.createElement('div'),
                         width: 100,
@@ -348,12 +346,6 @@ define([
                 shape2.dispatch('interaction', context1);
                 expect(context1.prop).toBe(3);
             });
-
-            it('doesn\'t throw an error when render is called', function () {
-
-                var shape1 = new CanvasShapes.Shape();
-                expect(function () { shape1.render(); }).not.toThrow();
-            });
         });
 
         describe('move animation - async', function () {
@@ -384,7 +376,7 @@ define([
 
                 i = 0;
                 callbackSpy = jasmine.createSpy('callback');
-                shape1 = new CanvasShapes.Shape([0, 0]);
+                shape1 = new CanvasShapes.Point([0, 0]);
                 scene1.addShape(shape1);
 
                 animate = true;
@@ -430,7 +422,7 @@ define([
 
                 i = 0;
                 callbackSpy = jasmine.createSpy('callback');
-                shape1 = new CanvasShapes.Shape([0, 0]);
+                shape1 = new CanvasShapes.Point([0, 0]);
                 scene1.addShape(shape1);
 
                 animate = true;
@@ -488,7 +480,7 @@ define([
 
                 i = 0;
                 callbackSpy = jasmine.createSpy('callback');
-                shape1 = new CanvasShapes.Shape([0, 0, 0]);
+                shape1 = new CanvasShapes.Point([0, 0, 0]);
                 scene1.addShape(shape1);
 
                 animate = true;
@@ -534,7 +526,7 @@ define([
 
                 i = 0;
                 callbackSpy = jasmine.createSpy('callback');
-                shape1 = new CanvasShapes.Shape([0, 0, 0]);
+                shape1 = new CanvasShapes.Point([0, 0, 0]);
                 scene1.addShape(shape1);
 
                 animate = true;

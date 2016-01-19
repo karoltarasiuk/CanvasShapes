@@ -78,11 +78,11 @@ require([
         };
 
         Showcase.prototype.starCoordinates = function (offset, multiplier) {
-            var shape = new CanvasShapes.Shape(),
-                coordinates = [
+            var coordinates = [
                     [-4, -1], [-1, -1], [0, -3], [1, -1], [4, -1],
                     [2, 1], [3, 4], [0, 2], [-3, 4], [-2, 1]
-                ];
+                ],
+                shape = new CanvasShapes.Point([0, 0]);
             return shape.translateCoordinates(
                 coordinates, offset, multiplier
             );

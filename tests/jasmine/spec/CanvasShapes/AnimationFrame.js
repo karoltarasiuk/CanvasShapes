@@ -10,20 +10,20 @@ define([
         it('initialises properly', function () {
 
             expect(function () { new CanvasShapes.AnimationFrame(
-                new CanvasShapes.Shape(),
+                new CanvasShapes.Point([0, 0], 'circle'),
                 10,
                 function () {}
             ); }).not.toThrow();
 
             expect(function () { new CanvasShapes.AnimationFrame(
-                new CanvasShapes.Shape(),
+                new CanvasShapes.Point([0, 0], 'circle'),
                 10,
                 function () {},
                 function () {}
             ); }).not.toThrow();
 
             expect(function () { new CanvasShapes.AnimationFrame(
-                new CanvasShapes.Shape(),
+                new CanvasShapes.Point([0, 0], 'circle'),
                 10,
                 function () {},
                 function () {},
@@ -31,7 +31,7 @@ define([
             ); }).not.toThrow();
 
             expect(function () { new CanvasShapes.AnimationFrame(
-                new CanvasShapes.Shape(),
+                new CanvasShapes.Point([0, 0], 'circle'),
                 10,
                 function () {},
                 function () {},
@@ -40,7 +40,7 @@ define([
             ); }).not.toThrow();
 
             expect(function () { new CanvasShapes.AnimationFrame(
-                new CanvasShapes.Shape(),
+                new CanvasShapes.Point([0, 0], 'circle'),
                 10,
                 function () {},
                 function () {},
@@ -84,25 +84,25 @@ define([
             // validating `totalAnimationTime`
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     true
                 );
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     'not number'
                 );
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     {}
                 );
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     []
                 );
             }).toThrow(error1);
@@ -110,35 +110,35 @@ define([
             // validating `stepCallback`
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     1
                 );
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     true
                 );
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     []
                 );
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     {}
                 );
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     1,
                     'not function'
@@ -148,7 +148,7 @@ define([
             // validating `callback`
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     function () {},
                     1
@@ -156,7 +156,7 @@ define([
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     function () {},
                     true
@@ -164,7 +164,7 @@ define([
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     function () {},
                     []
@@ -172,7 +172,7 @@ define([
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     function () {},
                     {}
@@ -180,7 +180,7 @@ define([
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     function () {},
                     'not function'
@@ -190,7 +190,7 @@ define([
             // validating `variables`
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     function () {},
                     function () {},
@@ -199,7 +199,7 @@ define([
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     function () {},
                     function () {},
@@ -208,7 +208,7 @@ define([
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     function () {},
                     function () {},
@@ -217,7 +217,7 @@ define([
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     function () {},
                     function () {},
@@ -226,7 +226,7 @@ define([
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     function () {},
                     function () {},
@@ -236,7 +236,7 @@ define([
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     function () {},
                     function () {},
@@ -246,7 +246,7 @@ define([
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     function () {},
                     function () {},
@@ -256,7 +256,7 @@ define([
             }).toThrow(error1);
             expect(function () {
                 new CanvasShapes.AnimationFrame(
-                    new CanvasShapes.Shape(),
+                    new CanvasShapes.Point([0, 0], 'circle'),
                     10,
                     function () {},
                     function () {},
@@ -268,7 +268,7 @@ define([
 
         it('sets variables without overwriting existing', function () {
 
-            var shape = new CanvasShapes.Shape(),
+            var shape = new CanvasShapes.Point([0, 0], 'circle'),
                 frame = new CanvasShapes.AnimationFrame(
                     shape,
                     10,
@@ -293,7 +293,7 @@ define([
                     width: 100,
                     height: 100
                 }),
-                shape = new CanvasShapes.Shape(),
+                shape = new CanvasShapes.Point([0, 0], 'circle'),
                 frame = new CanvasShapes.AnimationFrame(
                     shape,
                     10,
@@ -322,7 +322,7 @@ define([
 
         it('gets type properly', function () {
 
-            var shape = new CanvasShapes.Shape(),
+            var shape = new CanvasShapes.Point([0, 0], 'circle'),
                 frame1 = new CanvasShapes.AnimationFrame(
                     shape,
                     10,

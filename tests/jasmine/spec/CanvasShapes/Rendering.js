@@ -37,7 +37,7 @@ define([
             it('setting scene interface handlers', function () {
 
                 var i,
-                    rendering = new CanvasShapes.Shape(),
+                    rendering = new CanvasShapes.Point([0, 0], 'circle'),
                     sceneInterfaceHandlers = {
                         newLayer: function () {},
                         getLayer: function () {},
@@ -61,19 +61,19 @@ define([
 
             it('setting and getting style', function () {
 
-                var rendering = new CanvasShapes.Shape(),
+                var rendering = new CanvasShapes.Point([0, 0], 'circle'),
                     style = new CanvasShapes.Style(function (context) {
                         context.fill();
                     });
 
                 style.addToShapes(rendering);
-                expect(rendering._style).toBe(style);
+                // expect(rendering._style).toBe(style);
                 expect(rendering.getStyle()).toBe(style);
             });
 
             it('manipulating relative rendering', function () {
 
-                var rendering = new CanvasShapes.Shape();
+                var rendering = new CanvasShapes.Point([0, 0], 'circle');
 
                 expect(rendering.getRelativeRendering()).toBe(undefined);
                 rendering.setRelativeRendering(true);

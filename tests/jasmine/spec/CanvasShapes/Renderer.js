@@ -83,8 +83,8 @@ define([
                         width: 100,
                         height: 100
                     }),
-                    shape1 = new CanvasShapes.Shape(),
-                    shape2 = new CanvasShapes.Shape();
+                    shape1 = new CanvasShapes.Point([0, 0], 'circle'),
+                    shape2 = new CanvasShapes.Point([0, 0], 'circle');
 
                 renderer.addScene(scene);
                 renderer.addScene({
