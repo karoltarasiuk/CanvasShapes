@@ -18,7 +18,11 @@ CanvasShapes.StyleInterface = (function () {
         /**
          * Sets the style on the given layer depending on `which` param.
          * If `which` param is not specified it will retrieve the first
-         * available style.
+         * available style. `relativeRendering` param allows you to decide
+         * whether e.g. line-width or other size-based params should be treated
+         * as a percentage of layer's dimensions. Most of this parameters are
+         * calculated based on layer's width unless it's explicit that height
+         * should be used.
          *
          * WARNING: this method due to performance reasons doesn't perform any
          * type checking on arguments.
@@ -26,9 +30,10 @@ CanvasShapes.StyleInterface = (function () {
          * @throws {CanvasShapes.Error} 9006
          *
          * @param {CanvasShapes.SceneLayer} layer
-         * @param {integer} which [OPTIONAL]
+         * @param {boolean}                 relativeRendering
+         * @param {integer}                 which [OPTIONAL]
          */
-        set: function (layer, which) {
+        set: function (layer, relativeRendering, which) {
             throw new CanvasShapes.Error(9006);
         },
 

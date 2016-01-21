@@ -155,7 +155,7 @@ CanvasShapes.Arc = (function () {
                 context.closePath();
             }
 
-            style.set(layer);
+            style.set(layer, this.getRelativeRendering());
         },
 
         /**

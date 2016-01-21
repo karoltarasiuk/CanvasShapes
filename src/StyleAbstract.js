@@ -164,7 +164,7 @@ CanvasShapes.StyleAbstract = (function () {
         /**
          * @implements {CanvasShapes.StyleInterface}
          */
-        set: function (layer, which) {
+        set: function (layer, relativeRendering, which) {
 
             var context = layer.getContext(),
                 definitionFunction;
@@ -176,17 +176,33 @@ CanvasShapes.StyleAbstract = (function () {
             if (CanvasShapes._.isFunction(this.definitions[which])) {
                 definitionFunction = this.definitions[which];
             } else {
-                definitionFunction = CanvasShapes._.bind(function (context) {
-                    if (this.definitions[which].strokeStyle) {
-                        context.strokeStyle =
-                            this.definitions[which].strokeStyle;
-                        context.stroke();
-                    }
-                    if (this.definitions[which].fillStyle) {
-                        context.fillStyle = this.definitions[which].fillStyle;
-                        context.fill();
-                    }
-                }, this);
+                definitionFunction = CanvasShapes._.bind(
+                    function (layer, relativeRendering, context) {
+                        if (this.definitions[which].strokeStyle) {
+                            context.strokeStyle =
+                                this.definitions[which].strokeStyle;
+                            if (this.definitions[which].lineWidth) {
+                                if (relativeRendering) {
+                                    context.lineWidth =
+                                        this.definitions[which].lineWidth *
+                                        layer.getWidth() / 100;
+                                } else {
+                                    context.lineWidth =
+                                        this.definitions[which].lineWidth;
+                                }
+                            }
+                            context.stroke();
+                        }
+                        if (this.definitions[which].fillStyle) {
+                            context.fillStyle =
+                                this.definitions[which].fillStyle;
+                            context.fill();
+                        }
+                    },
+                    this,
+                    layer,
+                    relativeRendering
+                );
             }
 
             definitionFunction(context);
