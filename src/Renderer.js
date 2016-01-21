@@ -51,7 +51,7 @@ CanvasShapes.Renderer = (function () {
          *
          * You can also specify that any of those shapes must be rendered on a
          * separate and new layer. To do so pass a string `"new"` as a second
-         * arugment. Any other value of it will raise an exception.
+         * argument. Any other value of it will raise an exception.
          *
          * @throws {CanvasShapes.Error} 1053
          *
@@ -60,7 +60,8 @@ CanvasShapes.Renderer = (function () {
          */
         addShapes: function (shapes, layer) {
 
-            var i, j, layerInstance;
+            var i, j,
+                layerInstances = [];
 
             if (layer && layer !== 'new') {
                 throw new CanvasShapes.Error(1053);
@@ -69,10 +70,10 @@ CanvasShapes.Renderer = (function () {
             for (i = 0; i < this._scenes.length; i++) {
                 for (j = 0; j < shapes.length; j++) {
                     if (layer === 'new') {
-                        if (layerInstance) {
-                            this._scenes[i].addShape(shapes[j], layerInstance);
+                        if (layerInstances[i]) {
+                            this._scenes[i].addShape(shapes[j], layerInstances[i]);
                         } else {
-                            layerInstance = this._scenes[i].newLayer(shapes[j]);
+                            layerInstances[i] = this._scenes[i].newLayer(shapes[j]);
                         }
                     } else {
                         this._scenes[i].addShape(shapes[j]);
