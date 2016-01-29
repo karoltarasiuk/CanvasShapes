@@ -93,15 +93,33 @@ CanvasShapes.ShapeAbstract = (function () {
          */
         calculateAllowedError: function (layer) {
 
-            var isCollidingRatio = this._isCollidingRatio ||
-                    CanvasShapes.Config.get('IS_COLLIDING_RATIO'),
-                allowedError = CanvasShapes._.max([
+            var style, definition,
+                size = CanvasShapes._.max([
                     layer.getWidth(),
                     layer.getHeight()]
-                ) * isCollidingRatio;
+                ),
+                isCollidingRatio = this._isCollidingRatio ||
+                    CanvasShapes.Config.get('IS_COLLIDING_RATIO'),
+                allowedError = size * isCollidingRatio;
 
             if (allowedError < 1) {
                 allowedError = 1;
+            }
+
+            // add half of lineWidth style property
+            style = this.getStyle();
+            if (CanvasShapes._.isObject(style)) {
+                definition = style.getDefinition();
+                if (
+                    CanvasShapes._.isObject(definition) &&
+                    CanvasShapes._.isNumber(definition.lineWidth)
+                ) {
+                    if (this.getRelativeRendering()) {
+                        allowedError += definition.lineWidth / 2 * size / 100;
+                    } else {
+                        allowedError += definition.lineWidth / 2;
+                    }
+                }
             }
 
             return allowedError;

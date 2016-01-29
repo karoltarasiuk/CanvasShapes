@@ -161,7 +161,11 @@ define([
             it('calculateAllowedError method', function () {
 
                 var scene, layer,
-                    shape = new CanvasShapes.Point([10, 10]);
+                    shape = new CanvasShapes.Point([10, 10]),
+                    shape2 = new CanvasShapes.Line([[10, 10], [20, 20]]),
+                    style = new CanvasShapes.Style({
+                        lineWidth: 5
+                    });
 
                 scene = new CanvasShapes.Scene({
                     element: document.createElement('div'),
@@ -169,6 +173,8 @@ define([
                     height: 50
                 });
                 layer = scene.newLayer(shape);
+                scene.addShape(shape2, layer);
+                style.addToShapes(shape2);
 
                 expect(shape.calculateAllowedError(layer)).toBe(1);
 
@@ -183,6 +189,12 @@ define([
 
                 shape.setIsCollidingRatio(0.04);
                 expect(shape.calculateAllowedError(layer)).toBe(2);
+
+                shape2.setIsCollidingRatio(0);
+                expect(shape2.calculateAllowedError(layer)).toBe(3.5);
+
+                shape2.setIsCollidingRatio(0.04);
+                expect(shape2.calculateAllowedError(layer)).toBe(4.5);
             });
 
             it('isColliding method', function () {

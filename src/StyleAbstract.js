@@ -22,6 +22,17 @@ CanvasShapes.StyleAbstract = (function () {
         ACTIVE: 'active',
 
         /**
+         * Those properties are supported by CanvasShapes.Style objects.
+         *
+         * @type {array}
+         */
+        DEFINITION_SUPPORTED_PROPERTIES: [
+            'strokeStyle',
+            'fillStyle',
+            'lineWidth'
+        ],
+
+        /**
          * Initialises the style with default definition.
          *
          * The `definition` is a function accepting a `context` of a layer, e.g:
@@ -92,14 +103,18 @@ CanvasShapes.StyleAbstract = (function () {
          * }
          * ```
          *
+         * If `extend` is passed as `true` it will try to apply new definition
+         * on top of the existing one overwriting all the duplicate properties.
+         *
          * @see https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Applying_styles_and_colors
          *
          * @throws {CanvasShapes.Error} 1048
          *
          * @param {function} definition
          * @param {string}   which
+         * @param {boolean}  extend
          */
-        setDefinition: function (definition, which) {
+        setDefinition: function (definition, which, extend) {
 
             if (!which) {
                 which = this.DEFAULT;
@@ -111,12 +126,24 @@ CanvasShapes.StyleAbstract = (function () {
                     !CanvasShapes._.isFunction(definition) &&
                     (!CanvasShapes._.isObject(definition) ||
                         CanvasShapes._.isArray(definition))
-                )
+                ) ||
+                (extend !== undefined && !CanvasShapes._.isBoolean(extend))
             ) {
                 throw new CanvasShapes.Error(1048);
             }
 
-            this.definitions[which] = definition;
+            if (
+                extend === true &&
+                !CanvasShapes._.isFunction(definition) &&
+                !CanvasShapes._.isFunction(this.definitions[which])
+            ) {
+                if (!CanvasShapes._.isObject(this.definitions[which])) {
+                    this.definitions[which] = {};
+                }
+                CanvasShapes._.extend(this.definitions[which], definition);
+            } else {
+                this.definitions[which] = definition;
+            }
         },
 
         /**
@@ -177,7 +204,7 @@ CanvasShapes.StyleAbstract = (function () {
                 definitionFunction = this.definitions[which];
             } else {
                 definitionFunction = CanvasShapes._.bind(
-                    function (layer, relativeRendering, context) {
+                    function (layer, relativeRendering, which, context) {
                         if (this.definitions[which].strokeStyle) {
                             context.strokeStyle =
                                 this.definitions[which].strokeStyle;
@@ -201,7 +228,8 @@ CanvasShapes.StyleAbstract = (function () {
                     },
                     this,
                     layer,
-                    relativeRendering
+                    relativeRendering,
+                    which
                 );
             }
 

@@ -113,6 +113,15 @@ define([
             it('sets and gets the same definition', function () {
 
                 var definition = {},
+                    definition2 = {
+                        lineWidth: 5
+                    },
+                    definition3 = {
+                        strokeStyle: 'black'
+                    },
+                    definition4 = {
+                        fillStyle: 'red'
+                    },
                     style = new CanvasShapes.Style(definition);
 
                 expect(style.getDefinition()).toBe(definition);
@@ -128,6 +137,18 @@ define([
 
                 style.setDefinition(definition, 'random');
                 expect(style.getDefinition('random')).toBe(definition);
+
+                style.setDefinition(definition2, 'definition2');
+                expect(style.getDefinition('definition2')).toBe(definition2);
+
+                style.setDefinition(definition3, 'definition2');
+                expect(style.getDefinition('definition2')).toBe(definition3);
+
+                style.setDefinition(definition4, 'definition2', true);
+                expect(style.getDefinition('definition2')).toEqual({
+                    strokeStyle: 'black',
+                    fillStyle: 'red'
+                });
             });
 
             it('sets style as an object', function () {
@@ -164,31 +185,31 @@ define([
                 spyOn(contextStub, 'fill');
                 spyOn(contextStub, 'stroke');
 
-                style.set(layer, 'some');
+                style.set(layer, undefined, 'some');
                 expect(contextStub.fill.calls.any()).toBe(false);
                 expect(contextStub.stroke.calls.any()).toBe(false);
 
-                style.set(layer, 'hover');
+                style.set(layer, undefined, 'hover');
                 expect(contextStub.fill.calls.any()).toBe(false);
                 expect(contextStub.stroke.calls.any()).toBe(false);
 
-                style.set(layer, 'active');
+                style.set(layer, undefined, 'active');
                 expect(contextStub.fill.calls.any()).toBe(false);
                 expect(contextStub.stroke.calls.any()).toBe(false);
 
-                style.set(layer, 'default');
+                style.set(layer, undefined, 'default');
                 expect(contextStub.fill.calls.any()).toBe(false);
                 expect(contextStub.stroke.calls.any()).toBe(false);
 
-                style.set(layer, 'fillOnly');
+                style.set(layer, undefined, 'fillOnly');
                 expect(contextStub.fill.calls.count()).toBe(1);
                 expect(contextStub.stroke.calls.count()).toBe(0);
 
-                style.set(layer, 'strokeOnly');
+                style.set(layer, undefined, 'strokeOnly');
                 expect(contextStub.fill.calls.count()).toBe(1);
                 expect(contextStub.stroke.calls.count()).toBe(1);
 
-                style.set(layer, 'both');
+                style.set(layer, undefined, 'both');
                 expect(contextStub.fill.calls.count()).toBe(2);
                 expect(contextStub.stroke.calls.count()).toBe(2);
             });
@@ -227,31 +248,31 @@ define([
                 spyOn(contextStub, 'fill');
                 spyOn(contextStub, 'stroke');
 
-                style.set(layer, 'some');
+                style.set(layer, undefined, 'some');
                 expect(contextStub.fill.calls.any()).toBe(false);
                 expect(contextStub.stroke.calls.any()).toBe(false);
 
-                style.set(layer, 'hover');
+                style.set(layer, undefined, 'hover');
                 expect(contextStub.fill.calls.any()).toBe(false);
                 expect(contextStub.stroke.calls.any()).toBe(false);
 
-                style.set(layer, 'active');
+                style.set(layer, undefined, 'active');
                 expect(contextStub.fill.calls.any()).toBe(false);
                 expect(contextStub.stroke.calls.any()).toBe(false);
 
-                style.set(layer, 'default');
+                style.set(layer, undefined, 'default');
                 expect(contextStub.fill.calls.any()).toBe(false);
                 expect(contextStub.stroke.calls.any()).toBe(false);
 
-                style.set(layer, 'fillOnly');
+                style.set(layer, undefined, 'fillOnly');
                 expect(contextStub.fill.calls.count()).toBe(1);
                 expect(contextStub.stroke.calls.count()).toBe(0);
 
-                style.set(layer, 'strokeOnly');
+                style.set(layer, undefined, 'strokeOnly');
                 expect(contextStub.fill.calls.count()).toBe(1);
                 expect(contextStub.stroke.calls.count()).toBe(1);
 
-                style.set(layer, 'both');
+                style.set(layer, undefined, 'both');
                 expect(contextStub.fill.calls.count()).toBe(2);
                 expect(contextStub.stroke.calls.count()).toBe(2);
             });
