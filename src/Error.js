@@ -64,7 +64,7 @@ CanvasShapes.Error = (function () {
         1057: "CanvasShapes.ShapeAbstract - in `setIsCollidingRatio()`: `isCollidingRatio` should be boolean",
         1058: "CanvasShapes.Polygon - in `isColliding()`: passed `mouseCoordinates` is not in valid format",
         1059: "CanvasShapes.Line - in `isColliding()`: passed `mouseCoordinates` is not in valid format",
-        1060: "",
+        1060: "CanvasShapes.Tools - in `bernstein(): `index` can't be less than 0, `degree` can't be less than 0, and `t` can't be less than 0 and bigger than 1",
         1061: "CanvasShapes.Class - in `setUUID()`: passed `UUID` is not valid",
         1062: "CanvasShapes.Class - in `setObject()`: passed arguments are not valid",
         1063: "CanvasShapes.Class - in `getObject()`: passed `UUID` is not valid",
@@ -73,6 +73,8 @@ CanvasShapes.Error = (function () {
         1066: "CanvasShapes.Class - in `getClass()`: passed `className` is not a string",
         1067: "CanvasShapes.Class - in `extend()`: passed arguments are invalid",
         1068: "CanvasShapes.Event.Mouse - dom is not ready while registering category",
+        1069: "CanvasShapes.Tools - in `binomialCoefficient(): `index` and `degree` can't be less than 0, and `index` can't be bigger than `degree`",
+        1070: "CanvasShapes.BezierCurve - in `isColliding()`: passed `mouseCoordinates` is not in valid format",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",

@@ -37,8 +37,26 @@ require([
         polygon2 = new CanvasShapes.Polygon([point12, point14, point15, point13]),
         square = new CanvasShapes.Square([point6, point7, point8]),
         rectangle = new CanvasShapes.Rectangle([point9, point10, point11]),
+        bezierCurve = new CanvasShapes.BezierCurve([[0, 0], [50, 0], [0, 100], [100, 100]]),
+        quadraticCurve = new CanvasShapes.BezierCurve([[0, 0], [100, 0], [100, 100]]),
+        megaCurve = new CanvasShapes.BezierCurve([
+            [0, 0], [50, 0], [50, 25], [0, 25], [0, 50], [100, 50], [100, 75],
+            [0, 75], [0, 100], [50, 100]
+        ]),
         strokeStyle = new CanvasShapes.Style({
             strokeStyle: 'black'
+        }),
+        strokeStyle2 = new CanvasShapes.Style({
+            strokeStyle: 'black',
+            lineWidth: 5
+        }),
+        strokeStyle3 = new CanvasShapes.Style({
+            strokeStyle: 'blue',
+            lineWidth: 5
+        }),
+        strokeStyle4 = new CanvasShapes.Style({
+            strokeStyle: 'pink',
+            lineWidth: 5
         }),
         fillStyle = new CanvasShapes.Style({
             fillStyle: 'orange'
@@ -65,6 +83,8 @@ require([
     scene6.addShape(polygon2, scene6.newLayer());
     // circle1 on a new layer in any scene
     renderer.addShapes([circle1], 'new');
+    // curves on a default layer in any scene
+    renderer.addShapes([bezierCurve, quadraticCurve, megaCurve]);
 
     // setting relative rendering
     square.setRelativeRendering(true);
@@ -72,11 +92,17 @@ require([
     point16.setRelativeRendering(true);
     arc1.setRelativeRendering(true);
     circle1.setRelativeRendering(true);
+    bezierCurve.setRelativeRendering(true);
+    quadraticCurve.setRelativeRendering(true);
+    megaCurve.setRelativeRendering(true);
 
     // styling shapes
     strokeStyle.addToShapes([
         polygon1, polygon2, arc1, circle1, line, rectangle
     ]);
+    strokeStyle2.addToShapes([bezierCurve]);
+    strokeStyle3.addToShapes([quadraticCurve]);
+    strokeStyle4.addToShapes([megaCurve]);
     fillStyle.addToShapes([square]);
     point1.setFace('circle', 10);
     point16.setFace('circle', 10);
