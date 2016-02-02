@@ -14,7 +14,7 @@ CanvasShapes.BezierCurve = (function () {
      *
      * @see https://en.wikipedia.org/wiki/B%C3%A9zier_curve
      *
-     * @param {[array,]} coordinates
+     * @param {[array]} coordinates
      */
     var BezierCurve = function (coordinates) {
         this.setUUID();
@@ -36,7 +36,6 @@ CanvasShapes.BezierCurve = (function () {
         BezierCurve.prototype,
         CanvasShapes.Shape.prototype,
     {
-
         _className: 'CanvasShapes.BezierCurve',
 
         /**
