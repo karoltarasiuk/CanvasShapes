@@ -98,13 +98,10 @@ CanvasShapes.ShapeAbstract = (function () {
                     layer.getWidth(),
                     layer.getHeight()]
                 ),
-                isCollidingRatio = this._isCollidingRatio ||
+                isCollidingRatio = this._isCollidingRatio !== undefined ?
+                    this._isCollidingRatio :
                     CanvasShapes.Config.get('IS_COLLIDING_RATIO'),
                 allowedError = size * isCollidingRatio;
-
-            if (allowedError < 1) {
-                allowedError = 1;
-            }
 
             // add half of lineWidth style property
             style = this.getStyle();
