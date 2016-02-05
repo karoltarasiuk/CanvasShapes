@@ -44,22 +44,48 @@ require([
 
             this.elements = {};
 
-            this.elements.curve = new CanvasShapes.BezierCurve([
-                [0, 0], [50, 0], [50, 25], [0, 25], [0, 50], [100, 50], [100, 75],
-                [0, 75], [0, 100], [50, 100]
-            ]);
-            this.elements.curve.setRelativeRendering(true);
-            this.elements.curveStyle = new CanvasShapes.Style({
-                strokeStyle: 'darkBlue',
-                lineWidth: 5
+            this.elements.relation = new CanvasShapes.Relation(
+                this.generator.bind(this)
+            );
+            this.elements.relation.setRelativeRendering(true);
+            this.elements.relationStyle = new CanvasShapes.Style({
+                strokeStyle: 'black',
+                lineWidth: 3
             });
-            this.elements.curveStyle.addToShapes(this.elements.curve);
+            this.elements.relationStyle.addToShapes(this.elements.relation);
+        };
+
+        Showcase.prototype.generator = function (x) {
+
+            var func1, func2, func3, func4, func5,
+                a = Math.floor(this.width / 2),
+                b = Math.floor(this.width / 2),
+                r = Math.floor(this.width / 4);
+
+            // linear function
+            func1 = x;
+
+            // circle equation: (x - a)^2 + (y - b)^2 = r^2
+            // it can be plotted using 2 functions
+            func2 = Math.sqrt(r * r - (x - a) * (x - a)) + b;
+            if (!Number.isFinite(func2)) {
+                func2 = false;
+            }
+            func3 = -Math.sqrt(r * r - (x - a) * (x - a)) + b;
+            if (!Number.isFinite(func3)) {
+                func3 = false;
+            }
+
+            // sine
+            func4 = this.height / 2 * Math.sin(x / (this.width / (2 * Math.PI))) + this.height / 2;
+
+            return [func1, func2, func3, func4];
         };
 
         Showcase.prototype.addAllShapes = function () {
 
             this.renderer.addShapes([
-                this.elements.curve
+                this.elements.relation
             ]);
         };
 
@@ -67,17 +93,17 @@ require([
 
             var that = this;
 
-            this.elements.curve.on('mouseover', function (e) {
-                that.elements.curveStyle.setDefinition({
-                    strokeStyle: 'darkRed'
+            this.elements.relation.on('mouseover', function (e) {
+                that.elements.relationStyle.setDefinition({
+                    strokeStyle: 'red'
                 }, undefined, true);
                 this.getSceneInterfaceHandlers().requestRendering(this);
                 that.renderer.render();
             });
 
-            this.elements.curve.on('mouseout', function (e) {
-                that.elements.curveStyle.setDefinition({
-                    strokeStyle: 'darkBlue'
+            this.elements.relation.on('mouseout', function (e) {
+                that.elements.relationStyle.setDefinition({
+                    strokeStyle: 'black'
                 }, undefined, true);
                 this.getSceneInterfaceHandlers().requestRendering(this);
                 that.renderer.render();

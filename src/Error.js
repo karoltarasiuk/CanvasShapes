@@ -75,6 +75,8 @@ CanvasShapes.Error = (function () {
         1068: "CanvasShapes.Event.Mouse - dom is not ready while registering category",
         1069: "CanvasShapes.Tools - in `binomialCoefficient(): `index` and `degree` can't be less than 0, and `index` can't be bigger than `degree`",
         1070: "CanvasShapes.BezierCurve - in `isColliding()`: passed `mouseCoordinates` is not in valid format",
+        1071: "CanvasShapes.Relation - in `_generateRenderingPoints()`: `func` returned value is not an array of floats with always the same number of values",
+        1072: "CanvasShapes.Relation - in `constructor`: `func` is not a function",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
