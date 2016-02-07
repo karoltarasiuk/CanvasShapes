@@ -77,6 +77,7 @@ CanvasShapes.Error = (function () {
         1070: "CanvasShapes.BezierCurve - in `isColliding()`: passed `mouseCoordinates` is not in valid format",
         1071: "CanvasShapes.Relation - in `_generateRenderingPoints()`: `func` returned value is not an array of floats with always the same number of values",
         1072: "CanvasShapes.Relation - in `constructor`: `func` is not a function",
+        1073: "CanvasShapes.CacheAbstract - in `setCache()` or `getCache()`: passed `varname` is not string",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
@@ -103,6 +104,8 @@ CanvasShapes.Error = (function () {
         8023: "CanvasShapes.AnimationFrameInterface - can't instantiate interface",
         8024: "CanvasShapes.AnimationFrameAbstract - can't instantiate abstract",
         8025: "CanvasShapes.Shape - can't instantiate abstract",
+        8026: "CanvasShapes.CacheInterface - can't instantiate interface",
+        8027: "CanvasShapes.CacheAbstract - can't instantiate abstract",
         // Not implemented methods errors
         9001: 'CanvasShapes.RenderingInterface - `render()` is not implemented',
         9002: 'CanvasShapes.RenderingAbstract - `renderOnSingleLayer()` is not implemented',
@@ -173,6 +176,8 @@ CanvasShapes.Error = (function () {
         9071: 'CanvasShapes.ShapeInterface - `setIsCollidingRatio()` is not implemented',
         9072: 'CanvasShapes.ShapeInterface - `calculateAllowedError()` is not implemented',
         9073: 'CanvasShapes.RenderingInterface - `getSceneInterfaceHandlers()` is not implemented',
+        9074: 'CanvasShapes.CacheInterface - `setCache()` is not implemented',
+        9075: 'CanvasShapes.CacheInterface - `getCache()` is not implemented',
     };
 
     /**

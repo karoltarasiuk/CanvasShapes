@@ -18,6 +18,7 @@ CanvasShapes.Shape = (function () {
         CanvasShapes.CoordinatesAbstract.prototype,
         CanvasShapes.InteractionAbstract.prototype,
         CanvasShapes.AnimationAbstract.prototype,
+        CanvasShapes.CacheAbstract.prototype,
         CanvasShapes.ShapeAbstract.prototype,
     {
         _className: 'CanvasShapes.Shape'
