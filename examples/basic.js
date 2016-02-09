@@ -43,6 +43,49 @@ require([
             [0, 0], [50, 0], [50, 25], [0, 25], [0, 50], [100, 50], [100, 75],
             [0, 75], [0, 100], [50, 100]
         ]),
+        relation = new CanvasShapes.Relation((function () {
+
+            // taking care of rounding problems
+            var func2FirstNotFalse = false, func3FirstNotFalse = false;
+
+            return function (x) {
+
+                var func1, func2, func3,
+                    width = 100,
+                    a = Math.floor(width / 2),
+                    b = Math.floor(width / 2),
+                    r = Math.floor(width / 4);
+
+                func1 = x;
+
+                // circle equation: (x - a)^2 + (y - b)^2 = r^2
+                // it can be plotted using 2 functions
+                func2 = Math.sqrt(r * r - (x - a) * (x - a)) + b;
+                if (!Number.isFinite(func2)) {
+                    func2 = false;
+                    if (func2FirstNotFalse) {
+                        func2FirstNotFalse = false;
+                        func2 = 50;
+                    }
+                } else if (!func2FirstNotFalse) {
+                    func2FirstNotFalse = true;
+                    func2 = 50;
+                }
+                func3 = -Math.sqrt(r * r - (x - a) * (x - a)) + b;
+                if (!Number.isFinite(func3)) {
+                    func3 = false;
+                    if (func3FirstNotFalse) {
+                        func3FirstNotFalse = false;
+                        func3 = 50;
+                    }
+                } else if (!func3FirstNotFalse) {
+                    func3FirstNotFalse = true;
+                    func3 = 50;
+                }
+
+                return [func1, func2, func3];
+            };
+        })()),
         strokeStyle = new CanvasShapes.Style({
             strokeStyle: 'black'
         }),
@@ -60,6 +103,10 @@ require([
         }),
         fillStyle = new CanvasShapes.Style({
             fillStyle: 'orange'
+        }),
+        relationStyle = new CanvasShapes.Style({
+            strokeStyle: 'orange',
+            lineWidth: 3
         }),
         scene3 = new CanvasShapes.Scene({ id: 'scene3', width: 300, height: 300 }),
         scene1, scene2, scene4, scene5, scene6;
@@ -84,7 +131,7 @@ require([
     // circle1 on a new layer in any scene
     renderer.addShapes([circle1], 'new');
     // curves on a default layer in any scene
-    renderer.addShapes([bezierCurve, quadraticCurve, megaCurve]);
+    renderer.addShapes([bezierCurve, quadraticCurve, megaCurve, relation]);
 
     // setting relative rendering
     square.setRelativeRendering(true);
@@ -95,6 +142,7 @@ require([
     bezierCurve.setRelativeRendering(true);
     quadraticCurve.setRelativeRendering(true);
     megaCurve.setRelativeRendering(true);
+    relation.setRelativeRendering(true);
 
     // styling shapes
     strokeStyle.addToShapes([
@@ -104,6 +152,7 @@ require([
     strokeStyle3.addToShapes([quadraticCurve]);
     strokeStyle4.addToShapes([megaCurve]);
     fillStyle.addToShapes([square]);
+    relationStyle.addToShapes(relation);
     point1.setFace('circle', 10);
     point16.setFace('circle', 10);
 

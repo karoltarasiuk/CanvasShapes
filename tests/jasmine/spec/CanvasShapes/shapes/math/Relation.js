@@ -91,14 +91,18 @@ define([
 
         it('isColliding method', function () {
 
-            var scene, layer, shape1Class,
+            var scene, scene2, layer, layer2, shape1Class,
                 mouseCoordinates = {},
+                mouseCoordinates2 = {},
                 error = new CanvasShapes.Error(1070),
                 line = new CanvasShapes.Relation(
                     function () { return [10]; }
                 ),
                 line2 = new CanvasShapes.Relation(
                     function (x) { if (x === 10) return [10]; else return [false]; }
+                ),
+                line3 = new CanvasShapes.Relation(
+                    function () { return [10]; }
                 ),
                 style = new CanvasShapes.Style({
                     strokeStyle: 'darkBlue',
@@ -110,10 +114,15 @@ define([
                 width: 100,
                 height: 100
             });
+            scene2 = new CanvasShapes.Scene({
+                element: document.createElement('div'),
+                width: 200,
+                height: 200
+            });
             layer = scene.newLayer(line);
+            layer2 = scene2.newLayer(line3);
             scene.addShape(line2, layer);
-            line.setRelativeRendering(true);
-            line2.setRelativeRendering(true);
+            line3.setRelativeRendering(true);
             style.addToShapes(line);
 
             expect(function () {
@@ -209,6 +218,29 @@ define([
             mouseCoordinates.x = 10;
             mouseCoordinates.y = 90;
             expect(line2.isColliding(mouseCoordinates)).toBe(true);
+
+            // relative rendering
+            mouseCoordinates2.scene = scene2;
+            mouseCoordinates2.x = 0;
+            mouseCoordinates2.y = 180;
+            expect(line3.isColliding(mouseCoordinates2)).toBe(true);
+
+            mouseCoordinates2.x = 0;
+            mouseCoordinates2.y = 182;
+            expect(line3.isColliding(mouseCoordinates2)).toBe(true);
+
+            mouseCoordinates2.x = 0;
+            mouseCoordinates2.y = 182;
+            expect(line3.isColliding(mouseCoordinates2)).toBe(false);
+
+            line3.setIsCollidingRatio(0.1);
+            mouseCoordinates2.x = 0;
+            mouseCoordinates2.y = 160;
+            expect(line3.isColliding(mouseCoordinates2)).toBe(true);
+
+            mouseCoordinates2.x = 0;
+            mouseCoordinates2.y = 158;
+            expect(line3.isColliding(mouseCoordinates2)).toBe(false);
         });
     });
 });

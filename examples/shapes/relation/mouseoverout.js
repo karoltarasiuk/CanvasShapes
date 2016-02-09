@@ -55,32 +55,52 @@ require([
             this.elements.relationStyle.addToShapes(this.elements.relation);
         };
 
-        Showcase.prototype.generator = function (x) {
+        Showcase.prototype.generator = (function () {
 
-            var func1, func2, func3, func4, func5,
-                a = Math.floor(this.width / 2),
-                b = Math.floor(this.width / 2),
-                r = Math.floor(this.width / 4);
+            // taking care of rounding problems
+            var func2FirstNotFalse = false, func3FirstNotFalse = false;
 
-            // linear function
-            func1 = x;
+            return function (x) {
 
-            // circle equation: (x - a)^2 + (y - b)^2 = r^2
-            // it can be plotted using 2 functions
-            func2 = Math.sqrt(r * r - (x - a) * (x - a)) + b;
-            if (!Number.isFinite(func2)) {
-                func2 = false;
-            }
-            func3 = -Math.sqrt(r * r - (x - a) * (x - a)) + b;
-            if (!Number.isFinite(func3)) {
-                func3 = false;
-            }
+                var func1, func2, func3,
+                    width = 100,
+                    a = Math.floor(width / 2),
+                    b = Math.floor(width / 2),
+                    r = Math.floor(width / 4);
 
-            // sine
-            func4 = this.height / 2 * Math.sin(x / (this.width / (2 * Math.PI))) + this.height / 2;
+                func1 = x;
 
-            return [func1, func2, func3, func4];
-        };
+                // circle equation: (x - a)^2 + (y - b)^2 = r^2
+                // it can be plotted using 2 functions
+                func2 = Math.sqrt(r * r - (x - a) * (x - a)) + b;
+                if (!Number.isFinite(func2)) {
+                    func2 = false;
+                    if (func2FirstNotFalse) {
+                        func2FirstNotFalse = false;
+                        func2 = 50;
+                    }
+                } else if (!func2FirstNotFalse) {
+                    func2FirstNotFalse = true;
+                    func2 = 50;
+                }
+                func3 = -Math.sqrt(r * r - (x - a) * (x - a)) + b;
+                if (!Number.isFinite(func3)) {
+                    func3 = false;
+                    if (func3FirstNotFalse) {
+                        func3FirstNotFalse = false;
+                        func3 = 50;
+                    }
+                } else if (!func3FirstNotFalse) {
+                    func3FirstNotFalse = true;
+                    func3 = 50;
+                }
+
+                // sine
+                func4 = this.height / 2 * Math.sin(x / (this.width / (2 * Math.PI))) + this.height / 2;
+
+                return [func1, func2, func3, func4];
+            };
+        })();
 
         Showcase.prototype.addAllShapes = function () {
 

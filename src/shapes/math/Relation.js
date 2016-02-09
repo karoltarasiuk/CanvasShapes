@@ -22,7 +22,14 @@ CanvasShapes.Relation = (function () {
      * is reversed and grows to the bottom. So assuming [0, 0] point is a bottom
      * left corner of a canvas.
      *
-     * [WARNING] `func` parameter must take relative rendering into account.
+     * [WARNING] if relative rendering is set to `true`, `func` will only be
+     * passed `x` values from within a 0-100 range. It is expected that returned
+     * values won't exceed it either. If they do though they simply won't be
+     * rendered as will be outside the drawing area.
+     *
+     * [WARNING] `func` must take care of rounding problems if any can arise.
+     * See the implementation of a circle here: /examples/basic.html or here:
+     * /examples/shapes/relation/mouseoverout.js
      *
      * @param {function} func
      */
@@ -195,18 +202,31 @@ CanvasShapes.Relation = (function () {
          */
         _generateRenderingPoints: function (layer) {
 
-            var i, j, count, width, height,
+            var i, j, count, width, height, heightRatio, funcArg,
+                relativeRendering = this.getRelativeRendering(),
                 points = [],
                 temp = [],
                 testData = [-10, 0, 10];
-// RELATIVE RENDERING!!!
-// // RELATIVE RENDERING!!!
-// // RELATIVE RENDERING!!!
+
             width = layer.getWidth();
             height = layer.getHeight();
 
+            if (relativeRendering) {
+                heightRatio = 100 / height;
+            } else {
+                heightRatio = 1;
+            }
+
             for (i = 0; i <= width; i++) {
-                temp[i] = this._func(i);
+
+                if (relativeRendering) {
+                    funcArg = i * 100 / width;
+                } else {
+                    funcArg = i;
+                }
+
+                temp[i] = this._func(funcArg);
+
                 if (count && temp[i].length !== count) {
                     throw new CanvasShapes.Error(1071);
                 } else {
@@ -236,7 +256,7 @@ CanvasShapes.Relation = (function () {
                     // notice height deduction to align rendering with
                     // cartesian coordinate system
                     if (temp[i][j] !== false) {
-                        points[j][i] = [i, Math.abs(temp[i][j] - height)];
+                        points[j][i] = [i, Math.abs(temp[i][j] / heightRatio - height)];
                     } else {
                         points[j][i] = [i, false];
                     }
