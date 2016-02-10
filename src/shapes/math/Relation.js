@@ -179,17 +179,23 @@ CanvasShapes.Relation = (function () {
          */
         _getRenderingPoints: function (layer) {
 
-            if (!CanvasShapes._.isObject(this._points)) {
-                this._points = {};
-            }
+            var relativeRendering = this.getRelativeRendering(),
+                cachedPoints = this.getCache(
+                    layer.getUUID() + '_' + relativeRendering
+                );
 
             // check if there is a cached version of points for this layer
-            if (!this._points[layer.getUUID()]) {
-                this._points[layer.getUUID()] =
-                    this._generateRenderingPoints(layer);
+            // if (!this._points[layer.getUUID()]) {
+            if (!cachedPoints) {
+
+                cachedPoints = this._generateRenderingPoints(layer);
+                this.setCache(
+                    layer.getUUID() + '_' + relativeRendering,
+                    cachedPoints
+                );
             }
 
-            return this._points[layer.getUUID()];
+            return cachedPoints;
         },
 
         /**

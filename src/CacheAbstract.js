@@ -48,6 +48,10 @@ CanvasShapes.CacheAbstract = (function () {
                 throw new CanvasShapes.Error(1073);
             }
 
+            if (!CanvasShapes._.isObject(this._cache)) {
+                this._cache = {};
+            }
+
             if (!this._cache[varname]) {
                 return false;
             }

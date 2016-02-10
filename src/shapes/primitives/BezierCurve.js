@@ -127,23 +127,27 @@ CanvasShapes.BezierCurve = (function () {
          */
         _getRenderingPoints: function (layer) {
 
-            var coordinates;
-
-            if (!CanvasShapes._.isObject(this._points)) {
-                this._points = {};
-            }
+            var coordinates,
+                relativeRendering = this.getRelativeRendering(),
+                cachedPoints = this.getCache(
+                    layer.getUUID() + '_' + relativeRendering
+                );
 
             // check if there is a cached version of points for this layer
-            if (!this._points[layer.getUUID()]) {
+            // if (!this._points[layer.getUUID()]) {
+            if (!cachedPoints) {
 
                 coordinates = this.processCoordinates(
                     this.getCoordinates(), layer
                 );
-                this._points[layer.getUUID()] =
-                    this._generateRenderingPoints(coordinates);
+                cachedPoints = this._generateRenderingPoints(coordinates);
+                this.setCache(
+                    layer.getUUID() + '_' + relativeRendering,
+                    cachedPoints
+                );
             }
 
-            return this._points[layer.getUUID()];
+            return cachedPoints;
         },
 
         /**

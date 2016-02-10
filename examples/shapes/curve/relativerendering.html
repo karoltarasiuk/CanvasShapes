@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CanvasShapes shapes examples - curve - testing relative rendering</title>
+        <script type="text/javascript" src="../../../lib/jquery.js"></script>
+        <script type="text/javascript" data-main="relativerendering" src="../../../lib/require.min.js"></script>
+    </head>
+    <body>
+        <p style="padding: 0 8px;">
+            <a href="index.html">go back</a> |
+            <a href="javascript:void(0)" class="toggle">toggle relative rendering</a>
+        </p>
+        <p style="padding: 8px; padding-right: 60px;">
+            Place the cursor over a curve to turn it into red. Move the cursor outside to turn the line back to blue.<br>
+            Click the button to toggle relative rendering - mouseover should still work properly.
+        </p>
+        <div id="scenes"></div>
+        <div id="fps" style="position: fixed; width: 50px; height: 50px; top: 0px; right: 0px; background-color: black; color: white; text-align: center; font-weight: bold; font-family: Arial;">
+            <div class="label" style="height: 20px; line-height: 20px; font-size: 14px;">FPS</div>
+            <div class="fps" style="height: 30px; line-height: 30px; font-size: 24px;"></div>
+        </div>
+    </body>
+</html>
