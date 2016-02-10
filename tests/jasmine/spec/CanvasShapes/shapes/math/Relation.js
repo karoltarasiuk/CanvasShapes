@@ -230,7 +230,7 @@ define([
             expect(line3.isColliding(mouseCoordinates2)).toBe(true);
 
             mouseCoordinates2.x = 0;
-            mouseCoordinates2.y = 182;
+            mouseCoordinates2.y = 183;
             expect(line3.isColliding(mouseCoordinates2)).toBe(false);
 
             line3.setIsCollidingRatio(0.1);
