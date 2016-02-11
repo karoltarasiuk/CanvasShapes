@@ -193,7 +193,9 @@ require([
     });
     circle1.move(1700, [5, 50], function () {console.log('CIRCLE 1 MOVED');
         circle1.move(1700, [5, 95], function () {
-            console.log('CIRCLE 2 MOVED');
+            circle1.move(0, { x: 40, y: -40 }, function () {
+                console.log('CIRCLE 2 MOVED');
+            });
         });
     });
     square.move(3500, [[80, 90], [90, 80], [100, 90], [90, 100]], function () {

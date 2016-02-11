@@ -35,7 +35,9 @@ CanvasShapes.AnimationInterface = (function () {
          * It's an integer containing number of miliseconds. It's passed to
          * `animate` method. If `coordinates` is an array, it will be the final
          * position of the shape. This method guarantees stopping at this
-         * coordinates before calling a `callback`.
+         * coordinates before calling a `callback`. If `totalAnimationTime` is
+         * set to 0, there is only one frame executed, like there instant
+         * action.
          *
          * `coordinates` can also be passed as a function of a following
          * definition:

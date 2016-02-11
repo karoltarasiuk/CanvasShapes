@@ -47,7 +47,9 @@ CanvasShapes.Circle = (function () {
          */
         move: function (totalAnimationTime, coordinates, callback, context) {
 
-            coordinates = [coordinates];
+            if (CanvasShapes._.isArray(coordinates)) {
+                coordinates = [coordinates];
+            }
 
             CanvasShapes.Arc.prototype.move.call(
                 this,
