@@ -137,6 +137,10 @@ CanvasShapes.Point = (function () {
             } else {
                 throw new CanvasShapes.Error(1026);
             }
+
+            if (this._face) {
+                this._face.setRelativeRendering(this.getRelativeRendering());
+            }
         },
 
         /**
@@ -169,7 +173,25 @@ CanvasShapes.Point = (function () {
             if (this._face) {
                 this._face.setCoordinates([coordinates]);
             }
-        }
+        },
+
+        /**
+         * @implements {CanvasShapes.RenderingInterface}
+         * @overrides {CanvasShapes.CoordinatesAbstract}
+         */
+        setRelativeRendering: function (relativeRendering) {
+
+            if (CanvasShapes._.isBoolean(relativeRendering)) {
+                this._relativeRendering = relativeRendering;
+                if (this._face) {
+                    return this._face.setRelativeRendering(relativeRendering);
+                } else {
+                    return true;
+                }
+            }
+
+            return false;
+        },
     });
 
     return Point;

@@ -360,7 +360,7 @@ define([
             });
         });
 
-        describe('move animation - async', function () {
+        describe('move animation - async - when time is less than MIN_ANIMATION_TIME', function () {
 
             var shape1, callbackSpy, i;
 
@@ -406,7 +406,53 @@ define([
             });
         });
 
-        describe('move animation with function - async', function () {
+        describe('move animation - async - when time is more than MIN_ANIMATION_TIME', function () {
+
+            var shape1, callbackSpy, i;
+
+            beforeEach(function (done) {
+
+                var animate = false,
+                    scene1 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
+                    callback = function () {
+                        callbackSpy();
+                        animate = false;
+                        done();
+                    },
+                    requestAnimationFrameCallback = function () {
+                        if (animate) {
+                            scene1.render();
+                            window.requestAnimationFrame(
+                                requestAnimationFrameCallback
+                            );
+                        }
+                    };
+
+                i = 0;
+                callbackSpy = jasmine.createSpy('callback');
+                shape1 = new CanvasShapes.Point([0, 0]);
+                scene1.addShape(shape1);
+
+                animate = true;
+                window.requestAnimationFrame(requestAnimationFrameCallback);
+
+                shape1.move(15, [100, 100], callback);
+            });
+
+            it('moves the shape properly', function () {
+
+                expect(callbackSpy).toHaveBeenCalled();
+                expect(callbackSpy.calls.count()).toBe(1);
+
+                expect(shape1.getCoordinates()).toEqual([100, 100]);
+            });
+        });
+
+        describe('move animation with function - async - when time is less than MIN_ANIMATION_TIME', function () {
 
             var shape1, callbackSpy, i;
 
@@ -464,7 +510,65 @@ define([
             });
         });
 
-        describe('move animation with offset object - async', function () {
+        describe('move animation with function - async - when time is more than MIN_ANIMATION_TIME', function () {
+
+            var shape1, callbackSpy, i;
+
+            beforeEach(function (done) {
+
+                var animate = false,
+                    scene1 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
+                    callback = function () {
+                        callbackSpy();
+                        animate = false;
+                        done();
+                    },
+                    requestAnimationFrameCallback = function () {
+                        if (animate) {
+                            scene1.render();
+                            window.requestAnimationFrame(
+                                requestAnimationFrameCallback
+                            );
+                        }
+                    };
+
+                i = 0;
+                callbackSpy = jasmine.createSpy('callback');
+                shape1 = new CanvasShapes.Point([0, 0]);
+                scene1.addShape(shape1);
+
+                animate = true;
+                window.requestAnimationFrame(requestAnimationFrameCallback);
+
+                shape1.move(15, function (coords, totalTime, curTime) {
+                    var ratio;
+                    if (curTime >= totalTime) {
+                        coords[0] = 100;
+                        coords[1] = 50;
+                    } else {
+                        ratio = (curTime / totalTime) * 100;
+                        coords[0] = ratio;
+                        ratio = ratio/100 * (2 * Math.PI);
+                        coords[1] = Math.sin(ratio) * 50 + 50;
+                    }
+                    return coords;
+                }, callback);
+            });
+
+            it('moves the shape properly', function () {
+
+                expect(callbackSpy).toHaveBeenCalled();
+                expect(callbackSpy.calls.count()).toBe(1);
+
+                expect(shape1.getCoordinates()).toEqual([100, 50]);
+            });
+        });
+
+        describe('move animation with offset object - async - when time is less than MIN_ANIMATION_TIME', function () {
 
             var shape1, callbackSpy, i;
 
@@ -499,6 +603,52 @@ define([
                 window.requestAnimationFrame(requestAnimationFrameCallback);
 
                 shape1.move(0, { x: 10, y: 5, z: -5 }, callback, shape1);
+            });
+
+            it('moves the shape properly', function () {
+
+                expect(callbackSpy).toHaveBeenCalled();
+                expect(callbackSpy.calls.count()).toBe(1);
+
+                expect(shape1.getCoordinates()).toEqual([10, 5, -5]);
+            });
+        });
+
+        describe('move animation with offset object - async - when time is more than MIN_ANIMATION_TIME', function () {
+
+            var shape1, callbackSpy, i;
+
+            beforeEach(function (done) {
+
+                var animate = false,
+                    scene1 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
+                    callback = function () {
+                        callbackSpy();
+                        animate = false;
+                        done();
+                    },
+                    requestAnimationFrameCallback = function () {
+                        if (animate) {
+                            scene1.render();
+                            window.requestAnimationFrame(
+                                requestAnimationFrameCallback
+                            );
+                        }
+                    };
+
+                i = 0;
+                callbackSpy = jasmine.createSpy('callback');
+                shape1 = new CanvasShapes.Point([0, 0, 0]);
+                scene1.addShape(shape1);
+
+                animate = true;
+                window.requestAnimationFrame(requestAnimationFrameCallback);
+
+                shape1.move(15, { x: 10, y: 5, z: -5 }, callback, shape1);
             });
 
             it('moves the shape properly', function () {

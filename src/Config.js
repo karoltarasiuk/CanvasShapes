@@ -59,6 +59,15 @@ CanvasShapes.Config = (function () {
          * @type {float}
          */
         IS_COLLIDING_RATIO: 0.01,
+
+        /**
+         * Global setting for minimum animation time. If the time is less than
+         * this number, animation won't be performed and desired state of the
+         * shape/object will be requested for rendering straight away
+         *
+         * @type {integer}
+         */
+        MIN_ANIMATION_TIME: 10
     };
 
     /**

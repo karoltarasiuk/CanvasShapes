@@ -177,53 +177,41 @@ require([
                             coords[1] = Math.sin(ratio) * 50 + 50;
                         }
                         return coords;
-                    }, function () {console.log('POINT MOVED');
+                    }, function () {
                         CanvasShapes.Renderer.stop();
                     });
                 });
             });
         });
     });
-    arc1.move(1200, [[-50, 80], [80, 80], [80, 150]], function () {console.log('ARC 1 MOVED');
-        arc1.move(1200, [[-50, 60], [60, 60], [60, 150]], function () {console.log('ARC 2 MOVED');
-            arc1.move(1200, [[-50, 50], [50, 50], [50, 150]], function () {
-                console.log('ARC 3 MOVED');
-            });
+    arc1.move(1200, [[-50, 80], [80, 80], [80, 150]], function () {
+        arc1.move(1200, [[-50, 60], [60, 60], [60, 150]], function () {
+            arc1.move(1200, [[-50, 50], [50, 50], [50, 150]]);
         });
     });
-    circle1.move(1700, [5, 50], function () {console.log('CIRCLE 1 MOVED');
+    circle1.move(1700, [5, 50], function () {
         circle1.move(1700, [5, 95], function () {
-            circle1.move(0, { x: 40, y: -40 }, function () {
-                console.log('CIRCLE 2 MOVED');
-            });
+            circle1.move(0, { x: 40, y: -40 });
         });
     });
     square.move(3500, [[80, 90], [90, 80], [100, 90], [90, 100]], function () {
-        console.log('SQUARE MOVED');
+        square.move(0, { y: -80 });
     });
-    line.move(3500, [[90, 10], [10, 90]], function () {
-        console.log('LINE MOVED');
-    });
-    rectangle.move(3500, [[20, 20], [90, 90], [100, 80], [30, 10]], function () {
-        console.log('RECTANGLE MOVED');
-    });
-    polygon1.move(3500, [[50, 50], [70, 30], [50, 70], [30, 30]], function () {
-        console.log('POLYGON 1 MOVED');
-    });
-    polygon2.move(3500, { x: 20, y: 10 }, function () {
-        console.log('POLYGON 2 MOVED');
-    });
+    line.move(3500, [[90, 10], [10, 90]]);
+    rectangle.move(3500, [[20, 20], [90, 90], [100, 80], [30, 10]]);
+    polygon1.move(3500, [[50, 50], [70, 30], [50, 70], [30, 30]]);
+    polygon2.move(3500, { x: 20, y: 10 });
 
     fillStyle.animate(3500, {
         fillStyle: 'green'
-    }, function () {
-        console.log('FILL STYLE CHANGED');
     });
 
     strokeStyle.animate(3500, {
         strokeStyle: 'red'
     }, function () {
-        console.log('STROKE STYLE CHANGED');
+        strokeStyle.animate(500, {
+            strokeStyle: 'brown'
+        });
     });
 
     setInterval(function () {

@@ -71,6 +71,10 @@ CanvasShapes.AnimationInterface = (function () {
          * [WARNING] This function won't perform any type or value checking for
          * performance reasons.
          *
+         * [WARNING] If shape has relative renering set to `true` coordinates
+         * and offset are expected to be passed as percentages of layer's
+         * dimensions.
+         *
          * @throws {CanvasShapes.Error} 9046
          *
          * @param {integer}                 totalAnimationTime
