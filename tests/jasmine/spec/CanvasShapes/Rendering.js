@@ -75,7 +75,7 @@ define([
 
                 var rendering = new CanvasShapes.Point([0, 0], 'circle');
 
-                expect(rendering.getRelativeRendering()).toBe(undefined);
+                expect(rendering.getRelativeRendering()).toBe(false);
                 rendering.setRelativeRendering(true);
                 expect(rendering.getRelativeRendering()).toBe(true);
                 rendering.setRelativeRendering(false);

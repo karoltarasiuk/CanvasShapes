@@ -157,12 +157,12 @@ CanvasShapes.Scene = (function () {
                         for (j = 0; j < callbacks[i].length; j++) {
                             callbacks[i][j]();
                         }
+                    } else if (CanvasShapes._.isFunction(callbacks[i])) {
+                        callbacks[i]();
                     } else if (CanvasShapes._.isObject(callbacks[i])) {
                         for (j in callbacks[i]) {
                             callbacks[i][j].next();
                         }
-                    } else if (CanvasShapes._.isFunction(callbacks[i])) {
-                        callbacks[i]();
                     }
                 }
             }

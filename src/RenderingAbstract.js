@@ -103,7 +103,7 @@ CanvasShapes.RenderingAbstract = (function () {
          * @implements {CanvasShapes.RenderingInterface}
          */
         getRelativeRendering: function () {
-            return this._relativeRendering;
+            return !!this._relativeRendering;
         }
     });
 

@@ -10,7 +10,7 @@ CanvasShapes.ShapeAbstract = (function () {
     var ShapeAbstract = function () {
         throw new CanvasShapes.Error(8003);
     };
-var index = 0;
+
     CanvasShapes.Class.extend(
         ShapeAbstract.prototype,
         CanvasShapes.ShapeInterface.prototype,
@@ -170,14 +170,14 @@ var index = 0;
             var newHandler, originalEventType, currentState,
                 newHandlers = {},
                 that = this,
+                // only those which are not handled separately
                 eventsUsingIsColliding = [
                     'click',
                     'contextmenu',
                     'dblclick',
                     'mousemove',
                     'mouseup',
-                    'mousedown',
-                    'drag'
+                    'mousedown'
                 ];
 
             if (!this.isOnScene()) {
@@ -350,7 +350,9 @@ var index = 0;
         move: function (totalAnimationTime, coordinates, callback) {
 
             var i, j, tempCoordinates, animationFrameStepCallbackHelper,
-                startingCoordinates = this.getCoordinates();
+                startingCoordinates = this.processCoordinates(
+                    this.getCoordinates()
+                );
 
             if (CanvasShapes._.isArray(coordinates)) {
                 if (
@@ -387,6 +389,18 @@ var index = 0;
                 }
             }
 
+            /**
+             * Internal function to calculate new coordinates for each step
+             * of a move animation
+             *
+             * @param {array}   coordinates
+             * @param {array}   startingCoordinates
+             * @param {integer} totalAnimationTime
+             * @param {float}   ratio
+             * @param {integer} currentTime
+             *
+             * @return {array}
+             */
             animationFrameStepCallbackHelper = function (
                 coordinates,
                 startingCoordinates,
