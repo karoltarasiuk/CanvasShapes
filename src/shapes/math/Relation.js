@@ -7,11 +7,15 @@ CanvasShapes.Relation = (function () {
      *
      * The `func` definition should be as follows:
      * ```
-     * function (x) {
+     * function (x, time) {
      *     // some calculations
      *     return [];
      * }
      * ```
+     * `time` is being passed as a fraction of total animation time. Its value
+     * will never be lower than 0 and bigger than 1. Function should return
+     * the same base relation when `time` is `undefined` or simply `0`.
+     *
      * It must return an array of float values. Array of those values should
      * always have the same number of values. For a function it should always be
      * one value. If there is no `y` to be plotted for a given `x`, array should
@@ -51,10 +55,14 @@ CanvasShapes.Relation = (function () {
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
+         *
+         * @param {CanvasShapes.SceneLayerInterface} layer
+         * @param {function}                         func [OPTIONAL]
+         * @param {float}                            time [OPTIONAL]
          */
-        render: function (layer) {
+        render: function (layer, func, time) {
 
-            var h, i, points, coordinates, moveToDone,
+            var h, i, points, moveToDone,
                 style = this.getStyle(),
                 context = layer.getContext();
 
@@ -87,6 +95,80 @@ CanvasShapes.Relation = (function () {
             }
 
             style.set(layer, this.getRelativeRendering());
+        },
+
+        /**
+         * `animationFunction` format should be the same as passed to
+         * constructor of CanvasShapes.Relation.
+         *
+         * @implements {CanvasShapes.AnimationInterface}
+         * @override {CanvasShapes.ShapeAbstract}
+         *
+         * @param {integer}  totalAnimationTime
+         * @param {function} animationFunction [OPTIONAL]
+         * @param {function} callback [OPTIONAL]
+         */
+        move: function (totalAnimationTime, animationFunction, callback) {
+
+            var animationFrame;
+
+            if (!animationFunction) {
+                animationFunction = this._func;
+            }
+
+            if (
+                totalAnimationTime <
+                CanvasShapes.Config.get('MIN_ANIMATION_TIME')
+            ) {
+                this.requestRendering(
+                    this,
+                    undefined,
+                    CanvasShapes._.bind(function (layer) {
+                        this._getRenderingPoints(layer, animationFunction, 0);
+                    }, this)
+                );
+                return;
+            }
+
+            animationFrame = new CanvasShapes.AnimationFrame(
+                this,
+                totalAnimationTime,
+                function (currentTime) {
+
+                    var ratio = currentTime / this.totalAnimationTime;
+
+                    if (CanvasShapes._.isNaN(ratio) || ratio > 1) {
+                        ratio = 1;
+                    }
+
+                    this.setBeforeRender(CanvasShapes._.bind(function (
+                        ratio, animationFunction, layer
+                    ) {
+                        this.shape._getRenderingPoints(
+                            layer,
+                            animationFunction,
+                            ratio
+                        );
+                    }, this, ratio, this.variables.animationFunction));
+                },
+                callback,
+                {
+                    animationFunction: animationFunction
+                }
+            );
+
+            // setting beforeRender hook for the first frame of the animation
+            animationFrame.setBeforeRender(CanvasShapes._.bind(function (
+                ratio, animationFunction, layer
+            ) {
+                this.shape._getRenderingPoints(
+                    layer,
+                    animationFunction,
+                    ratio
+                );
+            }, animationFrame, 0, animationFunction));
+
+            this.animate(animationFrame);
         },
 
         /**
@@ -174,10 +256,13 @@ CanvasShapes.Relation = (function () {
          * generated per layer. Therefore it's good to cache them to avoid
          * re-calculating whenever they're needeed.
          *
-         * @param  {CanvasShapes.SceneLayerInterface} layer
+         * @param {CanvasShapes.SceneLayerInterface} layer
+         * @param {function}                         func [OPTIONAL]
+         * @param {float}                            time [OPTIONAL]
+         *
          * @return {array}
          */
-        _getRenderingPoints: function (layer) {
+        _getRenderingPoints: function (layer, func, time) {
 
             var relativeRendering = this.getRelativeRendering(),
                 cachedPoints = this.getCache(
@@ -185,13 +270,13 @@ CanvasShapes.Relation = (function () {
                 );
 
             // check if there is a cached version of points for this layer
-            // if (!this._points[layer.getUUID()]) {
-            if (!cachedPoints) {
-
-                cachedPoints = this._generateRenderingPoints(layer);
+            // or if there is a new custom function passed
+            if (!cachedPoints || func) {
+                cachedPoints = this._generateRenderingPoints(layer, func, time);
                 this.setCache(
                     layer.getUUID() + '_' + relativeRendering,
-                    cachedPoints
+                    cachedPoints,
+                    true
                 );
             }
 
@@ -203,16 +288,23 @@ CanvasShapes.Relation = (function () {
          *
          * @throws {CanvasShapes.Error} 1071
          *
-         * @param  {CanvasShapes.SceneLayerInterface} layer
+         * @param {CanvasShapes.SceneLayerInterface} layer
+         * @param {function}                         func [OPTIONAL]
+         * @param {float}                            time [OPTIONAL]
+         *
          * @return {array}
          */
-        _generateRenderingPoints: function (layer) {
+        _generateRenderingPoints: function (layer, func, time) {
 
             var i, j, count, width, height, heightRatio, funcArg,
                 relativeRendering = this.getRelativeRendering(),
                 points = [],
                 temp = [],
                 testData = [-10, 0, 10];
+
+            if (!func) {
+                func = this._func;
+            }
 
             width = layer.getWidth();
             height = layer.getHeight();
@@ -231,7 +323,7 @@ CanvasShapes.Relation = (function () {
                     funcArg = i;
                 }
 
-                temp[i] = this._func(funcArg);
+                temp[i] = func(funcArg, time);
 
                 if (count && temp[i].length !== count) {
                     throw new CanvasShapes.Error(1071);

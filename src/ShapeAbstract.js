@@ -475,8 +475,7 @@ CanvasShapes.ShapeAbstract = (function () {
                 totalAnimationTime,
                 function (currentTime) {
 
-                    var i, j,
-                        newCoordinates = [],
+                    var newCoordinates = [],
                         ratio = currentTime / this.totalAnimationTime;
 
                     if (CanvasShapes._.isNaN(ratio) || ratio > 1) {

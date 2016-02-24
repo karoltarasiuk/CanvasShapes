@@ -118,7 +118,7 @@ CanvasShapes.Scene = (function () {
                         shape = shapeObject.shape;
                         // if beforeRender was passed we need to run it now
                         if (shapeObject.beforeRender) {
-                            shapeObject.beforeRender();
+                            shapeObject.beforeRender(layer);
                         }
 
                         shape.render(layer);

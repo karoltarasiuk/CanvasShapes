@@ -1,0 +1,196 @@
+require.config({
+    paths: {
+        CanvasShapes: '../../../build/CanvasShapes'
+    }
+});
+
+require([
+    'CanvasShapes'
+], function (
+    CanvasShapes
+) {
+    var Showcase = (function () {
+
+        Showcase = function (width, height, domId) {
+            this.width = width;
+            this.height = height;
+            this.domId = domId;
+            this.renderer = CanvasShapes.init();
+            this.setupScene();
+            this.createObjects();
+            this.addAllShapes();
+
+            CanvasShapes.Renderer.start();
+            this.setupMoving();
+        };
+
+        Showcase.prototype.setupScene = function () {
+
+            this.$scene = $("#" + this.domId).css({
+                width: this.width,
+                height: this.height
+            });
+
+            this.scene = new CanvasShapes.Scene({
+                id: this.domId,
+                width: this.width,
+                height: this.height
+            });
+
+            this.renderer.addScene(this.scene);
+        };
+
+        Showcase.prototype.createObjects = function () {
+
+            this.elements = {};
+
+            this.elements.relation = new CanvasShapes.Relation(
+                this.generator.bind(this)
+            );
+            this.elements.relation.setRelativeRendering(true);
+            this.elements.relationStyle = new CanvasShapes.Style({
+                strokeStyle: 'black',
+                lineWidth: 3
+            });
+            this.elements.relationStyle.addToShapes(this.elements.relation);
+        };
+
+        Showcase.prototype.generator = (function () {
+
+            // taking care of rounding problems
+            var func2FirstNotFalse = false, func3FirstNotFalse = false;
+
+            return function (x, time) {
+
+                var func1, func2, func3,
+                    width = 100,
+                    a = Math.floor(width / 2),
+                    b = Math.floor(width / 2),
+                    r = Math.floor(width / 4);
+
+                if (time === undefined) {
+                    time = 0;
+                }
+
+                func1 = x;
+
+                // circle equation: (x - a)^2 + (y - b)^2 = r^2
+                // it can be plotted using 2 functions
+                func2 = Math.sqrt(r * r - (x - a) * (x - a)) + b;
+                if (!Number.isFinite(func2)) {
+                    func2 = false;
+                    if (func2FirstNotFalse) {
+                        func2FirstNotFalse = false;
+                        func2 = 50;
+                    }
+                } else if (!func2FirstNotFalse) {
+                    func2FirstNotFalse = true;
+                    func2 = 50;
+                }
+                func3 = -Math.sqrt(r * r - (x - a) * (x - a)) + b;
+                if (!Number.isFinite(func3)) {
+                    func3 = false;
+                    if (func3FirstNotFalse) {
+                        func3FirstNotFalse = false;
+                        func3 = 50;
+                    }
+                } else if (!func3FirstNotFalse) {
+                    func3FirstNotFalse = true;
+                    func3 = 50;
+                }
+
+                return [
+                    func1 !== false ? func1 * time : func1,
+                    func2 !== false ? func2 * time : func2,
+                    func3 !== false ? func3 * time : func3
+                ];
+            };
+        })();
+
+        Showcase.prototype.reversedGenerator = function (x, time) {
+            return this.generator(x, 1 - time);
+        };
+
+        Showcase.prototype.addAllShapes = function () {
+
+            this.renderer.addShapes([
+                this.elements.relation
+            ]);
+        };
+
+        Showcase.prototype.setupMoving = function () {
+
+            var that = this;
+
+            that.elements.relation.move(3000, undefined, function () {
+                that.elements.relation.move(
+                    3000,
+                    that.reversedGenerator.bind(that),
+                    function () {
+                        that.setupMoving();
+                    }
+                );
+            });
+        };
+
+        return Showcase;
+    })();
+
+    var i, j,
+        ROWS = 1,
+        COLS = 1,
+        HOW_MANY = ROWS * COLS,
+        scenesIDs = [],
+        showcases = [],
+        showcase,
+        $window = $(window);
+
+    $('body').css({
+        margin: 0,
+        padding: 0
+    });
+
+    $window.resize(function () {
+
+        var width, height,
+            ww = $(window).width(),
+            wh = $(window).height();
+
+        // reset
+        $('#scenes').html('');
+        showcases = [];
+        scenesIDs = [];
+
+        for (i = 0; i < ROWS; i++) {
+            for (j = 0; j < COLS; j++) {
+                scenesIDs.push('scene_' + i + '_' + j);
+                $('#scenes').append('<div id="scene_' + i + '_' + j + '" style="float: left; border: 1px solid black;"></div>');
+            }
+            $('#scenes').append('<div style="clear: both;"></div>');
+        }
+
+        if (COLS === 1 && ROWS === 1) {
+            if (ww > wh) {
+                ww = wh;
+            } else {
+                wh = ww;
+            }
+            width = ww;
+            height = wh;
+        } else {
+            width = ww / COLS;
+            height = width;
+        }
+
+        if (showcase) {
+            showcase.destroy();
+        }
+
+        for (i = 0; i < HOW_MANY; i++) {
+            showcases.push(new Showcase(width, height, scenesIDs[i]));
+        }
+
+        $("#fps .fps").html('0');
+
+    }).resize();
+});

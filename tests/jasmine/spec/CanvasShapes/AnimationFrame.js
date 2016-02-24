@@ -47,6 +47,16 @@ define([
                 {},
                 'type'
             ); }).not.toThrow();
+
+            expect(function () { new CanvasShapes.AnimationFrame(
+                new CanvasShapes.Point([0, 0], 'circle'),
+                10,
+                function () {},
+                function () {},
+                {},
+                'type',
+                function () {}
+            ); }).not.toThrow();
         });
 
         it('can\'t initialise', function () {
@@ -264,6 +274,62 @@ define([
                     {}
                 );
             }).toThrow(error1);
+            // beforeRender parameter
+            expect(function () {
+                new CanvasShapes.AnimationFrame(
+                    new CanvasShapes.Point([0, 0], 'circle'),
+                    10,
+                    function () {},
+                    function () {},
+                    {},
+                    'type',
+                    1
+                );
+            }).toThrow(error1);
+            expect(function () {
+                new CanvasShapes.AnimationFrame(
+                    new CanvasShapes.Point([0, 0], 'circle'),
+                    10,
+                    function () {},
+                    function () {},
+                    {},
+                    'type',
+                    true
+                );
+            }).toThrow(error1);
+            expect(function () {
+                new CanvasShapes.AnimationFrame(
+                    new CanvasShapes.Point([0, 0], 'circle'),
+                    10,
+                    function () {},
+                    function () {},
+                    {},
+                    'type',
+                    'string'
+                );
+            }).toThrow(error1);
+            expect(function () {
+                new CanvasShapes.AnimationFrame(
+                    new CanvasShapes.Point([0, 0], 'circle'),
+                    10,
+                    function () {},
+                    function () {},
+                    {},
+                    'type',
+                    {}
+                );
+            }).toThrow(error1);
+            expect(function () {
+                new CanvasShapes.AnimationFrame(
+                    new CanvasShapes.Point([0, 0], 'circle'),
+                    10,
+                    function () {},
+                    function () {},
+                    {},
+                    'type',
+                    []
+                );
+            }).toThrow(error1);
         });
 
         it('sets variables without overwriting existing', function () {
@@ -350,6 +416,25 @@ define([
             expect(frame1.getType()).toBe('');
             expect(frame2.getType()).toBe('');
             expect(frame3.getType()).toBe('type');
+        });
+
+        it('sets beforeRender hook properly', function () {
+
+            var shape = new CanvasShapes.Point([0, 0], 'circle'),
+                frame = new CanvasShapes.AnimationFrame(
+                    shape,
+                    10,
+                    function () {},
+                    function () {},
+                    {}
+                ),
+                beforeRender = function () { /* do something */ };
+
+            expect(frame.getBeforeRender()).toBeUndefined();
+            frame.setBeforeRender(beforeRender);
+            expect(frame.getBeforeRender()).toBe(beforeRender);
+            frame.setBeforeRender(undefined);
+            expect(frame.getBeforeRender()).toBeUndefined();
         });
     });
 });

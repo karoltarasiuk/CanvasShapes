@@ -47,6 +47,25 @@ CanvasShapes.AnimationFrameInterface = (function () {
          */
         getType: function () {
             throw new CanvasShapes.Error(9061);
+        },
+
+        /**
+         * Allows you to add/change `beforeRender` hook passed with every time
+         * when requesting rendering. Passing nothing will clear it.
+         *
+         * @param {function} beforeRender [OPTIONAL]
+         */
+        setBeforeRender: function (beforeRender) {
+            throw new CanvasShapes.Error(9076);
+        },
+
+        /**
+         * Gets associated `beforeRender` hook
+         *
+         * @return {function}
+         */
+        getBeforeRender: function () {
+            throw new CanvasShapes.Error(9077);
         }
     });
 

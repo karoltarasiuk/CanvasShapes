@@ -362,7 +362,7 @@ define([
 
         describe('move animation - async - when time is less than MIN_ANIMATION_TIME', function () {
 
-            var shape1, callbackSpy, i;
+            var shape1, callbackSpy, requestAnimationFrameCallbackSpy, i;
 
             beforeEach(function (done) {
 
@@ -378,6 +378,7 @@ define([
                         done();
                     },
                     requestAnimationFrameCallback = function () {
+                        requestAnimationFrameCallbackSpy();
                         if (animate) {
                             scene1.render();
                             window.requestAnimationFrame(
@@ -388,19 +389,77 @@ define([
 
                 i = 0;
                 callbackSpy = jasmine.createSpy('callback');
+                requestAnimationFrameCallbackSpy =
+                    jasmine.createSpy('requestAnimationFrameCallback');
                 shape1 = new CanvasShapes.Point([0, 0]);
                 scene1.addShape(shape1);
 
                 animate = true;
                 window.requestAnimationFrame(requestAnimationFrameCallback);
 
-                shape1.move(0, [100, 100], callback);
+                shape1.move(9, [100, 100], callback);
             });
 
             it('moves the shape properly', function () {
 
                 expect(callbackSpy).toHaveBeenCalled();
                 expect(callbackSpy.calls.count()).toBe(1);
+
+                expect(requestAnimationFrameCallbackSpy).toHaveBeenCalled();
+                expect(requestAnimationFrameCallbackSpy.calls.count()).toBe(1);
+
+                expect(shape1.getCoordinates()).toEqual([100, 100]);
+            });
+        });
+
+        // also an async but only waiting on request animation frame
+        describe('move animation - async - when time is less than MIN_ANIMATION_TIME', function () {
+
+            var shape1, callbackSpy, requestAnimationFrameCallbackSpy, i;
+
+            beforeEach(function (done) {
+
+                var animate = false,
+                    scene1 = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
+                    callback = function () {
+                        callbackSpy();
+                        animate = false;
+                        done();
+                    },
+                    requestAnimationFrameCallback = function () {
+                        requestAnimationFrameCallbackSpy();
+                        if (animate) {
+                            scene1.render();
+                            window.requestAnimationFrame(
+                                requestAnimationFrameCallback
+                            );
+                        }
+                    };
+
+                i = 0;
+                callbackSpy = jasmine.createSpy('callback');
+                requestAnimationFrameCallbackSpy =
+                    jasmine.createSpy('requestAnimationFrameCallback');
+                shape1 = new CanvasShapes.Point([0, 0]);
+                scene1.addShape(shape1);
+
+                animate = true;
+                window.requestAnimationFrame(requestAnimationFrameCallback);
+
+                shape1.move(9, [100, 100], callback);
+            });
+
+            it('moves the shape properly', function () {
+
+                expect(callbackSpy).toHaveBeenCalled();
+                expect(callbackSpy.calls.count()).toBe(1);
+
+                expect(requestAnimationFrameCallbackSpy).toHaveBeenCalled();
+                expect(requestAnimationFrameCallbackSpy.calls.count()).toBe(1);
 
                 expect(shape1.getCoordinates()).toEqual([100, 100]);
             });
