@@ -30,6 +30,7 @@ CanvasShapes.AnimationFrame = (function () {
      * @param {function}                          callback [OPTIONAL]
      * @param {object}                            variables [OPTIONAL]
      * @param {string}                            type [OPTIONAL]
+     * @param {function}                          beforeRender [OPTIONAL]
      */
     var AnimationFrame = function (
         shape,
@@ -37,7 +38,8 @@ CanvasShapes.AnimationFrame = (function () {
         stepCallback,
         callback,
         variables,
-        type
+        type,
+        beforeRender
     ) {
         var i;
 
@@ -50,7 +52,8 @@ CanvasShapes.AnimationFrame = (function () {
             (callback && !CanvasShapes._.isFunction(callback)) ||
             (variables && (!CanvasShapes._.isObject(variables) ||
             CanvasShapes._.isArray(variables))) ||
-            (type && !CanvasShapes._.isString(type))
+            (type && !CanvasShapes._.isString(type)) ||
+            (beforeRender && !CanvasShapes._.isFunction(beforeRender))
         ) {
             throw new CanvasShapes.Error(1043);
         }
@@ -73,6 +76,10 @@ CanvasShapes.AnimationFrame = (function () {
             for (i in variables) {
                 this.variables[i] = variables[i];
             }
+        }
+
+        if (beforeRender) {
+            this.beforeRender = beforeRender;
         }
     };
 

@@ -183,5 +183,22 @@ define([
                 point.setFace(true);
             }).toThrow(error2);
         });
+
+        it('sets relative rendering correctly', function () {
+
+            var point = new CanvasShapes.Point([0, 0]);
+
+            point.setFace('circle');
+            expect(point.getRelativeRendering()).toBe(false);
+            expect(point._face.getRelativeRendering()).toBe(false);
+
+            point.setRelativeRendering(true);
+            expect(point.getRelativeRendering()).toBe(true);
+            expect(point._face.getRelativeRendering()).toBe(true);
+
+            // newly added face will inherit relative rendering from point
+            point.setFace('circle', 100);
+            expect(point._face.getRelativeRendering()).toBe(true);
+        });
     });
 });

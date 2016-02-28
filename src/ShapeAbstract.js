@@ -167,8 +167,10 @@ CanvasShapes.ShapeAbstract = (function () {
          */
         on: function (eventType, handler, context) {
 
-            var newHandler, originalEventType,
+            var newHandler, originalEventType, currentState,
+                newHandlers = {},
                 that = this,
+                // only those which are not handled separately
                 eventsUsingIsColliding = [
                     'click',
                     'contextmenu',
@@ -189,8 +191,9 @@ CanvasShapes.ShapeAbstract = (function () {
             if (eventType === 'mouseover' || eventType === 'mouseout') {
                 // emulation of those based on mousemove
                 originalEventType = eventType;
+                eventType = 'mousemove';
 
-                newHandler = (function () {
+                newHandlers[eventType] = (function () {
 
                     var inOrOut,
                         newHandler = CanvasShapes._.bind(function (e) {
@@ -222,20 +225,54 @@ CanvasShapes.ShapeAbstract = (function () {
                     return newHandler;
                 })();
 
-                eventType = 'mousemove';
+            } else if (
+                eventType === 'drag' ||
+                eventType === 'dragstart' ||
+                eventType === 'dragstop'
+            ) {
+                newHandlers.mousedown = CanvasShapes._.bind(function (e) {
+                    if (that.isColliding(e)) {
+                        currentState = 'on';
+                    }
+                }, context);
+
+                newHandlers.mouseup = CanvasShapes._.bind(function (e) {
+                    currentState = 'off';
+                    if (eventType === 'dragstop') {
+                        handler.apply(this, arguments);
+                    }
+                }, context);
+
+                newHandlers.mousemove = CanvasShapes._.bind(function (e) {
+                    if (currentState === 'on') {
+                        currentState = 'started';
+                        if (eventType === 'dragstart') {
+                            handler.apply(this, arguments);
+                        }
+                    }
+                    if (currentState === 'started' && eventType === 'drag') {
+                        handler.apply(this, arguments);
+                    }
+                }, context);
 
             } else if (eventsUsingIsColliding.indexOf(eventType) !== -1) {
                 // checking whether the event is colliding with a shape
-                newHandler = CanvasShapes._.bind(function (e) {
+                newHandlers[eventType] = CanvasShapes._.bind(function (e) {
                     if (that.isColliding(e)) {
                         handler.apply(this, arguments);
                     }
                 }, context);
             } else {
-                newHandler = handler;
+                newHandlers[eventType] = handler;
             }
 
-            this.getSceneInterfaceHandlers().on(eventType, newHandler, context);
+            for (newHandler in newHandlers) {
+                this.getSceneInterfaceHandlers().on(
+                    newHandler,
+                    newHandlers[newHandler],
+                    context
+                );
+            }
         },
 
         /**
@@ -312,7 +349,7 @@ CanvasShapes.ShapeAbstract = (function () {
          */
         move: function (totalAnimationTime, coordinates, callback) {
 
-            var i, j, tempCoordinates,
+            var i, j, tempCoordinates, animationFrameStepCallbackHelper,
                 startingCoordinates = this.processCoordinates(
                     this.getCoordinates()
                 );
@@ -335,8 +372,7 @@ CanvasShapes.ShapeAbstract = (function () {
 
                 coordinates = [];
 
-                // setting `this._coordinates` as
-                // `this.startingCoordinates` plus offset
+                // setting `coordinates` as `startingCoordinates` plus offset
                 for (i = 0; i < startingCoordinates.length; i++) {
                     if (CanvasShapes._.isArray(startingCoordinates[i])) {
                         for (j = 0; j < startingCoordinates[i].length; j++) {
@@ -353,47 +389,106 @@ CanvasShapes.ShapeAbstract = (function () {
                 }
             }
 
+            /**
+             * Internal function to calculate new coordinates for each step
+             * of a move animation
+             *
+             * @param {array}   coordinates
+             * @param {array}   startingCoordinates
+             * @param {integer} totalAnimationTime
+             * @param {float}   ratio
+             * @param {integer} currentTime
+             *
+             * @return {array}
+             */
+            animationFrameStepCallbackHelper = function (
+                coordinates,
+                startingCoordinates,
+                totalAnimationTime,
+                ratio,
+                currentTime
+            ) {
+                var newCoordinates = [];
+
+                if (ratio === undefined) {
+                    ratio = 1;
+                }
+
+                if (currentTime === undefined) {
+                    currentTime = totalAnimationTime;
+                }
+
+                if (CanvasShapes._.isFunction(coordinates)) {
+                    newCoordinates = coordinates(
+                        startingCoordinates,
+                        totalAnimationTime,
+                        currentTime
+                    );
+                } else {
+
+                    for (i = 0; i < coordinates.length; i++) {
+                        if (CanvasShapes._.isArray(coordinates[i])) {
+                            if (!CanvasShapes._.isArray(newCoordinates[i])) {
+                                newCoordinates[i] = [];
+                            }
+                            for (j = 0; j < coordinates[i].length; j++) {
+                                newCoordinates[i][j] =
+                                    startingCoordinates[i][j] +
+                                    (coordinates[i][j] -
+                                    startingCoordinates[i][j]) *
+                                    ratio;
+                            }
+                        } else {
+                            newCoordinates[i] =
+                                startingCoordinates[i] +
+                                (coordinates[i] - startingCoordinates[i]) *
+                                ratio;
+                        }
+                    }
+                }
+
+                return newCoordinates;
+            };
+
+            // if `totalAnimationTime` is too small, we shouldn't do animation
+            // we should simply set new coordinates and request rendering
+            if (
+                totalAnimationTime <
+                CanvasShapes.Config.get('MIN_ANIMATION_TIME')
+            ) {
+                this.getSceneInterfaceHandlers().requestRendering(
+                    this,
+                    callback,
+                    CanvasShapes._.bind(function (coordinates) {
+                        this.setCoordinates(coordinates);
+                    }, this, animationFrameStepCallbackHelper(
+                        coordinates,
+                        startingCoordinates,
+                        totalAnimationTime
+                    ))
+                );
+                return;
+            }
+
             this.animate(new CanvasShapes.AnimationFrame(
                 this,
                 totalAnimationTime,
                 function (currentTime) {
 
-                    var i, j,
-                        newCoordinates = [],
+                    var newCoordinates = [],
                         ratio = currentTime / this.totalAnimationTime;
 
                     if (CanvasShapes._.isNaN(ratio) || ratio > 1) {
                         ratio = 1;
                     }
 
-                    if (CanvasShapes._.isFunction(this.variables.coordinates)) {
-                        newCoordinates = this.variables.coordinates(
-                            this.variables.startingCoordinates,
-                            this.totalAnimationTime,
-                            currentTime
-                        );
-                    } else {
-
-                        for (i = 0; i < this.variables.coordinates.length; i++) {
-                            if (CanvasShapes._.isArray(this.variables.coordinates[i])) {
-                                if (!CanvasShapes._.isArray(newCoordinates[i])) {
-                                    newCoordinates[i] = [];
-                                }
-                                for (j = 0; j < this.variables.coordinates[i].length; j++) {
-                                    newCoordinates[i][j] =
-                                        this.variables.startingCoordinates[i][j] +
-                                        (this.variables.coordinates[i][j] -
-                                        this.variables.startingCoordinates[i][j]) *
-                                        ratio;
-                                }
-                            } else {
-                                newCoordinates[i] =
-                                    this.variables.startingCoordinates[i] +
-                                    (this.variables.coordinates[i] - this.variables.startingCoordinates[i]) *
-                                    ratio;
-                            }
-                        }
-                    }
+                    newCoordinates = animationFrameStepCallbackHelper(
+                        this.variables.coordinates,
+                        this.variables.startingCoordinates,
+                        this.totalAnimationTime,
+                        ratio,
+                        currentTime
+                    );
 
                     this.shape.setCoordinates(newCoordinates);
                 },

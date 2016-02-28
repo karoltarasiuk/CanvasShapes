@@ -520,6 +520,50 @@ define([
                 scene1.dispatch('some_event', scene1);
                 expect(context1.prop).toBe(2);
             });
+
+            it('request rendering method', function () {
+
+                var scene = new CanvasShapes.Scene({
+                        element: document.createElement('div'),
+                        width: 100,
+                        height: 100
+                    }),
+                    shape = new CanvasShapes.Point([0, 0]),
+                    callbackSpy = jasmine.createSpy('callback'),
+                    callback = function () {
+                        callbackSpy();
+                    },
+                    beforeRenderSpy = jasmine.createSpy('beforeRender'),
+                    beforeRender = function () {
+                        beforeRenderSpy();
+                    },
+                    animationFrameSpy = jasmine.createSpy('animationFrame'),
+                    animationFrame = {
+                        next: function () {
+                            animationFrameSpy();
+                        },
+                        getType: function () {
+                            return '';
+                        }
+                    };
+
+                scene.addShape(shape);
+                scene.requestRendering(shape, callback, beforeRender);
+                scene.render();
+
+                expect(callbackSpy).toHaveBeenCalled();
+                expect(beforeRenderSpy).toHaveBeenCalled();
+                expect(callbackSpy.calls.count()).toBe(1);
+                expect(beforeRenderSpy.calls.count()).toBe(1);
+
+                scene.requestRendering(shape, animationFrame, beforeRender);
+                scene.render();
+
+                expect(animationFrameSpy).toHaveBeenCalled();
+                expect(beforeRenderSpy).toHaveBeenCalled();
+                expect(animationFrameSpy.calls.count()).toBe(1);
+                expect(beforeRenderSpy.calls.count()).toBe(2);
+            });
         });
 
         describe('class methods', function () {

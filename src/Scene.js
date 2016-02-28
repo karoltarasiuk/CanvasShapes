@@ -116,11 +116,21 @@ CanvasShapes.Scene = (function () {
 
                         shapeObject = this._requestedRendering[i].shapes[j];
                         shape = shapeObject.shape;
+                        // if beforeRender was passed we need to run it now
+                        if (shapeObject.beforeRender) {
+                            shapeObject.beforeRender(layer);
+                        }
+
                         shape.render(layer);
 
                         // callbacks get executed after clearing all
                         // the shapes from `this._requestedRendering`
-                        callbacks.push(shapeObject.animationFrames);
+                        if (shapeObject.animationFrames) {
+                            callbacks.push(shapeObject.animationFrames);
+                        }
+                        if (shapeObject.callbacks) {
+                            callbacks.push(shapeObject.callbacks);
+                        }
                     }
                 }
 
@@ -143,12 +153,16 @@ CanvasShapes.Scene = (function () {
 
                 // executing all the callbacks
                 for (i = 0; i < callbacks.length; i++) {
-                    if (CanvasShapes._.isObject(callbacks[i])) {
+                    if (CanvasShapes._.isArray(callbacks[i])) {
+                        for (j = 0; j < callbacks[i].length; j++) {
+                            callbacks[i][j]();
+                        }
+                    } else if (CanvasShapes._.isFunction(callbacks[i])) {
+                        callbacks[i]();
+                    } else if (CanvasShapes._.isObject(callbacks[i])) {
                         for (j in callbacks[i]) {
                             callbacks[i][j].next();
                         }
-                    } else {
-                        callbacks[i]();
                     }
                 }
             }

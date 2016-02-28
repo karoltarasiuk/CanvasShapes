@@ -142,6 +142,12 @@ CanvasShapes.SceneInterface = (function () {
          * previous entry. Instead of `animationFrame` you can simply pass a
          * callback function.
          *
+         * `beforeRender` allows you to pass a function which will be executed
+         * right before rendering. The function must be self-contained, bound if
+         * needed, as no context and no arguments will be applied. Bear in mind
+         * that second subsequent calls will override the first beforeRender
+         * hook you passed.
+         *
          * [WARNING] Due to performance reasons, this method doesn't perform any
          * type checking. It assuems all the passed arguments are of the correct
          * type. It does though check whether shape is associated with a layer.
@@ -150,8 +156,9 @@ CanvasShapes.SceneInterface = (function () {
          *
          * @param {CanvasShapes.Shape}               shape
          * @param {CanvasShapes.AnimationFrame}      animationFrame [OPTIONAL]
+         * @param {function}                         beforeRender [OPTIONAL]
          */
-        requestRendering: function (shape, animationFrame) {
+        requestRendering: function (shape, animationFrame, beforeRender) {
             throw new CanvasShapes.Error(9048);
         },
 

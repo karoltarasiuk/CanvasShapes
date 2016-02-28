@@ -35,14 +35,22 @@ CanvasShapes.AnimationFrameAbstract = (function () {
                 // request next frame from the browser
                 this.shape._sceneInterfaceHandlers.requestRendering(
                     this.shape,
-                    this
+                    this,
+                    this.beforeRender
                 );
             } else {
-                // animation finished
-                if (this.callback && !this.callbackCalled) {
-                    this.callback();
-                    this.callbackCalled = true;
-                }
+                // request rendering for the last time and pass a callback
+                this.shape._sceneInterfaceHandlers.requestRendering(
+                    this.shape,
+                    CanvasShapes._.bind(function () {
+                        // animation finished
+                        if (this.callback && !this.callbackCalled) {
+                            this.callback();
+                            this.callbackCalled = true;
+                        }
+                    }, this),
+                    this.beforeRender
+                );
             }
         },
 
@@ -59,6 +67,28 @@ CanvasShapes.AnimationFrameAbstract = (function () {
          */
         getType: function () {
             return this.type;
+        },
+
+        /**
+         * @implements {CanvasShapes.SceneInterface}
+         */
+        setBeforeRender: function (beforeRender) {
+
+            if (
+                beforeRender !== undefined &&
+                !CanvasShapes._.isFunction(beforeRender)
+            ) {
+                throw new CanvasShapes.Error(1074);
+            }
+
+            this.beforeRender = beforeRender;
+        },
+
+        /**
+         * @implements {CanvasShapes.SceneInterface}
+         */
+        getBeforeRender: function () {
+            return this.beforeRender;
         }
     });
 

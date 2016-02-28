@@ -78,6 +78,7 @@ CanvasShapes.Error = (function () {
         1071: "CanvasShapes.Relation - in `_generateRenderingPoints()`: `func` returned value is not an array of floats with always the same number of values",
         1072: "CanvasShapes.Relation - in `constructor`: `func` is not a function",
         1073: "CanvasShapes.CacheAbstract - in `setCache()` or `getCache()`: passed `varname` is not string",
+        1074: "CanvasShapes.AnimationFrameAbstract - in `setBeforeRender()`: passed `beforeRender` is not a function or `undefined`",
         // Not allowed instantiation errors
         8001: "CanvasShapes.RenderingAbstract - can't instantiate abstract",
         8002: "CanvasShapes.StyleAbstract - can't instantiate abstract",
@@ -178,6 +179,8 @@ CanvasShapes.Error = (function () {
         9073: 'CanvasShapes.RenderingInterface - `getSceneInterfaceHandlers()` is not implemented',
         9074: 'CanvasShapes.CacheInterface - `setCache()` is not implemented',
         9075: 'CanvasShapes.CacheInterface - `getCache()` is not implemented',
+        9076: 'CanvasShapes.AnimationFrameInterface - `setBeforeRender()` is not implemented',
+        9077: 'CanvasShapes.AnimationFrameInterface - `getBeforeRender()` is not implemented',
     };
 
     /**

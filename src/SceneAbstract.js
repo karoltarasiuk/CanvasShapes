@@ -241,7 +241,7 @@ CanvasShapes.SceneAbstract = (function () {
          *
          * @throws {CanvasShapes.Error} 1044
          */
-        requestRendering: function (shape, animationFrame) {
+        requestRendering: function (shape, animationFrame, beforeRender) {
 
             var i, j, layer, layerObject, requestedLayer, found, originalShape,
                 uuid;
@@ -280,10 +280,22 @@ CanvasShapes.SceneAbstract = (function () {
                     if (j === shape.getUUID()) {
                         // checking if layers are the same
                         if (i === layer.getUUID()) {
-                            // adding new animation frame
-                            this._requestedRendering[i].shapes[j]
-                                .animationFrames[animationFrame.getType()] =
-                                    animationFrame;
+                            // adding new only if animationFrame was passed
+                            if (
+                                CanvasShapes._.isFunction(animationFrame)
+                            ) {
+                                this._requestedRendering[i].shapes[j]
+                                    .callbacks.push(animationFrame);
+                            } else if (CanvasShapes._.isObject(animationFrame)) {
+                                this._requestedRendering[i].shapes[j]
+                                    .animationFrames[animationFrame.getType()] =
+                                        animationFrame;
+                            }
+                            // adding beforeRender hook if was passed
+                            if (beforeRender) {
+                                this._requestedRendering[i].shapes[j]
+                                    .beforeRender = beforeRender;
+                            }
                             return;
                         } else {
                             // we remove the shape as layer has changed, and
@@ -294,8 +306,8 @@ CanvasShapes.SceneAbstract = (function () {
                 }
             }
 
-            // in case of this is a new shape, we fetch the layer object
-            // or create a new one
+            // in case of this is a new shape, on a new layer we create a new
+            // layer object
             if (!this._requestedRendering[layer.getUUID()]) {
 
                 this._requestedRendering[layer.getUUID()] = {
@@ -312,19 +324,33 @@ CanvasShapes.SceneAbstract = (function () {
                     if (!requestedLayer.shapes[uuid]) {
                         // this shape was not added previously
                         requestedLayer.shapes[uuid] = {
-                            animationFrames: {}
+                            animationFrames: {},
+                            callbacks: []
                         };
                     }
 
                     requestedLayer.shapes[uuid].shape = shape;
 
-                    if (originalShape === shape && animationFrame) {
-                        requestedLayer.shapes[uuid]
-                            .animationFrames[animationFrame.getType()] =
-                                animationFrame;
+                    if (originalShape === shape) {
+                        // adding animationFrame only if was passed
+                        if (
+                            CanvasShapes._.isFunction(animationFrame)
+                        ) {
+                            requestedLayer.shapes[uuid]
+                                .callbacks.push(animationFrame);
+                        } else if (CanvasShapes._.isObject(animationFrame)) {
+                            requestedLayer.shapes[uuid]
+                                .animationFrames[animationFrame.getType()] =
+                                    animationFrame;
+                        }
+                        // adding beforeRender hook if was passed
+                        if (beforeRender) {
+                            requestedLayer.shapes[uuid]
+                                .beforeRender = beforeRender;
+                        }
                     }
                 }
-
+            // it's a new shape on already existing layer object
             } else {
                 requestedLayer = this._requestedRendering[layer.getUUID()];
                 uuid = shape.getUUID();
@@ -332,16 +358,25 @@ CanvasShapes.SceneAbstract = (function () {
                 if (!requestedLayer.shapes[uuid]) {
                     // this shape was not added previously
                     requestedLayer.shapes[uuid] = {
-                        animationFrames: {}
+                        animationFrames: {},
+                        callbacks: []
                     };
                 }
 
                 requestedLayer.shapes[uuid].shape = shape;
-
-                if (animationFrame) {
+                // adding animationFrame only if was passed
+                if (CanvasShapes._.isFunction(animationFrame)) {
+                    requestedLayer.shapes[uuid]
+                        .callbacks.push(animationFrame);
+                } else if (CanvasShapes._.isObject(animationFrame)) {
                     requestedLayer.shapes[uuid]
                         .animationFrames[animationFrame.getType()] =
                             animationFrame;
+                }
+                // adding beforeRender hook if was passed
+                if (beforeRender) {
+                    this._requestedRendering[i].shapes[j]
+                        .beforeRender = beforeRender;
                 }
             }
         },

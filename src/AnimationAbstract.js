@@ -34,7 +34,8 @@ CanvasShapes.AnimationAbstract = (function () {
 
             this.getSceneInterfaceHandlers().requestRendering(
                 this,
-                animationFrame
+                animationFrame,
+                animationFrame.getBeforeRender()
             );
         }
     });
