@@ -169,6 +169,18 @@ CanvasShapes.CoordinatesInterface = (function () {
             maximumCoordinatesNumber
         ) {
             throw new CanvasShapes.Error(9014);
+        },
+
+        /**
+         * Checks whether all passed as an array coordinates are equal.
+         *
+         * @throws {CanvasShapes.Error} 9078
+         *
+         * @param  {array} coordinates
+         * @return {boolean}
+         */
+        areCoordinatesEqual: function (coordinates) {
+            throw new CanvasShapes.Error(9078);
         }
     });
 

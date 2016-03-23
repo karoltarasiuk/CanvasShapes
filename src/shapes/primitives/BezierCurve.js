@@ -85,7 +85,7 @@ CanvasShapes.BezierCurve = (function () {
          */
         isColliding: function (mouseCoordinates) {
 
-            var i, layer, allowedError, points;
+            var i, layer, allowedError, points, coordinates;
 
             if (
                 !CanvasShapes._.isObject(mouseCoordinates) ||
@@ -101,16 +101,31 @@ CanvasShapes.BezierCurve = (function () {
             layer = mouseCoordinates.scene.getLayer(this);
             allowedError = this.calculateAllowedError(layer);
             points = this._getRenderingPoints(layer);
+            coordinates = this.getCoordinates();
 
-            for (i = 0; i < points.length - 1; i++) {
-                if (
-                    CanvasShapes.GeometryTools.isOnTheSegment(
-                        [mouseCoordinates.x, mouseCoordinates.y],
-                        [points[i], points[i + 1]],
-                        allowedError
-                    )
-                ) {
-                    return true;
+            // checking whether bezier curve is a closed shape
+            if (
+                this.areCoordinatesEqual([
+                    coordinates[0],
+                    coordinates[coordinates.length - 1]
+                ])
+            ) {
+                return CanvasShapes.GeometryTools.isInsidePolygon(
+                    [mouseCoordinates.x, mouseCoordinates.y],
+                    points, allowedError
+            );
+
+            } else {
+                for (i = 0; i < points.length - 1; i++) {
+                    if (
+                        CanvasShapes.GeometryTools.isOnTheSegment(
+                            [mouseCoordinates.x, mouseCoordinates.y],
+                            [points[i], points[i + 1]],
+                            allowedError
+                        )
+                    ) {
+                        return true;
+                    }
                 }
             }
 
@@ -159,7 +174,7 @@ CanvasShapes.BezierCurve = (function () {
                 tLength = 0;
 
             // compute the incremental step
-            for(i = 0; i < coordinates.length - 1; i++){
+            for (i = 0; i < coordinates.length - 1; i++){
                 tLength += CanvasShapes.GeometryTools.segmentLength(
                     coordinates[i],
                     coordinates[i + 1]
@@ -169,8 +184,7 @@ CanvasShapes.BezierCurve = (function () {
 
             // compute the support coordinates
             for (t = 0; t <= 1; t = t + step) {
-                var p = this._pointsCoordinates(t, coordinates);
-                temp.push(p);
+                temp.push(this._pointsCoordinates(t, coordinates));
             }
 
             return temp;
