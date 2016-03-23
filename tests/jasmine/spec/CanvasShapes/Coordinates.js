@@ -360,6 +360,25 @@ define([
                 shape.setCoordinates(coordinates2);
                 expect(shape.getCoordinates()).toBe(coordinates2);
             });
+
+            it('correctly assess coordinates equality', function () {
+
+                var coordinates1 = [[1], [1]],
+                    coordinates2 = [[1, 0], [1, 0], [1, 0]],
+                    coordinates3 = [[1, 0, 5], [1, 0, 5], [1, 0, 5]],
+                    coordinates4 = [[1], []],
+                    coordinates5 = [[1, 0], [1], [1, 0]],
+                    coordinates6 = [[1, 0], [1, 0, 5], [1, 0, 5]],
+                    shape  = new CanvasShapes.Point([20, 20]);
+
+                expect(shape.areCoordinatesEqual(coordinates1)).toBe(true);
+                expect(shape.areCoordinatesEqual(coordinates2)).toBe(true);
+                expect(shape.areCoordinatesEqual(coordinates3)).toBe(true);
+
+                expect(shape.areCoordinatesEqual(coordinates4)).toBe(false);
+                expect(shape.areCoordinatesEqual(coordinates5)).toBe(false);
+                expect(shape.areCoordinatesEqual(coordinates6)).toBe(false);
+            });
         });
     });
 });

@@ -317,7 +317,7 @@ CanvasShapes.GeometryTools = (function () {
 
     /**
      * Computes a Bernstein polynomial value of n-th degree. `t` can't be lower
-     * than 0 and bigger than 1.
+     * than 0 and bigger than 1, for Bernstein value to always be >= 0.
      *
      * @see https://en.wikipedia.org/wiki/Bernstein_polynomial
      *

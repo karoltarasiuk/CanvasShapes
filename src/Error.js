@@ -181,6 +181,7 @@ CanvasShapes.Error = (function () {
         9075: 'CanvasShapes.CacheInterface - `getCache()` is not implemented',
         9076: 'CanvasShapes.AnimationFrameInterface - `setBeforeRender()` is not implemented',
         9077: 'CanvasShapes.AnimationFrameInterface - `getBeforeRender()` is not implemented',
+        9078: 'CanvasShapes.CoordinatesInterface - `areCoordinatesEqual()` is not implemented',
     };
 
     /**

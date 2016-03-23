@@ -268,6 +268,38 @@ CanvasShapes.CoordinatesAbstract = (function () {
          */
         setCoordinates: function (coordinates) {
             this._coordinates = coordinates;
+        },
+
+        /**
+         * @implements {CanvasShapes.CoordinatesInterface}
+         *
+         * @throws {CanvasShapes.Error} 1011
+         */
+        areCoordinatesEqual: function (coordinates) {
+
+            var i,
+                checkEquality = function (coordinate1, coordinate2) {
+                    var i;
+                    if (coordinate1.length !== coordinate2.length) {
+                        return false;
+                    }
+                    for (i = 0; i < coordinate1.length; i++) {
+                        if (coordinate1[i] !== coordinate2[i]) {
+                            return false;
+                        }
+                    }
+                    return true;
+                };
+
+            this.validateCoordinatesArray(coordinates);
+
+            for (i = 0; i < coordinates.length - 1; i++) {
+                if (!checkEquality(coordinates[i], coordinates[i + 1])) {
+                    return false;
+                }
+            }
+
+            return true;
         }
     });
 

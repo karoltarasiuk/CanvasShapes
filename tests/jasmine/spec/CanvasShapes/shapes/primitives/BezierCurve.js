@@ -123,6 +123,10 @@ define([
                     [0, 0], [50, 0], [50, 25], [0, 25], [0, 50], [100, 50],
                     [100, 75], [0, 75], [0, 100], [50, 100]
                 ]),
+                closedCurve = new CanvasShapes.BezierCurve([
+                    [0, 0], [50, 0], [50, 25], [0, 25], [0, 50], [100, 50],
+                    [100, 75], [0, 75], [0, 100], [0, 0]
+                ]),
                 style = new CanvasShapes.Style({
                     strokeStyle: 'darkBlue',
                     lineWidth: 5
@@ -134,7 +138,9 @@ define([
                 height: 405
             });
             layer = scene.newLayer(line);
+            scene.addShape(closedCurve, layer);
             line.setRelativeRendering(true);
+            closedCurve.setRelativeRendering(true);
             style.addToShapes(line);
 
             expect(function () {
@@ -209,6 +215,16 @@ define([
             mouseCoordinates.x = 156;
             mouseCoordinates.y = 211;
             expect(line.isColliding(mouseCoordinates)).toBe(false);
+
+            // closed curve tests
+            mouseCoordinates.x = 50;
+            mouseCoordinates.y = 50;
+            expect(closedCurve.isColliding(mouseCoordinates)).toBe(true);
+
+
+            mouseCoordinates.x = 300;
+            mouseCoordinates.y = 300;
+            expect(closedCurve.isColliding(mouseCoordinates)).toBe(false);
         });
     });
 });
