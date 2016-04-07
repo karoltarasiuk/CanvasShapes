@@ -175,7 +175,7 @@ CanvasShapes.Error = (function () {
         9069: 'CanvasShapes.SceneLayerInterface - `clear()` is not implemented',
         9070: 'CanvasShapes.ShapeInterface - `isOnScene()` is not implemented',
         9071: 'CanvasShapes.ShapeInterface - `setIsCollidingRatio()` is not implemented',
-        9072: 'CanvasShapes.ShapeInterface - `calculateAllowedError()` is not implemented',
+        9072: 'CanvasShapes.RenderingInterface - `calculateAllowedError()` is not implemented',
         9073: 'CanvasShapes.RenderingInterface - `getSceneInterfaceHandlers()` is not implemented',
         9074: 'CanvasShapes.CacheInterface - `setCache()` is not implemented',
         9075: 'CanvasShapes.CacheInterface - `getCache()` is not implemented',

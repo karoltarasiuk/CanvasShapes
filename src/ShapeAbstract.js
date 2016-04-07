@@ -89,40 +89,6 @@ CanvasShapes.ShapeAbstract = (function () {
         },
 
         /**
-         * @implements {CanvasShapes.ShapeInterface}
-         */
-        calculateAllowedError: function (layer) {
-
-            var style, definition,
-                size = CanvasShapes._.max([
-                    layer.getWidth(),
-                    layer.getHeight()]
-                ),
-                isCollidingRatio = this._isCollidingRatio !== undefined ?
-                    this._isCollidingRatio :
-                    CanvasShapes.Config.get('IS_COLLIDING_RATIO'),
-                allowedError = size * isCollidingRatio;
-
-            // add half of lineWidth style property
-            style = this.getStyle();
-            if (CanvasShapes._.isObject(style)) {
-                definition = style.getDefinition();
-                if (
-                    CanvasShapes._.isObject(definition) &&
-                    CanvasShapes._.isNumber(definition.lineWidth)
-                ) {
-                    if (this.getRelativeRendering()) {
-                        allowedError += definition.lineWidth / 2 * size / 100;
-                    } else {
-                        allowedError += definition.lineWidth / 2;
-                    }
-                }
-            }
-
-            return allowedError;
-        },
-
-        /**
          * This implementation assumes that the shape has only one coordinate.
          * For different cases you should override this method.
          *

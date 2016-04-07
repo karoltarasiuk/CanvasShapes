@@ -72,21 +72,6 @@ CanvasShapes.ShapeInterface = (function () {
          */
         setIsCollidingRatio: function (isCollidingRatio) {
             throw new CanvasShapes.Error(9071);
-        },
-
-        /**
-         * Calculates allowed error parameter used in `isColliding` method. It's
-         * never less than 1. Also internal `_isCollidingRatio` property set in
-         * `setIsCollidingRatio()` takes precedence over global
-         * `IS_COLLIDING_RATIO` config value. The calculation is relative to the
-         * size of a layer, which means, since one shape can sit on
-         * multiple layers, that layer must be passed as an argument.
-         *
-         * @param  {CanvasShapes.SceneLayerInterface} layer
-         * @return {float}
-         */
-        calculateAllowedError: function (layer) {
-            throw new CanvasShapes.Error(9072);
         }
     });
 
