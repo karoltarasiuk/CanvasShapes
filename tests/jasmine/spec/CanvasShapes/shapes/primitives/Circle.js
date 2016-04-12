@@ -77,5 +77,14 @@ define([
             expect(circle1.getCoordinates()).toEqual([[0, 0]]);
             expect(circle2.getCoordinates()).toEqual([[40, 120]]);
         });
+
+        it('checking whether circle is closed', function () {
+
+            var circle1 = new CanvasShapes.Circle([0, 0], 1),
+                circle2 = new CanvasShapes.Circle([40, 120], 1);
+
+            expect(circle1._isCircleClosed()).toBe(true);
+            expect(circle1._isCircleClosed()).toBe(true);
+        });
     });
 });

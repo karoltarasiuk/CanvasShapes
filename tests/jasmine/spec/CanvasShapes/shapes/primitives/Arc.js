@@ -141,5 +141,20 @@ define([
             expect(arc1.getCoordinates()).toEqual([[0, 0]]);
             expect(arc2.getCoordinates()).toEqual([[0, 0], [1, 0], [1, 1]]);
         });
+
+        it('checking whether arc is closed', function () {
+
+            var arc1 = new CanvasShapes.Arc([[0, 0]], 1),
+                arc2 = new CanvasShapes.Arc([[0, 0], [1, 0], [1, 1]], 1),
+                arc3 = new CanvasShapes.Arc([[0, 0]], 1, 0, Math.PI),
+                arc4 = new CanvasShapes.Arc([[0, 0]], 1, 0, 2 * Math.PI),
+                arc5 = new CanvasShapes.Arc([[0, 0]], 1, 0, 1.99 * Math.PI);
+
+            expect(arc1._isCircleClosed()).toBe(true);
+            expect(arc2._isCircleClosed()).toBe(false);
+            expect(arc3._isCircleClosed()).toBe(false);
+            expect(arc4._isCircleClosed()).toBe(true);
+            expect(arc5._isCircleClosed()).toBe(false);
+        });
     });
 });

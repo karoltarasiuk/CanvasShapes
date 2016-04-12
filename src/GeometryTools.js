@@ -158,6 +158,101 @@ CanvasShapes.GeometryTools = (function () {
     }
 
     /**
+     * Checks whether point is inside the circle.
+     *
+     * @param {array} point
+     * @param {array} centre
+     * @param {float} radius
+     * @param {float} strokeThickness
+     *
+     * @return {boolean}
+     */
+    function isInsideCircle(point, centre, radius, strokeThickness) {
+        // below equation must be true, for centre point: (h, k)
+        // (x – h)^2 + (y – k)^2 <= r2
+        // but we use a ellipse function (DRY)
+        return isInsideEllipse(point, centre, radius, radius, strokeThickness);
+    }
+
+    /**
+     * Checks whether point is inside ellipse.
+     *
+     * @param {array} point
+     * @param {array} centre
+     * @param {float} a
+     * @param {float} b
+     * @param {float} strokeThickness
+     *
+     * @return {boolean}
+     */
+    function isInsideEllipse(point, centre, a, b, strokeThickness) {
+        // below equation must be true, for centre point: (h, k)
+        // ((x – h)^2)/(a*a) + ((y – k)^2)/(b*b) <= 1
+        var val;
+
+        if (strokeThickness) {
+            a += strokeThickness / 2;
+            b += strokeThickness / 2;
+        }
+
+        val = ((point[0] - centre[0]) * (point[0] - centre[0])) / (a * a) +
+              ((point[1] - centre[1]) * (point[1] - centre[1])) / (b * b);
+
+        return val <= 1;
+    }
+
+    /**
+     * Checks whether point is on the circle.
+     *
+     * @param {array} point
+     * @param {array} centre
+     * @param {float} radius
+     * @param {float} strokeThickness
+     *
+     * @return {boolean}
+     */
+    function isOnCircle(point, centre, radius, strokeThickness) {
+        // below equation must be true, for centre point: (h, k)
+        // (x – h)^2 + (y – k)^2 <= r2
+        // but we use a ellipse function (DRY)
+        return isInsideEllipse(point, centre, radius, radius, strokeThickness);
+    }
+
+    /**
+     * Checks whether point is on the ellipse.
+     *
+     * @param {array} point
+     * @param {array} centre
+     * @param {float} a
+     * @param {float} b
+     * @param {float} strokeThickness
+     *
+     * @return {boolean}
+     */
+    function isOnEllipse(point, centre, a, b, strokeThickness) {
+        // we use the same method is in `isInsideEllipse` but for 2 ellipses,
+        // the second one is a smaller inner one
+        var val, val2,
+            a2 = a,
+            b2 = b;
+
+        if (strokeThickness) {
+            a2 -= strokeThickness / 2;
+            b2 -= strokeThickness / 2;
+            a += strokeThickness / 2;
+            b += strokeThickness / 2;
+        }
+
+        val = ((point[0] - centre[0]) * (point[0] - centre[0])) / (a * a) +
+              ((point[1] - centre[1]) * (point[1] - centre[1])) / (b * b);
+
+        val2 = ((point[0] - centre[0]) * (point[0] - centre[0])) / (a2 * a2) +
+               ((point[1] - centre[1]) * (point[1] - centre[1])) / (b2 * b2);
+
+        return val <= 1 && val2 >= 1;
+    }
+
+    /**
      * Measures the closest distance from a given point to a segment
      *
      * @see http://stackoverflow.com/a/6853926/571230
@@ -347,6 +442,10 @@ CanvasShapes.GeometryTools = (function () {
         isOnTheSegment: isOnTheSegment,
         factorial: factorial,
         binomialCoefficient: binomialCoefficient,
-        bernstein: bernstein
+        bernstein: bernstein,
+        isInsideCircle: isInsideCircle,
+        isInsideEllipse: isInsideEllipse,
+        isOnCircle: isOnCircle,
+        isOnEllipse: isOnEllipse
     };
 })();
