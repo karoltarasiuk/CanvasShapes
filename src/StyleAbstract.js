@@ -29,7 +29,9 @@ CanvasShapes.StyleAbstract = (function () {
         DEFINITION_SUPPORTED_PROPERTIES: [
             'strokeStyle',
             'fillStyle',
-            'lineWidth'
+            'lineWidth',
+            'lineCap',
+            'lineJoin'
         ],
 
         /**
@@ -217,6 +219,14 @@ CanvasShapes.StyleAbstract = (function () {
                                     context.lineWidth =
                                         this.definitions[which].lineWidth;
                                 }
+                            }
+                            if (this.definitions[which].lineJoin) {
+                                context.lineJoin =
+                                    this.definitions[which].lineJoin;
+                            }
+                            if (this.definitions[which].lineCap) {
+                                context.lineCap =
+                                    this.definitions[which].lineCap;
                             }
                             context.stroke();
                         }
