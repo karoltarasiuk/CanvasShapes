@@ -26,12 +26,7 @@ CanvasShapes.CoordinatesAbstract = (function () {
             var i, multiple,
                 ret = [];
 
-            if (
-                (CanvasShapes._.isArray(coordinates) &&
-                    coordinates.length > 0) &&
-                (CanvasShapes._.isArray(coordinates[0]) ||
-                    CanvasShapes._.isObject(coordinates[0]))
-            ) {
+            if (this.areCoordinatesMultiple(coordinates)) {
                 multiple = true;
             } else {
                 coordinates = [coordinates];
@@ -300,6 +295,23 @@ CanvasShapes.CoordinatesAbstract = (function () {
             }
 
             return true;
+        },
+
+        /**
+         * @implements {CanvasShapes.CoordinatesInterface}
+         */
+        areCoordinatesMultiple: function (coordinates) {
+
+            if (
+                (CanvasShapes._.isArray(coordinates) &&
+                    coordinates.length > 0) &&
+                (CanvasShapes._.isArray(coordinates[0]) ||
+                    CanvasShapes._.isObject(coordinates[0]))
+            ) {
+                return true;
+            }
+
+            return false;
         }
     });
 
