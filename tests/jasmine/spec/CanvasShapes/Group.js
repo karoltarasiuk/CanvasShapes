@@ -309,6 +309,34 @@ define([
                 expect(shape1.getCoordinates()).toEqual([20, 20]);
                 expect(shape2.getCoordinates()).toEqual([20, 20]);
             });
+
+            it('sets relative rendering', function () {
+
+                var group1 = new CanvasShapes.Group(),
+                    shape1 = new CanvasShapes.Point([30, 30]),
+                    shape2 = new CanvasShapes.Point([60, 60]);
+
+                group1.addShapes([shape1, shape2]);
+                expect(shape1.getRelativeRendering()).toBe(false);
+                expect(shape2.getRelativeRendering()).toBe(false);
+
+                expect(group1.setRelativeRendering('non boolean')).toBe(false);
+                expect(group1.setRelativeRendering(true)).toBe(true);
+                expect(group1.getRelativeRendering()).toBe(true);
+                expect(shape1.getRelativeRendering()).toBe(false);
+                expect(shape2.getRelativeRendering()).toBe(false);
+
+                expect(group1.setRelativeRendering(false)).toBe(true);
+                expect(group1.getRelativeRendering()).toBe(false);
+                expect(shape1.getRelativeRendering()).toBe(false);
+                expect(shape2.getRelativeRendering()).toBe(false);
+
+                expect(group1.setRelativeRendering(true, true)).toBe(true);
+                expect(group1.setRelativeRendering(true)).toBe(true);
+                expect(group1.getRelativeRendering()).toBe(true);
+                expect(shape1.getRelativeRendering()).toBe(true);
+                expect(shape2.getRelativeRendering()).toBe(true);
+            });
         });
     });
 });
