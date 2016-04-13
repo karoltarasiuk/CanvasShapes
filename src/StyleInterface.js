@@ -17,8 +17,10 @@ CanvasShapes.StyleInterface = (function () {
 
         /**
          * Sets the style on the given layer depending on `which` param.
-         * If `which` param is not specified it will retrieve the first
-         * available style. `relativeRendering` param allows you to decide
+         * If `which` param is not specified it will retrieve last used style,
+         * or if none was used before, the default one.
+         *
+         * `relativeRendering` param allows you to decide
          * whether e.g. line-width or other size-based params should be treated
          * as a percentage of layer's dimensions. Most of this parameters are
          * calculated based on layer's width unless it's explicit that height
@@ -80,6 +82,39 @@ CanvasShapes.StyleInterface = (function () {
             which
         ) {
             throw new CanvasShapes.Error(9059);
+        },
+
+        /**
+         * Returns whether this style definition has `fillStyle` set. The check
+         * works only if definition is not a function. It's useful to determine
+         * whether shape's `isColliding` method should return `true` when the
+         * shape is not filled.
+         *
+         * By default it checks the default definition, but you can change it,
+         * by passing specific definition you want to use.
+         *
+         * It will reutrn boolean value if definition object is used, or
+         * undefined for a definition function.
+         *
+         * @param  {string} which [OPTIONAL]
+         * @return {[undefined,boolean]}
+         */
+        isFilled: function (which) {
+            throw new CanvasShapes.Error(9082);
+        },
+
+        /**
+         * Returns the line width of the default definition, or if `which` is
+         * provided, it will return a line width of the chosen definition.
+         *
+         * It will return integer or undefined if no definition object is set,
+         * or if `lineWidth` is not set within an existing definition.
+         *
+         * @param  {string} which [OPTIONAL]
+         * @return {[undefined,float]}
+         */
+        getLineWidth: function (which) {
+            throw new CanvasShapes.Error(9084);
         }
     });
 

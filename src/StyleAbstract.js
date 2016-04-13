@@ -397,6 +397,34 @@ CanvasShapes.StyleAbstract = (function () {
                     'style'
                 ));
             });
+        },
+
+        /**
+         * @implements {CanvasShapes.StyleInterface}
+         */
+        isFilled: function (which) {
+            var definition = this.getDefinition(which);
+
+            if (CanvasShapes._.isObject(definition)) {
+                return !!definition.fillStyle;
+            }
+
+            return undefined;
+        },
+
+        /**
+         * @implements {CanvasShapes.StyleInterface}
+         */
+        getLineWidth: function (which) {
+            var definition = this.getDefinition(which);
+
+            if (CanvasShapes._.isObject(definition)) {
+                if (CanvasShapes._.isNumber(definition.lineWidth)) {
+                    return definition.lineWidth;
+                }
+            }
+
+            return undefined;
         }
     });
 
