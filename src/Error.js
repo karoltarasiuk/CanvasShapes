@@ -182,6 +182,16 @@ CanvasShapes.Error = (function () {
         9076: 'CanvasShapes.AnimationFrameInterface - `setBeforeRender()` is not implemented',
         9077: 'CanvasShapes.AnimationFrameInterface - `getBeforeRender()` is not implemented',
         9078: 'CanvasShapes.CoordinatesInterface - `areCoordinatesEqual()` is not implemented',
+        9079: 'CanvasShapes.ShapeInterface - `isShapeOpen()` is not implemented',
+        9080: 'CanvasShapes.ShapeInterface - `isShapeContinuous()` is not implemented',
+        9081: 'CanvasShapes.CoordinatesInterface - `areCoordinatesMultiple()` is not implemented',
+        9082: 'CanvasShapes.StyleInterface - `isFilled()` is not implemented',
+        9083: 'CanvasShapes.RenderingInterface - `isFilled()` is not implemented',
+        9084: 'CanvasShapes.StyleInterface - `getLineWidth()` is not implemented',
+        9085: 'CanvasShapes.RenderingInterface - `getLineWidth()` is not implemented',
+        9086: 'CanvasShapes.ShapeInterface - `isShapeClosed()` is not implemented',
+        9087: 'CanvasShapes.RenderingInterface - `getRenderingCoordinates()` is not implemented',
+        9088: 'CanvasShapes.GroupInterface - `getShapesNumber()` is not implemented',
     };
 
     /**

@@ -64,6 +64,47 @@ CanvasShapes.ShapeInterface = (function () {
         },
 
         /**
+         * Checks whether this particular shape is open.
+         *
+         * By default no shape is open, or closed, e.g. point doesn't have this
+         * property. In those cases this method should return `undefined`.
+         *
+         * @throws {CanvasShapes.Error} 9079
+         *
+         * @return {[undefined,boolean]}
+         */
+        isShapeOpen: function () {
+            throw new CanvasShapes.Error(9079);
+        },
+
+        /**
+         * Checks whether this particular shape is closed.
+         *
+         * By default no shape is closed, e.g. point doesn't have this
+         * property. In those cases this method should return `undefined`.
+         *
+         * @throws {CanvasShapes.Error} 9086
+         *
+         * @return {[undefined,boolean]}
+         */
+        isShapeClosed: function () {
+            throw new CanvasShapes.Error(9086);
+        },
+
+        /**
+         * Checks whether this particular shape is continuous. In other words,
+         * it answers the question, whether you could draw it on a paper without
+         * lifting the pencil up.
+         *
+         * @throws {CanvasShapes.Error} 9080
+         *
+         * @return {boolean}]
+         */
+        isShapeContinuous: function () {
+            throw new CanvasShapes.Error(9080);
+        },
+
+        /**
          * Allows you to overwrite global IS_COLLIDING_RATIO config value.
          *
          * @throws {CanvasShapes.Error} 1057

@@ -81,6 +81,65 @@ define([
                 rendering.setRelativeRendering(false);
                 expect(rendering.getRelativeRendering()).toBe(false);
             });
+
+            it('calculating allowed error', function () {
+
+                var rendering = new CanvasShapes.Point([0, 0], 'circle'),
+                    Layer = function (w, h) {
+                        this.w = w;
+                        this.h = h;
+                        this.getWidth = function () { return w; };
+                        this.getHeight = function () { return h; };
+                    },
+                    style = new CanvasShapes.Style({
+                        lineWidth: 10
+                    }),
+                    layer1 = new Layer(100, 50),
+                    layer2 = new Layer(100, 200),
+                    layer3 = new Layer(500, 300);
+
+                expect(rendering.calculateAllowedError(layer1)).toBe(1);
+                expect(rendering.calculateAllowedError(layer2)).toBe(2);
+                expect(rendering.calculateAllowedError(layer3)).toBe(5);
+                style.addToShapes([rendering]);
+                expect(rendering.calculateAllowedError(layer1)).toBe(6);
+                rendering.setRelativeRendering(true);
+                expect(rendering.calculateAllowedError(layer2)).toBe(12);
+            });
+
+            it('checking whether shape is filled', function () {
+
+                var rendering = new CanvasShapes.Point([0, 0], 'circle'),
+                    style1 = new CanvasShapes.Style(),
+                    style2 = new CanvasShapes.Style({}),
+                    style3 = new CanvasShapes.Style({
+                        fillStyle: 'black'
+                    });
+
+                style1.addToShapes(rendering);
+                expect(rendering.isFilled()).toBe(false);
+                style2.addToShapes(rendering);
+                expect(rendering.isFilled()).toBe(false);
+                style3.addToShapes(rendering);
+                expect(rendering.isFilled()).toBe(true);
+            });
+
+            it('getting line width', function () {
+
+                var rendering = new CanvasShapes.Point([0, 0], 'circle'),
+                    style1 = new CanvasShapes.Style(),
+                    style2 = new CanvasShapes.Style({}),
+                    style3 = new CanvasShapes.Style({
+                        lineWidth: 5
+                    });
+
+                style1.addToShapes(rendering);
+                expect(rendering.getLineWidth()).toBeUndefined();
+                style2.addToShapes(rendering);
+                expect(rendering.getLineWidth()).toBeUndefined();
+                style3.addToShapes(rendering);
+                expect(rendering.getLineWidth()).toBe(5);
+            });
         });
     });
 });

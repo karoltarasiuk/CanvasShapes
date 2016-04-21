@@ -138,6 +138,29 @@ CanvasShapes.RenderingAbstract = (function () {
             }
 
             return allowedError;
+        },
+
+        /**
+         * @implements {CanvasShapes.RenderingInterface}
+         */
+        isFilled: function () {
+            var style = this.getStyle();
+            return style.isFilled();
+        },
+
+        /**
+         * @implements {CanvasShapes.RenderingInterface}
+         */
+        getLineWidth: function () {
+            var style = this.getStyle();
+            return style.getLineWidth();
+        },
+
+        /**
+         * @implements {CanvasShapes.RenderingInterface}
+         */
+        getRenderingCoordinates: function (layer) {
+            return [];
         }
     });
 

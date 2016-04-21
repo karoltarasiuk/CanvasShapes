@@ -200,5 +200,23 @@ define([
             point.setFace('circle', 100);
             expect(point._face.getRelativeRendering()).toBe(true);
         });
+
+        it('returns undefined in `isShapeOpen` method', function () {
+
+            var shape = new CanvasShapes.Point([0, 0]);
+            expect(shape.isShapeOpen()).toBeUndefined();
+        });
+
+        it('returns undefined in `isShapeClosed` method', function () {
+
+            var shape = new CanvasShapes.Point([0, 0]);
+            expect(shape.isShapeClosed()).toBeUndefined();
+        });
+
+        it('returns true in `isShapeContinuous` method', function () {
+
+            var shape = new CanvasShapes.Point([0, 0]);
+            expect(shape.isShapeContinuous()).toBe(true);
+        });
     });
 });

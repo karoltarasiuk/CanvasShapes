@@ -88,9 +88,9 @@ CanvasShapes.Point = (function () {
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
-        render: function (layer) {
+        render: function (layer, continuePath, endPointCoordinates) {
             if (this._face) {
-                this._face.render(layer);
+                this._face.render(layer, continuePath, endPointCoordinates);
             }
         },
 
@@ -192,6 +192,14 @@ CanvasShapes.Point = (function () {
 
             return false;
         },
+
+        /**
+         * @implements {CanvasShapes.ShapeInterface}
+         * @overrides {CanvasShapes.ShapeAbstract}
+         */
+        isShapeContinuous: function () {
+            return true;
+        }
     });
 
     return Point;

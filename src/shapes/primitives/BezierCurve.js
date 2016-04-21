@@ -53,7 +53,7 @@ CanvasShapes.BezierCurve = (function () {
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
-        render: function (layer) {
+        render: function (layer, continuePath, endPointCoordinates) {
 
             var i, points, coordinates,
                 style = this.getStyle(),
@@ -61,12 +61,21 @@ CanvasShapes.BezierCurve = (function () {
 
             points = this._getRenderingPoints(layer);
 
-            context.beginPath();
+            if (!continuePath) {
+                context.beginPath();
+            }
 
-            context.moveTo(
-                points[0][0],
-                points[0][1]
-            );
+            if (
+                !endPointCoordinates ||
+                !this.areCoordinatesEqual([
+                    points[0], endPointCoordinates
+                ])
+            ) {
+                context.moveTo(
+                    points[0][0],
+                    points[0][1]
+                );
+            }
 
             for (i = 0; i < points.length; i++) {
                 context.lineTo(
@@ -75,7 +84,17 @@ CanvasShapes.BezierCurve = (function () {
                 );
             }
 
-            style.set(layer, this.getRelativeRendering());
+            if (!continuePath) {
+                style.set(layer, this.getRelativeRendering());
+            }
+        },
+
+        /**
+         * @implements {CanvasShapes.RenderingInterface}
+         * @override {CanvasShapes.RenderingAbstract}
+         */
+        getRenderingCoordinates: function (layer) {
+            return this._getRenderingPoints(layer);
         },
 
         /**
@@ -83,9 +102,9 @@ CanvasShapes.BezierCurve = (function () {
          *
          * @throws {CanvasShapes.Error} 1070
          */
-        isColliding: function (mouseCoordinates) {
+        isColliding: function (mouseCoordinates, simulateClosedShape) {
 
-            var i, layer, allowedError, points, coordinates;
+            var i, layer, allowedError, points;
 
             if (
                 !CanvasShapes._.isObject(mouseCoordinates) ||
@@ -101,19 +120,14 @@ CanvasShapes.BezierCurve = (function () {
             layer = mouseCoordinates.scene.getLayer(this);
             allowedError = this.calculateAllowedError(layer);
             points = this._getRenderingPoints(layer);
-            coordinates = this.getCoordinates();
 
             // checking whether bezier curve is a closed shape
-            if (
-                this.areCoordinatesEqual([
-                    coordinates[0],
-                    coordinates[coordinates.length - 1]
-                ])
-            ) {
+            if (this.isShapeClosed() || simulateClosedShape) {
+
                 return CanvasShapes.GeometryTools.isInsidePolygon(
                     [mouseCoordinates.x, mouseCoordinates.y],
                     points, allowedError
-            );
+                );
 
             } else {
                 for (i = 0; i < points.length - 1; i++) {
@@ -214,6 +228,27 @@ CanvasShapes.BezierCurve = (function () {
             }
 
             return r;
+        },
+
+        /**
+         * @implements {CanvasShapes.ShapeInterface}
+         */
+        isShapeOpen: function () {
+
+            var coordinates = this.getCoordinates();
+
+            return !this.areCoordinatesEqual([
+                coordinates[0],
+                coordinates[coordinates.length - 1]
+            ]);
+        },
+
+        /**
+         * @implements {CanvasShapes.ShapeInterface}
+         * @overrides {CanvasShapes.ShapeAbstract}
+         */
+        isShapeContinuous: function () {
+            return true;
         }
     });
 

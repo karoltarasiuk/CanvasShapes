@@ -21,14 +21,20 @@ CanvasShapes.InteractionInterface = (function () {
          * Collision detection for shapes. Returns `true` when collision is
          * detected.
          *
-         * `mouseCoordinates` object must simply contain `x` and `y` properties.
+         * `mouseCoordinates` object must simply contain `x` and `y` properties,
+         * and corresponding `scene` object.
+         *
+         * `simulateClosedShape` means that callision detection should be
+         * calculated on a closed shape even if it is open.
          *
          * @throws {CanvasShapes.Error} 9042
          *
-         * @param  {object} mouseCoordinates
+         * @param {object}  mouseCoordinates
+         * @param {boolean} simulateClosedShape [OPTIONAL]
+         *
          * @return {boolean}
          */
-        isColliding: function (mouseCoordinates) {
+        isColliding: function (mouseCoordinates, simulateClosedShape) {
             throw new CanvasShapes.Error(9042);
         },
 

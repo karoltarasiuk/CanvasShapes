@@ -337,6 +337,17 @@ define([
                 expect(shape1.getRelativeRendering()).toBe(true);
                 expect(shape2.getRelativeRendering()).toBe(true);
             });
+
+            it('getShapesNumber works', function () {
+
+                var group1 = new CanvasShapes.Group(),
+                    shape1 = new CanvasShapes.Point([30, 30]),
+                    shape2 = new CanvasShapes.Point([60, 60]);
+
+                expect(group1.getShapesNumber()).toBe(0);
+                group1.addShapes([shape1, shape2]);
+                expect(group1.getShapesNumber()).toBe(2);
+            });
         });
     });
 });

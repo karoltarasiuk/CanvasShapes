@@ -133,6 +133,89 @@ define([
             }).not.toThrow();
         });
 
+        it('rendering with continue path and end point coordinates', function () {
+
+            var beginPathSpy = jasmine.createSpy('beginPathSpy'),
+                moveToSpy = jasmine.createSpy('moveToSpy'),
+                lineToSpy = jasmine.createSpy('lineToSpy'),
+                arcToSpy = jasmine.createSpy('arcToSpy'),
+                arcSpy = jasmine.createSpy('arcSpy'),
+                contextStub = {
+                    beginPath: function () {
+                        beginPathSpy();
+                    },
+                    moveTo: function () {
+                        moveToSpy();
+                    },
+                    lineTo: function () {
+                        lineToSpy();
+                    },
+                    arcTo: function () {
+                        arcToSpy();
+                    },
+                    arc: function () {
+                        arcSpy();
+                    }
+                },
+                layer = {
+                    getUUID: function () {
+                        return 'UUID';
+                    },
+                    getWidth: function () {
+                        return 200;
+                    },
+                    getHeight: function () {
+                        return 200;
+                    },
+                    getContext: function () {
+                        return contextStub;
+                    }
+                },
+                shape1 = new CanvasShapes.Arc([[0, 0], [0, 200], [200, 200]], 20, Math.PI, Math.PI / 2);
+
+            expect(function () {
+                shape1.render(layer);
+            }).not.toThrow();
+
+            expect(beginPathSpy).toHaveBeenCalled();
+            expect(moveToSpy).toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+            expect(arcToSpy).toHaveBeenCalled();
+            expect(arcSpy).not.toHaveBeenCalled();
+
+            beginPathSpy.calls.reset();
+            moveToSpy.calls.reset();
+            lineToSpy.calls.reset();
+            arcToSpy.calls.reset();
+            arcSpy.calls.reset();
+
+            expect(function () {
+                shape1.render(layer, true);
+            }).not.toThrow();
+
+            expect(beginPathSpy).not.toHaveBeenCalled();
+            expect(moveToSpy).toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+            expect(arcToSpy).toHaveBeenCalled();
+            expect(arcSpy).not.toHaveBeenCalled();
+
+            beginPathSpy.calls.reset();
+            moveToSpy.calls.reset();
+            lineToSpy.calls.reset();
+            arcToSpy.calls.reset();
+            arcSpy.calls.reset();
+
+            expect(function () {
+                shape1.render(layer, true, [0, 0]);
+            }).not.toThrow();
+
+            expect(beginPathSpy).not.toHaveBeenCalled();
+            expect(moveToSpy).not.toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+            expect(arcToSpy).toHaveBeenCalled();
+            expect(arcSpy).not.toHaveBeenCalled();
+        });
+
         it('getting coordinates', function () {
 
             var arc1 = new CanvasShapes.Arc([[0, 0]], 1),
@@ -142,19 +225,43 @@ define([
             expect(arc2.getCoordinates()).toEqual([[0, 0], [1, 0], [1, 1]]);
         });
 
-        it('checking whether arc is closed', function () {
+        it('`isShapeOpen` works correctly', function () {
 
-            var arc1 = new CanvasShapes.Arc([[0, 0]], 1),
-                arc2 = new CanvasShapes.Arc([[0, 0], [1, 0], [1, 1]], 1),
-                arc3 = new CanvasShapes.Arc([[0, 0]], 1, 0, Math.PI),
-                arc4 = new CanvasShapes.Arc([[0, 0]], 1, 0, 2 * Math.PI),
-                arc5 = new CanvasShapes.Arc([[0, 0]], 1, 0, 1.99 * Math.PI);
+            var shape1 = new CanvasShapes.Arc([[0, 0], [20, 20], [0, 40]], 20),
+                shape2 = new CanvasShapes.Arc([[0, 0], [20, 20], [0, 0]], 20),
+                shape3 = new CanvasShapes.Arc([[20, 20]], 20),
+                shape4 = new CanvasShapes.Arc([[0, 0]], 20, 0, 1.99 * Math.PI);
 
-            expect(arc1._isCircleClosed()).toBe(true);
-            expect(arc2._isCircleClosed()).toBe(false);
-            expect(arc3._isCircleClosed()).toBe(false);
-            expect(arc4._isCircleClosed()).toBe(true);
-            expect(arc5._isCircleClosed()).toBe(false);
+            expect(shape1.isShapeOpen()).toBe(true);
+            expect(shape2.isShapeOpen()).toBe(false);
+            expect(shape3.isShapeOpen()).toBe(false);
+            expect(shape4.isShapeOpen()).toBe(true);
+        });
+
+        it('`isShapeClosed` works correctly', function () {
+
+            var arc1 = new CanvasShapes.Arc([[0, 0]], 10),
+                arc2 = new CanvasShapes.Arc([[0, 0], [1, 0], [1, 1]], 10),
+                arc3 = new CanvasShapes.Arc([[0, 0]], 10, 0, Math.PI),
+                arc4 = new CanvasShapes.Arc([[0, 0]], 10, 0, 2 * Math.PI),
+                arc5 = new CanvasShapes.Arc([[0, 0]], 10, 0, 1.99 * Math.PI);
+
+            expect(arc1.isShapeClosed()).toBe(true);
+            expect(arc2.isShapeClosed()).toBe(false);
+            expect(arc3.isShapeClosed()).toBe(false);
+            expect(arc4.isShapeClosed()).toBe(true);
+            expect(arc5.isShapeClosed()).toBe(false);
+        });
+
+        it('`isShapeContinuous` works correctly', function () {
+
+            var shape1 = new CanvasShapes.Arc([[0, 0], [20, 20], [0, 40]], 20),
+                shape2 = new CanvasShapes.Arc([[20, 20]], 20),
+                shape3 = new CanvasShapes.Arc([[20, 20]], 20, 0, Math.PI);
+
+            expect(shape1.isShapeContinuous()).toBe(true);
+            expect(shape2.isShapeContinuous()).toBe(true);
+            expect(shape3.isShapeContinuous()).toBe(true);
         });
     });
 });

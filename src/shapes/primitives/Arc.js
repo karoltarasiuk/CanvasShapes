@@ -101,7 +101,7 @@ CanvasShapes.Arc = (function () {
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
-        render: function (layer) {
+        render: function (layer, continuePath, endPointCoordinates) {
 
             var style = this.getStyle(),
                 context = layer.getContext(),
@@ -119,9 +119,12 @@ CanvasShapes.Arc = (function () {
             ) {
                 // radius is calculated relatively to the layer width
                 radius = radius * layer.getWidth() / 100;
+                // @TODO https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/ellipse
             }
 
-            context.beginPath();
+            if (!continuePath) {
+                context.beginPath();
+            }
 
             if (this._mode === Arc.MODES.CIRCLE) {
                 context.arc(
@@ -133,13 +136,20 @@ CanvasShapes.Arc = (function () {
                     this._anticlockwise
                 );
 
-                context.closePath();
-
             } else {
-                context.moveTo(
-                    coordinates[0][0],
-                    coordinates[0][1]
-                );
+
+                if (
+                    !endPointCoordinates ||
+                    !this.areCoordinatesEqual([
+                        coordinates[0], endPointCoordinates
+                    ])
+                ) {
+                    context.moveTo(
+                        coordinates[0][0],
+                        coordinates[0][1]
+                    );
+                }
+
                 context.arcTo(
                     coordinates[1][0],
                     coordinates[1][1],
@@ -151,11 +161,11 @@ CanvasShapes.Arc = (function () {
                     coordinates[2][0],
                     coordinates[2][1]
                 );
-
-                context.closePath();
             }
 
-            style.set(layer, this.getRelativeRendering());
+            if (!continuePath) {
+                style.set(layer, this.getRelativeRendering());
+            }
         },
 
         /**
@@ -171,18 +181,6 @@ CanvasShapes.Arc = (function () {
             }
 
             return CanvasShapes.Shape.prototype.getCentreCoordinates.call(this);
-        },
-
-        /**
-         * Checks whether the arc is a closed circle.
-         *
-         * @return {boolean}
-         */
-        _isCircleClosed: function () {
-
-            return this._mode === Arc.MODES.CIRCLE &&
-                this._startAngle === 0 &&
-                this._endAngle === 2 * Math.PI;
         },
 
         /**
@@ -211,7 +209,7 @@ CanvasShapes.Arc = (function () {
                 this.getCoordinates(), layer
             );
 
-            if (this._isCircleClosed()) {
+            if (this.isShapeClosed()) {
 
                 // if the circle uses relative rendering,
                 // it can become an ellipse
@@ -249,6 +247,56 @@ CanvasShapes.Arc = (function () {
             }
 
             return false;
+        },
+
+        /**
+         * @implements {CanvasShapes.ShapeInterface}
+         * @override   {CanvasShapes.ShapeAbstract}
+         */
+        isShapeOpen: function () {
+
+            var coordinates, startMod, endMod,
+                fullCircle = 2 * Math.PI;
+
+            // if mode is point-to-point, we check whether first and second
+            // points' coordinates are equal
+            if (this._mode === Arc.MODES.POINTTOPPOINT) {
+                coordinates = this.getCoordinates();
+                return !this.areCoordinatesEqual([
+                    coordinates[0],
+                    coordinates[2]
+                ]);
+
+            // if it's a circle we check start and end angle
+            } else {
+                // removing obvious case
+                if (this._startAngle === this._endAngle) {
+                    return true;
+                // start is zero
+                } else if (this._startAngle === 0) {
+                    endMod = this._endAngle % fullCircle;
+                    return endMod !== 0;
+                // end is zero
+                } else if (this._endAngle === 0) {
+                    startMod = this._startAngle % fullCircle;
+                    return startMod !== 0;
+                // both are not zero
+                } else {
+                    startMod = this._startAngle % fullCircle;
+                    endMod = this._endAngle % fullCircle;
+                    return startMod !== endMod;
+                }
+            }
+        },
+
+        /**
+         * This shape is always continuous.
+         *
+         * @implements {CanvasShapes.ShapeInterface}
+         * @overrides {CanvasShapes.ShapeAbstract}
+         */
+        isShapeContinuous: function () {
+            return true;
         }
     });
 

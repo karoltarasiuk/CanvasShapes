@@ -53,6 +53,7 @@ require(['boot'], function () {
             'spec/CanvasShapes/shapes/primitives/Circle',
             'spec/CanvasShapes/shapes/primitives/BezierCurve',
             'spec/CanvasShapes/shapes/math/Relation',
+            'spec/CanvasShapes/shapes/complex/GroupShape',
         ];
 
     require(specs, function () {
