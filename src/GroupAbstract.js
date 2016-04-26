@@ -50,6 +50,13 @@ CanvasShapes.GroupAbstract = (function () {
 
         /**
          * @implements {CanvasShapes.GroupInterface}
+         */
+        getShapesNumber: function () {
+            return this._shapes.length;
+        },
+
+        /**
+         * @implements {CanvasShapes.GroupInterface}
          *
          * @throws {CanvasShapes.Error} 1010
          */

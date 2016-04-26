@@ -37,7 +37,7 @@ CanvasShapes.Relation = (function () {
      *
      * @param {function} func
      */
-    var Relation = function (func) {
+    var Relation = function (func, isOpen, isContinuous) {
         this.setUUID();
 
         if (!CanvasShapes._.isFunction(func)) {
@@ -45,6 +45,8 @@ CanvasShapes.Relation = (function () {
         }
 
         this._func = func;
+        this._isOpen = !!isOpen;
+        this._isContinuous = !!isContinuous;
     };
 
     CanvasShapes.Class.extend(
@@ -55,12 +57,8 @@ CanvasShapes.Relation = (function () {
 
         /**
          * @implements {CanvasShapes.RenderingInterface}
-         *
-         * @param {CanvasShapes.SceneLayerInterface} layer
-         * @param {function}                         func [OPTIONAL]
-         * @param {float}                            time [OPTIONAL]
          */
-        render: function (layer, func, time) {
+        render: function (layer, continuePath, endPointCoordinates) {
 
             var h, i, points, moveToDone,
                 style = this.getStyle(),
@@ -68,7 +66,9 @@ CanvasShapes.Relation = (function () {
 
             points = this._getRenderingPoints(layer);
 
-            context.beginPath();
+            if (!continuePath) {
+                context.beginPath();
+            }
 
             for (h = 0; h < points.length; h++) {
                 // we need to start drawing another function
@@ -82,10 +82,23 @@ CanvasShapes.Relation = (function () {
                                 points[h][i][1]
                             );
                         } else {
-                            context.moveTo(
-                                points[h][i][0],
-                                points[h][i][1]
-                            );
+
+                            if (
+                                !endPointCoordinates ||
+                                !this.areCoordinatesEqual([
+                                    points[h][i], endPointCoordinates
+                                ])
+                            ) {
+                                context.moveTo(
+                                    points[h][i][0],
+                                    points[h][i][1]
+                                );
+                                // after first moving endPointCoordinates shuold
+                                // be reset, as they only apply to the beginning
+                                // of the shape
+                                endPointCoordinates = null;
+                            }
+
                             moveToDone = true;
                         }
                     } else {
@@ -94,7 +107,26 @@ CanvasShapes.Relation = (function () {
                 }
             }
 
-            style.set(layer, this.getRelativeRendering());
+            if (!continuePath) {
+                style.set(layer, this.getRelativeRendering());
+            }
+        },
+
+        /**
+         * Relation can contain multiple functions, and here we only return the
+         * first one as it's impossible to guess which one user may be after.
+         * Also we don't want to introduce extra parameter, as there is simply
+         * no valid context for it.
+         *
+         * @implements {CanvasShapes.RenderingInterface}
+         * @override {CanvasShapes.RenderingAbstract}
+         */
+        getRenderingCoordinates: function (layer) {
+            var points = this._getRenderingPoints(layer);
+            if (points.length > 0) {
+                return points[0];
+            }
+            return [];
         },
 
         /**
@@ -362,6 +394,28 @@ CanvasShapes.Relation = (function () {
             }
 
             return points;
+        },
+
+        /**
+         * [WARNING] I'm simply returning values passed to us when constructing
+         * the object. It doesn't have to be reliable!
+         *
+         * @implements {CanvasShapes.ShapeInterface}
+         * @overrides {CanvasShapes.ShapeAbstract}
+         */
+        isShapeOpen: function () {
+            return this._isOpen;
+        },
+
+        /**
+         * [WARNING] I'm simply returning values passed to us when constructing
+         * the object. It doesn't have to be reliable!
+         *
+         * @implements {CanvasShapes.ShapeInterface}
+         * @overrides {CanvasShapes.ShapeAbstract}
+         */
+        isShapeContinuous: function () {
+            return this._isContinuous;
         }
     });
 

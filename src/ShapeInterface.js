@@ -64,6 +64,47 @@ CanvasShapes.ShapeInterface = (function () {
         },
 
         /**
+         * Checks whether this particular shape is open.
+         *
+         * By default no shape is open, or closed, e.g. point doesn't have this
+         * property. In those cases this method should return `undefined`.
+         *
+         * @throws {CanvasShapes.Error} 9079
+         *
+         * @return {[undefined,boolean]}
+         */
+        isShapeOpen: function () {
+            throw new CanvasShapes.Error(9079);
+        },
+
+        /**
+         * Checks whether this particular shape is closed.
+         *
+         * By default no shape is closed, e.g. point doesn't have this
+         * property. In those cases this method should return `undefined`.
+         *
+         * @throws {CanvasShapes.Error} 9086
+         *
+         * @return {[undefined,boolean]}
+         */
+        isShapeClosed: function () {
+            throw new CanvasShapes.Error(9086);
+        },
+
+        /**
+         * Checks whether this particular shape is continuous. In other words,
+         * it answers the question, whether you could draw it on a paper without
+         * lifting the pencil up.
+         *
+         * @throws {CanvasShapes.Error} 9080
+         *
+         * @return {boolean}]
+         */
+        isShapeContinuous: function () {
+            throw new CanvasShapes.Error(9080);
+        },
+
+        /**
          * Allows you to overwrite global IS_COLLIDING_RATIO config value.
          *
          * @throws {CanvasShapes.Error} 1057
@@ -72,21 +113,6 @@ CanvasShapes.ShapeInterface = (function () {
          */
         setIsCollidingRatio: function (isCollidingRatio) {
             throw new CanvasShapes.Error(9071);
-        },
-
-        /**
-         * Calculates allowed error parameter used in `isColliding` method. It's
-         * never less than 1. Also internal `_isCollidingRatio` property set in
-         * `setIsCollidingRatio()` takes precedence over global
-         * `IS_COLLIDING_RATIO` config value. The calculation is relative to the
-         * size of a layer, which means, since one shape can sit on
-         * multiple layers, that layer must be passed as an argument.
-         *
-         * @param  {CanvasShapes.SceneLayerInterface} layer
-         * @return {float}
-         */
-        calculateAllowedError: function (layer) {
-            throw new CanvasShapes.Error(9072);
         }
     });
 

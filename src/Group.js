@@ -36,7 +36,7 @@ CanvasShapes.Group = (function () {
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
-        render: function (layer) {
+        render: function (layer, continuePath, endPointCoordinates) {
 
             this.eachShape(function () {
                 this.render(layer);
@@ -122,6 +122,30 @@ CanvasShapes.Group = (function () {
                     this.setStyle(style, deep);
                 }, [style, deep]);
             }
+        },
+
+        /**
+         * @implements {CanvasShapes.RenderingInterface}
+         * @overrides {CanvasShapes.RenderingAbstract}
+         */
+        setRelativeRendering: function (relativeRendering, deep) {
+
+            var ret = false;
+
+            if (CanvasShapes._.isBoolean(relativeRendering)) {
+                this._relativeRendering = relativeRendering;
+                ret = true;
+
+                if (deep) {
+                    this.eachShape(function (relativeRendering, deep) {
+                        ret = ret && this.setRelativeRendering(
+                            relativeRendering, deep
+                        );
+                    }, [relativeRendering, deep]);
+                }
+            }
+
+            return ret;
         }
     });
 

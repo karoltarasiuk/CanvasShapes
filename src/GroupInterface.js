@@ -34,6 +34,15 @@ CanvasShapes.GroupInterface = (function () {
         },
 
         /**
+         * Gets number of shapes added to a group.
+         *
+         * @return {integer}
+         */
+        getShapesNumber: function () {
+            throw new CanvasShapes.Error(9088);
+        },
+
+        /**
          * Allows to add a new shape(s) into the group. It will return true if
          * adding was successful, or false if can't add more objects.
          *

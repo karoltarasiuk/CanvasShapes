@@ -104,6 +104,63 @@ CanvasShapes.RenderingAbstract = (function () {
          */
         getRelativeRendering: function () {
             return !!this._relativeRendering;
+        },
+
+        /**
+         * @implements {CanvasShapes.RenderingInterface}
+         */
+        calculateAllowedError: function (layer) {
+
+            var style, definition,
+                size = CanvasShapes._.max([
+                    layer.getWidth(),
+                    layer.getHeight()]
+                ),
+                isCollidingRatio = this._isCollidingRatio !== undefined ?
+                    this._isCollidingRatio :
+                    CanvasShapes.Config.get('IS_COLLIDING_RATIO'),
+                allowedError = size * isCollidingRatio;
+
+            // add half of lineWidth style property
+            style = this.getStyle();
+            if (CanvasShapes._.isObject(style)) {
+                definition = style.getDefinition();
+                if (
+                    CanvasShapes._.isObject(definition) &&
+                    CanvasShapes._.isNumber(definition.lineWidth)
+                ) {
+                    if (this.getRelativeRendering()) {
+                        allowedError += definition.lineWidth / 2 * size / 100;
+                    } else {
+                        allowedError += definition.lineWidth / 2;
+                    }
+                }
+            }
+
+            return allowedError;
+        },
+
+        /**
+         * @implements {CanvasShapes.RenderingInterface}
+         */
+        isFilled: function () {
+            var style = this.getStyle();
+            return style.isFilled();
+        },
+
+        /**
+         * @implements {CanvasShapes.RenderingInterface}
+         */
+        getLineWidth: function () {
+            var style = this.getStyle();
+            return style.getLineWidth();
+        },
+
+        /**
+         * @implements {CanvasShapes.RenderingInterface}
+         */
+        getRenderingCoordinates: function (layer) {
+            return [];
         }
     });
 

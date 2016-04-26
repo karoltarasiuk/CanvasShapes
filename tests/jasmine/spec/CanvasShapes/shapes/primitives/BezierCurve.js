@@ -103,6 +103,71 @@ define([
             }).not.toThrow();
         });
 
+        it('rendering with continue path and end point coordinates', function () {
+
+            var beginPathSpy = jasmine.createSpy('beginPathSpy'),
+                moveToSpy = jasmine.createSpy('moveToSpy'),
+                lineToSpy = jasmine.createSpy('lineToSpy'),
+                contextStub = {
+                    beginPath: function () {
+                        beginPathSpy();
+                    },
+                    moveTo: function () {
+                        moveToSpy();
+                    },
+                    lineTo: function () {
+                        lineToSpy();
+                    }
+                },
+                layer = {
+                    getUUID: function () {
+                        return 'UUID';
+                    },
+                    getWidth: function () {
+                        return 200;
+                    },
+                    getHeight: function () {
+                        return 200;
+                    },
+                    getContext: function () {
+                        return contextStub;
+                    }
+                },
+                shape1 = new CanvasShapes.BezierCurve([[0, 0], [200, 0], [200, 200]]);
+
+            expect(function () {
+                shape1.render(layer);
+            }).not.toThrow();
+
+            expect(beginPathSpy).toHaveBeenCalled();
+            expect(moveToSpy).toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+
+            beginPathSpy.calls.reset();
+            moveToSpy.calls.reset();
+            lineToSpy.calls.reset();
+
+            expect(function () {
+                shape1.render(layer, true);
+            }).not.toThrow();
+
+            expect(beginPathSpy).not.toHaveBeenCalled();
+            expect(moveToSpy).toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+
+            beginPathSpy.calls.reset();
+            moveToSpy.calls.reset();
+            lineToSpy.calls.reset();
+
+            expect(function () {
+                shape1.render(layer, true, [0, 0]);
+            }).not.toThrow();
+
+            expect(beginPathSpy).not.toHaveBeenCalled();
+            expect(moveToSpy).not.toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+        });
+
         it('getting grade', function () {
 
             var shape1 = new CanvasShapes.BezierCurve([[0, 0], [1, 1], [5, 5]]),
@@ -225,6 +290,51 @@ define([
             mouseCoordinates.x = 300;
             mouseCoordinates.y = 300;
             expect(closedCurve.isColliding(mouseCoordinates)).toBe(false);
+        });
+
+        it('returns undefined in `isShapeOpen` method', function () {
+
+            var line = new CanvasShapes.BezierCurve([
+                    [0, 0], [50, 0], [50, 25], [0, 25], [0, 50], [100, 50],
+                    [100, 75], [0, 75], [0, 100], [50, 100]
+                ]),
+                closedCurve = new CanvasShapes.BezierCurve([
+                    [0, 0], [50, 0], [50, 25], [0, 25], [0, 50], [100, 50],
+                    [100, 75], [0, 75], [0, 100], [0, 0]
+                ]);
+
+            expect(line.isShapeOpen()).toBe(true);
+            expect(closedCurve.isShapeOpen()).toBe(false);
+        });
+
+        it('returns undefined in `isShapeClosed` method', function () {
+
+            var line = new CanvasShapes.BezierCurve([
+                    [0, 0], [50, 0], [50, 25], [0, 25], [0, 50], [100, 50],
+                    [100, 75], [0, 75], [0, 100], [50, 100]
+                ]),
+                closedCurve = new CanvasShapes.BezierCurve([
+                    [0, 0], [50, 0], [50, 25], [0, 25], [0, 50], [100, 50],
+                    [100, 75], [0, 75], [0, 100], [0, 0]
+                ]);
+
+            expect(line.isShapeClosed()).toBe(false);
+            expect(closedCurve.isShapeClosed()).toBe(true);
+        });
+
+        it('returns true in `isShapeContinuous` method', function () {
+
+            var line = new CanvasShapes.BezierCurve([
+                    [0, 0], [50, 0], [50, 25], [0, 25], [0, 50], [100, 50],
+                    [100, 75], [0, 75], [0, 100], [50, 100]
+                ]),
+                closedCurve = new CanvasShapes.BezierCurve([
+                    [0, 0], [50, 0], [50, 25], [0, 25], [0, 50], [100, 50],
+                    [100, 75], [0, 75], [0, 100], [0, 0]
+                ]);
+
+            expect(line.isShapeContinuous()).toBe(true);
+            expect(closedCurve.isShapeContinuous()).toBe(true);
         });
     });
 });

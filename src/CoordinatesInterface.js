@@ -17,7 +17,7 @@ CanvasShapes.CoordinatesInterface = (function () {
         _className: 'CanvasShapes.CoordinatesInterface',
 
         /**
-         * Normalizes coordinates and returns shallow copy of any coordinates
+         * Normalizes coordinates and returns a copy of any coordinates
          * array. If object is passed, the method will try to fetch its
          * coordinates and create a shallow copy too. Method will detect whether
          * passed coordinates are multiple or single.
@@ -181,6 +181,18 @@ CanvasShapes.CoordinatesInterface = (function () {
          */
         areCoordinatesEqual: function (coordinates) {
             throw new CanvasShapes.Error(9078);
+        },
+
+        /**
+         * Checks whether passed coordinates are multiple, that is whether
+         * passed array is array of coordinates (multiple), of array of scalar
+         * values (single).
+         *
+         * @param  {array} coordinates
+         * @return {boolean}
+         */
+        areCoordinatesMultiple: function (coordinates) {
+            throw new CanvasShapes.Error(9081);
         }
     });
 

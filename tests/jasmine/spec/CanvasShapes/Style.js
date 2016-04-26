@@ -277,6 +277,36 @@ define([
                 expect(contextStub.stroke.calls.count()).toBe(2);
             });
 
+            it('gets the line width properly', function () {
+
+                var style1 = new CanvasShapes.Style({}),
+                    style2 = new CanvasShapes.Style({
+                        lineWidth: 'illegal value'
+                    }),
+                    style3 = new CanvasShapes.Style({
+                        lineWidth: 5.2
+                    });
+
+                expect(style1.getLineWidth()).toBe(undefined);
+                expect(style2.getLineWidth()).toBe(undefined);
+                expect(style3.getLineWidth()).toBe(5.2);
+            });
+
+            it('gets the line width properly', function () {
+
+                var style1 = new CanvasShapes.Style({}),
+                    style2 = new CanvasShapes.Style({
+                        fillStyle: 'illegal value'
+                    }),
+                    style3 = new CanvasShapes.Style({
+                        fillStyle: 'black'
+                    });
+
+                expect(style1.isFilled()).toBe(false);
+                expect(style2.isFilled()).toBe(true);
+                expect(style3.isFilled()).toBe(true);
+            });
+
             it(
                 'animate throws an error when incorrect arguments passed',
             function () {

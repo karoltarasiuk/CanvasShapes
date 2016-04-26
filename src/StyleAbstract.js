@@ -29,7 +29,9 @@ CanvasShapes.StyleAbstract = (function () {
         DEFINITION_SUPPORTED_PROPERTIES: [
             'strokeStyle',
             'fillStyle',
-            'lineWidth'
+            'lineWidth',
+            'lineCap',
+            'lineJoin'
         ],
 
         /**
@@ -218,6 +220,14 @@ CanvasShapes.StyleAbstract = (function () {
                                         this.definitions[which].lineWidth;
                                 }
                             }
+                            if (this.definitions[which].lineJoin) {
+                                context.lineJoin =
+                                    this.definitions[which].lineJoin;
+                            }
+                            if (this.definitions[which].lineCap) {
+                                context.lineCap =
+                                    this.definitions[which].lineCap;
+                            }
                             context.stroke();
                         }
                         if (this.definitions[which].fillStyle) {
@@ -387,6 +397,34 @@ CanvasShapes.StyleAbstract = (function () {
                     'style'
                 ));
             });
+        },
+
+        /**
+         * @implements {CanvasShapes.StyleInterface}
+         */
+        isFilled: function (which) {
+            var definition = this.getDefinition(which);
+
+            if (CanvasShapes._.isObject(definition)) {
+                return !!definition.fillStyle;
+            }
+
+            return undefined;
+        },
+
+        /**
+         * @implements {CanvasShapes.StyleInterface}
+         */
+        getLineWidth: function (which) {
+            var definition = this.getDefinition(which);
+
+            if (CanvasShapes._.isObject(definition)) {
+                if (CanvasShapes._.isNumber(definition.lineWidth)) {
+                    return definition.lineWidth;
+                }
+            }
+
+            return undefined;
         }
     });
 

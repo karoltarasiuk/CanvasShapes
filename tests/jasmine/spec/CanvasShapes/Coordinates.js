@@ -379,6 +379,27 @@ define([
                 expect(shape.areCoordinatesEqual(coordinates5)).toBe(false);
                 expect(shape.areCoordinatesEqual(coordinates6)).toBe(false);
             });
+
+            it('whether coordinates are multiple', function () {
+
+                var i,
+                    coordinates = [
+                        [true, [[0]]],
+                        [false, [0]],
+                        [true, [[0, 1]]],
+                        [false, [0, 1]],
+                        [true, [[0, 1], [0]]],
+                        [true, [[0, 1], [0, 2]]],
+                        [true, [[0, 1], [0, 2, 4]]],
+                        [true, [[0, 1], [0, 2], [0, 1, 2, 3]]]
+                    ],
+                    shape  = new CanvasShapes.Point([20, 20]);
+
+                for (i = 0; i < coordinates.length; i++) {
+                    expect(shape.areCoordinatesMultiple(coordinates[i][1]))
+                        .toBe(coordinates[i][0]);
+                }
+            });
         });
     });
 });

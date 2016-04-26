@@ -89,40 +89,6 @@ CanvasShapes.ShapeAbstract = (function () {
         },
 
         /**
-         * @implements {CanvasShapes.ShapeInterface}
-         */
-        calculateAllowedError: function (layer) {
-
-            var style, definition,
-                size = CanvasShapes._.max([
-                    layer.getWidth(),
-                    layer.getHeight()]
-                ),
-                isCollidingRatio = this._isCollidingRatio !== undefined ?
-                    this._isCollidingRatio :
-                    CanvasShapes.Config.get('IS_COLLIDING_RATIO'),
-                allowedError = size * isCollidingRatio;
-
-            // add half of lineWidth style property
-            style = this.getStyle();
-            if (CanvasShapes._.isObject(style)) {
-                definition = style.getDefinition();
-                if (
-                    CanvasShapes._.isObject(definition) &&
-                    CanvasShapes._.isNumber(definition.lineWidth)
-                ) {
-                    if (this.getRelativeRendering()) {
-                        allowedError += definition.lineWidth / 2 * size / 100;
-                    } else {
-                        allowedError += definition.lineWidth / 2;
-                    }
-                }
-            }
-
-            return allowedError;
-        },
-
-        /**
          * This implementation assumes that the shape has only one coordinate.
          * For different cases you should override this method.
          *
@@ -132,7 +98,8 @@ CanvasShapes.ShapeAbstract = (function () {
          */
         isColliding: function (mouseCoordinates) {
 
-            var layer, allowedError, coordinates;
+            var layer, coordinates,
+                allowedError = 0;
 
             if (
                 !CanvasShapes._.isObject(mouseCoordinates) ||
@@ -146,8 +113,11 @@ CanvasShapes.ShapeAbstract = (function () {
             }
 
             layer = mouseCoordinates.scene.getLayer(this);
-            allowedError = this.calculateAllowedError(layer);
             coordinates = this.getCentreCoordinates();
+
+            if (this.is(CanvasShapes.RenderingInterface)) {
+                allowedError = this.calculateAllowedError(layer);
+            }
 
             return CanvasShapes.Tools.isValueWithinInterval(
                 coordinates[0],
@@ -498,6 +468,34 @@ CanvasShapes.ShapeAbstract = (function () {
                     coordinates: coordinates
                 }
             ));
+        },
+
+        /**
+         * @implements {CanvasShapes.ShapeInterface}
+         */
+        isShapeOpen: function () {
+            return undefined;
+        },
+
+        /**
+         * @implements {CanvasShapes.ShapeInterface}
+         */
+        isShapeClosed: function () {
+
+            var shapeIsOpen = this.isShapeOpen();
+
+            if (shapeIsOpen === undefined) {
+                return undefined;
+            } else {
+                return !shapeIsOpen;
+            }
+        },
+
+        /**
+         * @implements {CanvasShapes.ShapeInterface}
+         */
+        isShapeContinuous: function () {
+            return undefined;
         }
     });
 

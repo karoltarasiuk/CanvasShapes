@@ -83,6 +83,71 @@ define([
             }).not.toThrow();
         });
 
+        it('rendering with continue path and end point coordinates', function () {
+
+            var beginPathSpy = jasmine.createSpy('beginPathSpy'),
+                moveToSpy = jasmine.createSpy('moveToSpy'),
+                lineToSpy = jasmine.createSpy('lineToSpy'),
+                contextStub = {
+                    beginPath: function () {
+                        beginPathSpy();
+                    },
+                    moveTo: function () {
+                        moveToSpy();
+                    },
+                    lineTo: function () {
+                        lineToSpy();
+                    }
+                },
+                layer = {
+                    getUUID: function () {
+                        return 'UUID';
+                    },
+                    getWidth: function () {
+                        return 200;
+                    },
+                    getHeight: function () {
+                        return 200;
+                    },
+                    getContext: function () {
+                        return contextStub;
+                    }
+                },
+                shape1 = new CanvasShapes.Line([[0, 0], [200, 0]]);
+
+            expect(function () {
+                shape1.render(layer);
+            }).not.toThrow();
+
+            expect(beginPathSpy).toHaveBeenCalled();
+            expect(moveToSpy).toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+
+            beginPathSpy.calls.reset();
+            moveToSpy.calls.reset();
+            lineToSpy.calls.reset();
+
+            expect(function () {
+                shape1.render(layer, true);
+            }).not.toThrow();
+
+            expect(beginPathSpy).not.toHaveBeenCalled();
+            expect(moveToSpy).toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+
+            beginPathSpy.calls.reset();
+            moveToSpy.calls.reset();
+            lineToSpy.calls.reset();
+
+            expect(function () {
+                shape1.render(layer, true, [0, 0]);
+            }).not.toThrow();
+
+            expect(beginPathSpy).not.toHaveBeenCalled();
+            expect(moveToSpy).not.toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+        });
+
         it('isColliding method', function () {
 
             var scene, layer, shape1Class,
@@ -156,6 +221,24 @@ define([
             mouseCoordinates.x = 20;
             mouseCoordinates.y = 22;
             expect(line.isColliding(mouseCoordinates)).toBe(true);
+        });
+
+        it('returns undefined in `isShapeOpen` method', function () {
+
+            var shape = new CanvasShapes.Line([[0, 0], [20, 20]]);
+            expect(shape.isShapeOpen()).toBe(true);
+        });
+
+        it('returns undefined in `isShapeClosed` method', function () {
+
+            var shape = new CanvasShapes.Line([[0, 0], [20, 20]]);
+            expect(shape.isShapeClosed()).toBe(false);
+        });
+
+        it('returns true in `isShapeContinuous` method', function () {
+
+            var shape = new CanvasShapes.Line([[0, 0], [20, 20]]);
+            expect(shape.isShapeContinuous()).toBe(true);
         });
     });
 });

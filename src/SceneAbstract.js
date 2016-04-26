@@ -418,7 +418,7 @@ CanvasShapes.SceneAbstract = (function () {
          */
         getLayerObject: function (shape) {
 
-            var i, j, count, tempCount, layerObject;
+            var i, j, count, tempCount, layerObject, shapeParent;
 
             this.initialiseLayers();
 
@@ -445,6 +445,16 @@ CanvasShapes.SceneAbstract = (function () {
                 for (i in this._layers) {
                     if (this._layers[i].shapes[shape.getUUID()]) {
                         layerObject = this._layers[i];
+                    } else {
+                        // in case of a GroupShape, shape doesn't have its own
+                        // layer, which means we need to find it by its parent
+                        shapeParent = shape.getParent();
+                        if (
+                            shapeParent &&
+                            this._layers[i].shapes[shapeParent.getUUID()]
+                        ) {
+                            layerObject = this._layers[i];
+                        }
                     }
                 }
             } else {

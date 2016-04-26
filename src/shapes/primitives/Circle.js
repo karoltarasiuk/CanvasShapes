@@ -58,6 +58,17 @@ CanvasShapes.Circle = (function () {
                 callback,
                 context
             );
+        },
+
+        /**
+         * Circle's constructor doesn't accept custom angles, and always draw
+         * full circle, hence shape is never open.
+         *
+         * @implements {CanvasShapes.ShapeInterface}
+         * @override   {CanvasShapes.ShapeAbstract}
+         */
+        isShapeOpen: function () {
+            return false;
         }
     });
 

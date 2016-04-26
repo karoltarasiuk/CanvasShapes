@@ -293,5 +293,89 @@ define([
                 )).toBe(data[0][3]);
             }
         });
+
+        it('isInsideCircle method', function () {
+
+            var i,
+                data = [
+                    [true, [0, 20], [0, 0], 50, undefined],
+                    [false, [0, 61], [0, 0], 50, undefined],
+                    [true, [0, 11], [0, 0], 50, 2],
+                    [false, [0, 82], [0, 0], 50, 2],
+                    [true, [20, 0], [0, 0], 50, undefined],
+                    [false, [61, 0], [0, 0], 50, undefined],
+                    [true, [11, 0], [0, 0], 50, 2],
+                    [false, [82, 0], [0, 0], 50, 2]
+                ];
+
+            for (i = 0; i < data.length; i++) {
+                expect(CanvasShapes.GeometryTools.isInsideCircle(
+                    data[i][1], data[i][2], data[i][3], data[i][4]
+                )).toBe(data[i][0]);
+            }
+        });
+
+        it('isInsideEllipse method', function () {
+
+            var i,
+                data = [
+                    [true, [0, 20], [0, 0], 50, 25, undefined],
+                    [false, [0, 61], [0, 0], 50, 25, undefined],
+                    [true, [0, 11], [0, 0], 50, 25, 2],
+                    [false, [0, 82], [0, 0], 50, 25, 2],
+                    [true, [50, 0], [0, 0], 50, 25, undefined],
+                    [false, [51, 0], [0, 0], 50, 25, undefined],
+                    [true, [51, 0], [0, 0], 50, 25, 2],
+                    [false, [52, 0], [0, 0], 50, 25, 2]
+                ];
+
+            for (i = 0; i < data.length; i++) {
+                expect(CanvasShapes.GeometryTools.isInsideEllipse(
+                    data[i][1], data[i][2], data[i][3], data[i][4], data[i][5]
+                )).toBe(data[i][0]);
+            }
+        });
+
+        it('isOnCircle method', function () {
+
+            var i,
+                data = [
+                    [true, [0, 50], [0, 0], 50, undefined],
+                    [false, [0, 51], [0, 0], 50, undefined],
+                    [true, [0, 51], [0, 0], 50, 2],
+                    [false, [0, 52], [0, 0], 50, 2],
+                    [true, [50, 0], [0, 0], 50, undefined],
+                    [false, [51, 0], [0, 0], 50, undefined],
+                    [true, [51, 0], [0, 0], 50, 2],
+                    [false, [52, 0], [0, 0], 50, 2]
+                ];
+
+            for (i = 0; i < data.length; i++) {
+                expect(CanvasShapes.GeometryTools.isOnCircle(
+                    data[i][1], data[i][2], data[i][3], data[i][4]
+                )).toBe(data[i][0]);
+            }
+        });
+
+        it('isOnEllipse method', function () {
+
+            var i,
+                data = [
+                    [true, [0, 25], [0, 0], 50, 25, undefined],
+                    [false, [0, 26], [0, 0], 50, 25, undefined],
+                    [true, [0, 26], [0, 0], 50, 25, 2],
+                    [false, [0, 27], [0, 0], 50, 25, 2],
+                    [true, [50, 0], [0, 0], 50, 25, undefined],
+                    [false, [51, 0], [0, 0], 50, 25, undefined],
+                    [true, [51, 0], [0, 0], 50, 25, 2],
+                    [false, [52, 0], [0, 0], 50, 25, 2]
+                ];
+
+            for (i = 0; i < data.length; i++) {
+                expect(CanvasShapes.GeometryTools.isOnEllipse(
+                    data[i][1], data[i][2], data[i][3], data[i][4], data[i][5]
+                )).toBe(data[i][0]);
+            }
+        });
     });
 });

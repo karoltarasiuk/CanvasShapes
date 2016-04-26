@@ -101,7 +101,7 @@ CanvasShapes.Arc = (function () {
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
-        render: function (layer) {
+        render: function (layer, continuePath, endPointCoordinates) {
 
             var style = this.getStyle(),
                 context = layer.getContext(),
@@ -119,9 +119,12 @@ CanvasShapes.Arc = (function () {
             ) {
                 // radius is calculated relatively to the layer width
                 radius = radius * layer.getWidth() / 100;
+                // @TODO https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/ellipse
             }
 
-            context.beginPath();
+            if (!continuePath) {
+                context.beginPath();
+            }
 
             if (this._mode === Arc.MODES.CIRCLE) {
                 context.arc(
@@ -133,13 +136,20 @@ CanvasShapes.Arc = (function () {
                     this._anticlockwise
                 );
 
-                context.closePath();
-
             } else {
-                context.moveTo(
-                    coordinates[0][0],
-                    coordinates[0][1]
-                );
+
+                if (
+                    !endPointCoordinates ||
+                    !this.areCoordinatesEqual([
+                        coordinates[0], endPointCoordinates
+                    ])
+                ) {
+                    context.moveTo(
+                        coordinates[0][0],
+                        coordinates[0][1]
+                    );
+                }
+
                 context.arcTo(
                     coordinates[1][0],
                     coordinates[1][1],
@@ -151,11 +161,11 @@ CanvasShapes.Arc = (function () {
                     coordinates[2][0],
                     coordinates[2][1]
                 );
-
-                context.closePath();
             }
 
-            style.set(layer, this.getRelativeRendering());
+            if (!continuePath) {
+                style.set(layer, this.getRelativeRendering());
+            }
         },
 
         /**
@@ -171,6 +181,122 @@ CanvasShapes.Arc = (function () {
             }
 
             return CanvasShapes.Shape.prototype.getCentreCoordinates.call(this);
+        },
+
+        /**
+         * @throws {CanvasShapes.Error} 1058
+         *
+         * @implements {CanvasShapes.InteractionInterface}
+         * @overrides {CanvasShapes.ShapeAbstract}
+         */
+        isColliding: function (mouseCoordinates) {
+
+            var layer, allowedError, ellipseRadius, coordinates, lineThickness;
+
+            if (
+                !CanvasShapes._.isObject(mouseCoordinates) ||
+                !CanvasShapes._.isNumber(mouseCoordinates.x) ||
+                !CanvasShapes._.isNumber(mouseCoordinates.y) ||
+                !CanvasShapes._.isObject(mouseCoordinates.scene) ||
+                !CanvasShapes._.isFunction(mouseCoordinates.scene.is) ||
+                !mouseCoordinates.scene.is(CanvasShapes.SceneInterface)
+            ) {
+                throw new CanvasShapes.Error(1058);
+            }
+
+            layer = mouseCoordinates.scene.getLayer(this);
+            coordinates = this.processCoordinates(
+                this.getCoordinates(), layer
+            );
+
+            if (this.isShapeClosed()) {
+
+                // if the circle uses relative rendering,
+                // it can become an ellipse
+                if (this.getRelativeRendering()) {
+                    ellipseRadius = this.processCoordinates(
+                        [this._radius, this._radius], layer
+                    );
+                    lineThickness = this.getLineWidth() * layer.getWidth() / 100;
+                } else {
+                    ellipseRadius = [this._radius, this._radius];
+                    lineThickness = this.getLineWidth();
+                }
+
+                // for filled shape, hover will work also inside the circle
+                if (this.isFilled()) {
+                    return CanvasShapes.GeometryTools.isInsideEllipse(
+                        [mouseCoordinates.x, mouseCoordinates.y],
+                        coordinates[0],
+                        ellipseRadius[0],
+                        ellipseRadius[1],
+                        lineThickness
+                    );
+                } else {
+                    return CanvasShapes.GeometryTools.isOnEllipse(
+                        [mouseCoordinates.x, mouseCoordinates.y],
+                        coordinates[0],
+                        ellipseRadius[0],
+                        ellipseRadius[1],
+                        lineThickness
+                    );
+                }
+
+            } else {
+                // @TODO only whether pointer is on the arc
+            }
+
+            return false;
+        },
+
+        /**
+         * @implements {CanvasShapes.ShapeInterface}
+         * @override   {CanvasShapes.ShapeAbstract}
+         */
+        isShapeOpen: function () {
+
+            var coordinates, startMod, endMod,
+                fullCircle = 2 * Math.PI;
+
+            // if mode is point-to-point, we check whether first and second
+            // points' coordinates are equal
+            if (this._mode === Arc.MODES.POINTTOPPOINT) {
+                coordinates = this.getCoordinates();
+                return !this.areCoordinatesEqual([
+                    coordinates[0],
+                    coordinates[2]
+                ]);
+
+            // if it's a circle we check start and end angle
+            } else {
+                // removing obvious case
+                if (this._startAngle === this._endAngle) {
+                    return true;
+                // start is zero
+                } else if (this._startAngle === 0) {
+                    endMod = this._endAngle % fullCircle;
+                    return endMod !== 0;
+                // end is zero
+                } else if (this._endAngle === 0) {
+                    startMod = this._startAngle % fullCircle;
+                    return startMod !== 0;
+                // both are not zero
+                } else {
+                    startMod = this._startAngle % fullCircle;
+                    endMod = this._endAngle % fullCircle;
+                    return startMod !== endMod;
+                }
+            }
+        },
+
+        /**
+         * This shape is always continuous.
+         *
+         * @implements {CanvasShapes.ShapeInterface}
+         * @overrides {CanvasShapes.ShapeAbstract}
+         */
+        isShapeContinuous: function () {
+            return true;
         }
     });
 

@@ -124,9 +124,6 @@ define([
                 expect(shape1.getRenderingShape()).toBe(group);
                 expect(shape2.getRenderingShape()).toBe(group);
             });
-        });
-
-        describe('methods', function () {
 
             it('setIsCollidingRatio method', function () {
 
@@ -357,6 +354,33 @@ define([
 
                 shape2.dispatch('interaction', context1);
                 expect(context1.prop).toBe(3);
+            });
+
+            it('returns undefined in `isShapeOpen` method', function () {
+
+                var shape = new CanvasShapes.Point([0, 0]);
+                expect(
+                    CanvasShapes.ShapeAbstract.prototype
+                        .isShapeOpen.call(shape)
+                ).toBeUndefined();
+            });
+
+            it('returns undefined in `isShapeClosed` method', function () {
+
+                var shape = new CanvasShapes.Point([0, 0]);
+                expect(
+                    CanvasShapes.ShapeAbstract.prototype
+                        .isShapeClosed.call(shape)
+                ).toBeUndefined();
+            });
+
+            it('returns undefined in `isShapeContinuous` method', function () {
+
+                var shape = new CanvasShapes.Point([0, 0]);
+                expect(
+                    CanvasShapes.ShapeAbstract.prototype
+                        .isShapeContinuous.call(shape)
+                ).toBeUndefined();
             });
         });
 

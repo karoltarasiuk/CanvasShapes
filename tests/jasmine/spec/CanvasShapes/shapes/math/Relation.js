@@ -89,6 +89,73 @@ define([
             }).not.toThrow();
         });
 
+        it('rendering with continue path and end point coordinates', function () {
+
+            var beginPathSpy = jasmine.createSpy('beginPathSpy'),
+                moveToSpy = jasmine.createSpy('moveToSpy'),
+                lineToSpy = jasmine.createSpy('lineToSpy'),
+                contextStub = {
+                    beginPath: function () {
+                        beginPathSpy();
+                    },
+                    moveTo: function () {
+                        moveToSpy();
+                    },
+                    lineTo: function () {
+                        lineToSpy();
+                    }
+                },
+                layer = {
+                    getUUID: function () {
+                        return 'UUID';
+                    },
+                    getWidth: function () {
+                        return 200;
+                    },
+                    getHeight: function () {
+                        return 200;
+                    },
+                    getContext: function () {
+                        return contextStub;
+                    }
+                },
+                shape1 = new CanvasShapes.Relation(
+                    function (x) { return [x, 2*x, x*x]; }
+                );
+
+            expect(function () {
+                shape1.render(layer);
+            }).not.toThrow();
+
+            expect(beginPathSpy).toHaveBeenCalled();
+            expect(moveToSpy).toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+
+            beginPathSpy.calls.reset();
+            moveToSpy.calls.reset();
+            lineToSpy.calls.reset();
+
+            expect(function () {
+                shape1.render(layer, true);
+            }).not.toThrow();
+
+            expect(beginPathSpy).not.toHaveBeenCalled();
+            expect(moveToSpy).toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+
+            beginPathSpy.calls.reset();
+            moveToSpy.calls.reset();
+            lineToSpy.calls.reset();
+
+            expect(function () {
+                shape1.render(layer, true, [0, 200]);
+            }).not.toThrow();
+
+            expect(beginPathSpy).not.toHaveBeenCalled();
+            expect(moveToSpy).not.toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+        });
+
         it('isColliding method', function () {
 
             var scene, scene2, layer, layer2, shape1Class,
@@ -241,6 +308,55 @@ define([
             mouseCoordinates2.x = 0;
             mouseCoordinates2.y = 158;
             expect(line3.isColliding(mouseCoordinates2)).toBe(false);
+        });
+
+        it('returns undefined in `isShapeOpen` method', function () {
+
+            var shape1 = new CanvasShapes.Relation(function (x) {
+                    return [x];
+                }, true, true),
+                shape2 = new CanvasShapes.Relation(function (x) {
+                    return [
+                        Math.sqrt(100 - x * x),
+                        -Math.sqrt(100 - x * x)
+                    ];
+                }, false, true);
+
+            expect(shape1.isShapeOpen()).toBe(true);
+            expect(shape2.isShapeOpen()).toBe(false);
+        });
+
+        it('returns undefined in `isShapeClosed` method', function () {
+
+            var shape1 = new CanvasShapes.Relation(function (x) {
+                    return [x];
+                }, true, true),
+                shape2 = new CanvasShapes.Relation(function (x) {
+                    return [
+                        Math.sqrt(100 - x * x),
+                        -Math.sqrt(100 - x * x)
+                    ];
+                }, false, true);
+
+            expect(shape1.isShapeClosed()).toBe(false);
+            expect(shape2.isShapeClosed()).toBe(true);
+        });
+
+        it('returns true in `isShapeContinuous` method', function () {
+
+            var shape1 = new CanvasShapes.Relation(function (x) {
+                    return [x];
+                }, true, true),
+                shape2 = new CanvasShapes.Relation(function (x) {
+                    var temp = x;
+                    if (x <= 60 && x >= 40) {
+                        x = null;
+                    }
+                    return [x];
+                }, true, false);
+
+            expect(shape1.isShapeContinuous()).toBe(true);
+            expect(shape2.isShapeContinuous()).toBe(false);
         });
     });
 });

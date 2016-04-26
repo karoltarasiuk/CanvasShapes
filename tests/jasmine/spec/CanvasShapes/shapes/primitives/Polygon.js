@@ -87,6 +87,79 @@ define([
             }).not.toThrow();
         });
 
+        it('rendering with continue path and end point coordinates', function () {
+
+            var beginPathSpy = jasmine.createSpy('beginPathSpy'),
+                moveToSpy = jasmine.createSpy('moveToSpy'),
+                lineToSpy = jasmine.createSpy('lineToSpy'),
+                closePathSpy = jasmine.createSpy('closePathSpy'),
+                contextStub = {
+                    beginPath: function () {
+                        beginPathSpy();
+                    },
+                    moveTo: function () {
+                        moveToSpy();
+                    },
+                    lineTo: function () {
+                        lineToSpy();
+                    },
+                    closePath: function () {
+                        closePathSpy();
+                    }
+                },
+                layer = {
+                    getUUID: function () {
+                        return 'UUID';
+                    },
+                    getWidth: function () {
+                        return 200;
+                    },
+                    getHeight: function () {
+                        return 200;
+                    },
+                    getContext: function () {
+                        return contextStub;
+                    }
+                },
+                shape1 = new CanvasShapes.Polygon([[0, 0], [200, 0], [200, 200]]);
+
+            expect(function () {
+                shape1.render(layer);
+            }).not.toThrow();
+
+            expect(beginPathSpy).toHaveBeenCalled();
+            expect(moveToSpy).toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+            expect(closePathSpy).toHaveBeenCalled();
+
+            beginPathSpy.calls.reset();
+            moveToSpy.calls.reset();
+            lineToSpy.calls.reset();
+            closePathSpy.calls.reset();
+
+            expect(function () {
+                shape1.render(layer, true);
+            }).not.toThrow();
+
+            expect(beginPathSpy).not.toHaveBeenCalled();
+            expect(moveToSpy).toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+            expect(closePathSpy).not.toHaveBeenCalled();
+
+            beginPathSpy.calls.reset();
+            moveToSpy.calls.reset();
+            lineToSpy.calls.reset();
+
+            expect(function () {
+                shape1.render(layer, true, [0, 0]);
+            }).not.toThrow();
+
+            expect(beginPathSpy).not.toHaveBeenCalled();
+            expect(moveToSpy).not.toHaveBeenCalled();
+            expect(lineToSpy).toHaveBeenCalled();
+            expect(closePathSpy).not.toHaveBeenCalled();
+        });
+
         it('isColliding method', function () {
 
             var scene, layer, shape1Class,
@@ -160,6 +233,24 @@ define([
             mouseCoordinates.x = 20;
             mouseCoordinates.y = 23;
             expect(polygon.isColliding(mouseCoordinates)).toBe(true);
+        });
+
+        it('returns undefined in `isShapeOpen` method', function () {
+
+            var shape = new CanvasShapes.Polygon([[0, 0], [20, 20], [0, 40]]);
+            expect(shape.isShapeOpen()).toBe(false);
+        });
+
+        it('returns undefined in `isShapeClosed` method', function () {
+
+            var shape = new CanvasShapes.Polygon([[0, 0], [20, 20], [0, 40]]);
+            expect(shape.isShapeClosed()).toBe(true);
+        });
+
+        it('returns true in `isShapeContinuous` method', function () {
+
+            var shape = new CanvasShapes.Polygon([[0, 0], [20, 20], [0, 40]]);
+            expect(shape.isShapeContinuous()).toBe(true);
         });
     });
 });

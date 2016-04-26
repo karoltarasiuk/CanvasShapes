@@ -42,7 +42,7 @@ CanvasShapes.Polygon = (function () {
         /**
          * @implements {CanvasShapes.RenderingInterface}
          */
-        render: function (layer) {
+        render: function (layer, continuePath, endPointCoordinates) {
 
             var i,
                 style = this.getStyle(),
@@ -51,12 +51,21 @@ CanvasShapes.Polygon = (function () {
                     this.getCoordinates(), layer
                 );
 
-            context.beginPath();
+            if (!continuePath) {
+                context.beginPath();
+            }
 
-            context.moveTo(
-                coordinates[0][0],
-                coordinates[0][1]
-            );
+            if (
+                !endPointCoordinates ||
+                !this.areCoordinatesEqual([
+                    coordinates[0], endPointCoordinates
+                ])
+            ) {
+                context.moveTo(
+                    coordinates[0][0],
+                    coordinates[0][1]
+                );
+            }
 
             for (i = 1; i <= coordinates.length; i++) {
 
@@ -72,8 +81,10 @@ CanvasShapes.Polygon = (function () {
                 if (i === 0) break;
             }
 
-            context.closePath();
-            style.set(layer, this.getRelativeRendering());
+            if (!continuePath) {
+                context.closePath();
+                style.set(layer, this.getRelativeRendering());
+            }
         },
 
         /**
@@ -110,6 +121,22 @@ CanvasShapes.Polygon = (function () {
                 [mouseCoordinates.x, mouseCoordinates.y],
                 processedCoordinates, allowedError
             );
+        },
+
+        /**
+         * @implements {CanvasShapes.ShapeInterface}
+         * @overrides {CanvasShapes.ShapeAbstract}
+         */
+        isShapeOpen: function () {
+            return false;
+        },
+
+        /**
+         * @implements {CanvasShapes.ShapeInterface}
+         * @overrides {CanvasShapes.ShapeAbstract}
+         */
+        isShapeContinuous: function () {
+            return true;
         }
     });
 
